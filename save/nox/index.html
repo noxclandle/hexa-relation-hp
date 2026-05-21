@@ -204,15 +204,30 @@
                         <div><span class="status-label">なまえ:</span><span>Nox (ノクス)</span></div>
                         <div><span class="status-label">しょくぎょう:</span><span>フリーランス (元・探偵 / 元・マジシャン / IT専門卒)</span></div>
                         <div><span class="status-label">しょぞく:</span><span>MENSA</span></div>
-                        <div>
+                        <div class="relative">
                             <span class="status-label">そうび(おしごと):</span>
-                            <div class="mt-2 pl-4 text-base opacity-90 border-l-2 pl-4 space-y-1" style="border-color: var(--primary-color);">
-                                <div class="cursor-pointer hover:text-[var(--primary-color)] transition-colors" onclick="showJobDetail('hplp')">・HP/LP作成（Web構築のじゅもん）</div>
-                                <div class="cursor-pointer hover:text-[var(--primary-color)] transition-colors" onclick="showJobDetail('magic')">・マジック（おどろきのわざ）</div>
-                                <div class="cursor-pointer hover:text-[var(--primary-color)] transition-colors" onclick="showJobDetail('investigation')">・調査業（しんじつのたんさく）</div>
-                                <div class="cursor-pointer hover:text-[var(--primary-color)] transition-colors" onclick="showJobDetail('streaming')">・配信業（こえのまほう）</div>
+                            <div id="job-list-container" class="mt-2 pl-4 text-base opacity-90 border-l-2 pl-4 space-y-1" style="border-color: var(--primary-color);">
+                                <div class="command-item text-base" style="cursor: pointer;" onclick="toggleJobDetail(event, 'hplp')"><span class="command-cursor">▶︎</span>HP/LP作成（Web構築のじゅもん）</div>
+                                <div class="command-item text-base" style="cursor: pointer;" onclick="toggleJobDetail(event, 'magic')"><span class="command-cursor">▶︎</span>マジック（おどろきのわざ）</div>
+                                <div class="command-item text-base" style="cursor: pointer;" onclick="toggleJobDetail(event, 'investigation')"><span class="command-cursor">▶︎</span>調査業（しんじつのたんさく）</div>
+                                <div class="command-item text-base" style="cursor: pointer;" onclick="toggleJobDetail(event, 'streaming')"><span class="command-cursor">▶︎</span>配信業（こえのまほう）</div>
                             </div>
-                            <p class="mt-3 text-xs font-bold" style="color: var(--primary-color);">※ 項目を クリック すると 実績 を かくにん できます。</p>
+                            <p class="mt-3 text-xs font-bold" style="color: var(--primary-color);">※ これらの そうび を つかった おしごとの ごいらい を おまちしております。</p>
+                            
+                            <!-- Job Detail Popup (Strength style) -->
+                            <div id="job-popup" class="fade-in" style="display: none; position: absolute; left: 0; top: 100%; width: 100%; z-index: 100; margin-top: 10px;">
+                                <div class="mother-window" style="margin-bottom: 0;">
+                                    <div class="mother-window-inner" style="padding: 1rem;">
+                                        <h3 id="job-popup-title" class="text-lg mb-2 border-b border-white pb-1">▼ 実績</h3>
+                                        <div id="job-popup-content" class="text-sm leading-relaxed"></div>
+                                        <div class="mt-4 pt-2 border-t border-white/20">
+                                            <div class="command-item text-sm justify-center" onclick="closeJobDetail()">
+                                                <span class="command-cursor">▶︎</span>とじる
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="character-portrait-wrapper">
@@ -393,23 +408,6 @@
         <p id="starstorm-text" class="text-xl"></p>
     </div>
 
-    <!-- Job Detail Modal -->
-    <div id="job-detail-modal" class="hidden fixed inset-0 z-[6000] flex items-center justify-center bg-black/80 px-4" onclick="closeJobDetail()">
-        <div class="mother-window w-full max-w-sm fade-in" onclick="event.stopPropagation()">
-            <div class="mother-window-inner">
-                <h3 id="job-detail-title" class="text-xl mb-4 border-b border-white pb-2">▼ じっせき</h3>
-                <div id="job-detail-content" class="text-base leading-relaxed space-y-3">
-                    <!-- Content will be injected here -->
-                </div>
-                <div class="mt-6 pt-4 border-t border-white/20">
-                    <div class="command-item text-xl justify-center" onclick="closeJobDetail()">
-                        <span class="command-cursor">▶︎</span>とじる
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         const jobData = {
             hplp: {
@@ -430,18 +428,25 @@
             }
         };
 
-        function showJobDetail(key) {
+        function toggleJobDetail(event, key) {
+            event.stopPropagation();
             const data = jobData[key];
-            if (!data) return;
+            const popup = document.getElementById('job-popup');
+            const title = document.getElementById('job-popup-title');
+            const content = document.getElementById('job-popup-content');
             
-            document.getElementById('job-detail-title').innerHTML = data.title;
-            document.getElementById('job-detail-content').innerHTML = data.content;
-            document.getElementById('job-detail-modal').classList.remove('hidden');
-            playClickSound();
+            if (popup.style.display === 'block' && title.innerText.includes(data.title.replace('▼ ', ''))) {
+                closeJobDetail();
+            } else {
+                title.innerText = data.title;
+                content.innerHTML = data.content;
+                popup.style.display = 'block';
+                playClickSound();
+            }
         }
 
         function closeJobDetail() {
-            document.getElementById('job-detail-modal').classList.add('hidden');
+            document.getElementById('job-popup').style.display = 'none';
         }
 
         // Retro Click Sound (Web Audio API)
