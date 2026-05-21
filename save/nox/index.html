@@ -206,10 +206,13 @@
                         <div><span class="status-label">しょぞく:</span><span>MENSA</span></div>
                         <div>
                             <span class="status-label">そうび(おしごと):</span>
-                            <div class="mt-2 pl-4 text-base opacity-90 border-l-2 pl-4" style="border-color: var(--primary-color);">
-                                ・HP/LP作成（Web構築のじゅもん）<br>・マジック（おどろきのわざ）<br>・調査業（しんじつのたんさく）<br>・配信業（こえのまほう）
+                            <div class="mt-2 pl-4 text-base opacity-90 border-l-2 pl-4 space-y-1" style="border-color: var(--primary-color);">
+                                <div class="cursor-pointer hover:text-[var(--primary-color)] transition-colors" onclick="showJobDetail('hplp')">・HP/LP作成（Web構築のじゅもん）</div>
+                                <div class="cursor-pointer hover:text-[var(--primary-color)] transition-colors" onclick="showJobDetail('magic')">・マジック（おどろきのわざ）</div>
+                                <div class="cursor-pointer hover:text-[var(--primary-color)] transition-colors" onclick="showJobDetail('investigation')">・調査業（しんじつのたんさく）</div>
+                                <div class="cursor-pointer hover:text-[var(--primary-color)] transition-colors" onclick="showJobDetail('streaming')">・配信業（こえのまほう）</div>
                             </div>
-                            <p class="mt-3 text-xs font-bold" style="color: var(--primary-color);">※ これらの そうび を つかった おしごとの ごいらい を おまちしております。</p>
+                            <p class="mt-3 text-xs font-bold" style="color: var(--primary-color);">※ 項目を クリック すると 実績 を かくにん できます。</p>
                         </div>
                     </div>
                     <div class="character-portrait-wrapper">
@@ -253,7 +256,7 @@
 
                 <div id="menu-goods-list" class="hidden flex flex-col gap-3">
                     <h3 class="text-xl mb-2 opacity-70">▼ リスト</h3>
-                    <div class="command-item text-xl" onclick="showSubMenu('menu-equip-confirm')"><span class="command-cursor">▶︎</span>hexa card (デジタル名刺)</div>
+                    <div class="command-item text-xl opacity-60" onclick="showSubMenu('menu-equip-under-construction')"><span class="command-cursor">▶︎</span>hexa card (準備中)</div>
                     <div class="command-item text-xl" onclick="showSubMenu('menu-service-info')"><span class="command-cursor">▶︎</span>ゲームプロフィール制作 を たのむ</div>
                     <div class="command-item text-xl opacity-60" onclick="showSubMenu('menu-main')"><span class="command-cursor">▶︎</span>もどる</div>
                 </div>
@@ -272,12 +275,9 @@
                     </div>
                 </div>
 
-                <div id="menu-equip-confirm" class="hidden flex flex-col gap-3">
-                    <p class="text-xl mb-2">hexa card を<br>そうびしますか？</p>
-                    <div class="flex flex-col gap-2">
-                        <a href="https://hxc.hexa-relation.com/" target="_blank" class="command-item text-2xl" onclick="resetMenu()"><span class="command-cursor">▶︎</span>はい</a>
-                        <div class="command-item text-2xl" onclick="showSubMenu('menu-goods-list')"><span class="command-cursor">▶︎</span>いいえ</div>
-                    </div>
+                <div id="menu-equip-under-construction" class="hidden flex flex-col gap-3">
+                    <p class="text-xl mb-2">hexa card は<br>現在 準備中 です。</p>
+                    <div class="command-item text-2xl" onclick="showSubMenu('menu-goods-list')"><span class="command-cursor">▶︎</span>もどる</div>
                 </div>
             </div>
         </div>
@@ -393,7 +393,57 @@
         <p id="starstorm-text" class="text-xl"></p>
     </div>
 
+    <!-- Job Detail Modal -->
+    <div id="job-detail-modal" class="hidden fixed inset-0 z-[6000] flex items-center justify-center bg-black/80 px-4" onclick="closeJobDetail()">
+        <div class="mother-window w-full max-w-sm fade-in" onclick="event.stopPropagation()">
+            <div class="mother-window-inner">
+                <h3 id="job-detail-title" class="text-xl mb-4 border-b border-white pb-2">▼ じっせき</h3>
+                <div id="job-detail-content" class="text-base leading-relaxed space-y-3">
+                    <!-- Content will be injected here -->
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/20">
+                    <div class="command-item text-xl justify-center" onclick="closeJobDetail()">
+                        <span class="command-cursor">▶︎</span>とじる
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        const jobData = {
+            hplp: {
+                title: "▼ HP/LP作成",
+                content: "日報アプリや 建築是正アプリ作成！<br>LPサンプルは セーブデータを みてみてね。"
+            },
+            magic: {
+                title: "▼ マジック",
+                content: "会社の創業記念パーティや 結婚式、誕生日のホームパーティなど。<br>最大1000規模の会場などで マジックショー披露！<br>（※今はだいぶ 離れてしまっている！）"
+            },
+            investigation: {
+                title: "▼ 調査業",
+                content: "・行動調査（浮気・不倫調査、素行調査）<br>・所在調査・人探し（家出、失踪、恩師・旧友の捜索）<br>・信用調査（個人・企業）<br>・その他の特殊調査"
+            },
+            streaming: {
+                title: "▼ 配信業",
+                content: "・Cyber Hunter: 元・トッププロ / コーチング<br>・Dead by Daylight Mobile: 公認配信者 / 公式キャスター / コーチング<br>・多数의 企業案件実績あり<br>・主にゲーム配信を中心に活動中"
+            }
+        };
+
+        function showJobDetail(key) {
+            const data = jobData[key];
+            if (!data) return;
+            
+            document.getElementById('job-detail-title').innerHTML = data.title;
+            document.getElementById('job-detail-content').innerHTML = data.content;
+            document.getElementById('job-detail-modal').classList.remove('hidden');
+            playClickSound();
+        }
+
+        function closeJobDetail() {
+            document.getElementById('job-detail-modal').classList.add('hidden');
+        }
+
         // Retro Click Sound (Web Audio API)
         function playClickSound() {
             try {
@@ -601,7 +651,7 @@
         function closeServiceDetail() { document.getElementById('service-detail-view').style.display = 'none'; }
 
         function showSubMenu(menuId) {
-            ['menu-main', 'menu-goods-list', 'menu-service-info', 'menu-service-order', 'menu-equip-confirm', 'menu-check-egg'].forEach(id => {
+            ['menu-main', 'menu-goods-list', 'menu-service-info', 'menu-service-order', 'menu-equip-under-construction', 'menu-check-egg'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
