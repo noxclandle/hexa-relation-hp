@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexa Relation | Gateway</title>
+    <!-- Google Fonts: Cinzel (Gothic/Elegant), Noto Sans JP (Gothic) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@300;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-accent: #ffffff;
+            --secondary-accent: #888888;
+            --bg-deep: #050505;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--primary-accent);
+            font-family: 'Noto Sans JP', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Gothic/Modern Background */
+        .hero-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('enhanced_E3FD57_1_102_o.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4;
+            filter: grayscale(20%) brightness(80%);
+            z-index: -1;
+        }
+
+        .overlay-vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
+            z-index: -1;
+        }
+
+        .content-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .logo-header {
+            margin-bottom: 3rem;
+            animation: fadeInDown 1.2s ease-out;
+        }
+
+        .site-title {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+
+        .philosophy-text {
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            color: var(--secondary-accent);
+            max-width: 600px;
+            line-height: 1.8;
+            margin: 0 auto;
+        }
+
+        .philosophy-jp {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-top: 1rem;
+        }
+
+        /* Refined Menu */
+        .gateway-menu {
+            margin-top: 4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 320px;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .menu-link {
+            position: relative;
+            padding: 1rem;
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            color: var(--primary-accent);
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(5px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+        }
+
+        .menu-link:hover {
+            background: rgba(255,255,255,1);
+            color: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+        }
+
+        .menu-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 1px;
+            background: #fff;
+            transition: width 0.4s ease;
+        }
+
+        .menu-link:hover::before {
+            width: 100%;
+        }
+
+        /* Modals (Gothic Style) */
+        .gothic-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            align-items: center; justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-inner {
+            width: 90%;
+            max-width: 500px;
+            padding: 3rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #0a0a0a;
+            position: relative;
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 1rem;
+        }
+
+        .save-item {
+            padding: 1.5rem;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-align: left;
+            margin-bottom: 1rem;
+        }
+
+        .save-item:hover {
+            border-color: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .close-btn {
+            margin-top: 2rem;
+            font-family: 'Cinzel', serif;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+        .close-btn:hover { opacity: 1; }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 640px) {
+            .site-title { font-size: 2.2rem; }
+            .philosophy-text { font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-bg"></div>
+    <div class="overlay-vignette"></div>
+
+    <div class="content-container">
+        <header class="logo-header">
+            <img src="背景.png" alt="Hexa Relation Logo" class="site-logo mx-auto mb-4 opacity-80" style="width: 80px; height: auto; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));">
+            <h1 class="site-title">Hexa Relation</h1>
+            <p class="philosophy-text">
+                BLIND JUSTICE ENSURES FAIRNESS, BUT IT IS THE COURAGE<br>
+                TO TAKE ANOTHER'S HAND THAT IGNITES THE REAL PASSION IN YOUR LIFE.
+            </p>
+            <p class="philosophy-jp">
+                厳格な正義は公平さをもたらす。しかし、人生に真の情熱の火を灯すのは、誰かの手を取る勇気である。
+            </p>
+        </header>
+
+        <nav class="gateway-menu">
+            <a href="save/nox/index.html" class="menu-link">Master Portfolio</a>
+            <a href="mailto:hexarelation@gmail.com" class="menu-link">Contact</a>
+        </nav>
+    </div>
+
+    <script>
+        // Retro Click Sound (Web Audio API)
+        function playClickSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                oscillator.type = 'square';
+                oscillator.frequency.setValueAtTime(1000, audioCtx.currentTime); 
+                oscillator.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.05);
+                gainNode.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.05);
+            } catch (e) { console.error('Audio error:', e); }
+        }
+
+        document.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.menu-link')) {
+                playClickSound();
+            }
+        });
+    </script>
+</body>
+</html>

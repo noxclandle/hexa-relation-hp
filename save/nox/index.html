@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexa Relation | Nox Portfolio</title>
+    <!-- Google Fonts: DotGothic16 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            /* Original MOTHER Red Theme (Default) */
+            --primary-color: #ff0000;
+            --accent-color: #ffffff;
+            --bg-color: #000000;
+            --psi-color: #ffaa00;
+            --border-inner: #ffffff;
+        }
+
+        /* Blue & Brown Theme (Logo Inspired) */
+        body.theme-blue-brown {
+            --primary-color: #1e40af; 
+            --accent-color: #f5f5f5;
+            --bg-color: #0c1a30;      
+            --psi-color: #a36a3e;     
+            --border-inner: #8b5e3c;   
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--accent-color);
+            font-family: 'DotGothic16', sans-serif;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* MOTHER2 Window Style */
+        .mother-window {
+            background-color: var(--bg-color);
+            border: 4px solid var(--primary-color);
+            border-radius: 16px;
+            padding: 4px;
+            position: relative;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
+            transition: border-color 0.4s ease, background-color 0.4s ease;
+        }
+
+        .mother-window-inner {
+            border: 2px solid var(--border-inner);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 100%;
+            transition: border-color 0.4s ease;
+        }
+
+        .title-container { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .site-logo { width: 80px; height: 80px; object-fit: contain; }
+
+        .status-container { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; }
+        .status-info { flex: 1; }
+        .character-portrait-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; width: 260px; }
+        .character-portrait { width: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.4)); }
+
+        .details-btn, .save-list-btn {
+            margin-top: 10px; background: var(--bg-color); border: 2px solid var(--accent-color);
+            color: var(--accent-color); padding: 6px 16px; border-radius: 8px; cursor: pointer;
+            font-size: 0.9rem; transition: all 0.2s; width: 100%; text-align: center;
+        }
+        .details-btn:hover, .save-list-btn:hover { background: var(--accent-color); color: var(--bg-color); }
+
+        /* Save List Modal */
+        #save-list-view {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8); z-index: 4000; align-items: center; justify-content: center;
+        }
+        .save-list-card { max-width: 400px; width: 90%; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--primary-color); }
+
+        #details-popup {
+            display: none; position: absolute; right: 0; top: 105%; width: 240px;
+            background: var(--bg-color); border: 3px solid var(--primary-color);
+            border-radius: 12px; padding: 4px; z-index: 50; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        #details-popup::before {
+            content: ''; position: absolute; top: -12px; right: 40px;
+            border-left: 10px solid transparent; border-right: 10px solid transparent;
+            border-bottom: 10px solid var(--primary-color);
+        }
+        .details-inner { border: 1px solid var(--border-inner); border-radius: 8px; padding: 12px; font-size: 0.95rem; line-height: 1.6; }
+        .stat-row { display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(255,255,255,0.2); padding: 4px 0; }
+        .psi-text { margin-top: 10px; font-size: 0.85rem; color: var(--psi-color); border-top: 1px solid rgba(255,255,255,0.3); padding-top: 8px; }
+
+        .command-item { cursor: pointer; transition: all 0.2s; display: flex; align-items: center; text-decoration: none; color: inherit; }
+        .command-cursor { opacity: 0; margin-right: 10px; color: var(--accent-color); }
+        .command-item:hover .command-cursor { opacity: 1; animation: blink 0.5s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        #wandering-fox { position: fixed; font-size: 3rem; cursor: pointer; z-index: 1000; user-select: none; will-change: transform; top: -100px; left: -100px; }
+        #encounter-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .status-label { color: #aaa; margin-right: 0.5rem; }
+        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .hidden { display: none !important; }
+
+        /* Service Detail Overlay */
+        #service-detail-view {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color); z-index: 3000; overflow-y: auto; padding: 20px;
+        }
+        .detail-card { max-width: 600px; margin: 40px auto; }
+        .pixel-bullet { list-style: none; padding-left: 1.5rem; position: relative; margin-bottom: 1rem; }
+        .pixel-bullet::before { content: '▶'; position: absolute; left: 0; color: var(--primary-color); font-size: 0.8rem; }
+
+        @media (max-width: 640px) {
+            .status-container { flex-direction: column; align-items: center; }
+            .character-portrait-wrapper { width: 180px; order: -1; margin-bottom: 1.5rem; }
+            #details-popup { width: 220px; right: 50%; transform: translateX(50%); }
+            #details-popup::before { right: 50%; transform: translateX(50%); }
+        }
+        main { padding: 1rem; position: relative; z-10; max-width: 42rem; margin-left: auto; margin-right: auto; }
+
+        /* PK Starstorm Effects (ULTIMATE Video-Accurate Style) */
+        .star-particle {
+            position: fixed;
+            background: #fff;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        /* Act 1: Original Rotating Star Fall */
+        @keyframes starFall {
+            0% { transform: translate(100px, -100px) rotate(0deg) scale(0); opacity: 0; }
+            20% { opacity: 1; transform: translate(50px, 0px) rotate(180deg) scale(1.5); }
+            100% { transform: translate(-500px, 1000px) rotate(720deg) scale(0.5); opacity: 0; }
+        }
+
+        /* Act 2: Rising Energy Surge */
+        @keyframes starSurge {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-800px) scale(1.5); opacity: 0; }
+        }
+
+        /* Act 3: Terminal Velocity Strike (Vertical Meteor) */
+        .meteor {
+            width: 4px;
+            height: 100px; /* Elongated bolt */
+            background: linear-gradient(to bottom, transparent, #fff, #ff0);
+            box-shadow: 0 0 20px #fff;
+        }
+        @keyframes meteorStrike {
+            0% { transform: translateY(-500px) scaleY(2); opacity: 0; }
+            10% { opacity: 1; }
+            90% { transform: translateY(1000px) scaleY(1); opacity: 1; }
+            100% { transform: translateY(1000px) scaleY(1); opacity: 0; }
+        }
+
+        #starstorm-msg {
+            display: none; position: fixed; top: 40px; left: 50%; transform: translateX(-50%);
+            background: #000; border: 4px solid #fff; border-radius: 8px; padding: 16px;
+            color: #fff; z-index: 10000; width: 90%; max-width: 400px;
+            box-shadow: 0 0 0 4px #000, 0 0 0 8px #fff;
+        }
+
+        /* Color Cycling Flashes */
+        .flash-indigo { animation: flashIndigo 0.08s steps(2); }
+        .flash-magenta { animation: flashMagenta 0.08s steps(2); }
+        .flash-white-strobe { animation: flashWhite 0.04s steps(2); }
+
+        @keyframes flashIndigo { from { background-color: #3f00ff; } to { background-color: transparent; } }
+        @keyframes flashMagenta { from { background-color: #ff00ff; } to { background-color: transparent; } }
+        @keyframes flashWhite { from { background-color: #ffffff; } to { background-color: transparent; } }
+        .psi-unlocked {
+            color: var(--psi-color) !important; text-shadow: 0 0 8px var(--psi-color);
+            cursor: pointer; text-decoration: underline wavy; animation: pulsePsi 1.5s infinite;
+        }
+        @keyframes pulsePsi { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <!-- セーブ/テーマ切替スイッチ -->
+    <div style="position: fixed; bottom: 10px; right: 10px; z-index: 5000; opacity: 0.7;">
+        <button onclick="toggleAndSaveTheme()" style="background: var(--bg-color); color: var(--accent-color); border: 2px solid var(--primary-color); padding: 8px 12px; font-size: 12px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 0 var(--primary-color);">
+            きろくする (テーマ切替)
+        </button>
+    </div>
+
+    <main>
+        <!-- ② ステータス -->
+        <div class="mother-window">
+            <div class="mother-window-inner">
+                <h2 class="text-xl mb-6 border-b border-white pb-2">▼ ステータス</h2>
+                <div class="status-container">
+                    <div class="status-info grid grid-cols-1 gap-4 text-lg">
+                        <div><span class="status-label">なまえ:</span><span>Nox (ノクス)</span></div>
+                        <div><span class="status-label">しょくぎょう:</span><span>フリーランス (元・探偵 / 元・マジシャン / IT専門卒)</span></div>
+                        <div><span class="status-label">しょぞく:</span><span>MENSA</span></div>
+                        <div>
+                            <span class="status-label">そうび(おしごと):</span>
+                            <div class="mt-2 pl-4 text-base opacity-90 border-l-2 pl-4" style="border-color: var(--primary-color);">
+                                ・HP/LP作成（Web構築のじゅもん）<br>・マジック（おどろきのわざ）<br>・調査業（しんじつのたんさく）<br>・配信業（こえのまほう）
+                            </div>
+                            <p class="mt-3 text-xs font-bold" style="color: var(--primary-color);">※ これらの そうび を つかった おしごとの ごいらい を おまちしております。</p>
+                        </div>
+                    </div>
+                    <div class="character-portrait-wrapper">
+                        <img src="../../Gemini_Generated_Image_ezkos8ezkos8ezko-removebg-preview.png" alt="Character" class="character-portrait">
+                        <div class="flex flex-col gap-2 w-full">
+                            <button class="details-btn" onclick="toggleDetails()">▼ つよさをみる</button>
+                            <button class="save-list-btn" onclick="openSaveList()">▼ セーブデータをみる</button>
+                        </div>
+                        <div id="details-popup" class="fade-in">
+                            <div class="details-inner">
+                                <div class="stat-row"><span>オフェンス</span><span>255</span></div>
+                                <div class="stat-row"><span>ディフェンス</span><span>130</span></div>
+                                <div class="stat-row"><span>スピード</span><span>200</span></div>
+                                <div class="stat-row"><span>ガッツ</span><span>200</span></div>
+                                <div class="stat-row"><span>バイタリティ</span><span>200</span></div>
+                                <div class="stat-row"><span>IQ</span><span>255</span></div>
+                                <div class="stat-row"><span>ラック</span><span>100</span></div>
+                                <div class="psi-text">▼ PSI<br>・ひとのココロをよむことができる<br><span id="psi-star-trigger" onclick="tryStarstorm()">・ほしをおとすことができる</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ③ コマンド -->
+        <div class="mother-window">
+            <div class="mother-window-inner">
+                <h2 class="text-xl mb-4 border-b border-white pb-2">▼ コマンド</h2>
+                <div id="menu-main" class="flex flex-col gap-3">
+                    <div class="command-item text-2xl" onclick="showSubMenu('menu-goods-list')"><span class="command-cursor">▶︎</span>グッズ・いらい をみる</div>
+                    <div class="command-item text-2xl" onclick="showSubMenu('menu-check-egg')"><span class="command-cursor">▶︎</span>チェック</div>
+                    <a href="mailto:hexarelation@gmail.com" class="command-item text-2xl"><span class="command-cursor">▶︎</span>はなす</a>
+                    <a href="../../index.html" class="command-item text-2xl opacity-60"><span class="command-cursor">▶︎</span>にげる</a>
+                </div>
+
+                <div id="menu-check-egg" class="hidden flex flex-col gap-3">
+                    <p class="text-lg mb-2">なにか 隠されている……？<br>……おや、 画面の すみ を<br>すばしっこい 影 が 横切った！</p>
+                    <div class="command-item text-xl" onclick="showSubMenu('menu-main')"><span class="command-cursor">▶︎</span>もどる</div>
+                </div>
+
+                <div id="menu-goods-list" class="hidden flex flex-col gap-3">
+                    <h3 class="text-xl mb-2 opacity-70">▼ リスト</h3>
+                    <div class="command-item text-xl" onclick="showSubMenu('menu-equip-confirm')"><span class="command-cursor">▶︎</span>hexa card (デジタル名刺)</div>
+                    <div class="command-item text-xl" onclick="showSubMenu('menu-service-info')"><span class="command-cursor">▶︎</span>ゲームプロフィール制作 を たのむ</div>
+                    <div class="command-item text-xl opacity-60" onclick="showSubMenu('menu-main')"><span class="command-cursor">▶︎</span>もどる</div>
+                </div>
+
+                <div id="menu-service-info" class="hidden flex flex-col gap-3">
+                    <p class="text-lg mb-2">あなた専用のゲーム風プロフィール。<br>くわしい 内容を 確認しますか？</p>
+                    <div class="command-item text-xl" onclick="openServiceDetail()"><span class="command-cursor">▶︎</span>詳しくみる</div>
+                    <div class="command-item text-xl" onclick="showSubMenu('menu-goods-list')"><span class="command-cursor">▶︎</span>もどる</div>
+                </div>
+
+                <div id="menu-service-order" class="hidden flex flex-col gap-3">
+                    <p class="text-xl mb-2">ごいらい ページ(外部)へ<br>いどう しますか？</p>
+                    <div class="flex flex-col gap-2">
+                        <a href="mailto:hexarelation@gmail.com?subject=相談" class="command-item text-2xl" onclick="resetMenu()"><span class="command-cursor">▶︎</span>はい</a>
+                        <div class="command-item text-2xl" onclick="showSubMenu('menu-main')"><span class="command-cursor">▶︎</span>いいえ</div>
+                    </div>
+                </div>
+
+                <div id="menu-equip-confirm" class="hidden flex flex-col gap-3">
+                    <p class="text-xl mb-2">hexa card を<br>そうびしますか？</p>
+                    <div class="flex flex-col gap-2">
+                        <a href="https://hxc.hexa-relation.com/" target="_blank" class="command-item text-2xl" onclick="resetMenu()"><span class="command-cursor">▶︎</span>はい</a>
+                        <div class="command-item text-2xl" onclick="showSubMenu('menu-goods-list')"><span class="command-cursor">▶︎</span>いいえ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 詳細ビュー -->
+    <div id="service-detail-view" class="fade-in">
+        <div class="detail-card">
+            <div class="mother-window">
+                <div class="mother-window-inner">
+                    <h2 class="text-2xl mb-6 border-b-2 pb-2 text-center" style="border-color: var(--primary-color);">▼ プロフィール制作 サービス</h2>
+                    <div class="space-y-6 text-lg leading-relaxed">
+                        <p class="text-center font-bold text-xl">「あなたの活動を、<br>最高の世界観で 凝縮する。」</p>
+                        
+                        <div>
+                            <p class="font-bold text-red-500 mb-2">【 サービスの内容 】</p>
+                            <ul class="space-y-2">
+                                <li class="pixel-bullet">好きなゲームや世界観をヒアリングし、あなた専用のポートフォリオを作成</li>
+                                <li class="pixel-bullet">フリーランス・VTuber・個人活動者の自己紹介に最適</li>
+                                <li class="pixel-bullet">ドメイン取得・サーバー設定・維持管理もすべてお任せ</li>
+                                <li class="pixel-bullet">スマホ最適化 ＆ 印象に残る特殊ギミックの実装</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-red-500 mb-2">【 制作費用 】</p>
+                            <p class="text-2xl font-bold">¥20,000 〜 ¥100,000</p>
+                            <p class="text-xs opacity-70 mt-1 mb-2">※ 掲載情報や ギミックの複雑さで 変動します。</p>
+                            <div class="bg-white/10 p-3 rounded-lg border border-white/20">
+                                <p class="text-sm font-bold text-yellow-400">▼ 維持・メンテナンス</p>
+                                <p class="text-base">内容の編集：月1回まで無料</p>
+                                <p class="text-xs opacity-80">※ 2回目以降は 1回につき ¥1,000</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-red-500 mb-2">【 こんな方にオススメ 】</p>
+                            <p class="text-base opacity-90">
+                                ・人とは違う、一目でキャラが伝わるページが欲しい方<br>
+                                ・VTuberやクリエイターとしての実績をまとめたい方<br>
+                                ・管理の手間なしで 自分のWeb拠点を持っていたい方
+                            </p>
+                        </div>
+
+                        <div class="pt-6 border-t border-white/20">
+                            <div class="flex flex-col gap-4">
+                                <div class="command-item text-2xl" onclick="showSubMenu('menu-service-order'); closeServiceDetail();">
+                                    <span class="command-cursor">▶︎</span>相談・依頼する
+                                </div>
+                                <div class="command-item text-2xl opacity-60" onclick="closeServiceDetail()">
+                                    <span class="command-cursor">▶︎</span>もどる
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="wandering-fox" onclick="triggerEncounter()">🦊</div>
+    <div id="encounter-overlay">
+        <div class="mother-window w-full max-w-md fade-in">
+            <div class="mother-window-inner">
+                <div class="mb-10 text-xl leading-relaxed text-center">
+                    <p class="text-red-600 font-bold text-3xl mb-4">！！！</p>
+                    <p>野生の キツネ が<br>こちらをみている！</p>
+                </div>
+                <div class="flex flex-col gap-6">
+                    <a href="https://www.youtube.com/@hexa-relation" target="_blank" rel="noopener noreferrer" class="command-item text-2xl justify-center"><span class="command-cursor">▶︎</span>ついていく</a>
+                    <div class="command-item text-2xl justify-center" onclick="closeEncounter()"><span class="command-cursor">▶︎</span>にげる</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- セーブデータ一覧モーダル -->
+    <div id="save-list-view" onclick="closeSaveList()">
+        <div class="save-list-card" onclick="event.stopPropagation()">
+            <div class="mother-window">
+                <div class="mother-window-inner">
+                    <h2 class="text-2xl mb-6 border-b-2 pb-2 text-center" style="border-color: var(--primary-color);">▼ ぼうけんの きろく</h2>
+                    <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- 実績が増えたらここに追加 -->
+                        <div class="p-3 border border-white/20 rounded hover:bg-white/10 transition-colors cursor-pointer" onclick="location.href='../sample-hero/index.html'">
+                            <p class="text-sm opacity-60">no. 001</p>
+                            <p class="text-xl font-bold">SAMPLE HERO</p>
+                            <p class="text-xs mt-1">Lv 10 / ポートフォリオ けんし</p>
+                        </div>
+                        
+                        <div class="p-4 border border-white/10 rounded opacity-40 italic text-center text-sm">
+                            （あいている スロット）
+                        </div>
+                        <div class="p-4 border border-white/10 rounded opacity-40 italic text-center text-sm">
+                            （あいている スロット）
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-white/20 flex flex-col gap-2">
+                        <div class="command-item text-xl justify-center" onclick="location.href='../../index.html'">
+                            <span class="command-cursor">▶︎</span>タイトルへ もどる
+                        </div>
+                        <div class="command-item text-xl justify-center" onclick="closeSaveList()">
+                            <span class="command-cursor">▶︎</span>とじる
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PK Starstorm Message -->
+    <div id="starstorm-msg">
+        <p id="starstorm-text" class="text-xl"></p>
+    </div>
+
+    <script>
+        // Retro Click Sound (Web Audio API)
+        function playClickSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                oscillator.type = 'square'; // NES/SNES style
+                oscillator.frequency.setValueAtTime(800, audioCtx.currentTime); 
+                oscillator.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.08);
+
+                gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.08);
+            } catch (e) { console.error('Audio error:', e); }
+        }
+
+        // PK Starstorm Sound Effect (Ultimate SNES Synth Version)
+        function playStarstormSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const now = audioCtx.currentTime;
+
+                // --- 1. Master Distortion (SFC特有の「音割れ」を作る) ---
+                const masterDistortion = audioCtx.createWaveShaper();
+                function makeDistortionCurve(amount) {
+                    let k = amount, n_samples = 44100, curve = new Float32Array(n_samples), deg = Math.PI / 180;
+                    for (let i = 0; i < n_samples; ++i ) {
+                        let x = i * 2 / n_samples - 1;
+                        curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
+                    }
+                    return curve;
+                }
+                masterDistortion.curve = makeDistortionCurve(120);
+                masterDistortion.connect(audioCtx.destination);
+
+                // --- 2. 「きらきら」 (0s - 1.5s): 高速アルペジオによるチャージ音 ---
+                const chargeOsc = audioCtx.createOscillator();
+                const chargeGain = audioCtx.createGain();
+                chargeOsc.type = 'square'; 
+                let freq = 500;
+                for(let i=0; i<25; i++) {
+                    // カクカクと周波数を変えて16bit感を出す
+                    chargeOsc.frequency.setValueAtTime(freq, now + i*0.06);
+                    freq = (freq * 1.1) + (Math.random() * 100); 
+                }
+                chargeGain.gain.setValueAtTime(0, now);
+                chargeGain.gain.linearRampToValueAtTime(0.06, now + 0.1);
+                chargeGain.gain.linearRampToValueAtTime(0, now + 1.5);
+                chargeOsc.connect(chargeGain);
+                chargeGain.connect(audioCtx.destination);
+                chargeOsc.start(now);
+                chargeOsc.stop(now + 1.5);
+
+                // --- 3. 「ゴゴゴゴ」 (0.5s - 4.5s): 低音の地響きノイズ ---
+                const bufferSize = audioCtx.sampleRate * 4; 
+                const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const output = noiseBuffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
+                
+                const rumbleSource = audioCtx.createBufferSource();
+                rumbleSource.buffer = noiseBuffer;
+                const rumbleFilter = audioCtx.createBiquadFilter();
+                rumbleFilter.type = "lowpass";
+                rumbleFilter.frequency.setValueAtTime(80, now + 0.5);
+                rumbleFilter.frequency.linearRampToValueAtTime(450, now + 2.0);
+                rumbleFilter.frequency.linearRampToValueAtTime(40, now + 4.5);
+                
+                const rumbleGain = audioCtx.createGain();
+                rumbleGain.gain.setValueAtTime(0, now + 0.5);
+                rumbleGain.gain.linearRampToValueAtTime(0.7, now + 1.5); // 音圧重視
+                rumbleGain.gain.linearRampToValueAtTime(0, now + 4.5);
+                
+                rumbleSource.connect(rumbleFilter);
+                rumbleFilter.connect(rumbleGain);
+                rumbleGain.connect(masterDistortion); 
+                rumbleSource.start(now + 0.5);
+
+                // --- 4. 「バキバキッ！」 (1.6s - 3.5s): 破裂・着弾音 ---
+                for(let t = 1.6; t <= 3.5; t += 0.15) {
+                    const hitTime = now + t;
+                    const hitOsc = audioCtx.createOscillator();
+                    hitOsc.type = 'sawtooth';
+                    hitOsc.frequency.setValueAtTime(250, hitTime);
+                    hitOsc.frequency.exponentialRampToValueAtTime(20, hitTime + 0.1);
+                    
+                    const hitNoise = audioCtx.createBufferSource();
+                    hitNoise.buffer = noiseBuffer;
+                    const noiseFilter = audioCtx.createBiquadFilter();
+                    noiseFilter.type = 'bandpass';
+                    noiseFilter.frequency.setValueAtTime(1500, hitTime);
+                    
+                    const hitGain = audioCtx.createGain();
+                    hitGain.gain.setValueAtTime(1.2, hitTime); // 最大音圧
+                    hitGain.gain.exponentialRampToValueAtTime(0.001, hitTime + 0.12);
+                    
+                    hitOsc.connect(hitGain);
+                    hitNoise.connect(noiseFilter).connect(hitGain);
+                    hitGain.connect(masterDistortion); 
+                    
+                    hitOsc.start(hitTime);
+                    hitOsc.stop(hitTime + 0.15);
+                    hitNoise.start(hitTime);
+                    hitNoise.stop(hitTime + 0.15);
+                }
+
+            } catch (e) { console.error('Audio error:', e); }
+        }
+
+        // Apply sound to all buttons and command items
+        document.addEventListener('mousedown', (e) => {
+            if (e.target.closest('button') || e.target.closest('.command-item')) {
+                playClickSound();
+            }
+        });
+
+        const themeKey = 'hexa_portfolio_theme';
+        function applyTheme(isBlue) {
+            if (isBlue) document.body.classList.add('theme-blue-brown');
+            else document.body.classList.remove('theme-blue-brown');
+        }
+        function toggleAndSaveTheme() {
+            const currentIsBlue = document.body.classList.contains('theme-blue-brown');
+            applyTheme(!currentIsBlue);
+            localStorage.setItem(themeKey, !currentIsBlue ? 'blue' : 'red');
+        }
+        applyTheme(localStorage.getItem(themeKey) === 'blue');
+
+        const fox = document.getElementById('wandering-fox');
+        let posX = Math.random() * (window.innerWidth - 80), posY = Math.random() * (window.innerHeight - 80);
+        let velX = 3, velY = 3;
+        let lastUpdate = 0;
+
+        let pauseDuration = 1000;
+
+        function animateFox(timestamp) {
+            const width = window.innerWidth, height = window.innerHeight, rect = fox.getBoundingClientRect();
+            
+            // 指定された間隔（移動中なら1秒、停止中なら1〜3秒）ごとに挙動を変化させる
+            if (timestamp - lastUpdate > (velX === 0 && velY === 0 ? pauseDuration : 1000)) {
+                // 30%の確率でその場に立ち止まる（チャンスタイム）
+                if (Math.random() < 0.3) {
+                    velX = 0;
+                    velY = 0;
+                    // 1秒、2秒、3秒のいずれかを選択
+                    pauseDuration = [1000, 2000, 3000][Math.floor(Math.random() * 3)];
+                } else {
+                    const speedBase = 4 + Math.random() * 5;
+                    const angle = Math.random() * Math.PI * 2;
+                    velX = Math.cos(angle) * speedBase;
+                    velY = Math.sin(angle) * speedBase;
+                }
+                lastUpdate = timestamp;
+            }
+
+            // 壁に当たったら跳ね返る（反転）
+            if (posX + rect.width >= width) { velX = -Math.abs(velX); posX = width - rect.width; }
+            if (posX <= 0) { velX = Math.abs(velX); posX = 0; }
+            if (posY + rect.height >= height) { velY = -Math.abs(velY); posY = height - rect.height; }
+            if (posY <= 0) { velY = Math.abs(velY); posY = 0; }
+
+            // 向きの反転（止まっている時はそのまま）
+            if (velX !== 0) {
+                fox.style.transform = velX > 0 ? 'scaleX(-1)' : 'scaleX(1)';
+            }
+
+            posX += velX; posY += velY;
+            fox.style.left = posX + 'px'; fox.style.top = posY + 'px';
+            requestAnimationFrame(animateFox);
+        }
+        requestAnimationFrame(animateFox);
+
+        function toggleDetails() {
+            const popup = document.getElementById('details-popup');
+            const btn = document.querySelector('.details-btn');
+            const isVisible = (popup.style.display === 'block');
+
+            // セーブデータ一覧が開いていたら閉じる
+            closeSaveList();
+
+            popup.style.display = isVisible ? 'none' : 'block';
+            btn.textContent = isVisible ? '▼ つよさをみる' : '▲ とじる';
+        }
+
+        function openSaveList() {
+            // ステータスが開いていたら閉じる
+            const popup = document.getElementById('details-popup');
+            const btn = document.querySelector('.details-btn');
+            popup.style.display = 'none';
+            btn.textContent = '▼ つよさをみる';
+
+            document.getElementById('save-list-view').style.display = 'flex';
+        }
+        function closeSaveList() {
+            document.getElementById('save-list-view').style.display = 'none';
+        }
+
+        function openServiceDetail() {
+ document.getElementById('service-detail-view').style.display = 'block'; }
+        function closeServiceDetail() { document.getElementById('service-detail-view').style.display = 'none'; }
+
+        function showSubMenu(menuId) {
+            ['menu-main', 'menu-goods-list', 'menu-service-info', 'menu-service-order', 'menu-equip-confirm', 'menu-check-egg'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+            const target = document.getElementById(menuId);
+            if (target) target.classList.remove('hidden');
+        }
+        function resetMenu() { setTimeout(() => showSubMenu('menu-main'), 1000); }
+
+        const overlay = document.getElementById('encounter-overlay');
+        const siteTitle = document.getElementById('site-title');
+        let clickCount = 0, clickTimer;
+        let foxCatchCount = 0; // キツネを捕まえた回数
+
+        function triggerEncounter() { 
+            overlay.style.display = 'flex'; 
+            foxCatchCount++;
+            
+            const encounterText = document.querySelector('#encounter-overlay p:nth-child(2)');
+            if (foxCatchCount <= 2) {
+                encounterText.innerHTML = "野生の キツネ が<br>こちらをみている！";
+            } else if (foxCatchCount === 3) {
+                encounterText.innerHTML = "キツネ は<br>ふしぎそうに こちらをみている。";
+            } else if (foxCatchCount === 4) {
+                encounterText.innerHTML = "キツネ は<br>けげんな かおで こちらをみている。";
+            } else if (foxCatchCount >= 5) {
+                encounterText.innerHTML = "キツネ は こちらに むけて<br>てを かざしている……！";
+                
+                const trigger = document.getElementById('psi-star-trigger');
+                trigger.classList.add('psi-unlocked');
+            }
+            
+            console.log("Fox Catch Count:", foxCatchCount);
+        }
+
+        function tryStarstorm() {
+            if (foxCatchCount < 5) {
+                // まだ力が足りない時の演出（SEなし、または失敗音）
+                return;
+            }
+            executeStarstorm();
+        }
+
+        function executeStarstorm() {
+            const msgBox = document.getElementById('starstorm-msg');
+            const msgText = document.getElementById('starstorm-text');
+            
+            // ステータスを閉じる
+            const popup = document.getElementById('details-popup');
+            const btn = document.querySelector('.details-btn');
+            if (popup) popup.style.display = 'none';
+            if (btn) btn.textContent = '▼ つよさをみる';
+
+            // サウンド再生 (4秒間の完全同期サウンド)
+            playStarstormSound();
+
+            // メッセージ表示
+            msgBox.style.display = 'block';
+            msgText.innerText = "ノクスは PKスターストームαを こころみた！";
+
+            // --- ACT 1: Original Rotating Stars (0s - 1.5s) ---
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const star = document.createElement('div');
+                    star.className = 'star-particle';
+                    star.innerText = '★';
+                    star.style.background = 'transparent';
+                    star.style.color = '#fff';
+                    star.style.fontSize = '20px';
+                    star.style.textShadow = '0 0 10px #fff';
+                    star.style.left = Math.random() * window.innerWidth + 'px';
+                    star.style.top = '-50px';
+                    star.style.animation = `starFall 1.5s linear forwards`;
+                    document.body.appendChild(star);
+                    setTimeout(() => star.remove(), 1500);
+                }, i * 40);
+            }
+
+            // --- ACT 2: Rising Surge & Color Cycling (1.5s - 3.5s) ---
+            setTimeout(() => {
+                // Color Cycling (Blue/Magenta)
+                const cycleColors = ['flash-indigo', 'flash-magenta'];
+                let cycleCount = 0;
+                const cycleInterval = setInterval(() => {
+                    const color = cycleColors[cycleCount % 2];
+                    document.body.classList.add(color);
+                    setTimeout(() => document.body.classList.remove(color), 70);
+                    cycleCount++;
+                    if (cycleCount >= 16) clearInterval(cycleInterval);
+                }, 120);
+
+                // Rising Energy
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        const star = document.createElement('div');
+                        star.className = 'star-particle';
+                        star.style.width = '5px'; star.style.height = '5px';
+                        star.style.left = Math.random() * window.innerWidth + 'px';
+                        star.style.bottom = '0px';
+                        star.style.animation = `starSurge 0.8s ease-out forwards`;
+                        document.body.appendChild(star);
+                        setTimeout(() => star.remove(), 800);
+                    }, i * 15);
+                }
+            }, 1500);
+
+            // --- ACT 3: Terminal Velocity Meteor Strikes (1.6s - 3.5s) ---
+            setTimeout(() => {
+                // White Strobe Impacts
+                const strobeInterval = setInterval(() => {
+                    document.body.classList.add('flash-white-strobe');
+                    setTimeout(() => document.body.classList.remove('flash-white-strobe'), 50);
+                }, 150); // 0.15s (SFCサウンドの間隔) に同期
+                setTimeout(() => clearInterval(strobeInterval), 2000);
+
+                // Meteors (Synced with crunchy impacts)
+                let meteorCount = 0;
+                const meteorInterval = setInterval(() => {
+                    const meteor = document.createElement('div');
+                    meteor.className = 'star-particle meteor';
+                    meteor.style.left = Math.random() * window.innerWidth + 'px';
+                    meteor.style.animation = `meteorStrike 0.3s ease-in forwards`;
+                    document.body.appendChild(meteor);
+                    setTimeout(() => meteor.remove(), 300);
+                    
+                    meteorCount++;
+                    if(meteorCount >= 13) clearInterval(meteorInterval);
+                }, 150);
+            }, 1600);
+
+            // 4.5秒後にメッセージを消して終了
+            setTimeout(() => {
+                msgBox.style.display = 'none';
+            }, 4500);
+        }
+
+        function closeEncounter() { overlay.style.display = 'none'; }
+        siteTitle.addEventListener('click', () => {
+            clickCount++; clearTimeout(clickTimer);
+            if (clickCount >= 5) { triggerEncounter(); clickCount = 0; }
+            else { clickTimer = setTimeout(() => { clickCount = 0; }, 1000); }
+        });
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeEncounter(); });
+    </script>
+</body>
+</html>
