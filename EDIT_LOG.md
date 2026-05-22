@@ -18,3 +18,11 @@
   - Fixed HTML syntax errors and restored encounter overlay.
   - Added retro-style click sound (Web Audio API) to the root index.html only.
 - **Notes:** This counts as a new client build and integration.
+
+### 2026-05-22: Fix Status Popup Alignment on Mobile
+- **Task:** Fix the misalignment of the "つよさをみる" (Check Status) popup on mobile devices.
+- **Changes:**
+  - Added missing CSS for `#details-popup` and `.details-inner` in `save/nox/index.html`.
+  - Implemented absolute positioning with centering (`left: 50%; transform: translateX(-50%);`) to ensure the popup is centered regardless of the parent's width.
+  - Styled the popup as a MOTHER2-style speech bubble with a red border and a triangle pointer to match the theme.
+- **Notes:** The popup is now centered and visually consistent with the rest of the UI.
