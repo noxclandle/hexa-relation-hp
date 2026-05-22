@@ -292,20 +292,20 @@
                 <div id="menu-goods-list" class="hidden flex flex-col gap-3">
                     <h3 class="text-xl mb-2 opacity-70">▼ リスト</h3>
                     <div class="command-item text-xl opacity-60" onclick="showSubMenu('menu-equip-under-construction')"><span class="command-cursor">▶︎</span>hexa card (準備中)</div>
-                    <div class="command-item text-xl" onclick="showSubMenu('menu-service-info')"><span class="command-cursor">▶︎</span>ゲームプロフィール制作 を たのむ</div>
+                    <div class="command-item text-xl" onclick="openServiceDetail()"><span class="command-cursor">▶︎</span>ゲームプロフィール制作 を たのむ</div>
                     <div class="command-item text-xl opacity-60" onclick="showSubMenu('menu-main')"><span class="command-cursor">▶︎</span>もどる</div>
                 </div>
 
                 <div id="menu-service-info" class="hidden flex flex-col gap-3">
-                    <p class="text-lg mb-2">あなた専用のゲーム風プロフィール。<br>くわしい 内容を 確認しますか？</p>
+                    <p class="text-lg mb-2">まずは 内容を 確認してください。</p>
                     <div class="command-item text-xl" onclick="openServiceDetail()"><span class="command-cursor">▶︎</span>詳しくみる</div>
                     <div class="command-item text-xl" onclick="showSubMenu('menu-goods-list')"><span class="command-cursor">▶︎</span>もどる</div>
                 </div>
 
                 <div id="menu-service-order" class="hidden flex flex-col gap-3">
-                    <p class="text-xl mb-2">ごいらい ページへ<br>いどう しますか？</p>
+                    <p class="text-xl mb-2">内容に 同意して<br>ごいらい ページへ<br>いどう しますか？</p>
                     <div class="flex flex-col gap-2">
-                        <a href="../../order/index.html?from=nox" class="command-item text-2xl" onclick="resetMenu()"><span class="command-cursor">▶︎</span>はい</a>
+                        <a href="../../order/index.html?from=nox" class="command-item text-2xl" onclick="resetMenu(); trackEvent('order_click')"><span class="command-cursor">▶︎</span>はい</a>
                         <div class="command-item text-2xl" onclick="showSubMenu('menu-main')"><span class="command-cursor">▶︎</span>いいえ</div>
                     </div>
                 </div>
@@ -443,14 +443,23 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // アクセスカウントの更新
+        // アクセスカウントとデバイス情報の更新
         const pageId = 'nox';
-        const docRef = db.collection('analytics').doc(pageId);
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         
-        docRef.set({
+        db.collection('analytics').doc(pageId).set({
             hits: firebase.firestore.FieldValue.increment(1),
-            lastVisit: firebase.firestore.FieldValue.serverTimestamp()
+            lastVisit: firebase.firestore.FieldValue.serverTimestamp(),
+            mobileHits: firebase.firestore.FieldValue.increment(isMobile ? 1 : 0),
+            pcHits: firebase.firestore.FieldValue.increment(isMobile ? 0 : 1)
         }, { merge: true });
+
+        // イベントトラッキング用関数
+        function trackEvent(eventName) {
+            db.collection('analytics').doc(pageId).set({
+                [`event_${eventName}`]: firebase.firestore.FieldValue.increment(1)
+            }, { merge: true });
+        }
 
         // 流入元の記録
         const urlParams = new URLSearchParams(window.location.search);
@@ -701,6 +710,7 @@
             btn.textContent = '▼ つよさをみる';
 
             document.getElementById('save-list-view').style.display = 'flex';
+            trackEvent('save_list_open');
         }
         function closeSaveList() {
             document.getElementById('save-list-view').style.display = 'none';
@@ -728,6 +738,7 @@
         function triggerEncounter() { 
             overlay.style.display = 'flex'; 
             foxCatchCount++;
+            trackEvent('fox_trigger');
             
             const encounterText = document.querySelector('#encounter-overlay p:nth-child(2)');
             if (foxCatchCount <= 2) {
