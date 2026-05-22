@@ -56,6 +56,32 @@
         
         .mock-tag { font-size: 0.7rem; background: var(--primary-color); color: #000; padding: 2px 5px; margin-left: 10px; }
         .hidden { display: none !important; }
+
+        /* Log Modal Style */
+        #log-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center;
+        }
+        .log-window {
+            border: 2px solid var(--primary-color);
+            background: #000;
+            padding: 20px;
+            width: 95%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,255,0,0.2);
+        }
+        .log-item {
+            border-bottom: 1px dashed #004400;
+            padding: 10px 0;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .log-date { color: #888; font-size: 0.8rem; }
+        .log-ref { color: var(--primary-color); font-weight: bold; }
     </style>
 </head>
 <body>
@@ -94,16 +120,29 @@
                     <tr>
                         <th>ページ名</th>
                         <th>ヒット数</th>
-                        <th>最新の訪問</th>
+                        <th>最新の訪問（クリックで詳細）</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Real-time data + Auto-listed folders will be injected here -->
+                    <!-- Real-time data will be injected here -->
                 </tbody>
             </table>
 
             <div class="mt-8 p-4 border border-dashed border-green-800 text-sm">
                 <p>※ Firebase Real-time 連携中...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ログ詳細チビ窓 -->
+    <div id="log-modal" onclick="closeLogModal()">
+        <div class="log-window" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-4 border-b border-green-500 pb-2">
+                <h3 id="log-title">▶ 訪問履歴</h3>
+                <button onclick="closeLogModal()" class="text-xs border border-green-500 px-2 hover:bg-green-500 hover:text-black">とじる</button>
+            </div>
+            <div id="log-content">
+                <!-- ログがここに流し込まれる -->
             </div>
         </div>
     </div>
@@ -123,7 +162,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 自動的に表示すべきページリスト (save直下のフォルダ名)
+        // 自動表示リスト
         const portfolioList = ['nox'];
 
         function startAnalytics() {
@@ -132,13 +171,11 @@
                 tbody.innerHTML = '';
                 let totalHits = 0;
 
-                // 取得したデータをマップに変換
                 const statsMap = {};
                 querySnapshot.forEach((doc) => {
                     statsMap[doc.id] = doc.data();
                 });
 
-                // リストにある全ページをループ表示 (アクセス0でも表示)
                 portfolioList.forEach(id => {
                     const data = statsMap[id] || { hits: 0, lastVisit: null };
                     totalHits += data.hits || 0;
@@ -147,7 +184,9 @@
                     tr.innerHTML = `
                         <td>${id}</td>
                         <td>${data.hits || 0}</td>
-                        <td>${data.lastVisit ? data.lastVisit.toDate().toLocaleString() : '---'}</td>
+                        <td class="cursor-pointer hover:underline text-green-400" onclick="showLogs('${id}')">
+                            ${data.lastVisit ? data.lastVisit.toDate().toLocaleString() : '---'}
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -158,6 +197,43 @@
             db.collection('orders').onSnapshot(snap => {
                 document.getElementById('total-orders').innerText = snap.size;
             });
+        }
+
+        async function showLogs(pageId) {
+            const modal = document.getElementById('log-modal');
+            const content = document.getElementById('log-content');
+            document.getElementById('log-title').innerText = `▶ ${pageId} の訪問履歴`;
+            
+            content.innerHTML = '<p class="blink">LOADING...</p>';
+            modal.style.display = 'flex';
+
+            try {
+                // 最新20件のログを取得
+                const snapshot = await db.collection('referrals').doc(pageId).collection('logs')
+                    .orderBy('timestamp', 'desc').limit(20).get();
+                
+                if (snapshot.empty) {
+                    content.innerHTML = '<p class="opacity-50 italic">ログが ありません</p>';
+                    return;
+                }
+
+                content.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const log = doc.data();
+                    const date = log.timestamp ? log.timestamp.toDate().toLocaleString() : '---';
+                    const div = document.createElement('div');
+                    div.className = 'log-item';
+                    div.innerHTML = `<span class="log-date">${date}</span> <span class="log-ref">${log.referrer}</span>`;
+                    content.appendChild(div);
+                });
+            } catch (err) {
+                content.innerHTML = '<p class="text-red-500">エラーが おきました</p>';
+                console.error(err);
+            }
+        }
+
+        function closeLogModal() {
+            document.getElementById('log-modal').style.display = 'none';
         }
 
         const startDate = new Date('2026-05-10');
