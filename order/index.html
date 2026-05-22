@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexa Relation | ぼうけんの じゅんび</title>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-color: #ff0000;
+            --accent-color: #ffffff;
+            --bg-color: #000000;
+            --border-inner: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--accent-color);
+            font-family: 'DotGothic16', sans-serif;
+            margin: 0; padding: 20px;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        }
+
+        .mother-window {
+            background-color: var(--bg-color);
+            border: 4px solid var(--primary-color);
+            border-radius: 16px;
+            padding: 4px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        .mother-window-inner {
+            border: 2px solid var(--border-inner);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        h1 { font-size: 1.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid var(--primary-color); padding-bottom: 0.5rem; text-align: center; }
+
+        .input-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--primary-color); }
+        
+        input, textarea {
+            width: 100%;
+            background: #111;
+            border: 2px solid #444;
+            border-radius: 8px;
+            padding: 10px;
+            color: #fff;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus { border-color: var(--primary-color); }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--bg-color);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+        .submit-btn:hover { background: var(--primary-color); color: var(--bg-color); }
+
+        .back-link { display: block; text-align: center; margin-top: 1.5rem; color: #888; text-decoration: none; font-size: 0.9rem; }
+        .back-link:hover { color: #fff; }
+
+        .hidden { display: none; }
+        
+        /* Success Message Overlay */
+        #success-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mother-window">
+        <div class="mother-window-inner">
+            <h1>▼ ぼうけんの じゅんび</h1>
+            
+            <form id="order-form">
+                <div class="input-group">
+                    <label>▶ おなまえ (必須)</label>
+                    <input type="text" id="name" name="name" placeholder="おなまえ を いれてください" required>
+                </div>
+
+                <div class="input-group">
+                    <label>▶ れんらくさき (必須)</label>
+                    <input type="text" id="contact" name="contact" placeholder="メール / SNS ID など" required>
+                </div>
+
+                <div class="input-group">
+                    <label>▶ ごいらい内容 (必須)</label>
+                    <textarea id="message" name="message" rows="5" placeholder="どんな ぼうけん（ごいらい）を したいですか？" required></textarea>
+                </div>
+
+                <input type="hidden" id="referrer" name="referrer">
+
+                <button type="submit" class="submit-btn">▶ きろくする</button>
+            </form>
+
+            <a href="javascript:history.back()" class="back-link">▶ もどる</a>
+        </div>
+    </div>
+
+    <div id="success-overlay">
+        <div class="mother-window" style="max-width: 320px;">
+            <div class="mother-window-inner">
+                <p class="text-xl mb-6">きろくが 完了しました！<br><br>のちほど 伝書鳩（通知）が<br>とどきます。 おたのしみに！</p>
+                <button onclick="window.location.href='../'" class="submit-btn">▶ TOPへ</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URLから紹介コードを取得
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref') || urlParams.get('from') || 'ちょくせつ';
+        document.getElementById('referrer').value = ref;
+
+        const form = document.getElementById('order-form');
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1507236311180771348/P-wdDn_xEgm7ig5w7s3WHuP3waVmARS1sNi9lkvsmzMuDnUm8S2lKrx6Dv7ieQmtTFO1';
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const contact = document.getElementById('contact').value;
+            const message = document.getElementById('message').value;
+            const referrer = document.getElementById('referrer').value;
+
+            // Discordに送るメッセージの組み立て
+            const discordMessage = {
+                embeds: [{
+                    title: "🎮 【新着】ぼうけんの ごいらい！",
+                    color: 16711680, // Red
+                    fields: [
+                        { name: "👤 おなまえ", value: name, inline: true },
+                        { name: "📱 れんらくさき", value: contact, inline: true },
+                        { name: "📜 ごいらい内容", value: "```" + message + "```" },
+                        { name: "🚩 紹介元 (誰のところから？)", value: `**${referrer}**`, inline: false }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            try {
+                const response = await fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(discordMessage)
+                });
+
+                if (response.ok) {
+                    document.getElementById('success-overlay').style.display = 'flex';
+                    playSuccessSound();
+                } else {
+                    alert('エラーが おきました。 しばらくしてから やりなおしてください。');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('つうしん エラーが おきました。');
+            }
+        });
+
+        // 成功時のプチ音 (Web Audio API)
+        function playSuccessSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                oscillator.type = 'square';
+                oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+
+                gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.2);
+            } catch (e) {}
+        }
+    </script>
+</body>
+</html>
