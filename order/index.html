@@ -90,8 +90,8 @@
             
             <form id="order-form">
                 <div class="input-group">
-                    <label>▶ おなまえ (必須)</label>
-                    <input type="text" id="name" name="name" placeholder="おなまえ を いれてください" required>
+                    <label>▶ おなまえ (2文字以上必須)</label>
+                    <input type="text" id="name" name="name" placeholder="おなまえ を いれてください" minlength="2" required>
                 </div>
 
                 <div class="input-group">
@@ -144,9 +144,12 @@
 
         const form = document.getElementById('order-form');
         const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1507236311180771348/P-wdDn_xEgm7ig5w7s3WHuP3waVmARS1sNi9lkvsmzMuDnUm8S2lKrx6Dv7ieQmtTFO1';
+        let isSubmitting = false;
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            if (isSubmitting) return;
+            isSubmitting = true;
             
             const name = document.getElementById('name').value;
             const contact = document.getElementById('contact').value;
