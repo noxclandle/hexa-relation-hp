@@ -235,11 +235,13 @@
         function closeLogModal() {
             document.getElementById('log-modal').style.display = 'none';
         }
+// 生存日数の計算
+const startDate = new Date('2026-05-21'); // メメインドメイン使用開始日: 2026/05/21
+const today = new Date();
+const diffTime = today - startDate;
+const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+document.getElementById('days-active').innerText = diffDays;
 
-        const startDate = new Date('2026-05-10');
-        const today = new Date();
-        const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-        document.getElementById('days-active').innerText = diffDays;
 
         function checkPass() {
             const pass = document.getElementById('admin-pass').value;
