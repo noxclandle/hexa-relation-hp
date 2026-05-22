@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            --primary-color: #00ff00; /* Admin is Green style */
+            --primary-color: #00ff00;
             --accent-color: #ffffff;
             --bg-color: #000000;
         }
@@ -60,7 +60,6 @@
 </head>
 <body>
 
-    <!-- パスワード入力画面 -->
     <div id="password-gate" class="flex flex-col items-center justify-center min-h-[80vh]">
         <div class="debug-window w-full max-w-sm text-center">
             <h1 class="mb-6">▼ 認証が必要</h1>
@@ -70,7 +69,6 @@
         </div>
     </div>
 
-    <!-- 管理画面本体 -->
     <div id="admin-content" class="hidden">
         <div class="debug-window">
             <h1>▼ Hexa Relation / アクセス・デバッグコンソール <span class="blink">_</span></h1>
@@ -78,11 +76,11 @@
             <div class="stat-grid">
                 <div class="stat-card">
                     <div class="stat-label">トータルアクセス</div>
-                    <div id="total-hits" class="stat-value">---</div>
+                    <div id="total-hits" class="stat-value">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">本日受任したごいらい</div>
-                    <div id="total-orders" class="stat-value">---</div>
+                    <div class="stat-label">累計ごいらい</div>
+                    <div id="total-orders" class="stat-value">0</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">生存日数</div>
@@ -100,7 +98,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Real-time data will be injected here -->
+                    <!-- Real-time data + Auto-listed folders will be injected here -->
                 </tbody>
             </table>
 
@@ -125,20 +123,29 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // データのリアルタイム監視
+        // 自動的に表示すべきページリスト (save直下のフォルダ名)
+        const portfolioList = ['nox'];
+
         function startAnalytics() {
             db.collection('analytics').onSnapshot((querySnapshot) => {
                 const tbody = document.querySelector('#analytics-table tbody');
                 tbody.innerHTML = '';
                 let totalHits = 0;
 
+                // 取得したデータをマップに変換
+                const statsMap = {};
                 querySnapshot.forEach((doc) => {
-                    const data = doc.data();
+                    statsMap[doc.id] = doc.data();
+                });
+
+                // リストにある全ページをループ表示 (アクセス0でも表示)
+                portfolioList.forEach(id => {
+                    const data = statsMap[id] || { hits: 0, lastVisit: null };
                     totalHits += data.hits || 0;
 
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td>/save/${doc.id}/</td>
+                        <td>${id}</td>
                         <td>${data.hits || 0}</td>
                         <td>${data.lastVisit ? data.lastVisit.toDate().toLocaleString() : '---'}</td>
                     `;
@@ -148,19 +155,16 @@
                 document.getElementById('total-hits').innerText = totalHits.toLocaleString();
             });
 
-            // 依頼数の取得
-            db.collection('orders').get().then(snap => {
+            db.collection('orders').onSnapshot(snap => {
                 document.getElementById('total-orders').innerText = snap.size;
             });
         }
 
-        // 生存日数の計算
         const startDate = new Date('2026-05-10');
         const today = new Date();
         const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
         document.getElementById('days-active').innerText = diffDays;
 
-        // 簡易パスワード認証
         function checkPass() {
             const pass = document.getElementById('admin-pass').value;
             if (pass === '2213') {
@@ -177,23 +181,13 @@
             startAnalytics();
         }
 
-        // ページ読み込み時にログイン済みかチェック
         if (localStorage.getItem('admin_auth') === 'true') {
             showAdminContent();
         }
 
-        // Enterキーでもログインできるようにする
         document.getElementById('admin-pass').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') checkPass();
         });
-
-        // ログアウト機能 (必要なら)
-        function logout() {
-            localStorage.removeItem('admin_auth');
-            location.reload();
-        }
-        </script>
-
-
+    </script>
 </body>
 </html>
