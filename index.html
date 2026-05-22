@@ -217,8 +217,8 @@
         <header class="logo-header">
             <img src="背景.png" alt="Hexa Relation Logo" class="site-logo mx-auto mb-4 opacity-80" style="width: 80px; height: auto; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));">
             <h1 class="site-title">Hexa Relation</h1>
-            <p class="philosophy-text">
-                BLIND JUSTI<span onclick="checkAce('C')" style="cursor:default;">C</span>E <span onclick="checkAce('E')" style="cursor:default;">E</span>NSURES F<span onclick="checkAce('A')" style="cursor:default;">A</span>IRNESS, BUT IT IS THE COURAGE TO TAKE ANOTHER'S HAND<br>
+            <p id="philosophy-text" class="philosophy-text">
+                BLIND JUSTICE ENSURES FAIRNESS, BUT IT IS THE COURAGE TO TAKE ANOTHER'S HAND<br>
                 THAT IGNITES THE REAL PASSION IN YOUR LIFE.
             </p>
             <p class="philosophy-jp">
@@ -248,7 +248,16 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Sequential Easter Egg: A -> C -> E
+        // Sequential Easter Egg: A -> C -> E (Across all characters)
+        const philText = document.getElementById('philosophy-text');
+        const originalContent = philText.innerHTML;
+        
+        // 全文字を個別のspanで囲む
+        philText.innerHTML = originalContent.split('').map(char => {
+            if (char === '<' || char === '>' || char === 'b' || char === 'r' || char === '/') return char; // HTMLタグは無視
+            return `<span onclick="checkAce('${char.toUpperCase()}')" style="cursor:default;">${char}</span>`;
+        }).join('');
+
         let aceStep = 0;
         function checkAce(char) {
             const sequence = ['A', 'C', 'E'];
@@ -256,9 +265,10 @@
                 aceStep++;
                 if (aceStep === sequence.length) {
                     window.location.href = 'admin/';
+                    aceStep = 0;
                 }
-            } else {
-                aceStep = 0; // 順番が違ったらリセット
+            } else if (char !== ' ' && char !== '\n') {
+                aceStep = 0; // 空白以外の文字を間違えたらリセット
             }
         }
 
