@@ -428,6 +428,41 @@
         <p id="starstorm-text" class="text-xl"></p>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI",
+          authDomain: "hexa-relation.firebaseapp.com",
+          projectId: "hexa-relation",
+          storageBucket: "hexa-relation.firebasestorage.app",
+          messagingSenderId: "318065017750",
+          appId: "1:318065017750:web:94acf3c9c43632b3ff93b7",
+          measurementId: "G-15NM9TWFE2"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // アクセスカウントの更新
+        const pageId = 'nox';
+        const docRef = db.collection('analytics').doc(pageId);
+        
+        docRef.set({
+            hits: firebase.firestore.FieldValue.increment(1),
+            lastVisit: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        // 流入元の記録
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref') || urlParams.get('from') || document.referrer || 'direct';
+        if (ref) {
+            db.collection('referrals').doc(pageId).collection('logs').add({
+                referrer: ref,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        }
+    </script>
+
     <script>
         const jobData = {
             hplp: {
