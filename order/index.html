@@ -137,12 +137,6 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 注文ページのアクセスカウント
-        db.collection('analytics').doc('order').set({
-            hits: firebase.firestore.FieldValue.increment(1),
-            lastVisit: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-
         // URLから紹介コードを取得
         const urlParams = new URLSearchParams(window.location.search);
         const ref = urlParams.get('ref') || urlParams.get('from') || 'ちょくせつ';
@@ -159,7 +153,7 @@
             const message = document.getElementById('message').value;
             const referrer = document.getElementById('referrer').value;
 
-            // 1. Firebase (Firestore) に保存
+            // 1. Firebase (Firestore) に保存 (失敗してもDiscordには送る)
             try {
                 await db.collection('orders').add({
                     name: name,
@@ -169,7 +163,7 @@
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
             } catch (err) {
-                console.error("Firestore Error:", err);
+                console.warn("Firestore Databaseが未作成のため、DB保存はスキップされました:", err);
             }
 
             // 2. Discordに送るメッセージの組み立て
@@ -201,7 +195,7 @@
                     alert('エラーが おきました。 しばらくしてから やりなおしてください。');
                 }
             } catch (err) {
-                console.error(err);
+                console.error("Discord Webhook Error:", err);
                 alert('つうしん エラーが おきました。');
             }
         });
