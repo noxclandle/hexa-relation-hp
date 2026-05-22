@@ -163,20 +163,37 @@
         // 簡易パスワード認証
         function checkPass() {
             const pass = document.getElementById('admin-pass').value;
-            if (pass === '2213') { // 新しいパスワード
-                document.getElementById('password-gate').classList.add('hidden');
-                document.getElementById('admin-content').classList.remove('hidden');
-                startAnalytics();
+            if (pass === '2213') {
+                localStorage.setItem('admin_auth', 'true');
+                showAdminContent();
             } else {
                 alert('パスワードが ちがいます');
             }
+        }
+
+        function showAdminContent() {
+            document.getElementById('password-gate').classList.add('hidden');
+            document.getElementById('admin-content').classList.remove('hidden');
+            startAnalytics();
+        }
+
+        // ページ読み込み時にログイン済みかチェック
+        if (localStorage.getItem('admin_auth') === 'true') {
+            showAdminContent();
         }
 
         // Enterキーでもログインできるようにする
         document.getElementById('admin-pass').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') checkPass();
         });
-    </script>
+
+        // ログアウト機能 (必要なら)
+        function logout() {
+            localStorage.removeItem('admin_auth');
+            location.reload();
+        }
+        </script>
+
 
 </body>
 </html>
