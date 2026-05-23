@@ -28,7 +28,6 @@
             background-image: radial-gradient(circle, #222 0%, #000 100%);
         }
 
-        /* --- Main Layout Container (Mobile First) --- */
         .page-container {
             width: 100%;
             max-width: 900px;
@@ -39,7 +38,6 @@
             box-sizing: border-box;
         }
 
-        /* Romancing SaGa 3 Window Frame Style */
         .mother-window {
             background-color: var(--rs3-bg-inner);
             background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png'), radial-gradient(circle at center, transparent 0%, rgba(184, 134, 11, 0.1) 100%);
@@ -58,7 +56,6 @@
             border: 1px solid rgba(42, 34, 24, 0.2); pointer-events: none;
         }
 
-        /* Character Section */
         .status-grid {
             display: flex;
             flex-direction: column;
@@ -80,14 +77,13 @@
         }
 
         .char-info { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
-        .char-name { font-size: 1.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .char-name { font-size: 1.4rem; line-height: 1.1; word-break: break-all; }
         .char-stats { display: flex; gap: 1rem; font-size: 1.2rem; font-weight: bold; }
         .lp-label { color: var(--rs3-lp-blue); margin-left: 0.2rem; }
 
-        /* Menu Section */
         .menu-list {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+            grid-template-columns: repeat(2, 1fr);
             gap: 0.8rem;
             width: 100%;
         }
@@ -113,7 +109,6 @@
         }
         .menu-item:hover .finger-cursor { opacity: 1; }
 
-        /* Bottom Info Area */
         .bottom-info {
             margin-top: 1rem;
             padding-top: 1rem;
@@ -126,22 +121,20 @@
 
         .info-row { display: flex; align-items: center; justify-content: space-between; }
         .coin-wrapper { cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
-        .pixel-coin { width: 18px; height: 18px; background: #f59e0b; border-radius: 50%; border: 1px solid #b45309; box-shadow: inset -1px -1px 0px #d97706; display: flex; justify-content: center; align-items: center; font-size: 0.5rem; font-weight: bold; }
+        .pixel-coin { width: 18px; height: 18px; background: #f59e0b; border-radius: 50%; border: 1px solid #b45309; box-shadow: inset -2px -2px 0px #d97706; display: flex; justify-content: center; align-items: center; font-size: 0.5rem; font-weight: bold; }
 
-        /* --- Desktop Refinement --- */
         @media (min-width: 768px) {
             .page-container { padding: 2rem; gap: 2rem; }
             .mother-window { padding: 2.5rem; }
             .status-grid { flex-direction: row; justify-content: space-around; }
             .char-sprite { width: 140px; height: 140px; }
-            .char-name { font-size: 2.2rem; }
+            .char-name { font-size: 1.8rem; }
             .char-stats { font-size: 1.8rem; gap: 2rem; }
             .menu-list { grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
             .menu-item { font-size: 1.8rem; padding: 1.2rem; }
             .bottom-info { flex-direction: row; justify-content: space-around; font-size: 1.5rem; }
         }
 
-        /* --- Modals (Full Screen on Mobile) --- */
         .rs3-modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto;
@@ -156,7 +149,6 @@
         .modal-btn { padding: 0.5rem 1.5rem; border: 2px solid var(--rs3-text-dark); cursor: pointer; font-size: 1.2rem; background: rgba(0,0,0,0.05); }
         #modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 900; }
 
-        /* --- Commander Mode Layout Fix --- */
         .commander-active .status-grid { flex-direction: column; align-items: center; gap: 3rem; }
         .commander-active .mother-window { background-color: #f0e68c; box-shadow: 0 0 50px rgba(255, 215, 0, 0.4); }
         .commander-active .menu-list { display: none; }
@@ -165,7 +157,6 @@
 
         #spark-bulb { display: none; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); width: 50px; height: 50px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23fff"><path d="M12,2A7,7,0,0,0,5,9c0,3.11,2.06,5.74,4.91,6.67A3,3,0,0,0,12,18a3,3,0,0,0,2.09-2.33C16.94,14.74,19,12.11,19,9A7,7,0,0,0,12,2ZM11,22h2v-2h-2v2Z"/></svg>'); background-size: contain; filter: drop-shadow(0 0 10px #ff0); z-index: 100; animation: bulbPop 0.5s forwards; }
 
-        /* Service Accordion Style */
         .service-accordion { width: 100%; background: #111; border: 4px solid #fff; border-radius: 12px; margin-top: 2rem; overflow: hidden; color: #fff; }
         .accordion-header { padding: 1.5rem; cursor: pointer; text-align: center; font-size: 1.3rem; background: #222; }
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s; padding: 0 1.5rem; }
@@ -192,7 +183,6 @@
     </div>
 
     <main class="page-container">
-        <!-- Status Window -->
         <div id="game-window" class="mother-window">
             <div class="status-grid">
                 <div class="char-entry">
@@ -206,19 +196,16 @@
                 <div class="char-entry">
                     <div id="claudette-sprite" class="char-sprite" onclick="openClaudetteTalk()"></div>
                     <div class="char-info">
-                        <div class="char-name">クローデット</div>
+                        <div class="char-name">クローデット<br>おもらし</div>
                         <div class="char-stats"><span>HP:85</span><span>LP:<span class="lp-label">10</span></span></div>
                     </div>
                 </div>
             </div>
-
-            <!-- Commander Mode Location Info -->
             <div id="location-display" class="hidden text-center mt-4 text-orange-900 font-bold">
                 <p>🚩 マルチ縦列陣形 / 聖王廟 (隠し部屋)</p>
             </div>
         </div>
 
-        <!-- Menu Window -->
         <div id="menu-window" class="mother-window">
             <nav class="menu-list">
                 <div class="menu-item" onclick="openEquip()"><div class="finger-cursor"></div>装備</div>
@@ -231,7 +218,7 @@
             </nav>
 
             <div class="bottom-info">
-                <div class="info-row"><span>✚ チョコのまい</span><span>きりの森 🌍</span></div>
+                <div class="info-row"><span>✚ チョコのまい</span><span>🌍 霧の森</span></div>
                 <div class="info-row coin-wrapper" onclick="openTrade()">
                     <span>所持金:</span>
                     <div class="flex items-center gap-1">
@@ -240,11 +227,9 @@
                     </div>
                 </div>
             </div>
-            
             <button id="commander-exit" class="modal-btn mt-4" onclick="toggleCommander(false)">じんけい を もどす</button>
         </div>
 
-        <!-- Service Accordion -->
         <div class="service-accordion">
             <div class="accordion-header" onclick="toggleAccordion()">あなたも「ゲームの世界」に 住んでみませんか？ ▼</div>
             <div id="accordion-content" class="accordion-content">
@@ -330,7 +315,7 @@
         function openEquip() { openModal('▼ そうび', `<div class="space-y-3"><div class="p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://www.youtube.com/@choco_777')">▶ YouTube (メイン)</div><div class="p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://x.com/0915_tkrrr')">▶ X (コンタクト)</div></div>`); }
         function openSkill() { openModal('▼ わざ', '・千手観音 (マルチ配信)<br>・大震撃 (トレンド拡散)'); }
         function openMagic() { openModal('▼ じゅつ', '・活殺自在 (動画編集の魔力)'); }
-        function openItem() { openModal('▼ もちもの', `<div class="p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://www.amazon.co.jp/hz/wishlist/dl/invite/AQICAHhDBWrEJWth7k-AcrISvDKHpy2ebo4D1ABU2NvF1pg_ZQFj_0B_Y-_w5gkfvnRdgwceAAAAjzCBjAYJKoZIhvcNAQcGoH8wfQIBADB4BgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDIsCpQQ-h5j33HbwnQIBEIBL1s8Hok1mdb_DWuL92zOAQmNJQ9zYYjFlC15RRnUvm85KuztnqnF0HowTmB12YKEagbjeMbzVOgpIy3H2UfQJHQrJXXUYSbVTd74l?ref_=wl_share')">▶ ほしいものリスト (宝箱)</div>`); }
+        function openItem() { openModal('▼ もちもの', `これまでの 素晴らしい 実績を<br>ここに リストアップ することが できます。<br><br>掲載したい 過去の 冒険（実績）が<br>ありましたら、ぜひ 教えてください！`); }
         function openConfig() { openModal('▼ せってい', '【ポリシー】リスナーとの距離を大切に、楽しく自由に！'); }
         async function openSave() { openModal('▼ セーブ', '記録を 読み込んでいます...'); try { const doc = await db.collection('analytics').doc(pageId).get(); const hits = doc.exists ? doc.data().hits : '???'; openModal('▼ セーブ', `【ぼうけんの きろく】<br><br>・活動開始 : 2018年 04月<br>・現在の 訪問者 : ${hits} 人目`); } catch (err) { openModal('▼ セーブ', '活動記録を 保存しました！'); } }
 
