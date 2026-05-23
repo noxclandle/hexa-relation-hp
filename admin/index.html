@@ -162,22 +162,15 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 自動表示リスト
-        const portfolioList = ['nox'];
-
         function startAnalytics() {
             db.collection('analytics').onSnapshot((querySnapshot) => {
                 const tbody = document.querySelector('#analytics-table tbody');
                 tbody.innerHTML = '';
                 let totalHits = 0;
 
-                const statsMap = {};
                 querySnapshot.forEach((doc) => {
-                    statsMap[doc.id] = doc.data();
-                });
-
-                portfolioList.forEach(id => {
-                    const data = statsMap[id] || { hits: 0, lastVisit: null };
+                    const id = doc.id;
+                    const data = doc.data();
                     totalHits += data.hits || 0;
 
                     const tr = document.createElement('tr');
