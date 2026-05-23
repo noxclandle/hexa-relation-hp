@@ -321,12 +321,25 @@
 
         const chocoSprites = ['歩く/Gemini_Generated_Image_2ioqx62ioqx62ioq-removebg-preview.png', '歩く/Gemini_Generated_Image_gbm4zugbm4zugbm4-removebg-preview.png', '歩く/Gemini_Generated_Image_gm0wzmgm0wzmgm0w-removebg-preview.png'];
         const claudetteSprites = ['くろ/Gemini_Generated_Image_9vb55o9vb55o9vb5-removebg-preview.png', 'くろ/Gemini_Generated_Image_hpvdlwhpvdlwhpvd-removebg-preview.png'];
+        
+        // --- Preload Images to fix mobile flickering ---
+        [...chocoSprites, ...claudetteSprites].forEach(path => {
+            const img = new Image();
+            img.src = path;
+        });
+
         let chocoIdx = 0, claudetteIdx = 0;
+        const chocoEl = document.getElementById('choco-sprite'), claudetteEl = document.getElementById('claudette-sprite');
+
         function animate() {
-            document.getElementById('choco-sprite').style.backgroundImage = `url('${chocoSprites[[0, 1, 2, 1][chocoIdx]]}')`;
+            // Pre-calculate frame to avoid logic delay
+            const chocoFrame = [0, 1, 2, 1][chocoIdx];
+            chocoEl.style.backgroundImage = `url('${chocoSprites[chocoFrame]}')`;
             chocoIdx = (chocoIdx + 1) % 4;
-            document.getElementById('claudette-sprite').style.backgroundImage = `url('${claudetteSprites[claudetteIdx]}')`;
+            
+            claudetteEl.style.backgroundImage = `url('${claudetteSprites[claudetteIdx]}')`;
             claudetteIdx = (claudetteIdx + 1) % 2;
+            
             setTimeout(animate, isCommanderMode ? 80 : 180);
         }
         animate();
