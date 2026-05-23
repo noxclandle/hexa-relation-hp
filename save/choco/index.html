@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexa Relation | チョコたいちょー Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --rs3-bg-inner: #d4c4a1;
+            --rs3-border-gold: #b08d57;
+            --rs3-text-dark: #2a2218;
+            --rs3-lp-blue: #2a4fa3;
+            --rs3-accent-green: #0a4d2e;
+            --rs3-accent-orange: #7a3a0a;
+        }
+
+        body {
+            background-color: #000;
+            color: var(--rs3-text-dark);
+            font-family: 'DotGothic16', sans-serif;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow-x: hidden;
+            background-image: radial-gradient(circle, #222 0%, #000 100%);
+        }
+
+        .game-wrapper { min-height: 100vh; display: flex; justify-content: center; align-items: center; width: 100%; padding: 2rem 0; }
+
+        .rs3-container {
+            width: 900px; height: 740px; /* Increased height to fix menu overflow */
+            background-color: var(--rs3-bg-inner);
+            background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png'), radial-gradient(circle at center, transparent 0%, rgba(184, 134, 11, 0.15) 100%);
+            border: 12px solid #8b4513; border-image: linear-gradient(to bottom, #d4af37, #b08d57, #8b4513) 1;
+            box-shadow: 0 0 60px rgba(0,0,0,1); padding: 2.5rem; position: relative; image-rendering: pixelated; transform-origin: center;
+            transition: all 0.8s ease-in-out;
+        }
+
+        .rs3-container.commander-active {
+            background-color: #f0e68c;
+            background-image: url('https://www.transparenttextures.com/patterns/fancy-rectangles.png'), radial-gradient(circle at center, rgba(255,215,0,0.3) 0%, transparent 100%);
+            box-shadow: 0 0 100px rgba(255, 215, 0, 0.4);
+        }
+
+        .rs3-container::before { content: ''; position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px; border: 2px solid rgba(42, 34, 24, 0.2); pointer-events: none; z-index: 10; }
+
+        .rs3-layout { display: grid; grid-template-columns: 1fr 320px; height: 100%; gap: 1rem; position: relative; z-index: 5; transition: all 0.5s; }
+
+        .commander-active .rs3-layout { grid-template-columns: 1fr; }
+        .commander-active .menu-column { display: none; }
+        
+        .character-list { display: flex; flex-direction: column; gap: 1rem; padding-left: 0.2rem; transition: all 0.5s; }
+        .commander-active .character-list { flex-direction: row; justify-content: center; align-items: center; height: 100%; gap: 5rem; }
+
+        .char-entry { display: flex; align-items: center; gap: 1rem; white-space: nowrap; position: relative; }
+        .char-sprite { width: 140px; height: 140px; background-size: contain; background-repeat: no-repeat; background-position: center; image-rendering: pixelated; filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.15)); flex-shrink: 0; cursor: pointer; }
+        
+        /* Spark bulb positioning fix: Ensure it's relative to char-entry */
+        #spark-bulb { display: none; position: absolute; top: -30px; left: 40px; width: 60px; height: 60px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23fff"><path d="M12,2A7,7,0,0,0,5,9c0,3.11,2.06,5.74,4.91,6.67A3,3,0,0,0,12,18a3,3,0,0,0,2.09-2.33C16.94,14.74,19,12.11,19,9A7,7,0,0,0,12,2ZM11,22h2v-2h-2v2Z"/></svg>'); background-size: contain; filter: drop-shadow(0 0 15px #ff0); z-index: 100; animation: bulbPop 0.5s ease-out forwards; }
+        @keyframes bulbPop { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.3); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+
+        .char-name { font-size: 2.1rem; line-height: 1.2; margin-bottom: 0.5rem; }
+        .char-stats { display: flex; gap: 1.5rem; font-size: 1.8rem; font-weight: bold; }
+        .lp-label { color: var(--rs3-lp-blue); margin-left: 0.4rem; }
+
+        .menu-column { display: flex; flex-direction: column; border-left: 4px double rgba(42, 34, 24, 0.3); padding-left: 2rem; }
+        .menu-list { display: flex; flex-direction: column; gap: 0.8rem; font-size: 2.2rem; padding-top: 0.5rem; }
+        .menu-item { cursor: pointer; display: flex; align-items: center; transition: transform 0.1s; }
+        .menu-item:hover { transform: translateX(10px); color: #b45309; }
+        .finger-cursor { width: 30px; height: 30px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%232a2218"><path d="M21,12L14,5V9H3V15H14V19L21,12Z" /></svg>'); background-size: contain; background-repeat: no-repeat; margin-right: 12px; opacity: 0; }
+        .menu-item:hover .finger-cursor { opacity: 1; }
+
+        #commander-exit { display: none; position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); padding: 1rem 3rem; border: 4px double var(--rs3-text-dark); background: var(--rs3-bg-inner); cursor: pointer; font-size: 1.8rem; z-index: 100; box-shadow: 4px 4px 0 rgba(0,0,0,0.3); }
+        .commander-active #commander-exit { display: block; }
+        #commander-exit:hover { background: var(--rs3-text-dark); color: var(--rs3-bg-inner); }
+
+        .bottom-status { margin-top: auto; border-top: 3px double rgba(42, 34, 24, 0.3); padding: 1rem 0 1rem 2rem; font-size: 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; background: rgba(255, 255, 255, 0.15); margin-left: -2rem; }
+        .status-row { display: flex; align-items: center; gap: 1rem; color: #1a1510; }
+        .coin-wrapper { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.1rem; cursor: pointer; }
+        .pixel-coin { width: 22px; height: 22px; background: #f59e0b; border-radius: 50%; border: 2px solid #b45309; box-shadow: inset -2px -2px 0px #d97706; display: flex; justify-content: center; align-items: center; font-size: 0.6rem; font-weight: bold; color: #b45309; }
+
+        .service-accordion { width: 95%; max-width: 800px; margin: 4rem 1rem; background: #111; border: 4px solid #fff; border-radius: 12px; overflow: hidden; color: #fff; }
+        .accordion-header { padding: 2rem; cursor: pointer; text-align: center; font-size: 1.8rem; background: #222; transition: background 0.3s; user-select: none; }
+        .accordion-header:hover { background: #333; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; padding: 0 2rem; }
+        .accordion-content.open { max-height: 1200px; padding: 2rem; border-top: 2px solid #444; }
+        .pricing-table { width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 1.1rem; }
+        .pricing-table td, .pricing-table th { border: 1px solid #444; padding: 0.8rem; text-align: left; }
+        .pricing-table th { background: #222; color: #ffd700; }
+        .cta-btn { display: block; width: 100%; max-width: 380px; margin: 2rem auto 0; background: #fff; color: #000; text-align: center; padding: 1.2rem; font-size: 1.4rem; font-weight: bold; border-radius: 8px; text-decoration: none; }
+
+        .rs3-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; max-width: 600px; background-color: var(--rs3-bg-inner); background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png'); border: 6px solid #8b4513; border-image: linear-gradient(to bottom, #d4af37, #b08d57, #8b4513) 1; box-shadow: 0 0 100px rgba(0,0,0,1); padding: 1.5rem; z-index: 1000; }
+        .modal-title { font-size: 1.8rem; border-bottom: 2px solid rgba(42, 34, 24, 0.3); margin-bottom: 1rem; color: #b45309; font-weight: bold; }
+        .modal-content { font-size: 1.3rem; line-height: 1.6; }
+        .modal-footer { margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem; }
+        .modal-btn { padding: 0.4rem 1.5rem; border: 2px solid var(--rs3-text-dark); cursor: pointer; font-size: 1.3rem; background: rgba(0,0,0,0.05); }
+        #modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 900; }
+
+        @media (max-width: 940px) { .rs3-container { transform: scale(calc(100vw / 960)); } }
+    </style>
+</head>
+<body>
+
+    <div id="modal-overlay" onclick="closeModal()"></div>
+
+    <div id="rs3-modal" class="rs3-modal">
+        <div id="modal-title" class="modal-title"></div>
+        <div id="modal-content" class="modal-content"></div>
+        <div id="modal-footer" class="modal-footer"><div class="modal-btn" onclick="closeModal()">とじる</div></div>
+    </div>
+
+    <div id="confirm-modal" class="rs3-modal">
+        <div class="modal-title">！！ちゅうい！！</div>
+        <div class="modal-content">これより 外部の サイトへ 移動します。よろしいですか？</div>
+        <div class="modal-footer"><div class="modal-btn" id="confirm-yes">はい</div><div class="modal-btn" onclick="closeModal()">いいえ</div></div>
+    </div>
+
+    <div class="game-wrapper">
+        <div id="game-container" class="rs3-container">
+            <button id="commander-exit" onclick="toggleCommander(false)">じんけい を もどす</button>
+            <div class="rs3-layout">
+                <div class="character-list">
+                    <div class="char-entry">
+                        <div id="spark-bulb"></div>
+                        <div id="walking-sprite" class="char-sprite" onclick="triggerSpark()"></div>
+                        <div class="char-info">
+                            <div class="char-name">チョコたいちょー</div>
+                            <div class="char-stats"><span>HP : 120</span><span>LP : <span class="lp-label">16</span></span></div>
+                        </div>
+                    </div>
+                    <div class="char-entry">
+                        <div id="claudette-sprite" class="char-sprite" onclick="openClaudetteTalk()"></div>
+                        <div class="char-info">
+                            <div class="char-name">クローデットおもらし</div>
+                            <div class="char-stats"><span>HP : 85</span><span>LP : <span class="lp-label">10</span></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-column">
+                    <nav class="menu-list">
+                        <div class="menu-item" onclick="openEquip()"><div class="finger-cursor"></div>装備</div>
+                        <div class="menu-item" onclick="openSkill()"><div class="finger-cursor"></div>技</div>
+                        <div class="menu-item" onclick="openMagic()"><div class="finger-cursor"></div>術</div>
+                        <div class="menu-item" onclick="openItem()"><div class="finger-cursor"></div>持ち物</div>
+                        <div id="formation-menu" class="menu-item" onclick="openFormation()"><div class="finger-cursor"></div>戦闘陣形</div>
+                        <div class="menu-item" onclick="openConfig()"><div class="finger-cursor"></div>環境設定</div>
+                        <div class="menu-item" onclick="openSave()"><div class="finger-cursor"></div>セーブ</div>
+                    </nav>
+
+                    <div class="bottom-status">
+                        <div class="status-row">✚ <span id="formation-name">チョコのまい</span></div>
+                        <div class="status-row">🌍 <span id="location-name">きりの森</span></div>
+                        <div class="status-row coin-wrapper" onclick="openTrade()"><div class="pixel-coin">G</div><span style="color:#6a3a0a;font-weight:bold;font-size:1.8rem;">1,000,000</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="service-accordion">
+        <div class="accordion-header" onclick="toggleAccordion()">あなたも「ゲームの世界」に 住んでみませんか？ ▼</div>
+        <div id="accordion-content" class="accordion-content">
+            <p class="text-center text-lg mb-6">Hexa Relation では、あなたの活動を<br>最高の世界観で凝縮した「ゲーム風LP」を制作しています。</p>
+            <div class="bg-white/10 p-4 rounded-lg text-center mb-6">
+                <p class="font-bold text-yellow-400">★ サーバー・ドメイン費用 0円</p>
+                <p class="text-sm">面倒な設定や維持管理も、すべてお任せください。</p>
+            </div>
+            <table class="pricing-table">
+                <thead><tr><th>プラン</th><th>費用</th></tr></thead>
+                <tbody>
+                    <tr><td>基本クエスト (レトロRPG風)</td><td>¥20,000 〜</td></tr>
+                    <tr><td>上級クエスト (特殊ギミック)</td><td>¥50,000 〜</td></tr>
+                </tbody>
+            </table>
+            <div class="text-center mb-6 opacity-80 text-sm">※ 編集は 月1回まで無料 / 2回目以降は 1回につき ¥1,000</div>
+            <a href="../../order/index.html?from=choco_footer" class="cta-btn">自分だけのページを依頼する</a>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI", authDomain: "hexa-relation.firebaseapp.com", projectId: "hexa-relation", storageBucket: "hexa-relation.firebasestorage.app", messagingSenderId: "318065017750", appId: "1:318065017750:web:94acf3c9c43632b3ff93b7", measurementId: "G-15NM9TWFE2" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const pageId = 'choco';
+        db.collection('analytics').doc(pageId).set({ hits: firebase.firestore.FieldValue.increment(1), lastVisit: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+
+        let isCommanderMode = false;
+
+        function playKyupiSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(1200, now);
+                osc.frequency.exponentialRampToValueAtTime(2400, now + 0.05);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(now + 0.1);
+            } catch (e) {}
+        }
+
+        function triggerSpark() {
+            if (isCommanderMode) return;
+            const bulb = document.getElementById('spark-bulb');
+            bulb.style.display = 'block';
+            playSparkSound();
+            setTimeout(() => {
+                bulb.style.display = 'none';
+                document.getElementById('formation-menu').innerHTML = '<div class="finger-cursor"></div>コマンダーモード';
+                openModal('▼ ひらめいた！', 'チョコたいちょー は<br>「コマンダーモード」を<br>ひらめいた！');
+            }, 600);
+        }
+
+        function openClaudetteTalk() {
+            openModal('▼ クローデット', 'いっけな〜い！<br>ちこく ちこくぅ〜！');
+        }
+
+        function toggleCommander(active) {
+            isCommanderMode = active;
+            const container = document.getElementById('game-container');
+            if (active) {
+                container.classList.add('commander-active');
+                document.getElementById('formation-name').innerText = 'マルチ縦列陣形';
+                document.getElementById('location-name').innerText = '聖王廟 (隠し部屋)';
+            } else {
+                container.classList.remove('commander-active');
+                document.getElementById('formation-name').innerText = 'チョコのまい';
+                document.getElementById('location-name').innerText = 'きりの森';
+            }
+            playKyupiSound();
+        }
+
+        function openFormation() {
+            if (document.getElementById('formation-menu').innerText.includes('コマンダーモード')) {
+                toggleCommander(true);
+            } else {
+                openModal('▼ せんとうじんけい', '主にソロ配信での活動となりますが、コラボ案件、企業との提携などはぜひご相談ください。');
+            }
+        }
+
+        function playSparkSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(1600, now + 0.1);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(); osc.stop(now + 0.2);
+            } catch (e) {}
+        }
+
+        function openTrade() { openModal('▼ トレード', `【ヘキサ・グループ】<br>現在の 資金: 1,000,000 オラム<br><br>チョコたいちょー は 圧倒的な 資金力で<br>マーケットを 支配しようと している！`); }
+        function toggleAccordion() { document.getElementById('accordion-content').classList.toggle('open'); playKyupiSound(); }
+        function openModal(title, content) { document.getElementById('modal-title').innerText = title; document.getElementById('modal-content').innerHTML = content; document.getElementById('rs3-modal').style.display = 'block'; document.getElementById('modal-overlay').style.display = 'block'; playKyupiSound(); }
+        function closeModal() { document.querySelectorAll('.rs3-modal').forEach(m => m.style.display = 'none'); document.getElementById('modal-overlay').style.display = 'none'; }
+        function confirmExternal(url) { document.getElementById('confirm-modal').style.display = 'block'; document.getElementById('modal-overlay').style.display = 'block'; document.getElementById('confirm-yes').onclick = () => { window.open(url, '_blank'); closeModal(); }; playKyupiSound(); }
+        function openEquip() { openModal('▼ そうび', `<div class="space-y-4"><div class="flex justify-between items-center p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://www.youtube.com/@choco_777')"><span>▶ YouTube (メイン)</span><span class="text-xs opacity-60">外部サイトへ ▷</span></div><div class="flex justify-between items-center p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://x.com/0915_tkrrr')"><span>▶ X (コンタクト)</span><span class="text-xs opacity-60">外部サイトへ ▷</span></div></div>`); }
+        function openSkill() { openModal('▼ わざ', '・千手観音 (マルチ配信)<br>・大震撃 (トレンド拡散)'); }
+        function openMagic() { openModal('▼ じゅつ', '・活殺自在 (動画編集の魔力)'); }
+        function openItem() { openModal('▼ もちもの', `これまでの 素晴らしい 実績を<br>ここに リストアップ することが できます。<br><br>掲載したい 過去の 冒険（実績）が<br>ありましたら、ぜひ 教えてください！`); }
+        function openFormation() { openModal('▼ せんとうじんけい', 'ソロ配信中心ですが、コラボ・企業案件は X よりご相談ください。'); }
+        function openConfig() { openModal('▼ かんきょうせってい', '【ポリシー】リスナーとの距離を大切に、不適切な発言は厳禁。楽しく自由に！'); }
+        async function openSave() { openModal('▼ セーブ', '記録を 読み込んでいます...'); try { const doc = await db.collection('analytics').doc(pageId).get(); const hits = doc.exists ? doc.data().hits : '???'; openModal('▼ セーブ', `【ぼうけんの きろく】<br><br>・活動開始 : 2018年 04月<br>・現在の 訪問者 : ${hits} 人目<br><br>チョコたいちょー の 活動記録を<br>保存しました！`); } catch (err) { openModal('▼ セーブ', 'チョコたいちょー の 活動記録を<br>保存しました！'); } }
+
+        const chocoSprites = ['歩く/Gemini_Generated_Image_2ioqx62ioqx62ioq-removebg-preview.png', '歩く/Gemini_Generated_Image_gbm4zugbm4zugbm4-removebg-preview.png', '歩く/Gemini_Generated_Image_gm0wzmgm0wzmgm0w-removebg-preview.png'];
+        const claudetteSprites = ['くろ/Gemini_Generated_Image_9vb55o9vb55o9vb5-removebg-preview.png', 'くろ/Gemini_Generated_Image_hpvdlwhpvdlwhpvd-removebg-preview.png'];
+        let chocoIdx = 0, claudetteIdx = 0;
+        const chocoEl = document.getElementById('walking-sprite'), claudetteEl = document.getElementById('claudette-sprite');
+
+        function animate() {
+            chocoEl.style.backgroundImage = `url('${chocoSprites[[0, 1, 2, 1][chocoIdx]]}')`;
+            chocoIdx = (chocoIdx + 1) % 4;
+            claudetteEl.style.backgroundImage = `url('${claudetteSprites[claudetteIdx]}')`;
+            claudetteIdx = (claudetteIdx + 1) % 2;
+            setTimeout(animate, isCommanderMode ? 80 : 180);
+        }
+        animate();
+
+        document.addEventListener('mousedown', (e) => { if (e.target.closest('.menu-item')) playKyupiSound(); });
+    </script>
+</body>
+</html>
