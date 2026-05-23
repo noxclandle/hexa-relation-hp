@@ -201,7 +201,7 @@
             modal.style.display = 'flex';
 
             try {
-                // 最新20件のログを取得
+                // 最新20件のログを取得 (最新順)
                 const snapshot = await db.collection('referrals').doc(pageId).collection('logs')
                     .orderBy('timestamp', 'desc').limit(20).get();
                 
