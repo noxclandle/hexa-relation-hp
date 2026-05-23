@@ -256,7 +256,14 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const pageId = 'choco';
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref') || urlParams.get('from') || document.referrer || 'direct';
+
         db.collection('analytics').doc(pageId).set({ hits: firebase.firestore.FieldValue.increment(1), lastVisit: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+        db.collection('referrals').doc(pageId).collection('logs').add({
+            referrer: ref,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
 
         let isCommanderMode = false;
 
