@@ -274,7 +274,18 @@
         function openEquip() { openModal('▼ そうび', `<div class="space-y-4"><div class="flex justify-between items-center p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://www.youtube.com/@choco_777')"><span>▶ YouTube (メイン)</span><span class="text-xs opacity-60">外部サイトへ ▷</span></div><div class="flex justify-between items-center p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://x.com/0915_tkrrr')"><span>▶ X (コンタクト)</span><span class="text-xs opacity-60">外部サイトへ ▷</span></div></div>`); }
         function openSkill() { openModal('▼ わざ', '・千手観音 (マルチ配信)<br>・大震撃 (トレンド拡散)'); }
         function openMagic() { openModal('▼ じゅつ', '・活殺自在 (動画編集の魔力)'); }
-        function openItem() { openModal('▼ もちもの', `これまでの 素晴らしい 実績を<br>ここに リストアップ することが できます。<br><br>掲載したい 過去の 冒険（実績）が<br>ありましたら、ぜひ 教えてください！`); }
+        function openItem() { 
+            openModal('▼ もちもの', `
+                <div class="space-y-4">
+                    <p class="text-sm border-b border-black/10 pb-2">これまでの 素晴らしい 実績や、大切にしている 宝物です。</p>
+                    <div class="flex justify-between items-center p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://www.amazon.co.jp/hz/wishlist/dl/invite/AQICAHhDBWrEJWth7k-AcrISvDKHpy2ebo4D1ABU2NvF1pg_ZQFj_0B_Y-_w5gkfvnRdgwceAAAAjzCBjAYJKoZIhvcNAQcGoH8wfQIBADB4BgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDIsCpQQ-h5j33HbwnQIBEIBL1s8Hok1mdb_DWuL92zOAQmNJQ9zYYjFlC15RRnUvm85KuztnqnF0HowTmB12YKEagbjeMbzVOgpIy3H2UfQJHQrJXXUYSbVTd74l?ref_=wl_share')">
+                        <span>▶ ほしいものリスト (宝箱)</span>
+                        <span class="text-xs opacity-60">外部サイトへ ▷</span>
+                    </div>
+                    <p class="mt-4 text-xs opacity-80">掲載したい 過去の 冒険（実績）が<br>ありましたら、ぜひ 教えてください！</p>
+                </div>
+            `); 
+        }
         function openFormation() { openModal('▼ せんとうじんけい', 'ソロ配信中心ですが、コラボ・企業案件は X よりご相談ください。'); }
         function openConfig() { openModal('▼ かんきょうせってい', '【ポリシー】リスナーとの距離を大切に、不適切な発言は厳禁。楽しく自由に！'); }
         async function openSave() { openModal('▼ セーブ', '記録を 読み込んでいます...'); try { const doc = await db.collection('analytics').doc(pageId).get(); const hits = doc.exists ? doc.data().hits : '???'; openModal('▼ セーブ', `【ぼうけんの きろく】<br><br>・活動開始 : 2018年 04月<br>・現在の 訪問者 : ${hits} 人目<br><br>チョコたいちょー の 活動記録を<br>保存しました！`); } catch (err) { openModal('▼ セーブ', 'チョコたいちょー の 活動記録を<br>保存しました！'); } }
