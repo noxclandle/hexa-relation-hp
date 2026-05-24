@@ -78,7 +78,7 @@
             width: 100%; height: 420px; display: flex; justify-content: center; align-items: flex-end;
             overflow: hidden; z-index: 5; mask-image: linear-gradient(to top, black 95%, transparent 100%);
         }
-        .npc-portrait { height: 100%; object-fit: contain; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6)); transition: all 0.4s; }
+        .npc-portrait { height: 100%; width: auto; max-width: none; object-fit: contain; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6)); transition: all 0.4s; }
 
         .dialogue-wrapper { width: 100%; margin-top: -80px; position: relative; z-index: 10; }
         .dialogue-window { 
@@ -246,8 +246,8 @@
 
         <div class="window">
             <div class="flex items-center gap-5 mb-5">
-                <div class="w-16 h-16 rounded-full border-2 border-white shadow-xl overflow-hidden bg-white">
-                    <img src="avatar_opt.jpg" alt="TEN" class="w-full h-full object-cover" loading="lazy">
+                <div class="w-16 h-16 rounded-full border-2 border-white shadow-xl overflow-hidden bg-white flex items-center justify-center">
+                    <img src="avatar_opt.jpg" alt="TEN" class="w-full h-full object-cover" style="object-position: center;" loading="lazy">
                 </div>
                 <div class="flex-grow">
                     <h1 class="text-xl font-bold uppercase tracking-widest text-slate-800" id="ff7-name">TENPON</h1>
