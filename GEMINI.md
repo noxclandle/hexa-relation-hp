@@ -16,15 +16,22 @@
 
 ---
 
-## 4. Current Progress & Features
-- Single-page MOTHER2 style portfolio.
+## 4. Portfolio & URL Specifications
+- **Client URL Structure:** Use a sub-directory format based on the "Save Data" concept: `hexa-relation.com/save/[unique_id]`.
+- **Title Naming Convention:** All portfolio pages MUST follow the format: `<NAME> - Portfolio (<THEME>風)`.
+- **Mandatory Analytics & Logging:** Every LP must implement Firebase-based hit counting and referrer logging (Visitor Log).
+- **Automated Sync:** After creating or modifying an LP, `scripts/sync_portfolios.js` MUST be executed to synchronize the admin console and public index.
+- **Mobile-First Standard:** 100% responsiveness on vertical smartphone screens is mandatory.
+- **Interactive Gimmicks:** Every LP should feature between 3 to 10 game-like interactive elements (e.g., Dialogue, Loot, Quest, etc.).
+- **Thematic Flexibility:** While the main site is MOTHER2-themed, individual portfolio pages (`/save/*`) must be styled according to the client's preferred game world (e.g., Pokemon, DQ, Fighting games, etc.).
+
+---
+
+## 5. Current Progress & Features
+- Single-page MOTHER2 style portfolio (Main).
 - Theme switching system (Red/Blue) with `localStorage` persistence.
 - Nested command menu for service navigation.
 - DVD-style bouncing fox gimmick.
 - "Detailed Status" speech bubble popup.
-
-## 5. Portfolio & URL Specifications
-- **Client URL Structure:** Use a sub-directory format based on the "Save Data" concept: `hexa-relation.com/save/[unique_id]`.
-- **ID Customization:** Clients are encouraged to choose their own `unique_id` (e.g., SNS ID or nickname) to enhance ownership and brand consistency.
-- **Portfolio Index:** The main site features a "Save Data List" to showcase completed works, maintaining the MOTHER2 aesthetic.
-- **Thematic Flexibility:** While the main site is MOTHER2-themed, individual portfolio pages (`/save/*`) must be styled according to the client's preferred game world (e.g., Pokemon, DQ, Fighting games, etc.).
+- Automated Portfolio Sync script (`scripts/sync_portfolios.js`).
+- Admin Console with real-time analytics and sorting.
