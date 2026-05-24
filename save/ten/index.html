@@ -486,6 +486,14 @@
                 lastVisit: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true }).catch(err => console.error("Hit counter error:", err));
 
+            // Record Visitor Log
+            db.collection('visitor_logs').add({
+                pageId: PAGE_ID,
+                referrer: document.referrer || 'direct',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                userAgent: navigator.userAgent
+            }).catch(err => console.error("Visitor log error:", err));
+
             // Sync MIP from Firestore
             db.collection('analytics').doc(PAGE_ID).onSnapshot(doc => {
                 if(doc.exists) {
