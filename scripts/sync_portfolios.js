@@ -20,13 +20,20 @@ function sync() {
                 const content = fs.readFileSync(indexPath, 'utf-8');
                 const titleMatch = content.match(/<title>(.*?)<\/title>/);
                 if (titleMatch) {
-                    title = titleMatch[1].split(' - ')[0]; // Extract "TEN" from "TEN - Portfolio..."
+                    const fullTitle = titleMatch[1];
+                    if (fullTitle.includes('|')) {
+                        title = fullTitle.split('|')[1].replace(' Portfolio', '').trim();
+                    } else if (fullTitle.includes('-')) {
+                        title = fullTitle.split('-')[0].trim();
+                    } else {
+                        title = fullTitle;
+                    }
                 }
                 
                 // Try to guess theme from title or content
                 if (content.includes('FF14')) theme = 'FF14風';
                 else if (content.includes('MOTHER2')) theme = 'MOTHER2風';
-                else if (content.includes('Romancing')) theme = 'ロマサガ風';
+                else if (content.includes('rs3-modal') || content.includes('RS3')) theme = 'ロマサガ風';
                 else if (content.includes('Chocolate')) theme = 'チョコレート風';
             }
             
