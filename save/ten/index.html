@@ -293,16 +293,31 @@
             100% { opacity: 0; scale: 1.2; }
         }
         
-        /* 追加のアニメーション */
-        @keyframes shake {
-            0%, 100% { transform: translate(0,0); }
-            25% { transform: translate(-10px, 5px); }
-            50% { transform: translate(10px, -5px); }
-            75% { transform: translate(-5px, 5px); }
+        /* ゲームオーバー画面 */
+        #game-over-overlay {
+            position: fixed; inset: 0; background: black; z-index: 10000;
+            display: none; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 2s;
         }
-    </style>
+        .game-over-text {
+            color: #ef4444; font-family: 'Oswald', sans-serif; font-size: 64px; font-weight: 900;
+            letter-spacing: 0.2em; text-shadow: 0 0 20px rgba(239,68,68,0.5);
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        /* ダメージ赤フラッシュ */
+        #damage-flash {
+            position: fixed; inset: 0; background: rgba(255,0,0,0.3);
+            z-index: 9500; pointer-events: none; display: none;
+        }
 </head>
 <body onload="initApp()">
+    <div id="damage-flash"></div>
+    <div id="game-over-overlay" onclick="location.reload()">
+        <div class="game-over-text">MISSION FAILED</div>
+        <div class="text-white font-bold mt-5 tracking-widest opacity-60">CLICK TO RESPAWN</div>
+    </div>
     <div class="bg-blur"></div>
     <div id="swirl-overlay"></div>
     <button id="mute-btn" onclick="toggleMute()">SOUND: ON</button>
@@ -570,7 +585,7 @@
                 addChatMsg("TEN: 誕生日は8月30日だよ！", false);
             } else if(type === 'likes') {
                 text.innerHTML = "チーズ（特にブッラータ！）と猫が大好きなんだ。<br>家にはキジトラとラガマフィンの2匹がいて、毎日癒やされてるよ✨";
-                npcImg.src = "smile_opt.jpg";
+                npcImg.src = "likes_opt.jpg";
                 showMinions();
                 addChatMsg("TEN: 猫は世界を救うと思うんだ。", false);
             } else if(type === 'mystery') {
@@ -643,6 +658,8 @@
             activateFF7Mode();
         }
 
+        let enemyAttackTimer = null;
+
         function activateFF7Mode() {
             isFF7Mode = true;
             document.body.classList.add('ff7-mode');
@@ -661,6 +678,15 @@
             
             document.getElementById('choices').innerHTML = '<div class="choice-item" onclick="location.reload()">▶ にげる</div>';
             playSound(1200, 0.5);
+
+            // 敵の攻撃ループ開始 (5秒ごとに弱攻撃)
+            if (enemyAttackTimer) clearInterval(enemyAttackTimer);
+            enemyAttackTimer = setInterval(() => {
+                if (currentHP > 0 && isFF7Mode) {
+                    addChatMsg("TEN: カンストパワーをお見舞いするよ！", false);
+                    takeDamage(800);
+                }
+            }, 6000);
         }
 
         function toggleSubMenu(id) {
@@ -674,16 +700,16 @@
         function tryEscape() {
             playSound(400, 0.3, 0.1);
             addChatMsg("システム：逃げられない！", true);
-            takeDamage(2500);
+            takeDamage(2000);
             
             // 画面を揺らす
             document.body.style.animation = 'shake 0.3s ease-in-out';
             setTimeout(() => { document.body.style.animation = ''; }, 300);
 
             const escapeQuotes = [
-                "TEN: 冒険は始まったばかりだよ！",
+                "TEN: 逃がさないよ！",
                 "TEN: まだ帰さないよ？",
-                "TEN: カンストパワー、受けてみる？"
+                "TEN: 角煮の恨み、受けてみる？"
             ];
             const quote = escapeQuotes[Math.floor(Math.random() * escapeQuotes.length)];
             const text = document.getElementById('dialogue-text');
@@ -692,26 +718,57 @@
 
         function takeDamage(amount) {
             currentHP = Math.max(0, currentHP - amount);
+            updateStatusUI();
+            
+            // 赤フラッシュ
+            const flash = document.getElementById('damage-flash');
+            flash.style.display = 'block';
+            setTimeout(() => flash.style.display = 'none', 100);
+
+            playSound(150, 0.2, 0.2);
+
+            if (currentHP <= 0) {
+                triggerGameOver();
+            }
+        }
+
+        function healPlayer(amount) {
+            currentHP = Math.min(9999, currentHP + amount);
+            updateStatusUI();
+            addChatMsg(`システム：GUESTのHPが${amount}回復した！`, true);
+            playSound(1200, 0.3, 0.05);
+        }
+
+        function updateStatusUI() {
             const hpBar = document.getElementById('hp-bar');
             const hpVal = document.getElementById('hp-val');
             const percent = (currentHP / 9999) * 100;
             hpBar.style.width = `${percent}%`;
             hpVal.innerText = `${currentHP} / 9999`;
-            
             if (currentHP < 3000) hpBar.style.background = 'linear-gradient(90deg, #ef4444, #b91c1c)';
-            
-            playSound(150, 0.2, 0.1);
+            else hpBar.style.background = 'linear-gradient(90deg, #22c55e, #16a34a)';
+        }
+
+        function triggerGameOver() {
+            clearInterval(enemyAttackTimer);
+            const overlay = document.getElementById('game-over-overlay');
+            overlay.style.display = 'flex';
+            setTimeout(() => overlay.style.opacity = '1', 50);
+            const bgm = document.getElementById('bgm-ff7');
+            bgm.pause();
+            playSound(50, 1.0, 0.1);
         }
 
         function castMagic(name) {
             playSound(1200, 0.1);
             if (name === '癒やし') {
                 addChatMsg("GUESTは癒やしを唱えた！", true);
+                healPlayer(3000);
                 addChatMsg("TEN: 癒やされた？ でも攻撃の手は休めないよ！", false);
             } else if (name === '爆音') {
                 addChatMsg("GUESTは爆音を唱えた！", true);
-                takeDamage(1000);
                 addChatMsg("システム：TENの鼓膜が耐えきれず、反射ダメージを受けた！", true);
+                takeDamage(1000);
             } else if (name === '猫召喚') {
                 addChatMsg("GUESTは猫を召喚しようとした！", true);
                 
