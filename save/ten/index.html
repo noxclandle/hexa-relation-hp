@@ -211,32 +211,33 @@
             justify-content: center; align-items: center; opacity: 0; transition: opacity 0.5s;
         }
         .duty-banner {
-            width: 140%; height: 120px;
-            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.9) 15%, rgba(0,0,0,0.9) 85%, transparent);
-            border-top: 3px solid rgba(255,215,0,0.6); border-bottom: 3px solid rgba(255,215,0,0.6);
+            width: 150%; height: 110px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.95) 15%, rgba(0,0,0,0.95) 85%, transparent);
+            border-top: 4px solid #facc15; border-bottom: 4px solid #facc15;
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            transform: rotate(-5deg) translateX(-100%);
-            animation: duty-banner-slide 2.8s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
+            transform: rotate(-6deg) translateX(-110%);
+            animation: duty-slide-in 3.0s cubic-bezier(0.2, 1, 0.3, 1) forwards;
         }
         .duty-text {
-            color: #facc15; font-family: 'Oswald', sans-serif; font-size: 56px; font-weight: 900;
-            letter-spacing: 0.5em; text-shadow: 3px 3px 0px #78350f, 0 0 30px rgba(251,191,36,0.9);
-            transform: rotate(5deg) scale(0.5); opacity: 0;
-            animation: duty-text-pop 2.8s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+            color: #facc15; font-family: 'Oswald', sans-serif; font-size: 50px; font-weight: 900;
+            letter-spacing: 0.4em; text-shadow: 3px 3px 0px #000, 0 0 15px rgba(251,191,36,0.6);
+            transform: rotate(6deg); /* 帯の傾きを打ち消して水平にする */
+            white-space: nowrap;
+            opacity: 0;
+            animation: duty-text-fade 3.0s ease-out forwards;
         }
-        @keyframes duty-banner-slide {
-            0% { transform: rotate(-5deg) translateX(-100%); opacity: 0; }
-            15% { transform: rotate(-5deg) translateX(0); opacity: 1; }
-            85% { transform: rotate(-5deg) translateX(0); opacity: 1; }
-            100% { transform: rotate(-5deg) translateX(100%); opacity: 0; }
+        @keyframes duty-slide-in {
+            0% { transform: rotate(-6deg) translateX(-110%); opacity: 0; }
+            15% { transform: rotate(-6deg) translateX(0); opacity: 1; }
+            85% { transform: rotate(-6deg) translateX(0); opacity: 1; }
+            100% { transform: rotate(-6deg) translateX(110%); opacity: 0; }
         }
-        @keyframes duty-text-pop {
-            0% { transform: rotate(5deg) scale(0.5); opacity: 0; letter-spacing: 2em; filter: blur(15px); }
-            15% { transform: rotate(5deg) scale(1.1); opacity: 1; letter-spacing: 0.5em; filter: blur(0); }
-            20% { transform: rotate(5deg) scale(1); opacity: 1; }
-            80% { transform: rotate(5deg) scale(1); opacity: 1; }
-            100% { transform: rotate(5deg) scale(1.4); opacity: 0; letter-spacing: 0.8em; filter: blur(10px); }
+        @keyframes duty-text-fade {
+            0% { opacity: 0; transform: rotate(6deg) scale(0.8); }
+            15% { opacity: 1; transform: rotate(6deg) scale(1); }
+            85% { opacity: 1; transform: rotate(6deg) scale(1); }
+            100% { opacity: 0; transform: rotate(6deg) scale(1.2); }
         }
     </style>
 </head>
