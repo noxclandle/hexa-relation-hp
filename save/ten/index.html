@@ -323,6 +323,7 @@
                     <div class="choices-stack" id="choices">
                         <div class="choice-item" onclick="updateDialogue('activity')">活動について聞く</div>
                         <div class="choice-item" onclick="updateDialogue('birthday')">誕生日について聞く</div>
+                        <div class="choice-item" onclick="updateDialogue('likes')">好きなものを聞く</div>
                         <div class="choice-item" onclick="updateDialogue('mystery')">？？？について聞く</div>
                     </div>
                 </div>
@@ -336,7 +337,11 @@
                 </div>
                 <div class="flex-grow">
                     <h1 class="text-xl font-bold uppercase tracking-widest text-slate-800" id="ff7-name">TENPON</h1>
-                    <div class="text-[11px] text-slate-500 font-bold uppercase">Bard / Level 99</div>
+                    <div class="flex flex-wrap gap-2 mt-1">
+                        <div class="text-[10px] bg-sky-500 text-white px-2 py-0.5 rounded font-bold uppercase">Bard / Lv 99</div>
+                        <div class="text-[10px] bg-orange-500 text-white px-2 py-0.5 rounded font-bold uppercase">Culinarian / Lv 100</div>
+                    </div>
+                    <div class="text-[9px] text-slate-500 mt-1 font-bold">特技：角煮🍖 (※たこ焼きは焼けない🐙)</div>
                 </div>
                 <button id="mip-btn" class="bg-slate-50 text-[10px] font-bold px-4 py-1.5 rounded-full border border-slate-300 shadow-sm active:bg-slate-200" onclick="addCommend()">MIP <span id="commend-count">---</span></button>
             </div>
@@ -356,6 +361,7 @@
             <div id="mag-sub" class="sub-menu">
                 <div class="sub-item" onclick="castMagic('癒やし')">▶ 癒やし</div>
                 <div class="sub-item" onclick="castMagic('爆音')">▶ 爆音</div>
+                <div class="sub-item" onclick="castMagic('猫召喚')">▶ 猫召喚</div>
             </div>
 
             <div class="battle-item" onclick="openLoot()">アイテム</div>
@@ -544,6 +550,11 @@
                 text.innerHTML = "誕生日は8月30日！<br>夏真っ盛りの生まれなんだよ。お祝いしてくれると嬉しいな！";
                 npcImg.src = "troubled_opt.jpg";
                 addChatMsg("TEN: 誕生日は8月30日だよ！", false);
+            } else if(type === 'likes') {
+                text.innerHTML = "チーズ（特にブッラータ！）と猫が大好きなんだ。<br>家にはキジトラとラガマフィンの2匹がいて、毎日癒やされてるよ✨";
+                npcImg.src = "smile_opt.jpg";
+                showMinions();
+                addChatMsg("TEN: 猫は世界を救うと思うんだ。", false);
             } else if(type === 'mystery') {
                 text.innerHTML = "おや、これに興味があるのかい？<br>……あまり深く触れないほうがいいかもしれないよ。";
                 npcImg.src = "polygon_opt.jpg";
@@ -683,7 +694,21 @@
                 addChatMsg("GUESTは爆音を唱えた！", true);
                 takeDamage(1000);
                 addChatMsg("システム：TENの鼓膜が耐えきれず、反射ダメージを受けた！", true);
+            } else if (name === '猫召喚') {
+                addChatMsg("GUESTは猫を召喚しようとした！", true);
+                setTimeout(() => {
+                    addChatMsg("TEN: 私の可愛い家族を紹介するね！", false);
+                    addChatMsg("システム：キジトラとラガマフィンが現れた！", true);
+                    takeDamage(3000);
+                    addChatMsg("システム：可愛すぎてGUESTは精神的ダメージを受けた！", true);
+                }, 1000);
             }
+        }
+
+        function showMinions() {
+            // 通常モード用の簡易的な猫出現演出
+            addChatMsg("システム：足元にキジトラとラガマフィンが寄り添ってきた🐾", true);
+            playSound(1500, 0.1, 0.01);
         }
 
         function resetDialogue() {
