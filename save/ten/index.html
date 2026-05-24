@@ -211,20 +211,23 @@
             justify-content: center; align-items: center; opacity: 0; transition: opacity 0.5s;
         }
         .duty-banner {
-            width: 100%; background: linear-gradient(90deg, transparent, rgba(0,0,0,0.8) 20%, rgba(0,0,0,0.8) 80%, transparent);
-            padding: 15px 0; border-top: 1px solid rgba(255,215,0,0.3); border-bottom: 1px solid rgba(255,215,0,0.3);
+            width: 100%; height: 120px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.85) 20%, rgba(0,0,0,0.85) 80%, transparent);
+            border-top: 2px solid rgba(255,215,0,0.5); border-bottom: 2px solid rgba(255,215,0,0.5);
             display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
         .duty-text {
-            color: #facc15; font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: bold;
-            letter-spacing: 0.3em; text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 20px rgba(251,191,36,0.5);
-            animation: duty-slide 2.5s ease-out forwards;
+            color: #facc15; font-family: 'Oswald', sans-serif; font-size: 52px; font-weight: 800;
+            letter-spacing: 0.4em; text-shadow: 2px 2px 0px #78350f, 0 0 20px rgba(251,191,36,0.8);
+            transform: scaleX(1.2);
+            animation: duty-slide-impact 2.8s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
         }
-        @keyframes duty-slide {
-            0% { transform: scaleX(0); opacity: 0; letter-spacing: 1em; }
-            20% { transform: scaleX(1); opacity: 1; letter-spacing: 0.3em; }
-            80% { transform: scaleX(1); opacity: 1; letter-spacing: 0.3em; }
-            100% { transform: scaleX(1.1); opacity: 0; letter-spacing: 0.5em; }
+        @keyframes duty-slide-impact {
+            0% { transform: scaleX(0.5) scaleY(2); opacity: 0; letter-spacing: 2em; filter: blur(10px); }
+            15% { transform: scaleX(1.2) scaleY(1); opacity: 1; letter-spacing: 0.4em; filter: blur(0); }
+            85% { transform: scaleX(1.2) scaleY(1); opacity: 1; letter-spacing: 0.4em; filter: blur(0); }
+            100% { transform: scaleX(1.5) scaleY(0.8); opacity: 0; letter-spacing: 0.6em; filter: blur(5px); }
         }
     </style>
 </head>
