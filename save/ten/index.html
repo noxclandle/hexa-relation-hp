@@ -68,7 +68,7 @@
         }
 
         .main-container {
-            max-width: 480px; margin: 0 auto; padding: 20px; padding-top: 20px; padding-bottom: 150px;
+            width: 100%; max-width: 480px; margin: 0 auto; padding: 20px; padding-top: 20px; padding-bottom: 150px;
         }
 
         .interaction-box {
@@ -193,7 +193,7 @@
         }
 
         .quest-mark { display: inline-block; width: 18px; height: 18px; background: url('https://img.icons8.com/color/48/exclamation-mark.png') no-repeat center; background-size: contain; animation: bounce 1s infinite alternate; vertical-align: middle; margin-right: 10px; }
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-5px); } }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-4px); } }
 
         #achievement-popup { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); width: 85%; max-width: 360px; background: rgba(0,0,0,0.98); border: 1px solid gold; color: gold; padding: 15px; border-radius: 10px; z-index: 3000; transition: bottom 0.6s; display: flex; align-items: center; gap: 12px; }
         #achievement-popup.show { bottom: 25px; }
@@ -358,31 +358,26 @@
                 btn.innerText = "SOUND: ON";
             }
         }
-async function initApp() {
-    triggerDuty("TEN'S PORTFOLIO");
-    addChatMsg("TEN: 冒険者さん、会えて嬉しいよ！", false);
 
-    // Hit counter & Visitor logging
-    const urlParams = new URLSearchParams(window.location.search);
-    const ref = urlParams.get('ref') || urlParams.get('from') || document.referrer || 'direct';
-    db.collection('analytics').doc(PAGE_ID).set({ 
-        hits: firebase.firestore.FieldValue.increment(1), 
-        lastVisit: firebase.firestore.FieldValue.serverTimestamp() 
-    }, { merge: true });
-    db.collection('referrals').doc(PAGE_ID).collection('logs').add({
-        referrer: ref,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });
+        async function initApp() {
+            triggerDuty("TEN'S PORTFOLIO");
+            addChatMsg("TEN: 冒険者さん、会えて嬉しいよ！", false);
+            
+            // Hit counter
+            db.collection('analytics').doc(PAGE_ID).set({
+                hits: firebase.firestore.FieldValue.increment(1),
+                lastVisit: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true }).catch(err => console.error("Hit counter error:", err));
 
-    // Sync MIP from Firestore
-    db.collection('analytics').doc(PAGE_ID).onSnapshot(doc => {
+            // Sync MIP from Firestore
+            db.collection('analytics').doc(PAGE_ID).onSnapshot(doc => {
                 if(doc.exists) {
                     const data = doc.data();
                     document.getElementById('commend-count').innerText = data.mip || 0;
                 } else {
                     document.getElementById('commend-count').innerText = 0;
                 }
-            });
+            }, err => console.error("MIP sync error:", err));
         }
 
         function triggerDuty(label) {
@@ -407,7 +402,7 @@ async function initApp() {
             div.className = isSystem ? "chat-msg chat-sys" : "chat-msg";
             div.innerHTML = isSystem ? msg : `<span class="chat-player">[TEN]</span> ${msg}`;
             log.appendChild(div);
-            while(log.childNodes.length > 4) log.removeChild(log.firstChild);
+            while(log.childNodes.length > 5) log.removeChild(log.firstChild);
         }
 
         function updateDialogue(type) {
@@ -419,14 +414,17 @@ async function initApp() {
             if(type === 'activity') {
                 text.innerHTML = "活動して3年になるよ！<br>吟遊詩人として、みんなに楽しい時間を届けるのが私のジョブなんだ。";
                 npcImg.src = "bard.png";
+                addChatMsg("TEN: 3周年アチーブメントを目指してます！", false);
             } else if(type === 'birthday') {
                 text.innerHTML = "誕生日は8月30日！<br>夏真っ盛りの生まれなんだよ。お祝いしてくれると嬉しいな！";
                 npcImg.src = "troubled.png";
+                addChatMsg("TEN: 誕生日は8月30日だよ！", false);
             } else if(type === 'mystery') {
                 text.innerHTML = "おや、これに興味があるのかい？<br>……あまり深く触れないほうがいいかもしれないよ。";
                 npcImg.src = "polygon.png";
                 npcImg.onclick = handleMysteryClick;
                 npcImg.style.cursor = "pointer";
+                addChatMsg("システム：不穏な気配を感じる……");
             }
             choices.innerHTML = '<div class="choice-item" onclick="resetDialogue()">別のことを聞く</div>';
         }
