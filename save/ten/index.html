@@ -31,6 +31,123 @@
             transition: background 0.5s;
         }
 
+        body.ff7-mode {
+            background: #000 !important;
+            background-image: none !important;
+            font-family: 'DotGothic16', sans-serif !important;
+            color: var(--ff7-text) !important;
+        }
+
+        #blackout-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 8000; display: none;
+            justify-content: center; align-items: center; flex-direction: column;
+            cursor: pointer;
+        }
+
+        .bg-blur {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--ff14-bg-overlay); z-index: -1;
+            backdrop-filter: blur(2px);
+        }
+        body.ff7-mode .bg-blur { display: none !important; }
+
+        #swirl-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999; pointer-events: none; display: none;
+            background: radial-gradient(circle, transparent 0%, black 100%);
+        }
+        .swirl-animation {
+            display: block !important;
+            animation: swirl-effect 1.5s ease-in-out forwards;
+        }
+        @keyframes swirl-effect {
+            0% { transform: scale(1) rotate(0deg); opacity: 0; }
+            50% { transform: scale(5) rotate(720deg); opacity: 1; }
+            100% { transform: scale(10) rotate(1440deg); opacity: 1; background: black; }
+        }
+
+        .main-container {
+            width: 100%; max-width: 480px; margin: 0 auto; padding: 20px; padding-top: 20px; padding-bottom: 150px;
+        }
+
+        .interaction-box {
+            position: relative; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center;
+        }
+        .npc-stage {
+            width: 100%; height: 420px; display: flex; justify-content: center; align-items: flex-end;
+            overflow: hidden; z-index: 5; mask-image: linear-gradient(to top, black 95%, transparent 100%);
+        }
+        .npc-portrait { 
+            height: 100% !important; 
+            width: auto !important; 
+            max-width: none !important; 
+            object-fit: contain !important; 
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6)); 
+            transition: all 0.4s; 
+        }
+
+        .dialogue-wrapper { width: 100%; margin-top: -80px; position: relative; z-index: 10; }
+        .dialogue-window { 
+            background: rgba(0, 0, 0, 0.88); color: #fff; padding: 22px; border-radius: 8px; 
+            border: 2px solid #666; box-shadow: 0 15px 40px rgba(0,0,0,0.7); min-height: 130px; 
+        }
+        body.ff7-mode .dialogue-window {
+            background: var(--ff7-blue) !important; border: 3px double var(--ff7-border) !important; border-radius: 0 !important;
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.5) !important;
+        }
+        
+        .dialogue-name { position: absolute; top: -15px; left: 20px; background: #0ea5e9; color: white; padding: 3px 15px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        body.ff7-mode .dialogue-name { background: #000080 !important; border: 1px solid white !important; border-radius: 0 !important; }
+
+        .dialogue-text { font-size: 15.5px; line-height: 1.8; margin-bottom: 18px; }
+
+        .choices-stack { display: flex; flex-direction: column; gap: 10px; }
+        .choice-item { 
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); 
+            padding: 12px 18px; border-radius: 6px; cursor: pointer; font-size: 14px; 
+            transition: all 0.2s; display: flex; align-items: center;
+        }
+        .choice-item:hover { background: rgba(14, 165, 233, 0.35); border-color: #0ea5e9; padding-left: 24px; }
+        body.ff7-mode .choice-item { border-radius: 0 !important; border: 1px solid transparent !important; background: transparent !important; }
+        body.ff7-mode .choice-item:hover { color: #00ffff !important; }
+
+        .choice-item::before { content: ""; width: 20px; height: 15px; background: url('https://img.icons8.com/color/48/pointing-hand.png') no-repeat center; background-size: contain; margin-right: 10px; opacity: 0; transform: rotate(-90deg); }
+        body.ff7-mode .choice-item:hover::before { opacity: 1 !important; }
+
+        .window { 
+            background: var(--ff14-window-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; 
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2); padding: 22px; margin-bottom: 20px; position: relative; 
+        }
+        body.ff7-mode .window {
+            background: var(--ff7-blue) !important; border: 3px double var(--ff7-border) !important; border-radius: 0 !important; color: #fff !important;
+            box-shadow: none !important;
+        }
+
+        .noise-active { animation: noise-shake 0.1s infinite; }
+        @keyframes noise-shake {
+            0% { transform: translate(0,0); filter: hue-rotate(0deg); }
+            20% { transform: translate(-2px, 2px); filter: hue-rotate(90deg) blur(1px); }
+            40% { transform: translate(2px, -2px); filter: contrast(200%); }
+            60% { transform: translate(-2px, -2px); filter: brightness(150%); }
+            80% { transform: translate(2px, 2px); filter: invert(20%); }
+            100% { transform: translate(0,0); }
+        }
+
+        .chat-log { 
+            position: fixed; bottom: 65px; left: 12px; width: 270px; height: 95px; 
+            background: rgba(0,0,0,0.6); border-radius: 6px; font-size: 11px; padding: 10px; 
+            z-index: 50; border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden; pointer-events: none;
+        }
+        body.ff7-mode .chat-log { display: none !important; }
+        .chat-msg { text-shadow: 1px 1px 3px black; color: white; margin-bottom: 2px; }
+        .chat-sys { color: #ccc; }
+        .chat-player { color: #7dd3fc; font-weight: bold; }
+
+        .gil-display { position: fixed; bottom: 0; right: 0; background: rgba(0,0,0,0.95); color: #ddd; padding: 8px 18px; font-family: 'Oswald', sans-serif; font-size: 14px; z-index: 60; border-top-left-radius: 10px; border-top: 1px solid #444; border-left: 1px solid #444; }
+        body.ff7-mode .gil-display { font-family: 'DotGothic16' !important; border: 2px solid white !important; bottom: 10px !important; right: 10px !important; border-radius: 0 !important; background: var(--ff7-blue) !important; }
+
         /* プレイヤー用ステータスウィンドウ */
         #player-status-window {
             position: fixed; bottom: 10px; right: 10px; width: 280px;
@@ -118,10 +235,10 @@
         }
         .duty-banner {
             position: absolute; width: 100%; height: 100px;
-            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.95) 15%, rgba(0,0,0,0.95) 85%, transparent);
-            border-top: 4px solid #facc15; border-bottom: 4px solid #facc15;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.9) 15%, rgba(0,0,0,0.9) 85%, transparent);
+            border-top: 3px solid #facc15; border-bottom: 3px solid #facc15;
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 40px rgba(0,0,0,0.9);
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
             transform: rotate(-6deg) translateX(-100%);
             will-change: transform;
             animation: duty-full-impact 3s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
@@ -146,6 +263,14 @@
             15% { opacity: 1; scale: 1; }
             85% { opacity: 1; scale: 1; }
             100% { opacity: 0; scale: 1.2; }
+        }
+        
+        /* 追加のアニメーション */
+        @keyframes shake {
+            0%, 100% { transform: translate(0,0); }
+            25% { transform: translate(-10px, 5px); }
+            50% { transform: translate(10px, -5px); }
+            75% { transform: translate(-5px, 5px); }
         }
     </style>
 </head>
@@ -312,6 +437,8 @@
         let bgmStarted = false;
         let isTyping = false;
         let isMuted = false;
+        let currentHP = 9999;
+        let currentMP = 999;
 
         const playSound = (freq = 880, length = 0.1, volume = 0.02) => {
             if (isMuted) return;
@@ -488,9 +615,6 @@
             playSound(1200, 0.5);
         }
 
-        let currentHP = 9999;
-        let currentMP = 999;
-
         function toggleSubMenu(id) {
             playSound(1000, 0.05);
             const allSubs = document.querySelectorAll('.sub-menu');
@@ -542,18 +666,6 @@
                 addChatMsg("システム：TENの鼓膜が耐えきれず、反射ダメージを受けた！", true);
             }
         }
-
-        // Add shake animation to styles
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes shake {
-                0%, 100% { transform: translate(0,0); }
-                25% { transform: translate(-10px, 5px); }
-                50% { transform: translate(10px, -5px); }
-                75% { transform: translate(-5px, 5px); }
-            }
-        `;
-        document.head.appendChild(style);
 
         function resetDialogue() {
             playSound(800);
