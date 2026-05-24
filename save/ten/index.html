@@ -38,7 +38,6 @@
             color: var(--ff7-text) !important;
         }
 
-        /* FF7 Transition Layer */
         #blackout-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: black; z-index: 8000; display: none;
@@ -53,7 +52,6 @@
         }
         body.ff7-mode .bg-blur { display: none !important; }
 
-        /* Transition Effect: Swirl */
         #swirl-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 9999; pointer-events: none; display: none;
@@ -69,12 +67,10 @@
             100% { transform: scale(10) rotate(1440deg); opacity: 1; background: black; }
         }
 
-        /* Container */
         .main-container {
             max-width: 480px; margin: 0 auto; padding: 20px; padding-top: 20px; padding-bottom: 150px;
         }
 
-        /* Interaction Box */
         .interaction-box {
             position: relative; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center;
         }
@@ -112,7 +108,6 @@
         .choice-item::before { content: ""; width: 20px; height: 15px; background: url('https://img.icons8.com/color/48/pointing-hand.png') no-repeat center; background-size: contain; margin-right: 10px; opacity: 0; transform: rotate(-90deg); }
         body.ff7-mode .choice-item:hover::before { opacity: 1 !important; }
 
-        /* Window */
         .window { 
             background: var(--ff14-window-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; 
             box-shadow: 0 12px 40px rgba(0,0,0,0.2); padding: 22px; margin-bottom: 20px; position: relative; 
@@ -122,7 +117,6 @@
             box-shadow: none !important;
         }
 
-        /* Digital Noise Effect */
         .noise-active { animation: noise-shake 0.1s infinite; }
         @keyframes noise-shake {
             0% { transform: translate(0,0); filter: hue-rotate(0deg); }
@@ -133,7 +127,6 @@
             100% { transform: translate(0,0); }
         }
 
-        /* Chat Log */
         .chat-log { 
             position: fixed; bottom: 65px; left: 12px; width: 270px; height: 95px; 
             background: rgba(0,0,0,0.6); border-radius: 6px; font-size: 11px; padding: 10px; 
@@ -148,7 +141,6 @@
         .gil-display { position: fixed; bottom: 0; right: 0; background: rgba(0,0,0,0.95); color: #ddd; padding: 8px 18px; font-family: 'Oswald', sans-serif; font-size: 14px; z-index: 60; border-top-left-radius: 10px; border-top: 1px solid #444; border-left: 1px solid #444; }
         body.ff7-mode .gil-display { font-family: 'DotGothic16' !important; border: 2px solid white !important; bottom: 10px !important; right: 10px !important; border-radius: 0 !important; background: var(--ff7-blue) !important; }
 
-        /* FF7 Style Command Menu */
         .battle-menu {
             display: none;
             position: fixed; bottom: 20px; left: 20px;
@@ -161,7 +153,6 @@
         .battle-item::before { content: ""; width: 25px; height: 20px; background: url('https://img.icons8.com/color/48/pointing-hand.png') no-repeat center; background-size: contain; margin-right: 15px; opacity: 0; transform: rotate(-90deg); }
         .battle-item:hover::before { opacity: 1; }
 
-        /* Sound Control */
         #mute-btn {
             position: fixed; top: 10px; left: 10px; z-index: 10000;
             background: rgba(0,0,0,0.6); border: 1px solid white; color: white;
@@ -170,7 +161,6 @@
         }
         body.ff7-mode #mute-btn { display: block; }
 
-        /* Hide FF14 elements in FF7 mode */
         body.ff7-mode .command-btn, body.ff7-mode .quest-mark, body.ff7-mode #duty-overlay, body.ff7-mode #ff14-commands, body.ff7-mode #mip-btn { display: none !important; }
 
         .typing-cursor::after {
@@ -180,7 +170,6 @@
         }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* Robust Loot Modal */
         #loot-modal { 
             position: fixed; inset: 0; background: rgba(0,0,0,0.85); 
             z-index: 3000; display: none; justify-content: center; align-items: center; 
@@ -213,15 +202,12 @@
 </head>
 <body onload="initApp()">
     <div class="bg-blur"></div>
-    
     <div id="swirl-overlay"></div>
-
     <button id="mute-btn" onclick="toggleMute()">SOUND: ON</button>
 
-    <!-- Dramatic FF7 Transition Overlay -->
     <div id="blackout-overlay" onclick="finalFF7Transition()">
         <div style="margin-bottom: 30px; width: 240px; height: 320px; border: 3px double white; overflow: hidden; background: #000; box-shadow: 0 0 30px rgba(255,255,255,0.2);">
-            <img src="GG4AWFyXkAAROHk-removebg-preview.png" alt="Mystery Character" style="width: 100%; height: 100%; object-fit: contain;">
+            <img src="winged.png" alt="Mystery Character" style="width: 100%; height: 100%; object-fit: contain;">
         </div>
         <div class="dialogue-window" style="width: 90%; max-width: 450px; border: 3px double white; background: var(--ff7-blue); border-radius: 0; position: relative;">
             <div class="dialogue-name" style="background: #000080; border: 1px solid white; border-radius: 0; top: -15px;">？？？</div>
@@ -239,13 +225,10 @@
     <div class="chat-log" id="chat-log"></div>
 
     <div class="main-container">
-        
-        <!-- NPC Interaction Area -->
         <div class="interaction-box">
             <div class="npc-stage">
-                <img src="全身　微笑み.png" alt="TEN" class="npc-portrait" id="npc-img">
+                <img src="smile.png" alt="TEN" class="npc-portrait" id="npc-img">
             </div>
-
             <div class="dialogue-wrapper">
                 <div class="dialogue-window">
                     <div class="dialogue-name">TEN</div>
@@ -261,7 +244,6 @@
             </div>
         </div>
 
-        <!-- Status Window -->
         <div class="window">
             <div class="flex items-center gap-5 mb-5">
                 <div class="w-16 h-16 rounded-full border-2 border-white shadow-xl overflow-hidden bg-white">
@@ -278,7 +260,6 @@
             </div>
         </div>
 
-        <!-- FF7 Style Battle Menu -->
         <div class="battle-menu">
             <div class="battle-item" onclick="window.open('https://www.youtube.com/@TENpon_ch', '_blank')">たたかう</div>
             <div class="battle-item" onclick="window.open('https://x.com/TENPON_', '_blank')">まほう</div>
@@ -286,7 +267,6 @@
             <div class="battle-item" onclick="location.reload()">にげる</div>
         </div>
 
-        <!-- Commands (FF14 Style) -->
         <div class="window" id="ff14-commands">
             <div class="text-[11px] font-bold text-sky-600 mb-4 uppercase tracking-[0.2em]">Main Menu</div>
             <a href="javascript:void(0)" class="command-btn" onclick="teleportTo('https://www.youtube.com/@TENpon_ch', 'YouTube')"><span class="quest-mark"></span>YouTube Channel</a>
@@ -297,7 +277,6 @@
         </div>
     </div>
 
-    <!-- Loot Roll -->
     <div id="loot-modal">
         <div class="loot-window">
             <div id="dice-roll-view">
@@ -330,15 +309,12 @@
         </div>
     </div>
 
-    <!-- Audio Elements -->
-    <audio id="bgm-ff7" src="再臨片翼の天使 ～Advent One-Winged Angel～ - Nobuo Uematsu.mp3" loop></audio>
+    <audio id="bgm-ff7" src="ff7_bgm.mp3" loop></audio>
 
-    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // Firebase Config
         const firebaseConfig = {
           apiKey: "AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI",
           authDomain: "hexa-relation.firebaseapp.com",
@@ -387,7 +363,6 @@
             triggerDuty("TEN'S PORTFOLIO");
             addChatMsg("TEN: 冒険者さん、会えて嬉しいよ！", false);
             
-            // Sync MIP from Firestore
             db.collection('analytics').doc(PAGE_ID).onSnapshot(doc => {
                 if(doc.exists) {
                     const data = doc.data();
@@ -420,7 +395,6 @@
             div.className = isSystem ? "chat-msg chat-sys" : "chat-msg";
             div.innerHTML = isSystem ? msg : `<span class="chat-player">[TEN]</span> ${msg}`;
             log.appendChild(div);
-            // Limit messages to 4
             while(log.childNodes.length > 4) log.removeChild(log.firstChild);
         }
 
@@ -432,13 +406,13 @@
             
             if(type === 'activity') {
                 text.innerHTML = "活動して3年になるよ！<br>吟遊詩人として、みんなに楽しい時間を届けるのが私のジョブなんだ。";
-                npcImg.src = "全身　吟遊詩人.png";
+                npcImg.src = "bard.png";
             } else if(type === 'birthday') {
                 text.innerHTML = "誕生日は8月30日！<br>夏真っ盛りの生まれなんだよ。お祝いしてくれると嬉しいな！";
-                npcImg.src = "困り顔　全身.png";
+                npcImg.src = "troubled.png";
             } else if(type === 'mystery') {
                 text.innerHTML = "おや、これに興味があるのかい？<br>……あまり深く触れないほうがいいかもしれないよ。";
-                npcImg.src = "ぽりごん.png";
+                npcImg.src = "polygon.png";
                 npcImg.onclick = handleMysteryClick;
                 npcImg.style.cursor = "pointer";
             }
@@ -451,7 +425,7 @@
             
             if (!bgmStarted) {
                 const bgm = document.getElementById('bgm-ff7');
-                bgm.volume = 0.1; // Very low as requested
+                bgm.volume = 0.1;
                 if (!isMuted) bgm.play().catch(e => console.log("BGM play failed:", e));
                 bgmStarted = true;
             }
@@ -514,7 +488,7 @@
             const gil = document.getElementById('gil-display');
             
             text.innerHTML = "WARNING!! 隠しボス出現！<br>システムがFF7モードに上書きされました。";
-            npcImg.src = "いかり.png";
+            npcImg.src = "angry.png";
             npcImg.style.filter = "none";
             npcImg.classList.remove('noise-active');
             
@@ -535,7 +509,7 @@
             npcImg.classList.remove('noise-active');
             
             document.getElementById('dialogue-text').innerHTML = "冒険者さん、こんにちは！<br>私について何か知りたいことはあるかな？";
-            npcImg.src = "全身　微笑み.png";
+            npcImg.src = "smile.png";
             document.getElementById('choices').innerHTML = `
                 <div class="choice-item" onclick="updateDialogue('activity')">活動について聞く</div>
                 <div class="choice-item" onclick="updateDialogue('birthday')">誕生日について聞く</div>
@@ -598,9 +572,9 @@
 
         function addCommend() {
             playSound(900);
-            db.collection('analytics').doc(PAGE_ID).update({
+            db.collection('analytics').doc(PAGE_ID).set({
                 mip: firebase.firestore.FieldValue.increment(1)
-            }).then(() => {
+            }, { merge: true }).then(() => {
                 addChatMsg("システム：MIP推薦を獲得しました！");
                 triggerAchievement('MVP Player');
             });
