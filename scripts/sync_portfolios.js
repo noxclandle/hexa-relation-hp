@@ -34,9 +34,9 @@ function sync() {
                 }
                 
                 // Try to guess theme from title or content
-                if (content.includes('FF14')) theme = 'FF14風';
+                if (content.includes('ファイナルファンタジー') || content.includes('FF14')) theme = 'ファイナルファンタジー風';
                 else if (content.includes('MOTHER2')) theme = 'MOTHER2風';
-                else if (content.includes('rs3-modal') || content.includes('RS3')) theme = 'ロマサガ風';
+                else if (content.includes('rs3-modal') || content.includes('RS3') || content.includes('ロマサガ')) theme = 'ロマサガ風';
                 else if (content.includes('Chocolate')) theme = 'チョコレート風';
             }
             
