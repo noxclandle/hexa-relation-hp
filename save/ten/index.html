@@ -211,33 +211,34 @@
             justify-content: center; align-items: center; opacity: 0; transition: opacity 0.5s;
         }
         .duty-banner {
-            width: 150%; height: 110px;
-            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.95) 15%, rgba(0,0,0,0.95) 85%, transparent);
-            border-top: 4px solid #facc15; border-bottom: 4px solid #facc15;
+            position: absolute; width: 100%; height: 100px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.9) 15%, rgba(0,0,0,0.9) 85%, transparent);
+            border-top: 3px solid #facc15; border-bottom: 3px solid #facc15;
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 40px rgba(0,0,0,0.9);
-            transform: rotate(-6deg) translateX(-110%);
-            animation: duty-slide-in 3.0s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            transform: rotate(-6deg) translateX(-100%);
+            will-change: transform;
+            animation: duty-full-impact 3s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
         }
         .duty-text {
-            color: #facc15; font-family: 'Oswald', sans-serif; font-size: 50px; font-weight: 900;
-            letter-spacing: 0.4em; text-shadow: 3px 3px 0px #000, 0 0 15px rgba(251,191,36,0.6);
-            transform: rotate(6deg); /* 帯の傾きを打ち消して水平にする */
+            color: #facc15; font-family: 'Oswald', sans-serif; font-size: 48px; font-weight: 900;
+            letter-spacing: 0.4em; text-shadow: 3px 3px 0px #000, 0 0 20px rgba(251,191,36,0.6);
+            transform: rotate(6deg);
             white-space: nowrap;
-            opacity: 0;
-            animation: duty-text-fade 3.0s ease-out forwards;
+            will-change: transform, opacity;
+            animation: duty-text-pop-only 3s ease-out forwards;
         }
-        @keyframes duty-slide-in {
-            0% { transform: rotate(-6deg) translateX(-110%); opacity: 0; }
+        @keyframes duty-full-impact {
+            0% { transform: rotate(-6deg) translateX(-100%); opacity: 0; }
             15% { transform: rotate(-6deg) translateX(0); opacity: 1; }
             85% { transform: rotate(-6deg) translateX(0); opacity: 1; }
-            100% { transform: rotate(-6deg) translateX(110%); opacity: 0; }
+            100% { transform: rotate(-6deg) translateX(100%); opacity: 0; }
         }
-        @keyframes duty-text-fade {
-            0% { opacity: 0; transform: rotate(6deg) scale(0.8); }
-            15% { opacity: 1; transform: rotate(6deg) scale(1); }
-            85% { opacity: 1; transform: rotate(6deg) scale(1); }
-            100% { opacity: 0; transform: rotate(6deg) scale(1.2); }
+        @keyframes duty-text-pop-only {
+            0% { opacity: 0; scale: 0.8; }
+            15% { opacity: 1; scale: 1; }
+            85% { opacity: 1; scale: 1; }
+            100% { opacity: 0; scale: 1.2; }
         }
     </style>
 </head>
