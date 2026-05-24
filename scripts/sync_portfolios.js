@@ -3,13 +3,17 @@ const path = require('path');
 
 const SAVE_DIR = path.join(__dirname, '../save');
 const NOX_INDEX = path.join(SAVE_DIR, 'nox/index.html');
+const ADMIN_INDEX = path.join(__dirname, '../admin/index.html');
 
 function sync() {
     console.log('Starting portfolio sync...');
 
-    // 1. Scan save directory
+    // 1. Scan save directory and sort by creation time
     const portfolios = fs.readdirSync(SAVE_DIR)
         .filter(dir => dir !== 'nox' && fs.statSync(path.join(SAVE_DIR, dir)).isDirectory())
+        .sort((a, b) => {
+            return fs.statSync(path.join(SAVE_DIR, a)).birthtimeMs - fs.statSync(path.join(SAVE_DIR, b)).birthtimeMs;
+        })
         .map(dir => {
             const indexPath = path.join(SAVE_DIR, dir, 'index.html');
             let title = dir.toUpperCase();
@@ -41,7 +45,24 @@ function sync() {
 
     console.log(`Found ${portfolios.length} portfolios:`, portfolios.map(p => p.id));
 
-    // 2. Update save/nox/index.html (Save Data List)
+    // 2. Update admin/index.html (Inject ALL_PAGE_IDS)
+    if (fs.existsSync(ADMIN_INDEX)) {
+        let adminContent = fs.readFileSync(ADMIN_INDEX, 'utf-8');
+        
+        const injectStart = '// AUTO_INJECT_START';
+        const injectEnd = '// AUTO_INJECT_END';
+        
+        const idList = portfolios.map(p => `'${p.id}'`).join(', ');
+        const injectHtml = `${injectStart}\n        const ALL_PAGE_IDS = [${idList}];\n        ${injectEnd}`;
+
+        const regex = new RegExp(`${injectStart}[\\s\\S]*?${injectEnd}`, 'm');
+        adminContent = adminContent.replace(regex, injectHtml);
+        
+        fs.writeFileSync(ADMIN_INDEX, adminContent);
+        console.log('Updated admin/index.html with ALL_PAGE_IDS');
+    }
+
+    // 3. Update save/nox/index.html (Save Data List)
     if (fs.existsSync(NOX_INDEX)) {
         let noxContent = fs.readFileSync(NOX_INDEX, 'utf-8');
         

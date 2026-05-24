@@ -114,7 +114,13 @@
                 </div>
             </div>
 
-            <h2>▶ 各ページ解析データ</h2>
+            <div class="flex gap-4 mb-4 items-center">
+                <h2 class="mr-auto">▶ 各ページ解析データ</h2>
+                <span class="text-xs opacity-60">並び替え:</span>
+                <button onclick="sortData('id')" class="text-xs border border-green-800 px-2 py-1 hover:bg-green-900">名前</button>
+                <button onclick="sortData('hits')" class="text-xs border border-green-800 px-2 py-1 hover:bg-green-900">ヒット数</button>
+                <button onclick="sortData('visit')" class="text-xs border border-green-800 px-2 py-1 hover:bg-green-900">最新訪問</button>
+            </div>
             <table id="analytics-table">
                 <thead>
                     <tr>
@@ -162,33 +168,72 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
+        // AUTO_INJECT_START
+        const ALL_PAGE_IDS = ['choco', 'ten'];
+        // AUTO_INJECT_END
+
+        let currentAnalytics = {};
+        let currentSort = 'id';
+
         function startAnalytics() {
             db.collection('analytics').onSnapshot((querySnapshot) => {
-                const tbody = document.querySelector('#analytics-table tbody');
-                tbody.innerHTML = '';
                 let totalHits = 0;
+                
+                // Reset currentAnalytics with all known IDs (to ensure 0 hits pages are listed)
+                ALL_PAGE_IDS.forEach(id => {
+                    currentAnalytics[id] = { hits: 0, lastVisit: null };
+                });
 
                 querySnapshot.forEach((doc) => {
                     const id = doc.id;
                     const data = doc.data();
+                    currentAnalytics[id] = data;
                     totalHits += data.hits || 0;
-
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td><a href="../save/${id}/" target="_blank" class="hover:underline text-green-400">${id}</a></td>
-                        <td>${data.hits || 0}</td>
-                        <td class="cursor-pointer hover:underline text-green-400" onclick="showLogs('${id}')">
-                            ${data.lastVisit ? data.lastVisit.toDate().toLocaleString() : '---'}
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
                 });
 
+                renderTable();
                 document.getElementById('total-hits').innerText = totalHits.toLocaleString();
             });
 
             db.collection('orders').onSnapshot(snap => {
                 document.getElementById('total-orders').innerText = snap.size;
+            });
+        }
+
+        function sortData(type) {
+            currentSort = type;
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.querySelector('#analytics-table tbody');
+            tbody.innerHTML = '';
+
+            const sortedIds = Object.keys(currentAnalytics).sort((a, b) => {
+                const dataA = currentAnalytics[a];
+                const dataB = currentAnalytics[b];
+
+                if (currentSort === 'id') return a.localeCompare(b);
+                if (currentSort === 'hits') return (dataB.hits || 0) - (dataA.hits || 0);
+                if (currentSort === 'visit') {
+                    const timeA = dataA.lastVisit ? dataA.lastVisit.toMillis() : 0;
+                    const timeB = dataB.lastVisit ? dataB.lastVisit.toMillis() : 0;
+                    return timeB - timeA;
+                }
+                return 0;
+            });
+
+            sortedIds.forEach((id) => {
+                const data = currentAnalytics[id];
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><a href="../save/${id}/" target="_blank" class="hover:underline text-green-400">${id}</a></td>
+                    <td>${data.hits || 0}</td>
+                    <td class="cursor-pointer hover:underline text-green-400" onclick="showLogs('${id}')">
+                        ${data.lastVisit ? data.lastVisit.toDate().toLocaleString() : '---'}
+                    </td>
+                `;
+                tbody.appendChild(tr);
             });
         }
 

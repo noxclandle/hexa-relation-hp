@@ -358,12 +358,24 @@
                 btn.innerText = "SOUND: ON";
             }
         }
+async function initApp() {
+    triggerDuty("TEN'S PORTFOLIO");
+    addChatMsg("TEN: 冒険者さん、会えて嬉しいよ！", false);
 
-        async function initApp() {
-            triggerDuty("TEN'S PORTFOLIO");
-            addChatMsg("TEN: 冒険者さん、会えて嬉しいよ！", false);
-            
-            db.collection('analytics').doc(PAGE_ID).onSnapshot(doc => {
+    // Hit counter & Visitor logging
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get('ref') || urlParams.get('from') || document.referrer || 'direct';
+    db.collection('analytics').doc(PAGE_ID).set({ 
+        hits: firebase.firestore.FieldValue.increment(1), 
+        lastVisit: firebase.firestore.FieldValue.serverTimestamp() 
+    }, { merge: true });
+    db.collection('referrals').doc(PAGE_ID).collection('logs').add({
+        referrer: ref,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    // Sync MIP from Firestore
+    db.collection('analytics').doc(PAGE_ID).onSnapshot(doc => {
                 if(doc.exists) {
                     const data = doc.data();
                     document.getElementById('commend-count').innerText = data.mip || 0;
