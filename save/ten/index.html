@@ -242,10 +242,13 @@
         #live-badge {
             display: none; align-items: center; gap: 8px;
             background: rgba(255, 0, 0, 0.9); color: white;
-            padding: 4px 12px; border-radius: 4px; font-weight: bold;
-            font-size: 11px; margin-bottom: 10px; border: 1px solid white;
-            box-shadow: 0 0 10px rgba(255,0,0,0.5);
+            padding: 6px 16px; border-radius: 4px; font-weight: bold;
+            font-size: 14px; position: absolute; top: 10px; left: 50%;
+            transform: translateX(-50%); z-index: 1000; border: 2px solid white;
+            box-shadow: 0 0 20px rgba(255,0,0,0.7);
             animation: pulse-red 2s infinite;
+            pointer-events: none;
+            white-space: nowrap;
         }
         .live-dot { width: 8px; height: 8px; background: white; border-radius: 50%; animation: blink 1s infinite; }
 
@@ -384,7 +387,7 @@
                         <div class="text-[10px] bg-sky-500 text-white px-2 py-0.5 rounded font-bold uppercase">Bard / Lv 99</div>
                         <div class="text-[10px] bg-orange-500 text-white px-2 py-0.5 rounded font-bold uppercase">Culinarian / Lv 100</div>
                     </div>
-                    <div class="text-[9px] text-slate-500 mt-1 font-bold">特技：角煮🍖 (※たこ焼きは焼けない🐙)</div>
+                    <div class="text-[9px] text-slate-500 mt-1 font-bold">特技はお料理 中でも角煮は任せて♡（たこ焼きは食べる専🐙）</div>
                 </div>
                 <button id="mip-btn" class="bg-slate-50 text-[10px] font-bold px-4 py-1.5 rounded-full border border-slate-300 shadow-sm active:bg-slate-200" onclick="addCommend()">MIP <span id="commend-count">---</span></button>
             </div>
