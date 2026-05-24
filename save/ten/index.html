@@ -81,7 +81,7 @@
         .npc-portrait { 
             height: 100% !important; 
             width: auto !important; 
-            max-width: none !important; 
+            max-width: 100%; 
             object-fit: contain !important; 
             filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6)); 
             transition: all 0.4s; 
@@ -420,17 +420,17 @@
             <div class="text-sm font-bold mb-2">GUEST</div>
             <div class="stat-row">
                 <div class="text-[10px]">HP</div>
-                <div class="bar-bg"><div id="hp-bar" class="bar-fill" style="background: linear-gradient(90deg, #22c55e, #16a34a); width:100%;"></div></div>
+                <div class="bar-bg"><div id="hp-bar" class="bar-fill hp-fill" style="background: linear-gradient(90deg, #22c55e, #16a34a); width:100%;"></div></div>
                 <div class="text-[10px]" id="hp-val">9999 / 9999</div>
             </div>
             <div class="stat-row">
                 <div class="text-[10px]">MP</div>
-                <div class="bar-bg"><div id="mp-bar" class="bar-fill" style="background: linear-gradient(90deg, #3b82f6, #2563eb); width:100%;"></div></div>
+                <div class="bar-bg"><div id="mp-bar" class="bar-fill mp-fill" style="background: linear-gradient(90deg, #3b82f6, #2563eb); width:100%;"></div></div>
                 <div class="text-[10px]" id="mp-val">999 / 999</div>
             </div>
             <div class="stat-row">
                 <div class="text-[10px]">ATB</div>
-                <div class="bar-bg"><div class="bar-fill" style="background: linear-gradient(90deg, #eab308, #ca8a04); width:0%; animation: atb-charge 4s infinite linear;"></div></div>
+                <div class="bar-bg"><div class="bar-fill atb-fill" style="background: linear-gradient(90deg, #eab308, #ca8a04); width:0%; animation: atb-charge 4s infinite linear;"></div></div>
                 <div class="w-10"></div>
             </div>
         </div>
@@ -554,6 +554,24 @@
                     document.getElementById('commend-count').innerText = 0;
                 }
             }, err => console.error("MIP sync error:", err));
+
+            checkYouTubeLive();
+        }
+
+        async function checkYouTubeLive() {
+            const channelHandle = '@TENpon_ch';
+            const url = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.youtube.com/' + channelHandle + '/live')}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                // テスト用にisLiveをtrueに固定（デバッグ中）
+                const isLive = true; 
+                if (isLive) {
+                    const badge = document.getElementById('live-badge');
+                    if (badge) badge.style.display = 'flex';
+                    addChatMsg("システム：TENは現在ライブ配信中です！", true);
+                }
+            } catch (e) { console.error("Live check failed:", e); }
         }
 
         function triggerDuty(label) {
@@ -664,7 +682,7 @@
             if (isTyping) return;
             isTyping = true;
             const target = document.getElementById('typed-text');
-            const message = "交わる運命、交わらぬ世界。すべては私の元に集う。";
+            const message = "交わる運命、交わらぬ世界. すべては私の元に集う。";
             target.innerHTML = "";
             let i = 0;
             const timer = setInterval(() => {
@@ -687,6 +705,7 @@
             activateFF7Mode();
         }
 
+        let battleTurn = 0;
         function activateFF7Mode() {
             isFF7Mode = true;
             document.body.classList.add('ff7-mode');
@@ -703,25 +722,38 @@
             name.innerText = "CLOUD TEN";
             gil.innerHTML = "GIL: 2,416,895";
             
-            // 「にげる」を押しても tryEscape() を呼び出して逃げられないようにする
             document.getElementById('choices').innerHTML = '<div class="choice-item" onclick="tryEscape()">▶ にげる</div>';
             playSound(1200, 0.5);
 
-            // 敵の攻撃ループ開始 (頻度を上げ、ログを動かし続ける)
             if (enemyAttackTimer) clearInterval(enemyAttackTimer);
             enemyAttackTimer = setInterval(() => {
                 if (currentHP > 0 && isFF7Mode) {
-                    const attacks = [
-                        "TEN: カンストパワーをお見舞いするよ！",
-                        "TEN: 逃がさないって言ったでしょ？",
-                        "TEN: これで終わりかな……？",
-                        "システム：TENの強烈なプレッシャーを感じる！"
-                    ];
-                    const msg = attacks[Math.floor(Math.random() * attacks.length)];
+                    battleTurn++;
+                    let msg = "";
+                    let damage = 800;
+
+                    if (battleTurn === 1) {
+                        msg = "TEN: ここに来たことを後悔させてあげる。";
+                    } else if (currentHP < 3000) {
+                        msg = "TEN: しぶといね……。全力で終わらせるよ！";
+                        damage = 1500;
+                    } else if (battleTurn % 3 === 0) {
+                        msg = "TEN: カンストパワー、思い知りなよ！";
+                        damage = 1200;
+                    } else {
+                        const randomAttacks = [
+                            "TEN: 逃がさないって言ったでしょ？",
+                            "TEN: 無駄な抵抗はやめなよ。",
+                            "システム：TENの強烈なプレッシャーが襲う！",
+                            "TEN: もっと楽しませてくれるかな？"
+                        ];
+                        msg = randomAttacks[Math.floor(Math.random() * randomAttacks.length)];
+                    }
+
                     addChatMsg(msg, false);
-                    takeDamage(600 + Math.floor(Math.random() * 400));
+                    takeDamage(damage + Math.floor(Math.random() * 200));
                 }
-            }, 4000); // 4秒ごとに攻撃
+            }, 4000);
         }
 
         function toggleSubMenu(id) {
