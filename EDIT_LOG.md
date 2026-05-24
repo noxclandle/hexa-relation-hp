@@ -19,6 +19,14 @@
   - Added retro-style click sound (Web Audio API) to the root index.html only.
 - **Notes:** This counts as a new client build and integration.
 
+### 2026-05-24: Add New Portfolio "ten"
+- **Task:** Create a dedicated LP for "ten" with FF14 (Housing) and FF7 (Easter Egg) themes.
+- **Changes:**
+  - Created `save/ten/` directory.
+  - Initialized `save/ten/index.html` with FF14 "Cute House" concept.
+  - Planned FF7 style-swap Easter Egg.
+- **Notes:** This project involves a dynamic theme switch based on a hidden trigger.
+
 ### 2026-05-23: Add New Portfolio "choco"
 - **Task:** Create a dedicated LP for "choco" and replace the test save slot.
 - **Changes:**
