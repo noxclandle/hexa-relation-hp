@@ -117,7 +117,7 @@
             <div class="flex gap-4 mb-4 items-center">
                 <h2 class="mr-auto">▶ 各ページ解析データ</h2>
                 <span class="text-xs opacity-60">並び替え:</span>
-                <button onclick="sortData('id')" class="text-xs border border-green-800 px-2 py-1 hover:bg-green-900">名前</button>
+                <button onclick="sortData('orders')" class="text-xs border border-green-800 px-2 py-1 hover:bg-green-900">依頼数</button>
                 <button onclick="sortData('hits')" class="text-xs border border-green-800 px-2 py-1 hover:bg-green-900">ヒット数</button>
                 <button onclick="sortData('visit')" class="text-xs border border-green-800 px-2 py-1 hover:bg-green-900">最新訪問</button>
             </div>
@@ -125,6 +125,7 @@
                 <thead>
                     <tr>
                         <th>ページ名</th>
+                        <th>依頼数</th>
                         <th>ヒット数</th>
                         <th>最新の訪問（クリックで詳細）</th>
                     </tr>
@@ -173,15 +174,15 @@
         // AUTO_INJECT_END
 
         let currentAnalytics = {};
-        let currentSort = 'id';
+        let currentSort = 'visit'; // Default to visit order
 
         function startAnalytics() {
             db.collection('analytics').onSnapshot((querySnapshot) => {
                 let totalHits = 0;
                 
-                // Reset currentAnalytics with all known IDs (to ensure 0 hits pages are listed)
+                // Initialize currentAnalytics with all known IDs
                 ALL_PAGE_IDS.forEach(id => {
-                    currentAnalytics[id] = { hits: 0, lastVisit: null };
+                    currentAnalytics[id] = { hits: 0, orders: 0, lastVisit: null };
                 });
 
                 querySnapshot.forEach((doc) => {
@@ -195,9 +196,8 @@
                 document.getElementById('total-hits').innerText = totalHits.toLocaleString();
             });
 
-            db.collection('orders').onSnapshot(snap => {
-                document.getElementById('total-orders').innerText = snap.size;
-            });
+            // Keep cumulative orders at 0 for now as requested
+            document.getElementById('total-orders').innerText = "0";
         }
 
         function sortData(type) {
@@ -210,10 +210,14 @@
             tbody.innerHTML = '';
 
             const sortedIds = Object.keys(currentAnalytics).sort((a, b) => {
+                // Priority 1: Nox is always first
+                if (a === 'nox') return -1;
+                if (b === 'nox') return 1;
+
                 const dataA = currentAnalytics[a];
                 const dataB = currentAnalytics[b];
 
-                if (currentSort === 'id') return a.localeCompare(b);
+                if (currentSort === 'orders') return (dataB.orders || 0) - (dataA.orders || 0);
                 if (currentSort === 'hits') return (dataB.hits || 0) - (dataA.hits || 0);
                 if (currentSort === 'visit') {
                     const timeA = dataA.lastVisit ? dataA.lastVisit.toMillis() : 0;
@@ -228,6 +232,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><a href="../save/${id}/" target="_blank" class="hover:underline text-green-400">${id}</a></td>
+                    <td>${data.orders || 0}</td>
                     <td>${data.hits || 0}</td>
                     <td class="cursor-pointer hover:underline text-green-400" onclick="showLogs('${id}')">
                         ${data.lastVisit ? data.lastVisit.toDate().toLocaleString() : '---'}
