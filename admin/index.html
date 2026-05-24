@@ -127,21 +127,6 @@
                     <!-- Real-time data will be injected here -->
                 </tbody>
             </table>
-<!-- AUTO_PORTFOLIO_LIST_START -->
-            <div class="mt-8">
-                <h2 class="text-xl mb-4">▶ ポートフォリオ一覧</h2>
-                <div class="grid grid-cols-2 gap-4">
-                    <a href="../save/choco/" target="_blank" class="border border-green-500 p-4 hover:bg-green-900 transition-colors">
-                        <div class="text-lg font-bold">Hexa Relation | チョコたいちょー Portfolio</div>
-                        <div class="text-xs opacity-60">ID: choco / Unknown Style</div>
-                    </a>
-                    <a href="../save/ten/" target="_blank" class="border border-green-500 p-4 hover:bg-green-900 transition-colors">
-                        <div class="text-lg font-bold">TEN</div>
-                        <div class="text-xs opacity-60">ID: ten / FF14風</div>
-                    </a>
-                </div>
-            </div>
-<!-- AUTO_PORTFOLIO_LIST_END -->
 
             <div class="mt-8 p-4 border border-dashed border-green-800 text-sm">
                 <p>※ Firebase Real-time 連携中...</p>
@@ -190,7 +175,7 @@
 
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td>${id}</td>
+                        <td><a href="../save/${id}/" target="_blank" class="hover:underline text-green-400">${id}</a></td>
                         <td>${data.hits || 0}</td>
                         <td class="cursor-pointer hover:underline text-green-400" onclick="showLogs('${id}')">
                             ${data.lastVisit ? data.lastVisit.toDate().toLocaleString() : '---'}
