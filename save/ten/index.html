@@ -24,7 +24,7 @@
         body {
             margin: 0; padding: 0;
             font-family: 'Noto Sans JP', sans-serif;
-            background-image: url('20190903171453aa0.jpg');
+            background-image: url('bg_eorzea_opt.jpg');
             background-size: cover; background-position: center; background-attachment: fixed;
             color: var(--ff14-text);
             min-height: 100vh; overflow-x: hidden; user-select: none;
@@ -207,7 +207,7 @@
 
     <div id="blackout-overlay" onclick="finalFF7Transition()">
         <div style="margin-bottom: 30px; width: 240px; height: 320px; border: 3px double white; overflow: hidden; background: #000; box-shadow: 0 0 30px rgba(255,255,255,0.2);">
-            <img src="winged.png" alt="Mystery Character" style="width: 100%; height: 100%; object-fit: contain;">
+            <img src="winged_opt.jpg" alt="Mystery Character" style="width: 100%; height: 100%; object-fit: contain;" loading="lazy">
         </div>
         <div class="dialogue-window" style="width: 90%; max-width: 450px; border: 3px double white; background: var(--ff7-blue); border-radius: 0; position: relative;">
             <div class="dialogue-name" style="background: #000080; border: 1px solid white; border-radius: 0; top: -15px;">？？？</div>
@@ -227,7 +227,7 @@
     <div class="main-container">
         <div class="interaction-box">
             <div class="npc-stage">
-                <img src="smile.png" alt="TEN" class="npc-portrait" id="npc-img">
+                <img src="smile_opt.jpg" alt="TEN" class="npc-portrait" id="npc-img" loading="lazy">
             </div>
             <div class="dialogue-wrapper">
                 <div class="dialogue-window">
@@ -247,7 +247,7 @@
         <div class="window">
             <div class="flex items-center gap-5 mb-5">
                 <div class="w-16 h-16 rounded-full border-2 border-white shadow-xl overflow-hidden bg-white">
-                    <img src="IMG_1701.png" alt="TEN" class="w-full h-full object-cover">
+                    <img src="avatar_opt.jpg" alt="TEN" class="w-full h-full object-cover" loading="lazy">
                 </div>
                 <div class="flex-grow">
                     <h1 class="text-xl font-bold uppercase tracking-widest text-slate-800" id="ff7-name">TENPON</h1>
@@ -309,7 +309,7 @@
         </div>
     </div>
 
-    <audio id="bgm-ff7" src="ff7_bgm.mp3" loop></audio>
+    <audio id="bgm-ff7" src="ff7_bgm.m4a" loop></audio>
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -363,18 +363,11 @@
             triggerDuty("TEN'S PORTFOLIO");
             addChatMsg("TEN: 冒険者さん、会えて嬉しいよ！", false);
             
-            // Hit counter & Visitor logging
-            const urlParams = new URLSearchParams(window.location.search);
-            const ref = urlParams.get('ref') || urlParams.get('from') || document.referrer || 'direct';
+            // Hit counter
             db.collection('analytics').doc(PAGE_ID).set({
                 hits: firebase.firestore.FieldValue.increment(1),
                 lastVisit: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true }).catch(err => console.error("Hit counter error:", err));
-
-            db.collection('referrals').doc(PAGE_ID).collection('logs').add({
-                referrer: ref,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
 
             // Sync MIP from Firestore
             db.collection('analytics').doc(PAGE_ID).onSnapshot(doc => {
@@ -420,15 +413,15 @@
             
             if(type === 'activity') {
                 text.innerHTML = "活動して3年になるよ！<br>吟遊詩人として、みんなに楽しい時間を届けるのが私のジョブなんだ。";
-                npcImg.src = "bard.png";
+                npcImg.src = "bard_opt.jpg";
                 addChatMsg("TEN: 3周年アチーブメントを目指してます！", false);
             } else if(type === 'birthday') {
                 text.innerHTML = "誕生日は8月30日！<br>夏真っ盛りの生まれなんだよ。お祝いしてくれると嬉しいな！";
-                npcImg.src = "troubled.png";
+                npcImg.src = "troubled_opt.jpg";
                 addChatMsg("TEN: 誕生日は8月30日だよ！", false);
             } else if(type === 'mystery') {
                 text.innerHTML = "おや、これに興味があるのかい？<br>……あまり深く触れないほうがいいかもしれないよ。";
-                npcImg.src = "polygon.png";
+                npcImg.src = "polygon_opt.jpg";
                 npcImg.onclick = handleMysteryClick;
                 npcImg.style.cursor = "pointer";
                 addChatMsg("システム：不穏な気配を感じる……");
@@ -505,7 +498,7 @@
             const gil = document.getElementById('gil-display');
             
             text.innerHTML = "WARNING!! 隠しボス出現！<br>システムがFF7モードに上書きされました。";
-            npcImg.src = "angry.png";
+            npcImg.src = "angry_opt.jpg";
             npcImg.style.filter = "none";
             npcImg.classList.remove('noise-active');
             
@@ -526,7 +519,7 @@
             npcImg.classList.remove('noise-active');
             
             document.getElementById('dialogue-text').innerHTML = "冒険者さん、こんにちは！<br>私について何か知りたいことはあるかな？";
-            npcImg.src = "smile.png";
+            npcImg.src = "smile_opt.jpg";
             document.getElementById('choices').innerHTML = `
                 <div class="choice-item" onclick="updateDialogue('activity')">活動について聞く</div>
                 <div class="choice-item" onclick="updateDialogue('birthday')">誕生日について聞く</div>

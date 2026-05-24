@@ -25,7 +25,10 @@
   - Created `save/ten/` directory.
   - Initialized `save/ten/index.html` with FF14 "Cute House" concept.
   - Planned FF7 style-swap Easter Egg.
-- **Notes:** This project involves a dynamic theme switch based on a hidden trigger.
+  - **Optimization:** Deleted unused 50MB+ of original PNGs and redundant files.
+  - **Optimization:** Resized and compressed all 11 used images (1500px -> 800px, quality 75%).
+  - **Optimization:** Compressed BGM (14MB MP3 -> 5.7MB M4A) and updated HTML.
+- **Notes:** Total directory size reduced from 68MB to 6.8MB (90% reduction). Sync script executed.
 
 ### 2026-05-23: Add New Portfolio "choco"
 - **Task:** Create a dedicated LP for "choco" and replace the test save slot.
