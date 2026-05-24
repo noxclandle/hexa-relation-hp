@@ -687,16 +687,25 @@
             name.innerText = "CLOUD TEN";
             gil.innerHTML = "GIL: 2,416,895";
             
-            document.getElementById('choices').innerHTML = '<div class="choice-item" onclick="location.reload()">▶ にげる</div>';
+            // 「にげる」を押しても tryEscape() を呼び出して逃げられないようにする
+            document.getElementById('choices').innerHTML = '<div class="choice-item" onclick="tryEscape()">▶ にげる</div>';
             playSound(1200, 0.5);
 
+            // 敵の攻撃ループ開始 (頻度を上げ、ログを動かし続ける)
             if (enemyAttackTimer) clearInterval(enemyAttackTimer);
             enemyAttackTimer = setInterval(() => {
                 if (currentHP > 0 && isFF7Mode) {
-                    addChatMsg("TEN: カンストパワーをお見舞いするよ！", false);
-                    takeDamage(800);
+                    const attacks = [
+                        "TEN: カンストパワーをお見舞いするよ！",
+                        "TEN: 逃がさないって言ったでしょ？",
+                        "TEN: これで終わりかな……？",
+                        "システム：TENの強烈なプレッシャーを感じる！"
+                    ];
+                    const msg = attacks[Math.floor(Math.random() * attacks.length)];
+                    addChatMsg(msg, false);
+                    takeDamage(600 + Math.floor(Math.random() * 400));
                 }
-            }, 6000);
+            }, 4000); // 4秒ごとに攻撃
         }
 
         function toggleSubMenu(id) {
