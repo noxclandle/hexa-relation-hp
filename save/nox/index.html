@@ -203,6 +203,23 @@
             cursor: pointer; text-decoration: underline wavy; animation: pulsePsi 1.5s infinite;
         }
         @keyframes pulsePsi { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        /* Collapsible Intro Style */
+        .collapsible-trigger {
+            cursor: pointer;
+            color: var(--psi-color);
+            text-decoration: underline dotted;
+            transition: opacity 0.2s;
+        }
+        .collapsible-trigger:hover { opacity: 0.8; }
+        .collapsible-content {
+            display: none;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(255,255,255,0.2);
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        .collapsible-content.show { display: block; }
     </style>
 </head>
 <body class="p-4 sm:p-8">
@@ -221,8 +238,10 @@
                 <h2 class="text-xl mb-3 border-b border-white pb-2">▼ ごあんない</h2>
                 <div class="text-sm leading-relaxed space-y-2">
                     <p>ここは Hexa Relation が てがけた<br>「ゲームの世界に住む」ひとびとの<br>ポートフォリオを あつめた 場所です。</p>
-                    <p>セーブデータの中に<br>違うゲームの世界観が 広がっているよ！</p>
-                    <p>各ページに １つ以上<br>イースターエッグが 隠されているよ！<br>みつけられたら その人に<br>お近づきになれるかも？？</p>
+                    <p>セーブデータの中に<br>違うゲームの世界観が <span class="collapsible-trigger" onclick="toggleIntroLore()">広がっているよ！</span></p>
+                    <div id="intro-lore" class="collapsible-content">
+                        <p>各ページに １つ以上<br>イースターエッグが 隠されているよ！<br>みつけられたら その人に<br>お近づきになれるかも？？</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -753,6 +772,12 @@
         function openServiceDetail() {
  document.getElementById('service-detail-view').style.display = 'block'; }
         function closeServiceDetail() { document.getElementById('service-detail-view').style.display = 'none'; }
+
+        function toggleIntroLore() {
+            const lore = document.getElementById('intro-lore');
+            lore.classList.toggle('show');
+            playClickSound();
+        }
 
         function showSubMenu(menuId) {
             ['menu-main', 'menu-goods-list', 'menu-service-info', 'menu-service-order', 'menu-equip-under-construction', 'menu-check-egg', 'menu-talk-quiz', 'menu-talk-yes', 'menu-talk-no'].forEach(id => {
