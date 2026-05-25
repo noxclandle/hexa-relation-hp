@@ -347,6 +347,28 @@
         }
         @keyframes fadeInOut { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
         @keyframes popScale { 0% { transform: scale(0); } 100% { transform: scale(1.5); } }
+
+        /* アチーブメント通知 (右下に移動) */
+        #achievement-popup { 
+            position: fixed; 
+            bottom: 20px; 
+            right: -400px; /* 初期状態は画面外(右) */
+            width: 280px; 
+            background: rgba(0,0,0,0.95); 
+            border: 2px solid gold; 
+            color: gold; 
+            padding: 12px; 
+            border-radius: 8px; 
+            z-index: 10000; 
+            transition: right 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            box-shadow: 0 0 20px rgba(218, 165, 32, 0.4);
+        }
+        #achievement-popup.show { 
+            right: 20px; /* 出現時 */
+        }
     </style>
 </head>
 <body onload="initApp()">
