@@ -19,6 +19,22 @@
   - Added retro-style click sound (Web Audio API) to the root index.html only.
 - **Notes:** This counts as a new client build and integration.
 
+### 2026-05-25: Add New Portfolio "sabanomiso"
+- **Task:** Create a dedicated LP for "さばのみそ" with a DBD (Dead by Daylight) horror theme and professional branding.
+- **Changes:**
+  - Created `save/sabanomiso/index.html` with a dark horror aesthetic (fog effect, custom fonts).
+  - Integrated detailed career history: Cosmetics company -> Carpenter -> Independent Entrepreneur (8th year).
+  - Listed elite qualifications: 1st Class Architect, Formwork Master, Bookkeeping Lvl 1.
+  - Added "Mission / Recruit" section for Athletics coaching, Construction recruitment, and Streaming.
+  - Implemented 3 Easter eggs:
+    - **Portrait Flash:** Click portrait 5 times for Entity's intervention.
+    - **Cursed Totem:** Click "Hex: Totem" for a full-screen horror effect and hidden message.
+    - **Konami Code:** Input `↑↑↓↓` for instant generator repair.
+  - DBD-specific interactive gimmicks: Skill Check Challenge, Generator Repair (Hold-to-progress).
+  - Integrated contact email: weicengsabano@gmail.com.
+  - Updated `scripts/sync_portfolios.js` for "DBD風" support and synchronized indices.
+- **Notes:** Balanced professional recruitment with game-themed entertainment. 3rd client build.
+
 ### 2026-05-24: Add New Portfolio "ten"
 - **Task:** Create a dedicated LP for "ten" with FF14 (Housing) and FF7 (Easter Egg) themes.
 - **Changes:**
