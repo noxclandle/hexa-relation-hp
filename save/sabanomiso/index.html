@@ -38,9 +38,23 @@
         }
         @keyframes fogMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
+        /* Intensified Horror FX */
+        .entity-vignette {
+            position: fixed; inset: 0; pointer-events: none; z-index: 999;
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.98) 100%);
+            animation: pulse-void 8s infinite alternate;
+        }
+        @keyframes pulse-void { from { opacity: 0.8; } to { opacity: 1; } }
+
+        .scratch-overlay {
+            position: fixed; inset: 0; pointer-events: none; z-index: 998;
+            background: url('https://www.transparenttextures.com/patterns/pinstripe.png');
+            opacity: 0.1; mix-blend-mode: screen;
+        }
+
         /* Glassmorphism */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 4px;
             transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
         }
@@ -92,11 +106,19 @@
         .glitch-text { animation: glitch 4s infinite; }
         @keyframes glitch { 0% { transform: skew(0); } 1% { transform: skew(3deg); opacity: 0.8; } 2% { transform: skew(0); opacity: 1; } }
 
+        /* Survivor Symbols */
+        .symbol-bg {
+            position: absolute; font-size: 15rem; opacity: 0.03; font-family: 'Creepster';
+            pointer-events: none; z-index: 0;
+        }
+
     </style>
 </head>
 <body onload="initApp()">
     <div class="moving-fog"></div>
     <div class="fog-overlay"></div>
+    <div class="entity-vignette"></div>
+    <div class="scratch-overlay"></div>
     <div id="notification"></div>
 
     <!-- 0. THE RITE OF DE-MOLDING -->
@@ -115,37 +137,41 @@
         
         <!-- 1. HERO: THE ASCENDED SURVIVOR -->
         <section class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden">
-            <div class="absolute inset-0 opacity-10 pointer-events-none">
-                <img src="entity_opt.png" class="w-full h-full object-cover mix-blend-screen scale-150 rotate-6" style="filter: blur(10px);">
+            <div class="symbol-bg top-0 left-0" style="transform: rotate(-20deg);">BLOOD</div>
+            <div class="symbol-bg bottom-0 right-0" style="transform: rotate(15deg);">ENTITY</div>
+
+            <div class="absolute inset-0 opacity-20 pointer-events-none">
+                <img src="entity_opt.png" class="w-full h-full object-cover mix-blend-screen scale-150 rotate-6" style="filter: blur(15px) sepia(1) hue-rotate(-50deg);">
             </div>
             
             <div class="z-10 text-center">
-                <p class="mono text-tech-cyan mb-8 tracking-[1em] text-[10px] uppercase reveal">Foundation // Independence // Mastery</p>
-                <h1 class="horror-font text-blood-red text-[5rem] md:text-[14rem] leading-none mb-4" style="text-shadow: 10px 10px 0px #000;">SURVIVOR</h1>
+                <p class="mono text-tech-cyan mb-8 tracking-[1.5em] text-[10px] uppercase reveal">Foundation // Independence // Mastery</p>
+                <h1 class="horror-font text-blood-red text-[5rem] md:text-[16rem] leading-none mb-4 glitch-text" style="text-shadow: 15px 15px 0px #000;">SURVIVOR</h1>
                 
                 <div class="flex justify-center gap-8 md:gap-16 mt-16 reveal">
-                    <div class="text-center">
-                        <p class="text-5xl md:text-7xl font-bold mono">13</p>
-                        <p class="text-[9px] mono opacity-30 tracking-[0.3em] mt-2">FORMWORK_CRAFT</p>
+                    <div class="text-center group cursor-help" onclick="showNotify('FIELD EXPERIENCE: 13 YEARS')">
+                        <p class="text-5xl md:text-7xl font-bold mono group-hover:text-tech-cyan transition-colors">13</p>
+                        <p class="text-[9px] mono opacity-30 tracking-[0.3em] mt-2 uppercase">Formwork_Craft</p>
                     </div>
-                    <div class="text-center">
-                        <p class="text-5xl md:text-7xl font-bold mono text-blood-red">08</p>
-                        <p class="text-[9px] mono opacity-30 tracking-[0.3em] mt-2">CEO_GENERATION</p>
+                    <div class="text-center group cursor-help" onclick="showNotify('MANAGEMENT AGE: 8TH GEN')">
+                        <p class="text-5xl md:text-7xl font-bold mono text-blood-red group-hover:scale-110 transition-transform">08</p>
+                        <p class="text-[9px] mono opacity-30 tracking-[0.3em] mt-2 uppercase">CEO_Generation</p>
                     </div>
-                    <div class="text-center">
-                        <p class="text-5xl md:text-7xl font-bold mono">12</p>
-                        <p class="text-[9px] mono opacity-30 tracking-[0.3em] mt-2">ATHLETICS_SOUL</p>
+                    <div class="text-center group cursor-help" onclick="showNotify('ATHLETIC SPIRIT: 12 YEARS')">
+                        <p class="text-5xl md:text-7xl font-bold mono group-hover:text-gold transition-colors">12</p>
+                        <p class="text-[9px] mono opacity-30 tracking-[0.3em] mt-2 uppercase">Athletics_Soul</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- 2. THE MANTRA: KOTSU KOTSU -->
-        <section class="max-w-6xl mx-auto px-6 py-60 grid md:grid-cols-2 gap-24 items-center">
+        <section class="max-w-6xl mx-auto px-6 py-60 grid md:grid-cols-2 gap-24 items-center relative">
+            <div class="symbol-bg top-1/2 left-1/4 opacity-5">FAITH</div>
             <div class="reveal">
                 <span class="text-blood-red mono text-xs tracking-widest block mb-6">ARCHIVE_DATA // PHILOSOPHY</span>
                 <h2 class="text-5xl md:text-8xl font-bold mb-12 leading-tight">
-                    「コツコツが<br>勝つコツ」
+                    「コツコツが<br><span class="text-blood-red glitch-text">勝つコツ</span>」
                 </h2>
                 <div class="space-y-10 text-gray-400 leading-relaxed text-xl">
                     <p>「恩師から授かったこの言葉を、私は一秒たりとも忘れたことはない。仕事も、配信も、そして人生も。地味な積み重ねだけが、霧の向こう側へ辿り着く唯一の手段だ。」</p>
@@ -154,10 +180,11 @@
             </div>
             <div class="relative reveal delay-300">
                 <div class="glass-panel p-4 bg-white/5 relative overflow-hidden group">
-                    <img src="gen_opt.jpg" class="w-full h-auto opacity-70 mix-blend-screen transition-transform duration-[2s] group-hover:scale-110" style="filter: drop-shadow(0 0 30px rgba(175,0,0,0.3));">
+                    <img src="gen_opt.jpg" class="w-full h-auto opacity-70 mix-blend-screen transition-transform duration-[4s] group-hover:scale-125" style="filter: drop-shadow(0 0 30px rgba(175,0,0,0.3)) grayscale(0.5);">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                    <!-- Generator Animation Overlay -->
+                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none bg-red-900/10 animate-pulse"></div>
                 </div>
-                <!-- Interactive Bolt Gimmick -->
                 <div class="absolute -bottom-10 -left-10 glass-panel p-10 max-w-sm border-blood-red/40 bg-black shadow-2xl">
                     <p class="typewriter text-blood-red text-2xl mb-4 italic">真実の形は、脱型の瞬間に。</p>
                     <p class="text-xs text-gray-500 leading-loose">
@@ -168,24 +195,24 @@
         </section>
 
         <!-- 3. STATUS: THE ARSENAL -->
-        <section class="py-60 bg-gradient-to-b from-transparent via-blood-red/5 to-transparent">
+        <section class="py-60 bg-gradient-to-b from-transparent via-blood-red/5 to-transparent relative">
             <div class="max-w-5xl mx-auto px-6 text-center">
                 <span class="text-tech-cyan mono text-xs tracking-widest block mb-10">ELITE_STATUS_DATA</span>
                 <h3 class="horror-font text-6xl md:text-8xl text-white mb-24 opacity-30 reveal">THE_ARSENAL</h3>
                 <div class="flex flex-wrap justify-center gap-10 md:gap-20 reveal">
-                    <div class="badge-slot group" title="一級建築士">
+                    <div class="badge-slot group" onclick="showNotify('ULTRARARE: 1st CLASS ARCHITECT')">
                         <span class="text-3xl filter drop-shadow(0 0 10px #fff)">🏗️</span>
                         <p class="text-[9px] mono mt-4 opacity-50 group-hover:opacity-100">ARCHITECT_1ST</p>
                     </div>
-                    <div class="badge-slot group" title="型枠施工技能士一級">
+                    <div class="badge-slot group" onclick="showNotify('ULTRARARE: FORMWORK MASTER')">
                         <span class="text-3xl filter drop-shadow(0 0 10px #fff)">🧱</span>
                         <p class="text-[9px] mono mt-4 opacity-50 group-hover:opacity-100">FORMWORK_MSTR</p>
                     </div>
-                    <div class="badge-slot group" title="簿記一級">
+                    <div class="badge-slot group" onclick="showNotify('ULTRARARE: BOOKKEEPING LEVEL 1')">
                         <span class="text-3xl filter drop-shadow(0 0 10px #fff)">📈</span>
                         <p class="text-[9px] mono mt-4 opacity-50 group-hover:opacity-100">BOOKKEEPING_L1</p>
                     </div>
-                    <div class="badge-slot group" title="400m Specialist">
+                    <div class="badge-slot group" onclick="showNotify('ELITE: 400M SPECIALIST')">
                         <span class="text-3xl filter drop-shadow(0 0 10px #fff)">🏃</span>
                         <p class="text-[9px] mono mt-4 opacity-50 group-hover:opacity-100">400M_ELITE</p>
                     </div>
@@ -197,18 +224,17 @@
             </div>
         </section>
 
-        <!-- 4. CHRONICLES: FROM DARKNESS TO LIGHT -->
+        <!-- 4. CHRONICLES -->
         <section class="max-w-6xl mx-auto px-6 py-60 relative">
             <span class="text-blood-red mono text-xs tracking-widest block mb-12">CHRONICLES_02 // SURVIVAL</span>
             <div class="space-y-32">
-                
                 <div class="reveal">
-                    <div class="glass-panel p-12 md:p-24 border-l-8 border-l-blood-red relative overflow-hidden">
-                        <div class="absolute -top-10 -right-10 horror-font text-[12rem] opacity-5 pointer-events-none">2013</div>
+                    <div class="glass-panel p-12 md:p-24 border-l-8 border-l-blood-red relative overflow-hidden group">
+                        <div class="absolute -top-10 -right-10 horror-font text-[15rem] opacity-[0.02] pointer-events-none group-hover:opacity-[0.05] transition-opacity">2013</div>
                         <div class="grid md:grid-cols-3 gap-16">
                             <div class="col-span-1">
-                                <p class="mono text-blood-red text-sm mb-4 tracking-widest">PHASE: ORIGIN</p>
-                                <h4 class="text-4xl font-bold mb-6">HS Grad & Indep.</h4>
+                                <p class="mono text-blood-red text-sm mb-4 tracking-widest uppercase">Phase: Origin</p>
+                                <h4 class="text-4xl font-bold mb-6">HS Grad &<br>Darkness</h4>
                                 <p class="text-sm opacity-40">2013年 高校卒業。化粧品会社を経て、上京。23歳で独立。</p>
                             </div>
                             <div class="col-span-2 text-gray-400 text-lg leading-loose">
@@ -219,38 +245,39 @@
                 </div>
 
                 <div class="reveal">
-                    <div class="glass-panel p-12 md:p-24 border-r-8 border-r-tech-cyan text-right">
+                    <div class="glass-panel p-12 md:p-24 border-r-8 border-r-tech-cyan text-right group">
+                        <div class="absolute -top-10 -left-10 horror-font text-[15rem] opacity-[0.02] pointer-events-none group-hover:opacity-[0.05] transition-opacity">WORK</div>
                         <div class="grid md:grid-cols-3 gap-16">
                             <div class="col-span-2 text-gray-400 text-lg leading-loose order-2 md:order-1 text-left md:text-right">
                                 昼だけでは足りず、夜勤もすべて請け負った。不眠不休の日々を「コツコツ」と積み上げ、私はようやく経営の軌道を修正した。成功とは、達成できるかギリギリの目標を定め、それを踏破し続けた先にある報酬だ。
                             </div>
                             <div class="col-span-1 order-1 md:order-2">
-                                <p class="mono text-tech-cyan text-sm mb-4 tracking-widest">PHASE: STABILIZATION</p>
-                                <h4 class="text-4xl font-bold mb-6">The Night Shift</h4>
+                                <p class="mono text-tech-cyan text-sm mb-4 tracking-widest uppercase">Phase: Ascension</p>
+                                <h4 class="text-4xl font-bold mb-6">The Night<br>Shift</h4>
                                 <p class="text-sm opacity-40">霧の追撃を振り切り、ゲートを開く鍵を手に入れた。独立8期目、私はまだ止まらない。</p>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
 
-        <!-- 5. MISSION: THE INDUSTRY REFORM -->
+        <!-- 5. MISSION -->
         <section class="py-60 bg-white/5 relative overflow-hidden">
+            <div class="symbol-bg top-0 left-1/2 opacity-[0.02]">REFORM</div>
             <div class="max-w-4xl mx-auto px-6 text-center reveal">
                 <span class="text-blood-red mono text-xs tracking-widest block mb-12">MISSION_03 // VISION</span>
                 <h3 class="text-5xl md:text-8xl font-bold mb-16 leading-tight">
-                    若手が、<br><span class="text-tech-cyan">呼吸できる業界へ。</span>
+                    若手が、<br><span class="text-tech-cyan glitch-text">呼吸できる業界へ。</span>
                 </h3>
                 <div class="space-y-10 text-gray-400 text-xl leading-relaxed">
-                    <p>「建設業界の古い常識を壊し、若手が働きやすく、福利厚生も充実した場所を創りたい。」</p>
+                    <p>「建設業界の古い常識を壊し、若手が働きやすい環境、福利厚生が充実した場所を創りたい。」</p>
                     <p>平均年齢が低く、しがらみのないフラットな組織。上下関係よりもコミュニケーションを。私は未来の職人たちのための、霧の中の「セーフハウス」を構築する。一つ一つ丁寧な仕事で、足元を救われぬよう歩む。</p>
                 </div>
             </div>
         </section>
 
-        <!-- 6. THE STREAM: ENERGY SHARING -->
+        <!-- 6. THE STREAM -->
         <section class="max-w-6xl mx-auto px-6 py-60">
             <div class="grid md:grid-cols-2 gap-20 items-center">
                 <div class="reveal">
@@ -265,10 +292,11 @@
                         <a href="https://x.com/sabanomiso1218" target="_blank" class="glass-panel px-10 py-5 mono text-xs hover:bg-tech-cyan transition-all">X_DATA_SYNCED</a>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4 reveal delay-400">
+                <div class="grid grid-cols-2 gap-4 reveal delay-400 relative">
+                    <div class="symbol-bg -top-20 -right-10 opacity-10">LIFE</div>
                     <div class="glass-panel p-10 text-center"><div class="text-4xl mb-4">🏕️</div><p class="mono text-[10px] opacity-40">CAMPING</p></div>
                     <div class="glass-panel p-10 text-center"><div class="text-4xl mb-4">🚗</div><p class="mono text-[10px] opacity-40">DRIVING</p></div>
-                    <div class="glass-panel p-10 text-center col-span-2"><div class="text-4xl mb-4">🎮</div><p class="mono text-[10px] opacity-40">DEAD_BY_DAYLIGHT</p></div>
+                    <div class="glass-panel p-10 text-center col-span-2"><div class="text-4xl mb-4">🎮</div><p class="mono text-[10px] opacity-40 uppercase tracking-widest">Dead_By_Daylight</p></div>
                 </div>
             </div>
         </section>
@@ -297,8 +325,8 @@
                         <input type="text" id="form-name" required class="input-box" placeholder="IDENTITY / 名前">
                         <input type="email" id="form-email" required class="input-box" placeholder="CHANNEL / メールアドレス">
                         <select id="form-type" class="input-box">
-                            <option value="Recruitment">型枠大工への応募 / 経営修業</option>
-                            <option value="Coaching">陸上コーチング依頼</option>
+                            <option value="Construction">型枠大工への応募 / 経営修業</option>
+                            <option value="Coaching">陸上コーチング希望</option>
                             <option value="Streaming">配信コラボ / その他</option>
                         </select>
                         <textarea id="form-message" required class="input-box h-48" placeholder="YOUR WILL / 魂のメッセージ"></textarea>
@@ -310,8 +338,8 @@
 
         <!-- FOOTER -->
         <footer class="py-20 border-t border-white/5 text-center">
-            <p class="text-[10px] mono opacity-10 tracking-[1.5em] mb-4">THE_ARCHITECTURE_OF_SURVIVAL</p>
-            <p class="text-[8px] mono opacity-10 uppercase tracking-widest">PROJECT: HEXA RELATION // SABANO_MASTER_V2 // &copy; 2026</p>
+            <p class="text-[10px] mono opacity-10 tracking-[1.5em] mb-4 uppercase">The_Architecture_of_Survival</p>
+            <p class="text-[8px] mono opacity-10 uppercase tracking-widest">Project: Hexa Relation // Official_Save_Sabano // &copy; 2026</p>
         </footer>
 
     </div>
@@ -331,7 +359,7 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const PAGE_ID = 'sabanomiso-v2';
+        const PAGE_ID = 'sabanomiso';
 
         let audioCtx;
         function getAudioCtx() {
@@ -345,8 +373,8 @@
             const gain = ctx.createGain();
             osc.connect(gain); gain.connect(ctx.destination);
             osc.type = 'square';
-            osc.frequency.setValueAtTime(140, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.6);
+            osc.frequency.setValueAtTime(120, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.6);
             gain.gain.setValueAtTime(0.2, ctx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
             osc.start(); osc.stop(ctx.currentTime + 0.6);
@@ -388,7 +416,7 @@
 
             const payload = {
                 embeds: [{
-                    title: "🔔 SABANOMISO-V2 新着コンタクト",
+                    title: "🔔 SABANO 新着コンタクト",
                     color: 0xaf0000,
                     fields: [
                         { name: "Identity", value: document.getElementById('form-name').value, inline: true },
