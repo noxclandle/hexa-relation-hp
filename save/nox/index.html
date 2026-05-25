@@ -215,6 +215,17 @@
     </div>
 
     <main>
+        <!-- ① ハブ紹介 & 製作者クレジット -->
+        <div class="mother-window">
+            <div class="mother-window-inner">
+                <h2 class="text-xl mb-3 border-b border-white pb-2">▼ ごあんない</h2>
+                <div class="text-sm leading-relaxed space-y-2">
+                    <p>ここは Hexa Relation が てがけた<br>「ゲームの世界に住む」ひとびとの<br>ポートフォリオを あつめた 場所です。</p>
+                    <p class="text-xs opacity-70">【 Developer: Nox 】</p>
+                </div>
+            </div>
+        </div>
+
         <!-- ② ステータス -->
         <div class="mother-window">
             <div class="mother-window-inner">
@@ -280,8 +291,26 @@
                 <div id="menu-main" class="flex flex-col gap-3">
                     <div class="command-item text-2xl" onclick="showSubMenu('menu-goods-list')"><span class="command-cursor">▶︎</span>グッズ・いらい をみる</div>
                     <div class="command-item text-2xl" onclick="showSubMenu('menu-check-egg')"><span class="command-cursor">▶︎</span>チェック</div>
-                    <a href="../../order/index.html?from=nox" class="command-item text-2xl"><span class="command-cursor">▶︎</span>はなす</a>
+                    <div class="command-item text-2xl" onclick="showSubMenu('menu-talk-quiz')"><span class="command-cursor">▶︎</span>はなす</div>
                     <a href="../../" class="command-item text-2xl opacity-60"><span class="command-cursor">▶︎</span>にげる</a>
+                </div>
+
+                <div id="menu-talk-quiz" class="hidden flex flex-col gap-3">
+                    <p class="text-lg mb-2">アルプスの しょうじょ<br>ハイ○ジ？</p>
+                    <div class="flex flex-col gap-2">
+                        <div class="command-item text-2xl" onclick="showSubMenu('menu-talk-yes')"><span class="command-cursor">▶︎</span>はい</div>
+                        <div class="command-item text-2xl" onclick="showSubMenu('menu-talk-no')"><span class="command-cursor">▶︎</span>いいえ</div>
+                    </div>
+                </div>
+
+                <div id="menu-talk-yes" class="hidden flex flex-col gap-3">
+                    <p class="text-lg mb-2">よくやってるね！<br>ぼくは スターマンが すきだよ！</p>
+                    <div class="command-item text-xl" onclick="showSubMenu('menu-main')"><span class="command-cursor">▶︎</span>もどる</div>
+                </div>
+
+                <div id="menu-talk-no" class="hidden flex flex-col gap-3">
+                    <p class="text-lg mb-2 text-red-500">すとろんぐ所長に<br>しばかれろ！</p>
+                    <div class="command-item text-xl" onclick="showSubMenu('menu-main')"><span class="command-cursor">▶︎</span>もどる</div>
                 </div>
 
                 <div id="menu-check-egg" class="hidden flex flex-col gap-3">
@@ -725,7 +754,7 @@
         function closeServiceDetail() { document.getElementById('service-detail-view').style.display = 'none'; }
 
         function showSubMenu(menuId) {
-            ['menu-main', 'menu-goods-list', 'menu-service-info', 'menu-service-order', 'menu-equip-under-construction', 'menu-check-egg'].forEach(id => {
+            ['menu-main', 'menu-goods-list', 'menu-service-info', 'menu-service-order', 'menu-equip-under-construction', 'menu-check-egg', 'menu-talk-quiz', 'menu-talk-yes', 'menu-talk-no'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
