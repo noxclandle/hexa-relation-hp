@@ -5,376 +5,436 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SABANOMISO - Portfolio (DBD風)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Noto+Sans+JP:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Noto+Sans+JP:wght@100;300;400;700&family=Special+Elite&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --dbd-red: #8b0000;
-            --dbd-black: #050505;
-            --dbd-gray: #1a1a1a;
-            --dbd-text: #d1d1d1;
+            --blood-red: #af0000;
+            --tech-cyan: #00f2ff;
+            --gold: #d4af37;
+            --dark-void: #030305;
+            --concrete: #2c2c2e;
         }
 
+        * { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="4" fill="none" stroke="%23af0000" stroke-width="1"/></svg>') 10 10, auto; }
+
         body {
-            margin: 0; padding: 0;
-            font-family: 'Noto Sans JP', sans-serif;
-            background-color: #000;
-            color: var(--dbd-text);
-            min-height: 100vh; overflow: hidden;
+            margin: 0; padding: 0; background-color: var(--dark-void); color: #fff;
+            font-family: 'Noto Sans JP', sans-serif; overflow-x: hidden; scroll-behavior: smooth;
         }
 
         .horror-font { font-family: 'Creepster', cursive; }
-        .typewriter-font { font-family: 'Special Elite', cursive; }
+        .mono { font-family: 'Share Tech Mono', monospace; }
+        .typewriter { font-family: 'Special Elite', cursive; }
 
-        /* Fog Effect */
-        .fog-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; overflow: hidden; pointer-events: none;
+        /* Background FX */
+        .fog-overlay {
+            position: fixed; inset: 0; z-index: 5; pointer-events: none;
+            background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.9) 100%);
         }
-        .fog {
-            position: absolute; width: 200%; height: 100%;
-            background-image: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
-            opacity: 0.15;
-            animation: drift 60s linear infinite;
+        .moving-fog {
+            position: fixed; top: 0; left: 0; width: 200%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+            opacity: 0.1; z-index: 2; animation: fogMove 60s linear infinite; pointer-events: none;
         }
-        @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @keyframes fogMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* ABSOLUTE HIDING FOR INITIAL STATE */
-        .hidden-initially {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 4px;
+            transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
         }
+        .glass-panel:hover { border-color: var(--blood-red); box-shadow: 0 0 40px rgba(175,0,0,0.2); transform: translateY(-5px); }
 
-        #initial-unlock-screen {
-            position: fixed; inset: 0; background: #000; z-index: 50000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            cursor: pointer;
+        /* Reveal Animation */
+        .reveal { opacity: 0; transform: translateY(50px); transition: 1.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Interactive Rivets (Easter Egg) */
+        .rivet {
+            width: 10px; height: 10px; background: #333; border-radius: 50%;
+            box-shadow: inset 2px 2px 5px #000, 1px 1px 2px rgba(255,255,255,0.1);
+            cursor: pointer; position: absolute; transition: 0.3s;
         }
+        .rivet:hover { background: var(--blood-red); box-shadow: 0 0 10px var(--blood-red); }
 
-        #entry-overlay {
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--blood-red); }
+
+        #intro-gate {
             position: fixed; inset: 0; background: #000; z-index: 10000;
-            display: none; flex-direction: column; justify-content: center; align-items: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            cursor: pointer; transition: opacity 2s ease;
         }
 
-        #entry-gen-container {
-            position: relative; width: min(90vw, 550px); height: min(90vw, 550px);
-            display: flex; justify-content: center; align-items: center;
-            margin-bottom: 20px;
+        .badge-slot {
+            width: 110px; height: 125px; background: #0a0a0a;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border: 1px solid #333; transition: 0.5s;
         }
-        #entry-gen-img {
-            width: 75%; height: auto; z-index: 5;
-            filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.5));
-            mix-blend-mode: screen;
+        .badge-slot:hover { border-color: var(--gold); transform: scale(1.1) rotate(5deg); background: #111; }
+
+        .input-box {
+            width: 100%; background: rgba(0,0,0,0.6); border: 1px solid #222;
+            padding: 1.2rem; color: #fff; transition: 0.4s; font-family: 'Share Tech Mono', monospace;
+        }
+        .input-box:focus { border-color: var(--blood-red); outline: none; box-shadow: 0 0 20px rgba(175,0,0,0.3); }
+
+        #notification {
+            position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
+            z-index: 50000; font-size: 1.2rem; padding: 1rem 2rem;
+            background: rgba(0,0,0,0.9); border: 1px solid var(--blood-red);
+            color: #fff; display: none; text-align: center;
         }
 
-        /* Skill Check Gimmick */
-        #skill-check-container {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 100%; height: 100%; z-index: 11000;
-            display: none; align-items: center; justify-content: center;
-        }
-        .skill-check-circle {
-            width: 100%; height: 100%; border: 12px solid rgba(255,255,255,0.1);
-            border-radius: 50%; position: relative;
-        }
-        .skill-check-zone {
-            position: absolute; inset: -12px; border: 12px solid #ffa500; 
-            border-radius: 50%; clip-path: polygon(50% 50%, 50% 0, 52% 0, 53% 1%); /* Extremely narrow */
-            filter: drop-shadow(0 0 10px #ffa500);
-        }
-        .skill-check-great {
-            position: absolute; inset: -12px; border: 12px solid #fff; 
-            border-radius: 50%; clip-path: polygon(50% 50%, 50% 0, 51% 0, 51% 0.5%); /* Near impossible */
-            z-index: 12000;
-        }
-        .skill-check-needle {
-            position: absolute; top: 0; left: 50%; width: 6px; height: 50%;
-            background: #fff; transform-origin: bottom center; transform: translateX(-50%) rotate(0deg);
-            box-shadow: 0 0 20px #fff;
-        }
+        .glitch-text { animation: glitch 4s infinite; }
+        @keyframes glitch { 0% { transform: skew(0); } 1% { transform: skew(3deg); opacity: 0.8; } 2% { transform: skew(0); opacity: 1; } }
 
-        #entity-mockery {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 30000;
-            display: none; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 1s ease-in; cursor: pointer;
-        }
-        #entity-img { max-width: 90%; max-height: 70%; mix-blend-mode: screen; filter: drop-shadow(0 0 40px #f00); opacity: 0.8; }
-        .entity-text { color: #fff; font-size: 22px; text-align: center; text-shadow: 0 0 10px #f00; padding: 20px; font-weight: bold; }
-
-        .main-container {
-            width: 100%; max-width: 480px; margin: 0 auto; padding: 20px;
-            display: none;
-        }
-
-        .dbd-window {
-            background: rgba(10, 10, 10, 0.9); border: 2px solid #333;
-            border-left: 5px solid var(--dbd-red); padding: 20px; margin-bottom: 25px;
-        }
-        .portrait-wrapper {
-            width: 100%; height: 350px; background: #111; border-bottom: 3px solid var(--dbd-red);
-            margin-bottom: 20px; overflow: hidden; display: flex; justify-content: center; align-items: flex-end;
-        }
-        .portrait-img { max-height: 100%; width: auto; mix-blend-mode: screen; filter: grayscale(0.2) contrast(1.1); }
-        .status-badge { background: #222; border: 1px solid var(--dbd-red); padding: 4px 10px; font-size: 10px; border-radius: 4px; display: inline-block; margin: 2px; }
-        .blood-node { background: #111; border: 1px solid #444; padding: 15px; border-radius: 50% 0 50% 0; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
-        .blood-node:hover { border-color: var(--dbd-red); background: #200; }
-        #notification { position: fixed; top: 20%; left: 50%; transform: translateX(-50%); z-index: 40000; font-size: 24px; font-weight: bold; color: #fff; text-shadow: 0 0 10px #000; display: none; }
     </style>
 </head>
 <body onload="initApp()">
-    <div id="initial-unlock-screen" onclick="startExperience()">
-        <div class="horror-font text-white text-4xl mb-4" style="letter-spacing: 0.5em;">ENTER THE MIST</div>
-        <div class="typewriter-font text-white opacity-30 text-xs animate-pulse">[ CLICK ANYWHERE ]</div>
-    </div>
-
-    <div class="fog-container"><div class="fog"></div></div>
+    <div class="moving-fog"></div>
+    <div class="fog-overlay"></div>
     <div id="notification"></div>
 
-    <!-- Entry Challenge -->
-    <div id="entry-overlay">
-        <div id="entry-gen-container">
-            <img src="gen_opt.jpg" id="entry-gen-img" alt="Generator">
-            <div id="skill-check-container">
-                <div class="skill-check-circle">
-                    <div class="skill-check-zone" id="sc-zone"></div>
-                    <div class="skill-check-great" id="sc-great"></div>
-                    <div class="skill-check-needle" id="sc-needle"></div>
-                </div>
-            </div>
-        </div>
-        <div class="typewriter-font text-white opacity-50 text-sm">REPAIRING...</div>
-        <div style="font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 20px;">[SPACE] or [TAP] TO TRIGGER</div>
+    <!-- 0. THE RITE OF DE-MOLDING -->
+    <div id="intro-gate" onclick="unlockRite()">
+        <div class="rivet" style="top: 20px; left: 20px;" onclick="eggTrigger(event)"></div>
+        <div class="rivet" style="top: 20px; right: 20px;" onclick="eggTrigger(event)"></div>
+        <div class="rivet" style="bottom: 20px; left: 20px;" onclick="eggTrigger(event)"></div>
+        <div class="rivet" style="bottom: 20px; right: 20px;" onclick="eggTrigger(event)"></div>
+        
+        <div class="horror-font text-blood-red text-7xl md:text-[12rem] tracking-widest glitch-text mb-8">SABANO</div>
+        <div class="typewriter text-white/40 text-sm tracking-[0.5em] animate-pulse">TRUE_FORM_EXTRACTION</div>
+        <div class="mt-24 text-[9px] mono text-white/20 uppercase tracking-[1.5em] animate-bounce">[ CLICK TO DE-MOLD THE REALITY ]</div>
     </div>
 
-    <!-- Entity Failure Screen -->
-    <div id="entity-mockery" onclick="enterLP()">
-        <img src="entity_opt.png" id="entity-img" alt="Entity">
-        <div class="entity-text horror-font" id="mockery-text"></div>
-        <div class="text-white opacity-30 text-xs mt-10">[ CLICK TO SURVIVE ]</div>
-    </div>
-
-    <!-- Entity Success Screen -->
-    <div id="entity-success" onclick="enterLP()" style="position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 30000; display: none !important; flex-direction: column; justify-content: center; align-items: center; opacity: 0; transition: opacity 1s ease-in; cursor: pointer;">
-        <img src="entity_opt.png" style="max-width: 90%; max-height: 70%; mix-blend-mode: screen; filter: drop-shadow(0 0 40px #0f0); opacity: 0.8;" alt="Entity">
-        <div class="entity-text horror-font" id="success-text" style="color: #fff; font-size: 22px; text-align: center; text-shadow: 0 0 10px #0f0; padding: 20px; font-weight: bold;"></div>
-        <div class="text-white opacity-30 text-xs mt-10">[ CLICK TO PROCEED ]</div>
-    </div>
-
-    <!-- Main Content (STRICTLY HIDDEN) -->
-    <div class="main-container hidden-initially" id="main-lp">
-        <div class="portrait-wrapper">
-            <img src="entity_opt.png" alt="Sabanomiso" class="portrait-img">
-        </div>
-
-        <div class="dbd-window">
-            <h1 class="horror-font text-4xl mb-1 text-red-700">SABANOMISO</h1>
-            <p class="typewriter-font text-xs opacity-60 mb-4 tracking-widest">SURVIVOR / ENTREPRENEUR</p>
-            <div class="flex flex-wrap gap-1 mb-4">
-                <span class="status-badge">Prestige 100</span>
-                <span class="status-badge">1st Class Architect</span>
-                <span class="status-badge">Formwork Master</span>
-                <span class="status-badge">Bookkeeping Lvl 1</span>
-            </div>
-            <p class="text-sm italic border-l-2 border-red-900 pl-4">
-                「型枠を組み、未来を築く。霧の中でも、確かな構造を。」
-            </p>
-        </div>
-
-        <div class="dbd-window">
-            <h2 class="typewriter-font text-lg mb-4 text-red-500">CAREER ARCHIVE</h2>
-            <div class="text-xs space-y-2">
-                <div><span class="text-red-700 font-bold">STAGE 1</span> 高等学校 卒業</div>
-                <div><span class="text-red-700 font-bold">STAGE 2</span> 化粧品会社 入社</div>
-                <div><span class="text-red-700 font-bold">STAGE 3</span> 上京、型枠大工の世界へ</div>
-                <div><span class="text-red-700 font-bold">STAGE 4</span> 23歳で独立（現在8期目）</div>
-            </div>
-        </div>
-
-        <div class="dbd-window">
-            <h2 class="typewriter-font text-lg mb-4 text-red-500">MISSION / RECRUIT</h2>
-            <div class="text-sm space-y-4">
-                <div class="border-b border-gray-800 pb-2">
-                    <p class="font-bold">🏃 陸上コーチング</p>
-                    <p class="text-xs opacity-70">競技歴12年。本気で速くなりたい人を募集中。</p>
-                </div>
-                <div class="border-b border-gray-800 pb-2">
-                    <p class="font-bold">🏗️ 型枠大工 募集中</p>
-                    <p class="text-xs opacity-70">職人・経営志望歓迎。8期目の技術を伝承。</p>
-                </div>
+    <div id="main-content" style="opacity: 0; transition: opacity 3s ease;">
+        
+        <!-- 1. HERO: THE ASCENDED SURVIVOR -->
+        <section class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 pointer-events-none">
+                <img src="entity_opt.png" class="w-full h-full object-cover mix-blend-screen scale-150 rotate-6" style="filter: blur(10px);">
             </div>
             
-            <form action="https://formspree.io/f/mqakvjnd" method="POST" class="mt-6 space-y-3">
-                <div>
-                    <label class="text-[10px] uppercase opacity-50 block mb-1">Survivor Name</label>
-                    <input type="text" name="name" required class="w-full bg-black border border-gray-800 p-2 text-sm focus:border-red-700 outline-none transition" placeholder="名前">
+            <div class="z-10 text-center">
+                <p class="mono text-tech-cyan mb-8 tracking-[1em] text-[10px] uppercase reveal">Foundation // Independence // Mastery</p>
+                <h1 class="horror-font text-blood-red text-[5rem] md:text-[14rem] leading-none mb-4" style="text-shadow: 10px 10px 0px #000;">SURVIVOR</h1>
+                
+                <div class="flex justify-center gap-8 md:gap-16 mt-16 reveal">
+                    <div class="text-center">
+                        <p class="text-5xl md:text-7xl font-bold mono">13</p>
+                        <p class="text-[9px] mono opacity-30 tracking-[0.3em] mt-2">FORMWORK_CRAFT</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-5xl md:text-7xl font-bold mono text-blood-red">08</p>
+                        <p class="text-[9px] mono opacity-30 tracking-[0.3em] mt-2">CEO_GENERATION</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-5xl md:text-7xl font-bold mono">12</p>
+                        <p class="text-[9px] mono opacity-30 tracking-[0.3em] mt-2">ATHLETICS_SOUL</p>
+                    </div>
                 </div>
-                <div>
-                    <label class="text-[10px] uppercase opacity-50 block mb-1">Communication Channel</label>
-                    <input type="email" name="email" required class="w-full bg-black border border-gray-800 p-2 text-sm focus:border-red-700 outline-none transition" placeholder="メールアドレス">
-                </div>
-                <div>
-                    <label class="text-[10px] uppercase opacity-50 block mb-1">Message for Sabano</label>
-                    <textarea name="message" required class="w-full bg-black border border-gray-800 p-2 text-sm focus:border-red-700 outline-none transition h-24" placeholder="お問い合わせ内容"></textarea>
-                </div>
-                <button type="submit" class="block w-full bg-white text-black font-bold py-3 rounded transition hover:bg-red-700 hover:text-white">SEND MESSAGE</button>
-            </form>
-        </div>
+            </div>
+        </section>
 
-        <div class="dbd-window">
-            <h2 class="typewriter-font text-lg mb-4 text-red-500">BLOODWEB</h2>
-            <div class="blood-node" onclick="window.open('https://x.com/sabanomiso1218', '_blank')">
-                <span>🕊️</span> <div><div class="font-bold">X (Twitter)</div><div class="text-[10px] opacity-50">Daily Logs</div></div>
+        <!-- 2. THE MANTRA: KOTSU KOTSU -->
+        <section class="max-w-6xl mx-auto px-6 py-60 grid md:grid-cols-2 gap-24 items-center">
+            <div class="reveal">
+                <span class="text-blood-red mono text-xs tracking-widest block mb-6">ARCHIVE_DATA // PHILOSOPHY</span>
+                <h2 class="text-5xl md:text-8xl font-bold mb-12 leading-tight">
+                    「コツコツが<br>勝つコツ」
+                </h2>
+                <div class="space-y-10 text-gray-400 leading-relaxed text-xl">
+                    <p>「恩師から授かったこの言葉を、私は一秒たりとも忘れたことはない。仕事も、配信も、そして人生も。地味な積み重ねだけが、霧の向こう側へ辿り着く唯一の手段だ。」</p>
+                    <p>自分が建てた枠にコンクリートを流し、脱型した瞬間に建物の真実の形が現れる。あの瞬間の誇りのために、私は「嘘のない世界」を築き続ける。</p>
+                </div>
             </div>
-            <div class="blood-node" onclick="window.open('https://www.youtube.com/@さばの味噌', '_blank')">
-                <span>📺</span> <div><div class="font-bold">YouTube</div><div class="text-[10px] opacity-50">Live Stream</div></div>
+            <div class="relative reveal delay-300">
+                <div class="glass-panel p-4 bg-white/5 relative overflow-hidden group">
+                    <img src="gen_opt.jpg" class="w-full h-auto opacity-70 mix-blend-screen transition-transform duration-[2s] group-hover:scale-110" style="filter: drop-shadow(0 0 30px rgba(175,0,0,0.3));">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                </div>
+                <!-- Interactive Bolt Gimmick -->
+                <div class="absolute -bottom-10 -left-10 glass-panel p-10 max-w-sm border-blood-red/40 bg-black shadow-2xl">
+                    <p class="typewriter text-blood-red text-2xl mb-4 italic">真実の形は、脱型の瞬間に。</p>
+                    <p class="text-xs text-gray-500 leading-loose">
+                        型枠大工歴13年。一級建築士としての視点。すべての工程に妥協はない。
+                    </p>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- 3. STATUS: THE ARSENAL -->
+        <section class="py-60 bg-gradient-to-b from-transparent via-blood-red/5 to-transparent">
+            <div class="max-w-5xl mx-auto px-6 text-center">
+                <span class="text-tech-cyan mono text-xs tracking-widest block mb-10">ELITE_STATUS_DATA</span>
+                <h3 class="horror-font text-6xl md:text-8xl text-white mb-24 opacity-30 reveal">THE_ARSENAL</h3>
+                <div class="flex flex-wrap justify-center gap-10 md:gap-20 reveal">
+                    <div class="badge-slot group" title="一級建築士">
+                        <span class="text-3xl filter drop-shadow(0 0 10px #fff)">🏗️</span>
+                        <p class="text-[9px] mono mt-4 opacity-50 group-hover:opacity-100">ARCHITECT_1ST</p>
+                    </div>
+                    <div class="badge-slot group" title="型枠施工技能士一級">
+                        <span class="text-3xl filter drop-shadow(0 0 10px #fff)">🧱</span>
+                        <p class="text-[9px] mono mt-4 opacity-50 group-hover:opacity-100">FORMWORK_MSTR</p>
+                    </div>
+                    <div class="badge-slot group" title="簿記一級">
+                        <span class="text-3xl filter drop-shadow(0 0 10px #fff)">📈</span>
+                        <p class="text-[9px] mono mt-4 opacity-50 group-hover:opacity-100">BOOKKEEPING_L1</p>
+                    </div>
+                    <div class="badge-slot group" title="400m Specialist">
+                        <span class="text-3xl filter drop-shadow(0 0 10px #fff)">🏃</span>
+                        <p class="text-[9px] mono mt-4 opacity-50 group-hover:opacity-100">400M_ELITE</p>
+                    </div>
+                </div>
+                <p class="mt-20 text-gray-500 typewriter text-sm max-w-2xl mx-auto leading-loose">
+                    「勉強は苦手だ」。だからこそ、1日1ページを8年続けた。<br>
+                    やりたくない意識を殺した先に、この設計図がある。
+                </p>
+            </div>
+        </section>
+
+        <!-- 4. CHRONICLES: FROM DARKNESS TO LIGHT -->
+        <section class="max-w-6xl mx-auto px-6 py-60 relative">
+            <span class="text-blood-red mono text-xs tracking-widest block mb-12">CHRONICLES_02 // SURVIVAL</span>
+            <div class="space-y-32">
+                
+                <div class="reveal">
+                    <div class="glass-panel p-12 md:p-24 border-l-8 border-l-blood-red relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 horror-font text-[12rem] opacity-5 pointer-events-none">2013</div>
+                        <div class="grid md:grid-cols-3 gap-16">
+                            <div class="col-span-1">
+                                <p class="mono text-blood-red text-sm mb-4 tracking-widest">PHASE: ORIGIN</p>
+                                <h4 class="text-4xl font-bold mb-6">HS Grad & Indep.</h4>
+                                <p class="text-sm opacity-40">2013年 高校卒業。化粧品会社を経て、上京。23歳で独立。</p>
+                            </div>
+                            <div class="col-span-2 text-gray-400 text-lg leading-loose">
+                                「これ以上成長できない」。師匠と同じレベルに達した確信が、私を独立へと駆り立てた。しかし待っていたのは、手元に1円も残らない地獄の借金生活。1期から3期まで、私は生ける屍のように、昼夜問わず現場を回した。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal">
+                    <div class="glass-panel p-12 md:p-24 border-r-8 border-r-tech-cyan text-right">
+                        <div class="grid md:grid-cols-3 gap-16">
+                            <div class="col-span-2 text-gray-400 text-lg leading-loose order-2 md:order-1 text-left md:text-right">
+                                昼だけでは足りず、夜勤もすべて請け負った。不眠不休の日々を「コツコツ」と積み上げ、私はようやく経営の軌道を修正した。成功とは、達成できるかギリギリの目標を定め、それを踏破し続けた先にある報酬だ。
+                            </div>
+                            <div class="col-span-1 order-1 md:order-2">
+                                <p class="mono text-tech-cyan text-sm mb-4 tracking-widest">PHASE: STABILIZATION</p>
+                                <h4 class="text-4xl font-bold mb-6">The Night Shift</h4>
+                                <p class="text-sm opacity-40">霧の追撃を振り切り、ゲートを開く鍵を手に入れた。独立8期目、私はまだ止まらない。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. MISSION: THE INDUSTRY REFORM -->
+        <section class="py-60 bg-white/5 relative overflow-hidden">
+            <div class="max-w-4xl mx-auto px-6 text-center reveal">
+                <span class="text-blood-red mono text-xs tracking-widest block mb-12">MISSION_03 // VISION</span>
+                <h3 class="text-5xl md:text-8xl font-bold mb-16 leading-tight">
+                    若手が、<br><span class="text-tech-cyan">呼吸できる業界へ。</span>
+                </h3>
+                <div class="space-y-10 text-gray-400 text-xl leading-relaxed">
+                    <p>「建設業界の古い常識を壊し、若手が働きやすく、福利厚生も充実した場所を創りたい。」</p>
+                    <p>平均年齢が低く、しがらみのないフラットな組織。上下関係よりもコミュニケーションを。私は未来の職人たちのための、霧の中の「セーフハウス」を構築する。一つ一つ丁寧な仕事で、足元を救われぬよう歩む。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. THE STREAM: ENERGY SHARING -->
+        <section class="max-w-6xl mx-auto px-6 py-60">
+            <div class="grid md:grid-cols-2 gap-20 items-center">
+                <div class="reveal">
+                    <span class="text-blood-red mono text-xs tracking-widest block mb-10">CONNECT_04 // ENTERTAINMENT</span>
+                    <h3 class="horror-font text-6xl text-white mb-10">KIRINOMORI_BROADCAST</h3>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-8">
+                        「嫌なことがあった時、私の配信を見て元気になってほしい。」<br>
+                        DBDの霧の森で、リスナーと同じ目線で楽しみ、共に元気を分かち合う。経営者としての裏話や哲学を「包み隠さず」共有する、唯一無二の接続ポイント。視野を広げ、人を観察する目を養う場。
+                    </p>
+                    <div class="flex flex-wrap gap-6">
+                        <a href="https://www.youtube.com/@さばの味噌" target="_blank" class="glass-panel px-10 py-5 mono text-xs hover:bg-blood-red transition-all">YT_SIGNAL_LIVE</a>
+                        <a href="https://x.com/sabanomiso1218" target="_blank" class="glass-panel px-10 py-5 mono text-xs hover:bg-tech-cyan transition-all">X_DATA_SYNCED</a>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 reveal delay-400">
+                    <div class="glass-panel p-10 text-center"><div class="text-4xl mb-4">🏕️</div><p class="mono text-[10px] opacity-40">CAMPING</p></div>
+                    <div class="glass-panel p-10 text-center"><div class="text-4xl mb-4">🚗</div><p class="mono text-[10px] opacity-40">DRIVING</p></div>
+                    <div class="glass-panel p-10 text-center col-span-2"><div class="text-4xl mb-4">🎮</div><p class="mono text-[10px] opacity-40">DEAD_BY_DAYLIGHT</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. PACT: THE COVENANT -->
+        <section class="max-w-5xl mx-auto px-6 py-60" id="contact">
+            <div class="glass-panel p-12 md:p-32 relative border-2 border-blood-red/20 shadow-2xl">
+                <div class="absolute -top-10 -right-5 horror-font text-[14rem] opacity-5 pointer-events-none">PACT</div>
+                <h3 class="horror-font text-7xl md:text-[10rem] text-white mb-12">SIGN THE PACT</h3>
+                
+                <div class="grid md:grid-cols-2 gap-20">
+                    <div class="space-y-16">
+                        <div class="reveal">
+                            <p class="text-blood-red mono text-[10px] mb-2 tracking-[0.5em]">MISSION_01</p>
+                            <p class="font-bold text-2xl mb-4">🏃 陸上コーチング (400m)</p>
+                            <p class="text-sm text-gray-500 leading-relaxed">ただメニューをこなすのではなく、練習の「意図」を理解させる。伸び悩む君へ、私の12年のマインドを。 </p>
+                        </div>
+                        <div class="reveal">
+                            <p class="text-blood-red mono text-[10px] mb-2 tracking-[0.5em]">MISSION_02</p>
+                            <p class="font-bold text-2xl mb-4">🏗️ 型枠大工・経営伝承</p>
+                            <p class="text-sm text-gray-500 leading-relaxed">一級建築士から直接学ぶ、本物の職人魂。未来への一歩が踏み出せない君を、私は見捨てない。</p>
+                        </div>
+                    </div>
+
+                    <form id="contact-form" class="space-y-8">
+                        <input type="text" id="form-name" required class="input-box" placeholder="IDENTITY / 名前">
+                        <input type="email" id="form-email" required class="input-box" placeholder="CHANNEL / メールアドレス">
+                        <select id="form-type" class="input-box">
+                            <option value="Recruitment">型枠大工への応募 / 経営修業</option>
+                            <option value="Coaching">陸上コーチング依頼</option>
+                            <option value="Streaming">配信コラボ / その他</option>
+                        </select>
+                        <textarea id="form-message" required class="input-box h-48" placeholder="YOUR WILL / 魂のメッセージ"></textarea>
+                        <button type="submit" id="submit-btn" class="w-full bg-blood-red text-white py-6 font-bold tracking-[2em] hover:bg-white hover:text-black transition-all">TRANSMIT</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="py-20 border-t border-white/5 text-center">
+            <p class="text-[10px] mono opacity-10 tracking-[1.5em] mb-4">THE_ARCHITECTURE_OF_SURVIVAL</p>
+            <p class="text-[8px] mono opacity-10 uppercase tracking-widest">PROJECT: HEXA RELATION // SABANO_MASTER_V2 // &copy; 2026</p>
+        </footer>
+
     </div>
 
-    <script>
-        let scActive = false;
-        let scRotation = 0;
-        let scZoneStart = 0;
-        let scNeedleTimer;
-        let isFirstCheck = true;
-        let audioCtx;
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI",
+          authDomain: "hexa-relation.firebaseapp.com",
+          projectId: "hexa-relation",
+          storageBucket: "hexa-relation.firebasestorage.app",
+          messagingSenderId: "318065017750",
+          appId: "1:318065017750:web:94acf3c9c43632b3ff93b7",
+          measurementId: "G-15NM9TWFE2"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const PAGE_ID = 'sabanomiso-v2';
+
+        let audioCtx;
         function getAudioCtx() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             return audioCtx;
         }
 
-        function playSound(freq, length, volume = 0.15) {
+        function playClank() {
             const ctx = getAudioCtx();
-            if (ctx.state === 'suspended') return;
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
             osc.connect(gain); gain.connect(ctx.destination);
-            osc.frequency.setValueAtTime(freq, ctx.currentTime);
-            gain.gain.setValueAtTime(volume, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + length);
-            osc.start(); osc.stop(ctx.currentTime + length);
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(140, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.6);
+            gain.gain.setValueAtTime(0.2, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+            osc.start(); osc.stop(ctx.currentTime + 0.6);
         }
 
-        function initApp() {
-            // Background logic here if needed
-        }
-
-        function startExperience() {
+        function unlockRite() {
             getAudioCtx().resume().then(() => {
-                document.getElementById('initial-unlock-screen').style.display = 'none';
-                document.getElementById('entry-overlay').style.display = 'flex';
-                setTimeout(triggerSkillCheck, 1000);
+                playClank();
+                document.getElementById('intro-gate').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('intro-gate').remove();
+                    document.getElementById('main-content').style.opacity = '1';
+                }, 1500);
             });
         }
 
-        function triggerSkillCheck() {
-            playSound(880, 0.2, 0.2); // DEFINITE DING
-            scActive = true;
-            scRotation = 0;
-            scZoneStart = 120 + Math.random() * 160;
-            document.getElementById('sc-zone').style.transform = `rotate(${scZoneStart}deg)`;
-            document.getElementById('sc-great').style.transform = `rotate(${scZoneStart}deg)`;
-            document.getElementById('skill-check-container').style.display = 'flex';
+        function initApp() {
+            db.collection('analytics').doc(PAGE_ID).set({
+                hits: firebase.firestore.FieldValue.increment(1),
+                lastVisit: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
 
-            scNeedleTimer = setInterval(() => {
-                scRotation += 5;
-                document.getElementById('sc-needle').style.transform = `translateX(-50%) rotate(${scRotation}deg)`;
-                if (scRotation >= 360) failSkillCheck();
-            }, 20);
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         }
 
-        function handleSkillCheck() {
-            if (!scActive) return;
-            clearInterval(scNeedleTimer);
-            scActive = false;
-            const success = (scRotation >= scZoneStart && scRotation <= scZoneStart + 15); // Harder hit detection
-            if (success) {
-                showEntitySuccess();
-                playSound(660, 0.15);
-            } else {
-                failSkillCheck();
+        // Discord Webhook Implementation
+        const webhookUrl = 'https://discord.com/api/webhooks/1507236311180771348/P-wdDn_xEgm7ig5w7s3WHuP3waVmARS1sNi9lkvsmzMuDnUm8S2lKrx6Dv7ieQmtTFO1';
+        
+        document.getElementById('contact-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+            btn.innerText = "SENDING...";
+
+            const payload = {
+                embeds: [{
+                    title: "🔔 SABANOMISO-V2 新着コンタクト",
+                    color: 0xaf0000,
+                    fields: [
+                        { name: "Identity", value: document.getElementById('form-name').value, inline: true },
+                        { name: "Channel", value: document.getElementById('form-email').value, inline: true },
+                        { name: "Type", value: document.getElementById('form-type').value, inline: true },
+                        { name: "Message", value: document.getElementById('form-message').value }
+                    ],
+                    footer: { text: "Hexa Relation Transmission System" },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    showNotify("TRANSMISSION SUCCESSFUL / 通信に成功しました。");
+                    document.getElementById('contact-form').reset();
+                } else {
+                    throw new Error();
+                }
+            } catch (err) {
+                showNotify("TRANSMISSION FAILED / エラーが発生しました。");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "TRANSMIT";
             }
-            document.getElementById('skill-check-container').style.display = 'none';
-        }
+        });
 
-        function showEntitySuccess() {
-            const screen = document.getElementById('entity-success');
-            const text = document.getElementById('success-text');
-            const lines = ["ふーん・・・", "ま、チュートリアルぐらいはできるんだね。"];
-            screen.style.setProperty('display', 'flex', 'important');
-            setTimeout(() => {
-                screen.style.opacity = '1';
-                let i = 0, currentLine = 0;
-                text.innerHTML = "";
-                const typing = setInterval(() => {
-                    if (currentLine === 0) {
-                        if (i < lines[0].length) text.innerHTML += lines[0][i++];
-                        else { text.innerHTML += "<br>"; i = 0; currentLine = 1; }
-                    } else if (currentLine === 1) {
-                        if (i < lines[1].length) text.innerHTML += lines[1][i++];
-                        else clearInterval(typing);
-                    }
-                }, 100);
-            }, 500);
-        }
-
-        function failSkillCheck() {
-            clearInterval(scNeedleTimer);
-            scActive = false;
-            document.getElementById('skill-check-container').style.display = 'none';
-            if (isFirstCheck) {
-                isFirstCheck = false;
-                showEntityMockery();
-            } else {
-                notify("EXPLOSION!", "#f00");
-                playSound(100, 0.5, 0.3);
-            }
-        }
-
-        function showEntityMockery() {
-            const mockery = document.getElementById('entity-mockery');
-            const text = document.getElementById('mockery-text');
-            const lines = ["チェイスもできないわジェネも回せないわ・・・", "セルケアしててゲーム参加してる意味ある？"];
-            mockery.style.display = 'flex';
-            playSound(60, 1.2, 0.5);
-            setTimeout(() => {
-                mockery.style.opacity = '1';
-                let i = 0, currentLine = 0;
-                text.innerHTML = "";
-                const typing = setInterval(() => {
-                    if (currentLine === 0) {
-                        if (i < lines[0].length) text.innerHTML += lines[0][i++];
-                        else { text.innerHTML += "<br>"; i = 0; currentLine = 1; }
-                    } else if (currentLine === 1) {
-                        if (i < lines[1].length) text.innerHTML += lines[1][i++];
-                        else clearInterval(typing);
-                    }
-                }, 800 / (lines[0].length + lines[1].length)); // Speed up typing
-            }, 500);
-        }
-
-        function enterLP() {
-            document.getElementById('entity-mockery').style.display = 'none';
-            document.getElementById('entity-success').style.display = 'none';
-            document.getElementById('entry-overlay').style.display = 'none';
-            const lp = document.getElementById('main-lp');
-            lp.classList.remove('hidden-initially');
-            lp.style.display = 'block';
-            document.body.style.overflowY = 'auto';
-            playSound(600, 0.5, 0.1);
-        }
-
-        function notify(text, color) {
+        function showNotify(msg) {
             const el = document.getElementById('notification');
-            el.innerText = text; el.style.color = color; el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 1500);
+            el.innerText = msg;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 5000);
         }
 
-        window.addEventListener('keydown', (e) => { if (e.code === 'Space') { e.preventDefault(); handleSkillCheck(); } });
-        document.getElementById('entry-overlay').addEventListener('mousedown', (e) => { e.preventDefault(); handleSkillCheck(); });
-        document.getElementById('entry-overlay').addEventListener('touchstart', (e) => { e.preventDefault(); handleSkillCheck(); });
+        function eggTrigger(e) {
+            e.stopPropagation();
+            playClank();
+            showNotify("SYSTEM: RIVET_SECURED. THE VOID IS WATCHING.");
+        }
+
     </script>
 </body>
 </html>
