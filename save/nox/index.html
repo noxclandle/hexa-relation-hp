@@ -238,7 +238,10 @@
                 <h2 class="text-xl mb-3 border-b border-white pb-2">▼ ごあんない</h2>
                 <div class="text-sm leading-relaxed space-y-2">
                     <p>ここは Hexa Relation が てがけた<br>「ゲームの世界に住む」ひとびとの<br>ポートフォリオを あつめた 場所です。</p>
-                    <p>セーブデータの中に<br>違うゲームの世界観が <span class="collapsible-trigger" onclick="toggleIntroLore()">広がっているよ！</span></p>
+                    <div class="flex items-center gap-2">
+                        <p>セーブデータの中に<br>違うゲームの世界観が 広がっているよ！</p>
+                        <button id="intro-toggle-btn" class="w-8 h-8 flex items-center justify-center border-2 border-white rounded-md hover:bg-white hover:text-black transition-colors" onclick="toggleIntroLore()">▼</button>
+                    </div>
                     <div id="intro-lore" class="collapsible-content">
                         <p>各ページに １つ以上<br>イースターエッグが 隠されているよ！<br>みつけられたら その人に<br>お近づきになれるかも？？</p>
                     </div>
@@ -775,7 +778,9 @@
 
         function toggleIntroLore() {
             const lore = document.getElementById('intro-lore');
-            lore.classList.toggle('show');
+            const btn = document.getElementById('intro-toggle-btn');
+            const isShow = lore.classList.toggle('show');
+            btn.innerText = isShow ? '▲' : '▼';
             playClickSound();
         }
 
