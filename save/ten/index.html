@@ -238,19 +238,20 @@
         .quest-mark { display: inline-block; width: 18px; height: 18px; background: url('https://img.icons8.com/color/48/exclamation-mark.png') no-repeat center; background-size: contain; animation: bounce 1s infinite alternate; vertical-align: middle; margin-right: 10px; }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-4px); } }
 
-        /* YouTube LIVEバッジ */
+        /* YouTube LIVEバッジ (最前面に固定) */
         #live-badge {
             display: none; align-items: center; gap: 8px;
-            background: rgba(255, 0, 0, 0.9); color: white;
-            padding: 6px 16px; border-radius: 4px; font-weight: bold;
-            font-size: 14px; position: absolute; top: 10px; left: 50%;
-            transform: translateX(-50%); z-index: 1000; border: 2px solid white;
-            box-shadow: 0 0 20px rgba(255,0,0,0.7);
+            background: rgba(255, 0, 0, 0.95); color: white;
+            padding: 8px 20px; border-radius: 50px; font-weight: bold;
+            font-size: 14px; position: fixed; top: 20px; left: 50%;
+            transform: translateX(-50%); z-index: 11000; border: 2px solid white;
+            box-shadow: 0 0 25px rgba(255,0,0,0.8);
             animation: pulse-red 2s infinite;
             pointer-events: none;
             white-space: nowrap;
+            letter-spacing: 0.1em;
         }
-        .live-dot { width: 8px; height: 8px; background: white; border-radius: 50%; animation: blink 1s infinite; }
+        .live-dot { width: 10px; height: 10px; background: white; border-radius: 50%; animation: blink 1s infinite; }
 
         #achievement-popup { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); width: 85%; max-width: 360px; background: rgba(0,0,0,0.98); border: 1px solid gold; color: gold; padding: 15px; border-radius: 10px; z-index: 3000; transition: bottom 0.6s; display: flex; align-items: center; gap: 12px; }
         #achievement-popup.show { bottom: 25px; }
@@ -325,6 +326,7 @@
     </style>
 </head>
 <body onload="initApp()">
+    <div id="live-badge"><div class="live-dot"></div> LIVE NOW</div>
     <div id="damage-flash"></div>
     <div id="game-over-overlay" onclick="location.reload()">
         <div class="game-over-text">MISSION FAILED</div>
@@ -355,7 +357,6 @@
 
     <div class="main-container">
         <div class="interaction-box">
-            <div id="live-badge"><div class="live-dot"></div> LIVE NOW</div>
             <div class="npc-stage">
                 <img src="smile_opt.jpg" alt="TEN" class="npc-portrait" id="npc-img" loading="lazy">
             </div>
@@ -770,7 +771,18 @@
             takeDamage(2000);
             document.body.style.animation = 'shake 0.3s ease-in-out';
             setTimeout(() => { document.body.style.animation = ''; }, 300);
-            const escapeQuotes = ["TEN: 逃がさないよ！", "TEN: まだ帰さないよ？", "TEN: 角煮の恨み、受けてみる？"];
+            const escapeQuotes = [
+                "TEN: 逃がさないよ！",
+                "TEN: まだ帰さないよ？",
+                "TEN: 角煮の恨み、受けてみる？",
+                "TEN: この世界からは 誰も逃げられない。",
+                "TEN: もっと私と 遊んでいってよ。",
+                "TEN: 逃げようとしても 無駄だよ。",
+                "TEN: 冒険は まだ終わっていないよ？",
+                "TEN: あなたの運命は ここで止まっている。",
+                "TEN: 立ち向かう勇気は ないのかな？",
+                "TEN: ふふっ、絶望の味はどう？"
+            ];
             const quote = escapeQuotes[Math.floor(Math.random() * escapeQuotes.length)];
             document.getElementById('dialogue-text').innerHTML = `WARNING!!<br>${quote}`;
         }
