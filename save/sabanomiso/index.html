@@ -106,6 +106,20 @@
         .glitch-text { animation: glitch 4s infinite; }
         @keyframes glitch { 0% { transform: skew(0); } 1% { transform: skew(3deg); opacity: 0.8; } 2% { transform: skew(0); opacity: 1; } }
 
+        /* Obsession Brackets */
+        .obsession-bracket {
+            display: inline-block; position: relative; padding: 0 40px;
+        }
+        .obsession-bracket::before, .obsession-bracket::after {
+            content: ''; position: absolute; top: 50%; width: 30px; height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23af0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21l-4-4 4-4"/><path d="M17 3l4 4-4 4"/><path d="M3 17h18"/></svg>');
+            background-size: contain; background-repeat: no-repeat;
+            transform: translateY(-50%); opacity: 0.8; animation: obsession-move 2s infinite alternate;
+        }
+        .obsession-bracket::before { left: 0; }
+        .obsession-bracket::after { right: 0; transform: translateY(-50%) rotate(180deg); }
+        @keyframes obsession-move { from { opacity: 0.4; } to { opacity: 1; } }
+
         /* Survivor Symbols */
         .symbol-bg {
             position: absolute; font-size: 15rem; opacity: 0.03; font-family: 'Creepster';
@@ -146,7 +160,7 @@
             
             <div class="z-10 text-center">
                 <p class="mono text-tech-cyan mb-8 tracking-[1.5em] text-[10px] uppercase reveal">Foundation // Independence // Mastery</p>
-                <h1 class="horror-font text-blood-red text-[5rem] md:text-[16rem] leading-none mb-4 glitch-text" style="text-shadow: 15px 15px 0px #000;">SURVIVOR</h1>
+                <h1 class="horror-font text-blood-red text-[5rem] md:text-[16rem] leading-none mb-4 glitch-text obsession-bracket" style="text-shadow: 15px 15px 0px #000;">SURVIVOR</h1>
                 
                 <div class="flex justify-center gap-8 md:gap-16 mt-16 reveal">
                     <div class="text-center group cursor-help" onclick="showNotify('FIELD EXPERIENCE: 13 YEARS')">
@@ -396,6 +410,12 @@
                 hits: firebase.firestore.FieldValue.increment(1),
                 lastVisit: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true });
+
+            // Fix: Log visitor to referrals collection for admin console
+            db.collection('referrals').doc(PAGE_ID).collection('logs').add({
+                referrer: document.referrer || 'direct',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
