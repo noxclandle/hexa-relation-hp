@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hexa Relation | Nox Portfolio</title>
+    <title>Hexa Relation | セーブデータ リスト</title>
     <!-- Google Fonts: DotGothic16 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -237,13 +237,13 @@
             <div class="mother-window-inner">
                 <h2 class="text-xl mb-3 border-b border-white pb-2">▼ ごあんない</h2>
                 <div class="text-sm leading-relaxed space-y-2">
-                    <p>ここは Hexa Relation が てがけた<br>「ゲームの世界に住む」ひとびとの<br>ポートフォリオを あつめた 場所です。</p>
+                    <p>ここは Hexa Relation が てがけた<br>「ゲームの世界に住む」ひとびとの<br>セーブデータが あつまった 場所です。</p>
                     <div class="flex items-center gap-2">
                         <p>セーブデータの中に<br>違うゲームの世界観が 広がっているよ！</p>
                         <button id="intro-toggle-btn" class="w-8 h-8 flex items-center justify-center border-2 border-white rounded-md hover:bg-white hover:text-black transition-colors" onclick="toggleIntroLore()">▼</button>
                     </div>
                     <div id="intro-lore" class="collapsible-content">
-                        <p>各ページに １つ以上<br>イースターエッグが 隠されているよ！<br>みつけられたら その人に<br>お近づきになれるかも？？</p>
+                        <p>各ページ（世界）に １つ以上<br>イースターエッグが 隠されているよ！<br>みつけられたら その人に<br>お近づきになれるかも？？</p>
                     </div>
                 </div>
             </div>
@@ -261,7 +261,7 @@
                         <div class="relative">
                             <span class="status-label">そうび(おしごと):</span>
                             <div id="job-list-container" class="mt-2 pl-4 text-base opacity-90 border-l-2 pl-4 space-y-1" style="border-color: var(--primary-color);">
-                                <div class="command-item text-base" style="cursor: pointer;" onclick="toggleJobDetail(event, 'hplp')"><span class="command-cursor">▶︎</span>HP/LP作成（Web構築のじゅもん）</div>
+                                <div class="command-item text-base" style="cursor: pointer;" onclick="toggleJobDetail(event, 'hplp')"><span class="command-cursor">▶︎</span>あたらしい世界を つくる（Web構築のじゅもん）</div>
                                 <div class="command-item text-base" style="cursor: pointer;" onclick="toggleJobDetail(event, 'magic')"><span class="command-cursor">▶︎</span>マジック（おどろきのわざ）</div>
                                 <div class="command-item text-base" style="cursor: pointer;" onclick="toggleJobDetail(event, 'investigation')"><span class="command-cursor">▶︎</span>調査業（しんじつのたんさく）</div>
                                 <div class="command-item text-base" style="cursor: pointer;" onclick="toggleJobDetail(event, 'streaming')"><span class="command-cursor">▶︎</span>配信業（こえのまほう）</div>
@@ -344,7 +344,7 @@
                 <div id="menu-goods-list" class="hidden flex flex-col gap-3">
                     <h3 class="text-xl mb-2 opacity-70">▼ リスト</h3>
                     <div class="command-item text-xl opacity-60" onclick="showSubMenu('menu-equip-under-construction')"><span class="command-cursor">▶︎</span>hexa card (準備中)</div>
-                    <div class="command-item text-xl" onclick="openServiceDetail()"><span class="command-cursor">▶︎</span>ゲームプロフィール制作 を たのむ</div>
+                    <div class="command-item text-xl" onclick="openServiceDetail()"><span class="command-cursor">▶︎</span>あたらしい世界を つくる</div>
                     <div class="command-item text-xl opacity-60" onclick="showSubMenu('menu-main')"><span class="command-cursor">▶︎</span>もどる</div>
                 </div>
 
@@ -375,14 +375,14 @@
         <div class="detail-card">
             <div class="mother-window">
                 <div class="mother-window-inner">
-                    <h2 class="text-2xl mb-6 border-b-2 pb-2 text-center" style="border-color: var(--primary-color);">▼ プロフィール制作 サービス</h2>
+                    <h2 class="text-2xl mb-6 border-b-2 pb-2 text-center" style="border-color: var(--primary-color);">▼ あたらしい世界を つくる</h2>
                     <div class="space-y-6 text-lg leading-relaxed">
                         <p class="text-center font-bold text-xl">「あなたの活動を、<br>最高の世界観で 凝縮する。」</p>
                         
                         <div>
                             <p class="font-bold text-red-500 mb-2">【 サービスの内容 】</p>
                             <ul class="space-y-2">
-                                <li class="pixel-bullet">好きなゲームや世界観をヒアリングし、あなた専用のポートフォリオを作成</li>
+                                <li class="pixel-bullet">好きなゲームや世界観をヒアリングし、あなた専用のセーブデータ（紹介ページ）を作成</li>
                                 <li class="pixel-bullet">フリーランス・VTuber・個人活動者の自己紹介に最適</li>
                                 <li class="pixel-bullet">ドメイン取得・サーバー設定・維持管理もすべてお任せ</li>
                                 <li class="pixel-bullet">スマホ最適化 ＆ 印象に残る特殊ギミックの実装</li>
