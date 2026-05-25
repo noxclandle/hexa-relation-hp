@@ -20,27 +20,31 @@ function sync() {
             let theme = 'Unknown Style';
             
             if (fs.existsSync(indexPath)) {
-                const content = fs.readFileSync(indexPath, 'utf-8');
-                const titleMatch = content.match(/<title>(.*?)<\/title>/);
-                if (titleMatch) {
-                    const fullTitle = titleMatch[1];
-                    if (fullTitle.includes('|')) {
-                        title = fullTitle.split('|')[1].replace(' Portfolio', '').trim();
-                    } else if (fullTitle.includes('-')) {
-                        title = fullTitle.split('-')[0].trim();
-                    } else {
-                        title = fullTitle;
-                    }
-                }
+                let content = fs.readFileSync(indexPath, 'utf-8');
                 
-                // Try to guess theme from title or content
+                // Get name and theme from content/directory
+                let name = dir.toUpperCase();
+                let theme = 'Unknown Style';
+                
                 if (content.includes('ファイナルファンタジー') || content.includes('FF14')) theme = 'ファイナルファンタジー風';
                 else if (content.includes('MOTHER2')) theme = 'MOTHER2風';
                 else if (content.includes('rs3-modal') || content.includes('RS3') || content.includes('ロマサガ')) theme = 'ロマサガ風';
                 else if (content.includes('Chocolate')) theme = 'チョコレート風';
+
+                // Mandatory Title Format: <NAME> - Portfolio (<THEME>風)
+                const newTitle = `${name} - Portfolio (${theme})`;
+                
+                // Update index.html title tag if needed
+                const titleRegex = /<title>.*?<\/title>/;
+                const updatedContent = content.replace(titleRegex, `<title>${newTitle}</title>`);
+                
+                if (content !== updatedContent) {
+                    fs.writeFileSync(indexPath, updatedContent);
+                    console.log(`Updated title for ${dir}: ${newTitle}`);
+                }
+                
+                return { id: dir, title: name, theme };
             }
-            
-            return { id: dir, title, theme };
         });
 
     console.log(`Found ${portfolios.length} portfolios:`, portfolios.map(p => p.id));
