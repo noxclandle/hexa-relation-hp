@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HXC: Physical Identity Protocol // 物理アイデンティティの再定義 | Hexa Relation</title>
+    <meta name="description" content="[PRE-LAUNCH MANIFESTO] 0と1の海に溶けた個人を、再び「物質」へ。NFCチップ、Soul-Link、そしてMENSAのロジックが交差する、次世代の身分証明議定書。1万文字の徹底解析。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+JP:wght@100;300;400;700;900&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #00f2ff; /* Azure Blue */
+            --muted: #111111;
+            --text-dim: #555555;
+        }
+        body {
+            background-color: var(--bg);
+            color: #d1d1d1;
+            font-family: 'Noto Sans JP', sans-serif;
+            overflow-x: hidden;
+            line-height: 2.4;
+            letter-spacing: 0.1em;
+        }
+        .mono { font-family: 'Share Tech Mono', monospace; }
+        .cinzel { font-family: 'Cinzel', serif; }
+
+        /* Tech Background */
+        .tech-grid {
+            position: fixed; inset: 0; pointer-events: none; z-index: -1;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.05) 0%, transparent 70%),
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-size: 100% 100%, 50px 50px, 50px 50px;
+        }
+
+        .reveal { opacity: 0; transform: translateY(60px); transition: 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .protocol-block { border-left: 2px solid var(--accent); padding-left: 3rem; margin-bottom: 25rem; }
+        .big-title { font-size: clamp(2.5rem, 10vw, 8rem); font-weight: 900; line-height: 0.9; color: #fff; text-transform: uppercase; }
+        
+        .code-display { font-size: 11px; color: var(--accent); opacity: 0.3; line-height: 1.2; font-family: monospace; }
+        
+        .glow-btn { border: 1px solid var(--accent); color: var(--accent); padding: 1.5rem 3rem; transition: 0.5s; position: relative; overflow: hidden; }
+        .glow-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 30px var(--accent); }
+
+        ::selection { background: var(--accent); color: #000; }
+    </style>
+</head>
+<body class="p-6 md:p-16">
+    <div class="tech-grid"></div>
+
+    <!-- Hero Section -->
+    <header class="min-h-screen flex flex-col justify-center relative">
+        <div class="mono text-[10px] mb-12 opacity-40">
+            >> INITIALIZING_HXC_PROTOCOL...<br>
+            >> ACCESS_LEVEL: RESTRICTED<br>
+            >> SOURCE_ID: MENSA_LOGIC_2213
+        </div>
+        
+        <div class="reveal">
+            <h1 class="big-title mb-12">HXC.<br><span class="opacity-20">Physical</span><br>Identity.</h1>
+            <p class="max-w-2xl text-lg md:text-xl font-thin italic text-white opacity-60">
+                名刺は、もはや「紙」ではない。それは、あなたの魂の一部を切り取り、物理世界に固定するための「外部ストレージ」である。
+            </p>
+        </div>
+
+        <div class="absolute bottom-20 right-0 hidden md:block">
+            <div class="code-display text-right">
+                export async function SoulLink(uid: string) {<br>
+                &nbsp;&nbsp;const identity = await prisma.user.sync(uid);<br>
+                &nbsp;&nbsp;return identity.materialize();<br>
+                }
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto py-60">
+        
+        <!-- Chapter 1: The Materialization -->
+        <section class="protocol-block reveal">
+            <h2 class="mono text-xs text-cyan-400 mb-20 tracking-[1em] uppercase">Chapter_01 // 物質への回帰</h2>
+            <div class="space-y-12 text-xl font-light">
+                <p>
+                    現代社会において、私たちのアイデンティティはあまりにも「希薄」になった。SNSのプロフィール、QRコード、デジタルウォレット。それらは便利ではあるが、そこに「手触り」はない。0と1の海に漂うあなたの断片は、スマートフォンの画面が消えた瞬間に、実体を持たない影へと変わる。
+                </p>
+                <p>
+                    HXC（Hexa Card）はこの流れに逆行する。
+                </p>
+                <p>
+                    私たちは、高度な暗号化技術を宿した「物理的なカード」に、あなたのデジタルな魂を封じ込める。それは、かつての貴族が用いた「封蝋」であり、武士が腰に差した「刀」と同じ重みを持つ。相手の端末にタップするその一瞬、あなたのアイデンティティは物理世界を媒介にして、相手の意識へと「透過」されるのだ。
+                </p>
+                <p>
+                    「便利さ」のために捨て去られた、対面における「衝撃」と「重厚感」。それを最新のテクノロジーで再定義することが、HXCの第一の使命である。
+                </p>
+            </div>
+        </section>
+
+        <!-- Chapter 2: The Logic of MENSA -->
+        <section class="reveal mb-80">
+            <h2 class="cinzel text-5xl md:text-7xl font-black mb-40 text-white opacity-10">CORE_LOGIC.</h2>
+            <div class="grid md:grid-cols-2 gap-20">
+                <div class="space-y-16">
+                    <div class="p-10 bg-white/[0.02] border border-white/5 relative">
+                        <span class="mono text-[9px] text-cyan-400 absolute top-4 left-4">PROTOCOL: SOUL_LINK</span>
+                        <h3 class="text-white text-2xl font-bold mb-6 italic">魂の紐付け（Soul-Link）</h3>
+                        <p class="text-sm opacity-50 leading-loose">
+                            一度発行されたHXCは、あなたの特定の端末と「量子的に」紐付けられる。他者があなたのカードを手に入れても、あなたの許可なくその奥底に触れることはできない。物理的な「鍵」とデジタルな「認証」が高度に同期し、あなたという存在の唯一性を担保する。
+                        </p>
+                    </div>
+                    <div class="p-10 bg-white/[0.02] border border-white/5 relative">
+                        <span class="mono text-[9px] text-cyan-400 absolute top-4 left-4">PROTOCOL: RT_ECONOMY</span>
+                        <h3 class="text-white text-2xl font-bold mb-6 italic">共鳴経済（RT Economy）</h3>
+                        <p class="text-sm opacity-50 leading-loose">
+                            誰かと出会い、カードをタップするたびに、そこには「共鳴（Resonance）」が生まれる。この共鳴はデータとして蓄積され、あなたのアイデンティティをカスタマイズするためのリソースへと変換される。ビジネス上の繋がりが、そのままあなたの「世界観」を拡張する力となる。
+                        </p>
+                    </div>
+                </div>
+                <div class="space-y-16 md:mt-40">
+                    <div class="p-10 bg-white/[0.02] border border-white/5 relative">
+                        <span class="mono text-[9px] text-cyan-400 absolute top-4 left-4">PROTOCOL: SMART_ROUTE</span>
+                        <h3 class="text-white text-2xl font-bold mb-6 italic">動的経路（Smart Routing）</h3>
+                        <p class="text-sm opacity-50 leading-loose">
+                            観測者によって、カードの機能は変化する。あなたがタップすれば、それは強力な管理コンソールとなり、他人がタップすれば、それはあなたの伝説を語る名刺となる。物理的な1つのチップが、コンテキストに応じてその役割を瞬時に再定義する。
+                        </p>
+                    </div>
+                    <div class="p-10 bg-white/[0.02] border border-white/5 relative">
+                        <span class="mono text-[9px] text-cyan-400 absolute top-4 left-4">PROTOCOL: AI_CONCIERGE</span>
+                        <h3 class="text-white text-2xl font-bold mb-6 italic">AI 執事（Concierge）</h3>
+                        <p class="text-sm opacity-50 leading-loose">
+                            名刺の裏側には、あなたの思考を学習したAI執事が控えている。あなたが寝ている間も、移動している間も、カードを通じて接触してきた相手に対し、あなたの美学とロジックを正確に伝え、次なるチャンスを逃さない。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 3: The Architecture of Truth -->
+        <section class="protocol-block reveal">
+            <h2 class="mono text-xs text-cyan-400 mb-20 tracking-[1em] uppercase">Chapter_03 // 真実のアーキテクチャ</h2>
+            <div class="space-y-12 opacity-80">
+                <p>
+                    HXCの内部構造を語る上で、避けて通れないのが「妥協のなさ」である。
+                </p>
+                <p>
+                    一般的なデジタル名刺サービスは、利便性のためにセキュリティを犠牲にし、テンプレートのために個性を犠牲にしている。しかし、MENSAの脳が設計したHXCは、そのどちらも許容しない。
+                </p>
+                <p>
+                    Next.js 14のApp Routerによる高速な体験、Prismaによる堅牢なデータ整合性、そしてTailwind CSSによる極限まで削ぎ落とされたUI。これらは単なる技術選定ではない。あなたのアイデンティティを1ミリ秒の遅延もなく、1ピクセルの狂いもなく相手に伝えるための「必然」である。
+                </p>
+                <p>
+                    私たちは、NFCチップ（NTAG215）の物理的な限界にまで挑んでいる。チップのUID（固有識別子）を取得し、それを正規化した上でデータベースと照合する。この泥臭くも精密な作業の積み重ねが、コピー不可能な「本物の物理アイデンティティ」を創り出すのだ。
+                </p>
+            </div>
+        </section>
+
+        <!-- Chapter 4: Anticipation for Launch -->
+        <section class="reveal space-y-20 mb-80">
+            <h3 class="text-4xl font-black text-white italic">発売前、私たちは牙を研いでいる。</h3>
+            <div class="border border-cyan-400/20 p-12 bg-cyan-400/[0.01]">
+                <p class="text-lg leading-loose opacity-60">
+                    現在、HXCは「限定的なプロトタイプ」のフェーズにある。量産体制に入る前のこの静寂の中で、私たちはさらなるロジックの追加を行っている。
+                    例えば、AR（拡張現実）を用いた名刺からのデータ噴出。例えば、組織全体の繋がりを可視化するグラフ・データベースとの統合。
+                    私たちが目指すのは、名刺を売ることではない。ビジネスという名の「ゲーム」における、標準的なプロトコル（議定書）を確立することだ。
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 5: Join the Protocol -->
+        <section class="manifesto-section reveal">
+            <h2 class="cinzel text-sm sub-text mb-20 tracking-[1em] opacity-40 uppercase">05 // The Invitation</h2>
+            <div class="space-y-12 text-2xl font-bold italic text-white">
+                <p>
+                    準備はいいか。
+                </p>
+                <p>
+                    あなたの名前、実績、そして志が、物理的な「モノ」としてこの世界に存在し始める瞬間を。
+                </p>
+                <p>
+                    テンプレートに押し込められた昨日の自分を脱ぎ捨て、ロジックと美学に裏打ちされた新しいアイデンティティを装備せよ。
+                </p>
+            </div>
+        </section>
+
+        <!-- Final Call -->
+        <section class="text-center py-40 reveal">
+            <div class="mb-20">
+                <span class="mono text-xs opacity-40 tracking-[0.5em] block mb-4 uppercase">Protocol_Sync: 99.8% // Ready_for_Broadcast</span>
+                <h3 class="cinzel text-5xl md:text-8xl font-black text-white italic">EQUIP_YOUR_SOUL.</h3>
+            </div>
+            
+            <a href="https://hexa-relation.com" class="glow-btn inline-block text-xl font-black cinzel tracking-[0.2em]">
+                RETURN_TO_MAIN_SYSTEM
+            </a>
+            
+            <div class="mt-20">
+                <p class="text-[9px] mono opacity-20 uppercase tracking-[1em]">HXC Release Roadmap: Coming Soon 2026.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Floating HUD Elements -->
+    <div class="fixed top-1/2 left-10 -translate-y-1/2 hidden lg:block">
+        <div class="w-[1px] h-60 bg-gradient-to-b from-transparent via-cyan-500 to-transparent opacity-20"></div>
+    </div>
+    <div class="fixed bottom-10 left-10 mono text-[8px] opacity-20 pointer-events-none">
+        ENCRYPTION: AES_256_GCM<br>
+        UID_NORMALIZATION: ACTIVE<br>
+        PHYSICAL_SYNC_ID: HXC_001
+    </div>
+
+    <footer class="py-20 text-center opacity-5 text-[10px] cinzel tracking-[2em] uppercase">
+        Hexa Relation // HXC Development Archive // Logic & Matter.
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
