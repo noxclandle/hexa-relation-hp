@@ -388,21 +388,22 @@
             img.src = `https://img.youtube.com/vi/live_stream/mqdefault.jpg?v=${new Date().getTime()}`;
         }
         checkLiveStatus();
+function toggleMagicMirror() {
+    const mirror = document.getElementById('magic-mirror');
+    const frame = document.getElementById('mirror-frame');
+    const isVisible = window.getComputedStyle(mirror).display === 'block';
 
-        function toggleMagicMirror() {
-            const mirror = document.getElementById('magic-mirror');
-            const frame = document.getElementById('mirror-frame');
-            const isVisible = window.getComputedStyle(mirror).display === 'block';
+    if (isVisible) {
+        mirror.style.display = 'none';
+        frame.src = ''; 
+    } else {
+        mirror.style.display = 'block';
+        // 正しい埋め込みURL形式: https://www.youtube.com/embed/live_stream?channel=[CHANNEL_ID]
+        frame.src = `https://www.youtube.com/embed/live_stream?channel=${channelId}&autoplay=1&mute=1&origin=${window.location.origin}`;
+        playKyupiSound();
+    }
+}
 
-            if (isVisible) {
-                mirror.style.display = 'none';
-                frame.src = ''; 
-            } else {
-                mirror.style.display = 'block';
-                frame.src = `https://www.youtube.com/embed/live_stream?channel=${channelId}&autoplay=1&mute=1`;
-                playKyupiSound();
-            }
-        }
 
         function playKyupiSound() {
             try {
