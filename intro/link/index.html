@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexa Link: リンク集を、自分の世界観へ。 | Hexa Relation</title>
+    <meta name="description" content="SNSのリンク集。それはあなたの「入り口」です。Hexa Linkは、凡庸なリンク集を、あなた専用の「コマンドメニュー」へと再定義します。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #0a0a0c; color: #fff; font-family: 'Noto Sans JP', sans-serif; }
+        .link-btn { border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); padding: 1.5rem; transition: 0.3s; display: block; width: 100%; text-align: left; position: relative; overflow: hidden; }
+        .link-btn:hover { background: #fff; color: #000; }
+        .link-btn::after { content: "▶"; position: absolute; right: 1.5rem; opacity: 0; transition: 0.3s; }
+        .link-btn:hover::after { opacity: 1; right: 1rem; }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-6">
+    <div class="w-full max-w-md text-center">
+        <div class="w-20 h-20 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl mx-auto mb-6 shadow-xl"></div>
+        <h1 class="text-2xl font-bold mb-2">HEXA_LINK_HUB</h1>
+        <p class="text-xs opacity-40 mb-12 uppercase tracking-widest">Digital_Command_Center</p>
+
+        <div class="space-y-4">
+            <a href="#" class="link-btn">
+                <span class="text-xs opacity-40 block mb-1">01. Main Site</span>
+                <span class="font-bold">OFFICIAL_PORTFOLIO</span>
+            </a>
+            <a href="#" class="link-btn">
+                <span class="text-xs opacity-40 block mb-1">02. Shop</span>
+                <span class="font-bold">ASSET_STORE</span>
+            </a>
+            <a href="#" class="link-btn">
+                <span class="text-xs opacity-40 block mb-1">03. Contact</span>
+                <span class="font-bold">DIRECT_MESSAGE</span>
+            </a>
+        </div>
+
+        <div class="mt-20">
+            <p class="text-[10px] opacity-30 mb-4 tracking-widest uppercase">Upgrade your link tree to a game menu.</p>
+            <a href="../../order/index.html?from=hexa_link" class="text-xs border-b border-white/20 pb-1 hover:border-white transition-all">
+                GET_YOUR_CUSTOM_LINK_HUB
+            </a>
+        </div>
+    </div>
+</body>
+</html>

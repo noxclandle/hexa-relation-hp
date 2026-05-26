@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MENSA Maverick // 異端知性の解析と再構築 | Hexa Relation</title>
+    <meta name="description" content="[RESTRICTED ACCESS] 全人口上位2%の知能指数。社会不適合という名のギフト。MENSA会員が綴る、組織への決別と、Web構築における『純粋ロジック』の証明。2000文字のデータ・マニフェスト。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+JP:wght@100;300;400;700&family=Cinzel:wght@400;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030303;
+            --accent: #ff003c;
+            --sub: #00f2ff;
+            --glass: rgba(0, 242, 255, 0.03);
+            --border: rgba(0, 242, 255, 0.1);
+        }
+        body {
+            background-color: var(--bg);
+            color: #a0a0a0;
+            font-family: 'Noto Sans JP', sans-serif;
+            overflow-x: hidden;
+            line-height: 2.2;
+            letter-spacing: 0.05em;
+        }
+        .mono { font-family: 'Share Tech Mono', monospace; }
+        .cinzel { font-family: 'Cinzel', serif; }
+
+        /* Grid Background */
+        .grid-overlay {
+            position: fixed; inset: 0; pointer-events: none; z-index: -1;
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+        }
+
+        /* Scanline effect */
+        .scanline {
+            width: 100%; height: 100px; z-index: 10;
+            background: linear-gradient(0deg, rgba(0, 242, 255, 0) 0%, rgba(0, 242, 255, 0.05) 50%, rgba(0, 242, 255, 0) 100%);
+            opacity: 0.1; position: fixed; top: 0; left: 0; pointer-events: none;
+            animation: scan 8s linear infinite;
+        }
+        @keyframes scan { 0% { top: -100%; } 100% { top: 100%; } }
+
+        .reveal { opacity: 0; transform: translateY(50px); transition: 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .data-block { border: 1px solid var(--border); background: var(--glass); padding: 3rem; position: relative; }
+        .data-block::before { content: ""; position: absolute; top: -1px; left: -1px; width: 20px; height: 20px; border-top: 2px solid var(--sub); border-left: 2px solid var(--sub); }
+        .data-block::after { content: ""; position: absolute; bottom: -1px; right: -1px; width: 20px; height: 20px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+
+        h1, h2, h3 { color: #fff; text-transform: uppercase; }
+        .accent-text { color: var(--accent); text-shadow: 0 0 10px rgba(255, 0, 60, 0.5); }
+        .sub-text { color: var(--sub); text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
+
+        .glitch:hover { animation: glitch 0.4s ease-in-out infinite; }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            25% { transform: translate(-2px, 2px); }
+            50% { transform: translate(2px, -2px); }
+            75% { transform: translate(-2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .scroll-indicator {
+            writing-mode: vertical-rl; text-orientation: mixed;
+            position: absolute; right: 2rem; bottom: 2rem; font-size: 10px;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-12">
+    <div class="grid-overlay"></div>
+    <div class="scanline"></div>
+
+    <!-- Terminal Header -->
+    <header class="max-w-6xl mx-auto mb-40 pt-20">
+        <div class="mono text-[10px] mb-8 opacity-40">
+            [SYS_LOG] INITIALIZING_BRAIN_PROTOCOL...<br>
+            [STATUS] MENSA_MEMBER_IDENTIFIED: ID_2213<br>
+            [WARNING] UNCONVENTIONAL_LOGIC_DETECTED
+        </div>
+        <h1 class="cinzel text-5xl md:text-9xl font-black mb-12 leading-none">
+            UNEMPLOYABLE<br><span class="accent-text">GENIUS.</span>
+        </h1>
+        <p class="text-xl md:text-2xl font-thin max-w-2xl leading-relaxed opacity-60">
+            高すぎる知能は、平穏な社会生活において「致命的なエラー」となる。
+            これは、組織を捨てた一人の不適合者が綴る、データとしての自己証明。
+        </p>
+    </header>
+
+    <main class="max-w-4xl mx-auto space-y-60 pb-80">
+        
+        <!-- Section 1: The Curse of Speed -->
+        <section class="reveal">
+            <h2 class="mono sub-text text-sm mb-12 tracking-[0.5em]">> 01_THE_SPEED_OF_LIGHT</h2>
+            <div class="space-y-12">
+                <p class="text-2xl text-white font-bold leading-snug italic">
+                    「なぜ、彼らは理解できないのか？」<br>
+                    この問いが、私の人生を二十数年もの間、深い孤独に沈めてきた。
+                </p>
+                <div class="space-y-8 opacity-70">
+                    <p>
+                        全人口の上位2%のIQ（知能指数）を持つとされるMENSA会員。この言葉は響きこそ良いが、実態は「周囲と処理速度が乖離した異端児」でしかない。他者がAからBへの移動に1時間を要する思考の道を、私は数ミリ秒で駆け抜ける。結論が見えている場所まで、延々と続く無意味な説明。会議。忖度。それら全てが、私にとっては「止まった世界」で呼吸を強要されるような苦行だった。
+                    </p>
+                    <p>
+                        就職。それは私にとって、自分の脳をわざと「デグレード（性能低下）」させ、周囲の歩調に合わせる行為に他ならなかった。しかし、私の脳はそのリミッターを拒絶した。指示系統の非合理性に即座に気づき、上司の嘘を瞬時に見抜き、改善案を提示する。組織にとって、これほど扱いづらい存在はいないだろう。社会は私を「生意気」や「不適合」というラベルで排除した。
+                    </p>
+                    <p>
+                        だが、それで良かったのだ。私は、私の速度で思考することを、もう辞めないと決めた。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Zero Tolerance Philosophy -->
+        <section class="reveal data-block">
+            <h2 class="mono accent-text text-sm mb-12 tracking-[0.5em]">> 02_PURE_LOGIC_CONSTRUCTION</h2>
+            <div class="space-y-12">
+                <h3 class="text-3xl font-black italic">「嘘」と「妥協」の徹底排除。</h3>
+                <div class="space-y-8 text-sm md:text-base leading-loose">
+                    <p>
+                        私が提供するWeb制作、そしてマーケティングLPには、一切の「雰囲気」が存在しない。世の中のLPの多くは、綺麗な写真と、どこかで見たようなキャッチコピーで塗り固められている。だが、それではユーザーの深層心理は動かない。なぜなら、そこには「ロジック」という骨組みが欠落しているからだ。
+                    </p>
+                    <p>
+                        MENSAの脳がWebサイトを構築するとき、それは一本の「数式」を解く作業に等しい。ターゲットの心理的バイアス、色彩心理がもたらすホルモン分泌の変化、スクロール速度に基づいたフォントの配置。それら数万の変数を瞬時に統合し、コンバージョン（成約）という解を導き出す。
+                    </p>
+                    <p>
+                        「なんとなくかっこいいから」という理由でボタンを配置することはない。そのボタンがそこに0.1mmの狂いもなく存在しなければならない、数理的な必然性があるからこそ配置する。これが、私が提唱する「脱型（デ・モールディング）」の正体だ。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: The Call to the Visionaries -->
+        <section class="reveal">
+            <h2 class="mono sub-text text-sm mb-12 tracking-[0.5em]">> 03_ENCODING_THE_FUTURE</h2>
+            <div class="space-y-12">
+                <p class="text-xl md:text-3xl font-light leading-relaxed">
+                    現在、私は二つの扉を開放している。<br>
+                    一つは、この<span class="text-white font-bold">「制御不能な資産」</span>を自社で飼い慣らす覚悟のある企業へ。<br>
+                    もう一つは、この<span class="text-white font-bold">「異端の計算機」</span>を使って、市場を蹂躙したいクライアントへ。
+                </p>
+                <div class="space-y-12 text-gray-500">
+                    <p>
+                        私は、安価な作業員ではない。あなたのビジネスにおける「バグ」を見つけ、それを「機能（フィーチャー）」へと書き換えるアーキテクトだ。もし、あなたが既存のWeb制作会社や、伝統的な採用市場に絶望しているのなら、私のこの「狂った知性」を試してみる価値はある。
+                    </p>
+                    <p>
+                        ただし、忠告しておく。私は忖度をしない。あなたのビジネスが論理的に破綻していれば、それをありのままに指摘するだろう。それでも「真実」を知り、圧倒的な結果を求めるのであれば、これ以上のパートナーは他に存在しない。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic CTA -->
+        <section class="reveal space-y-20 border-t border-white/10 pt-40">
+            <div class="text-center">
+                <h2 class="cinzel text-4xl md:text-6xl mb-12">WHICH_PATH?</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Path Alpha -->
+                <a href="../../order/index.html?type=recruit" class="group relative p-12 border border-red-500/50 hover:bg-red-500 transition-all duration-500 overflow-hidden">
+                    <div class="absolute inset-0 bg-red-500/10 group-hover:bg-transparent"></div>
+                    <h4 class="mono text-red-500 group-hover:text-white mb-6 tracking-widest">[PATH_ALPHA]</h4>
+                    <p class="text-white text-2xl font-black mb-6">RECRUIT_THE_Maverick</p>
+                    <p class="text-xs opacity-50 group-hover:opacity-100">
+                        「採用」という名の契約。既存の役職名は不要。
+                        あなたの企業の「脳」として、異次元の成長を設計する。
+                    </p>
+                </a>
+
+                <!-- Path Beta -->
+                <a href="../../order/index.html?type=lp_order" class="group relative p-12 border border-cyan-500/50 hover:bg-cyan-500 transition-all duration-500 overflow-hidden">
+                    <div class="absolute inset-0 bg-cyan-500/10 group-hover:bg-transparent"></div>
+                    <h4 class="mono text-cyan-500 group-hover:text-white mb-6 tracking-widest">[PATH_BETA]</h4>
+                    <p class="text-white text-2xl font-black mb-6">ORDER_THE_LOGIC</p>
+                    <p class="text-xs opacity-50 group-hover:opacity-100">
+                        「制作」という名の依頼。テンプレートは死んだ。
+                        あなたの物語を、勝てる数式（LP）へと再構築する。
+                    </p>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="fixed bottom-10 left-10 mono text-[8px] opacity-20 pointer-events-none">
+        MEMORY_USAGE: CRITICAL<br>
+        INTELLECT_ALLOCATION: 98.4%<br>
+        SOCIAL_ADAPTABILITY: 1.2%
+    </div>
+
+    <footer class="py-20 text-center opacity-5 text-[9px] cinzel tracking-[2em] uppercase">
+        Hexa Relation // Human Archive // 2026.
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

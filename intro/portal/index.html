@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexa Portal: 制作進捗を、クエスト形式で。 | Hexa Relation</title>
+    <meta name="description" content="クライアント専用「冒険の拠点」。制作の進捗をリアルタイムでクエスト管理。煩わしい連絡を、楽しいゲーム体験へとアップデートします。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body { background: #050505; color: #00f2ff; font-family: 'Share Tech Mono', monospace; }
+        .portal-window { border: 1px solid #00f2ff; background: rgba(0, 242, 255, 0.05); padding: 2rem; box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); }
+        .quest-item { border-left: 2px solid #00f2ff; padding-left: 1rem; margin-bottom: 2rem; }
+        .progress-line { height: 2px; background: #003333; position: relative; margin: 10px 0; }
+        .progress-active { position: absolute; top: 0; left: 0; height: 100%; background: #00f2ff; box-shadow: 0 0 10px #00f2ff; }
+    </style>
+</head>
+<body class="p-6 md:p-20">
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-20">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 tracking-tighter">HEXA_PORTAL_SYSTEM</h1>
+            <p class="opacity-50 text-sm">> 進行中のプロジェクトをクエストとして可視化。</p>
+        </header>
+
+        <div class="portal-window">
+            <h2 class="text-xl mb-10 border-b border-cyan-900 pb-2">Active_Quests</h2>
+            
+            <div class="quest-item">
+                <div class="flex justify-between mb-2">
+                    <span class="text-lg">01. ヒアリングデータの解析</span>
+                    <span class="text-xs px-2 py-1 bg-cyan-900">COMPLETED</span>
+                </div>
+                <div class="progress-line"><div class="progress-active w-full"></div></div>
+            </div>
+
+            <div class="quest-item">
+                <div class="flex justify-between mb-2">
+                    <span class="text-lg">02. ワイヤーフレーム構築</span>
+                    <span class="text-xs px-2 py-1 bg-cyan-950 text-cyan-500">IN_PROGRESS</span>
+                </div>
+                <div class="progress-line"><div class="progress-active w-3/4"></div></div>
+                <p class="text-[10px] mt-2 opacity-40">>> デザイン案を現在出力中... 完了予定: 2026.06.01</p>
+            </div>
+
+            <div class="quest-item opacity-30">
+                <div class="flex justify-between mb-2">
+                    <span class="text-lg">03. 実装とデプロイ</span>
+                    <span class="text-xs px-2 py-1 bg-black">LOCKED</span>
+                </div>
+                <div class="progress-line"></div>
+            </div>
+        </div>
+
+        <div class="mt-20 text-center">
+            <p class="mb-8 opacity-60">「今、どこまで進んでる？」の不安をゼロに。</p>
+            <a href="../../order/index.html?from=hexa_portal" class="border border-cyan-400 px-10 py-4 hover:bg-cyan-400 hover:text-black transition-all">
+                このシステムを利用する
+            </a>
+        </div>
+    </div>
+</body>
+</html>

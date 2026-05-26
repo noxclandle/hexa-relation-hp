@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexa Card: 次世代の「装備品」デジタル名刺 | Hexa Relation</title>
+    <meta name="description" content="紙の名刺は、もう古い。Hexa Cardは、あなたのステータスを相手のスマホに直接転送する、次世代の「デジタル装備品」。RPG風のUIで、初対面の相手に強烈な印象を刻み込みます。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <style>
+        body { background: #000; color: #fff; font-family: 'DotGothic16', sans-serif; overflow-x: hidden; }
+        .card-frame { border: 4px solid #fff; box-shadow: 0 0 0 4px #000, 0 0 0 8px #fff; border-radius: 8px; background: #000; padding: 2rem; }
+        .pixel-btn { border: 2px solid #fff; padding: 10px 20px; transition: all 0.2s; cursor: pointer; display: inline-block; }
+        .pixel-btn:hover { background: #fff; color: #000; }
+        .stat-bar { height: 10px; background: #333; position: relative; overflow: hidden; }
+        .stat-fill { height: 100%; background: #00ff00; width: 85%; }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+    <header class="text-center mb-12">
+        <h1 class="text-4xl font-bold mb-4">Hexa_Card_v1.0</h1>
+        <p class="opacity-60 text-sm">相手のスマホを「冒険の書」に変える名刺。</p>
+    </header>
+
+    <main class="w-full max-w-sm">
+        <div class="card-frame mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-xs">LV. 99</span>
+                <span class="text-xs">TYPE: CREATOR</span>
+            </div>
+            <div class="text-center mb-8">
+                <div class="w-24 h-24 bg-white/10 rounded-full mx-auto mb-4 border-2 border-white flex items-center justify-center">
+                    <span class="text-2xl">👤</span>
+                </div>
+                <h2 class="text-2xl mb-2">NOX CLANDLE</h2>
+                <p class="text-xs opacity-60">HEXA RELATION FOUNDER</p>
+            </div>
+            <div class="space-y-4 mb-8">
+                <div>
+                    <div class="flex justify-between text-[10px] mb-1"><span>HP (Hospitality)</span><span>85/100</span></div>
+                    <div class="stat-bar"><div class="stat-fill"></div></div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-[10px] mb-1"><span>MP (Making Power)</span><span>99/100</span></div>
+                    <div class="stat-bar"><div class="stat-fill" style="width: 99%"></div></div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-center text-xs">
+                <div class="border border-white/20 p-2">▶ TALK</div>
+                <div class="border border-white/20 p-2">▶ SHARE</div>
+            </div>
+        </div>
+
+        <div class="text-center space-y-6">
+            <p class="text-sm">「はじめまして」を「衝撃」に変えろ。</p>
+            <a href="../../order/index.html?from=hexa_card" class="pixel-btn w-full text-center">このカードを装備する</a>
+        </div>
+    </main>
+
+    <footer class="mt-20 opacity-20 text-[9px]">© 2026 HEXA RELATION / EQUIPMENT_DEPT.</footer>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexa Order: 「依頼」を、ワクワクする体験に。 | Hexa Relation</title>
+    <meta name="description" content="退屈な問い合わせフォームを、ゲームの「オーダー受注」画面へ。Hexa Orderは、入力のストレスを楽しみへと変え、成約率を向上させます。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #070707; color: #d1d5db; font-family: 'DotGothic16', sans-serif; }
+        .input-box { background: #000; border: 2px solid #374151; padding: 1.5rem; width: 100%; transition: 0.3s; }
+        .input-box:focus { border-color: #f59e0b; outline: none; box-shadow: 0 0 15px rgba(245, 158, 11, 0.2); }
+        .label-text { font-size: 0.75rem; color: #f59e0b; margin-bottom: 0.5rem; display: block; }
+    </style>
+</head>
+<body class="p-6 md:p-20 flex flex-col items-center">
+    <div class="w-full max-w-xl">
+        <header class="mb-20 text-center">
+            <h1 class="text-3xl text-yellow-500 font-bold mb-4">▶ ギルドからの依頼を受注する</h1>
+            <p class="text-xs opacity-50 uppercase tracking-widest">Mission_Inquiry_System</p>
+        </header>
+
+        <div class="space-y-10">
+            <section>
+                <span class="label-text">PROJECT_NAME</span>
+                <input type="text" placeholder="プロジェクトに 名前をつけてください" class="input-box">
+            </section>
+
+            <section>
+                <span class="label-text">MISSION_LEVEL</span>
+                <div class="grid grid-cols-3 gap-4">
+                    <button class="border-2 border-gray-700 py-3 text-xs hover:border-yellow-500 hover:text-yellow-500">NORMAL</button>
+                    <button class="border-2 border-gray-700 py-3 text-xs hover:border-yellow-500 hover:text-yellow-500">HARD</button>
+                    <button class="border-2 border-gray-700 py-3 text-xs hover:border-yellow-500 hover:text-yellow-500">LUNATIC</button>
+                </div>
+            </section>
+
+            <section>
+                <span class="label-text">REWARD_GOLD</span>
+                <input type="number" placeholder="予算を 入力してください" class="input-box">
+            </section>
+
+            <div class="pt-10">
+                <button class="w-full bg-yellow-500 text-black font-bold py-6 text-xl hover:bg-yellow-400 transition-all">
+                    ▶ 依頼書を送信する
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-20 text-center text-xs opacity-20">
+            <p>Hexa Relation // Interactive Form Module v2.4</p>
+        </div>
+    </div>
+</body>
+</html>

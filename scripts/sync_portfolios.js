@@ -46,18 +46,45 @@ function sync() {
     const visiblePortfolios = portfolios.filter(p => !p.hidden);
     console.log(`Found ${portfolios.length} portfolios (${visiblePortfolios.length} visible):`, portfolios.map(p => p.id));
 
-    // 2. Update admin/index.html (Inject ALL_PAGE_IDS - Keep hidden pages here for admin)
+    // 2. Update admin/index.html (Inject ALL_PAGE_IDS & MARKETING_PAGE_IDS)
     if (fs.existsSync(ADMIN_INDEX)) {
         let adminContent = fs.readFileSync(ADMIN_INDEX, 'utf-8');
-        // 'nox' を含めた全IDを抽出
+        
+        // Portfolios (Save Data)
         const allIds = ['nox', ...portfolios.map(p => p.id)];
         const idList = allIds.map(id => `'${id}'`).join(', ');
+        
+        // Marketing LPs (Intro)
+        const INTRO_DIR = path.join(__dirname, '../intro');
+        const marketingLPs = fs.readdirSync(INTRO_DIR)
+            .filter(dir => fs.statSync(path.join(INTRO_DIR, dir)).isDirectory())
+            .map(dir => {
+                const indexPath = path.join(INTRO_DIR, dir, 'index.html');
+                let name = dir.toUpperCase();
+                let desc = 'No description';
+                if (fs.existsSync(indexPath)) {
+                    const content = fs.readFileSync(indexPath, 'utf-8');
+                    const titleMatch = content.match(/<title>(.*?)<\/title>/);
+                    if (titleMatch) name = titleMatch[1].split('|')[0].trim();
+                    const descMatch = content.match(/<meta name="description" content="(.*?)"/);
+                    if (descMatch) desc = descMatch[1];
+                }
+                return { id: dir, name, desc };
+            });
+        const marketingList = JSON.stringify(marketingLPs);
+
         const injectStart = '// AUTO_INJECT_START';
         const injectEnd = '// AUTO_INJECT_END';
         const regex = new RegExp(`${injectStart}[\\s\\S]*?${injectEnd}`, 'm');
-        adminContent = adminContent.replace(regex, `${injectStart}\n        const ALL_PAGE_IDS = [${idList}];\n        ${injectEnd}`);
+        
+        const injection = `${injectStart}
+        const ALL_PAGE_IDS = [${idList}];
+        const MARKETING_PAGES = ${marketingList};
+        ${injectEnd}`;
+
+        adminContent = adminContent.replace(regex, injection);
         fs.writeFileSync(ADMIN_INDEX, adminContent);
-        console.log('Updated admin/index.html');
+        console.log('Updated admin/index.html with both Portfolio and Marketing IDs');
     }
 
     // 3. Update save/nox/index.html (Only visible portfolios)
