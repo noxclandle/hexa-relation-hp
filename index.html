@@ -127,7 +127,7 @@
         <header class="mb-12">
             <img src="背景.png" alt="Hexa Relation Emblem" class="w-20 mx-auto mb-6 opacity-60">
             <h1 class="cinzel text-5xl md:text-7xl font-bold tracking-[0.3em] mb-4">Hexa Relation</h1>
-            <p id="philosophy-text" class="text-[10px] md:text-xs tracking-[0.4em] text-muted mx-auto leading-loose uppercase whitespace-nowrap">
+            <p id="philosophy-text" class="text-[10px] md:text-xs tracking-[0.4em] text-muted max-w-3xl mx-auto leading-loose uppercase">
                 Blind justice ensures fairness, but it is the courage<br>to take another's hand that ignites the real passion in your life.
             </p>
             <p class="text-[10px] md:text-xs tracking-[0.15em] opacity-40 mt-4 max-w-2xl mx-auto leading-loose">
@@ -251,18 +251,16 @@
             if (e.target.closest('a')) playClickSound();
         });
 
-        // Secret Admin Check (Legacy placeholder)
-        const philText = document.getElementById('philosophy-text');
-        const originalContent = philText.innerText;
-        philText.innerHTML = originalContent.split('').map(char => `<span onclick="checkAce('${char.toUpperCase()}')">${char}</span>`).join('');
-        let aceStep = 0;
-        function checkAce(char) {
-            const seq = ['A', 'C', 'E'];
-            if (char === seq[aceStep]) {
-                aceStep++;
-                if (aceStep === seq.length) { window.location.href = 'admin/'; aceStep = 0; }
-            } else if (char !== ' ' && char !== '\n') { aceStep = 0; }
-        }
+        // Secret Admin Access (Keydown sequence)
+        let combo = "";
+        window.addEventListener('keydown', (e) => {
+            combo += e.key.toUpperCase();
+            if (combo.includes("ACE")) {
+                window.location.href = 'admin/';
+                combo = "";
+            }
+            if (combo.length > 10) combo = combo.substring(1);
+        });
     </script>
 </body>
 </html>
