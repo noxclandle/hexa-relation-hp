@@ -723,16 +723,21 @@
         async function checkYouTubeLive() {
             const channelId = 'UCh6DUGkgltL6gpJUcCdhG5Q'; // TEN様の正しいチャンネルID
             const channelHandle = '@TENpon_ch';
-            const url = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.youtube.com/' + channelHandle + '/live')}`;
+            // キャッシュ回避のためにタイムスタンプを付与
+            const ytUrl = `https://www.youtube.com/${channelHandle}/live?t=${Date.now()}`;
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(ytUrl)}`;
             
             try {
-                const response = await fetch(url);
-                const data = await response.json();
+                const response = await fetch(proxyUrl);
+                if (!response.ok) throw new Error('Proxy response not ok');
+                const text = await response.text();
                 
                 // YouTubeのHTML内にライブ配信中を示す文字列が含まれているか判定
-                const isLive = data.contents.includes('\"isLive\":true') || 
-                               data.contents.includes('yt-live-chat-renderer') ||
-                               data.contents.includes('liveStreamOffline":false');
+                const isLive = text.includes('"isLive":true') || 
+                               text.includes('yt-live-chat-renderer') ||
+                               text.includes('liveStreamOffline":false');
+                
+                console.log("YouTube Live Check Result:", isLive);
                 
                 if (isLive) {
                     const badge = document.getElementById('live-badge');
@@ -742,7 +747,9 @@
                     // 埋め込み用URLをセット (正しいチャンネルIDを使用)
                     document.getElementById('live-iframe').src = `https://www.youtube.com/embed/live?channel=${channelId}&autoplay=1`;
                 }
-            } catch (e) { console.error("Live check failed:", e); }
+            } catch (e) { 
+                console.error("Live check failed:", e);
+            }
         }
 
         function openLiveModal() {
