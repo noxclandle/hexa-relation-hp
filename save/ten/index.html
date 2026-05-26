@@ -721,34 +721,29 @@
         }
 
         async function checkYouTubeLive() {
-            const channelId = 'UCh6DUGkgltL6gpJUcCdhG5Q'; // TEN様の正しいチャンネルID
+            const channelId = 'UCh6DUGkgltL6gpJUcCdhG5Q';
             const channelHandle = '@TENpon_ch';
-            // キャッシュ回避のためにタイムスタンプを付与
-            const ytUrl = `https://www.youtube.com/${channelHandle}/live?t=${Date.now()}`;
-            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(ytUrl)}`;
+            // codetabsプロキシを使用（alloriginsが不安定なため）
+            const proxyUrl = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent('https://www.youtube.com/' + channelHandle + '/live')}`;
             
             try {
                 const response = await fetch(proxyUrl);
                 if (!response.ok) throw new Error('Proxy response not ok');
                 const text = await response.text();
                 
-                // YouTubeのHTML内にライブ配信中を示す文字列が含まれているか判定
                 const isLive = text.includes('"isLive":true') || 
                                text.includes('yt-live-chat-renderer') ||
                                text.includes('liveStreamOffline":false');
-                
-                console.log("YouTube Live Check Result:", isLive);
                 
                 if (isLive) {
                     const badge = document.getElementById('live-badge');
                     if (badge) badge.style.display = 'flex';
                     addChatMsg("システム：TENは現在ライブ配信中です！", true);
-                    
-                    // 埋め込み用URLをセット (正しいチャンネルIDを使用)
                     document.getElementById('live-iframe').src = `https://www.youtube.com/embed/live?channel=${channelId}&autoplay=1`;
                 }
             } catch (e) { 
                 console.error("Live check failed:", e);
+                // 失敗時のフォールバック（任意）
             }
         }
 
