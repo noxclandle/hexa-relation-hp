@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>経営者・起業家向けブランディングLP制作 | Hexa Relation</title>
+    <meta name="description" content="経営者のための「戦う名刺」。一級建築士や専門職、起業家の実績をゲームのステータスとして可視化。信頼性と遊び心を両立した、惹きつけるブランディングサイト。">
+    <meta name="keywords" content="経営者 ポートフォリオ, 企業サイト 制作, 個性的 Web制作, ブランディング LP">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@300;400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #030305; --accent: #00f0ff; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Noto Sans JP', sans-serif; }
+        .cinzel { font-family: 'Cinzel', serif; }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .reveal { opacity: 0; transform: translateY(20px); transition: 1s all ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <section class="h-screen flex flex-col justify-center items-center text-center p-6">
+        <h1 class="cinzel text-5xl md:text-8xl mb-6 font-bold" style="color: var(--accent);">FOR_FOUNDERS</h1>
+        <p class="text-xl md:text-3xl font-light opacity-80 leading-relaxed">
+            「退屈な企業紹介」を、<br>「圧倒的な実績（ステータス）」へ。
+        </p>
+    </section>
+
+    <main class="max-w-4xl mx-auto px-6 pb-40">
+        <div class="glass p-12 reveal mb-10">
+            <h2 class="text-2xl font-bold mb-6">信頼は、視覚化される。</h2>
+            <p class="text-gray-400 leading-loose">
+                どんなに素晴らしい実績も、読まれないテキストの山の中では埋もれてしまいます。サイバーパンクな計器類や、洗練されたダッシュボード形式のデザインにより、あなたの専門性と「これまでの歴史」を直感的に伝えます。商談時の最強の武器となる、独自のデジタル・プレゼンスを。
+            </p>
+        </div>
+        <div class="text-center mt-20">
+            <a href="../../order/index.html?from=intro_business" class="inline-block border-2 border-white px-16 py-6 font-bold hover:bg-white hover:text-black transition-all" style="border-color: var(--accent); color: var(--accent);">
+                ブランディングを 始動する
+            </a>
+        </div>
+    </main>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
