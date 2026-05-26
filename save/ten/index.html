@@ -720,10 +720,10 @@
             checkYouTubeLive();
         }
 
+        let currentLiveVideoId = null;
+
         async function checkYouTubeLive() {
-            const channelId = 'UCh6DUGkgltL6gpJUcCdhG5Q';
             const channelHandle = '@TENpon_ch';
-            // codetabsプロキシを使用（alloriginsが不安定なため）
             const proxyUrl = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent('https://www.youtube.com/' + channelHandle + '/live')}`;
             
             try {
@@ -736,24 +736,39 @@
                                text.includes('liveStreamOffline":false');
                 
                 if (isLive) {
+                    // Video IDを抽出 (より確実な埋め込みのため)
+                    const match = text.match(/"videoId":"([^"]+)"/);
+                    if (match && match[1]) {
+                        currentLiveVideoId = match[1];
+                    }
+
                     const badge = document.getElementById('live-badge');
                     if (badge) badge.style.display = 'flex';
                     addChatMsg("システム：TENは現在ライブ配信中です！", true);
-                    document.getElementById('live-iframe').src = `https://www.youtube.com/embed/live?channel=${channelId}&autoplay=1`;
+                    
+                    const iframe = document.getElementById('live-iframe');
+                    if (currentLiveVideoId) {
+                        iframe.src = `https://www.youtube.com/embed/${currentLiveVideoId}?autoplay=1`;
+                    } else {
+                        // フォールバック
+                        iframe.src = `https://www.youtube.com/embed/live?channel=UCh6DUGkgltL6gpJUcCdhG5Q&autoplay=1`;
+                    }
                 }
             } catch (e) { 
                 console.error("Live check failed:", e);
-                // 失敗時のフォールバック（任意）
             }
         }
 
         function openLiveModal() {
             playSound(1200);
             document.getElementById('live-modal').style.display = 'flex';
-            // モーダルが開いた時にiframeを再読み込みして最新の状態にする
             const iframe = document.getElementById('live-iframe');
             if (iframe.src === "" || iframe.src.includes('UCp1Z6733vL_6_S9-j9r8_7g')) {
-                iframe.src = `https://www.youtube.com/embed/live?channel=UCh6DUGkgltL6gpJUcCdhG5Q&autoplay=1`;
+                if (currentLiveVideoId) {
+                    iframe.src = `https://www.youtube.com/embed/${currentLiveVideoId}?autoplay=1`;
+                } else {
+                    iframe.src = `https://www.youtube.com/embed/live?channel=UCh6DUGkgltL6gpJUcCdhG5Q&autoplay=1`;
+                }
             }
         }
 
