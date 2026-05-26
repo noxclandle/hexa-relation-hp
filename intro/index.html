@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexa Relation | Service Introduction - 現実を、操作可能に。</title>
+    <meta name="description" content="Hexa Relation (ヘキサ・リレーション) のサービス紹介。あなたの人生や活動を「ゲームの世界観」に凝縮し、没入型ポートフォリオを構築。レトロRPG、サイバーパンク、ビジュアルノベルなど多彩なスタイルに対応。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;400;700&family=DotGothic16&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --accent-white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #fff;
+            font-family: 'Noto Sans JP', sans-serif;
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .cinzel { font-family: 'Cinzel', serif; }
+        .pixel { font-family: 'DotGothic16', sans-serif; }
+        .mono { font-family: 'Share Tech Mono', monospace; }
+
+        /* Background */
+        .grid-bg {
+            position: fixed; inset: 0; z-index: -1;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .glass-panel:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-5px); }
+
+        /* Animations */
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Style Preview Mockups */
+        .style-mockup {
+            height: 300px; border-radius: 8px; overflow: hidden; position: relative;
+            background: #000; border: 1px solid #222;
+        }
+        .mock-overlay {
+            position: absolute; inset: 0; padding: 20px;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        }
+
+        /* RPG Section Detail */
+        .dq-border { border: 4px solid #fff; box-shadow: 0 0 0 4px #000, 0 0 0 8px #fff; border-radius: 8px; }
+        .cyber-glow { box-shadow: 0 0 20px rgba(0, 242, 255, 0.3); border-color: #00f2ff; }
+        .vn-name { background: #be185d; color: #fff; padding: 2px 15px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+
+    </style>
+</head>
+<body onload="initApp()">
+    <div class="grid-bg"></div>
+
+    <!-- 1. Hero Section -->
+    <section class="min-h-screen flex flex-col justify-center items-center text-center p-6 border-b border-white/5">
+        <div class="reveal">
+            <span class="cinzel text-[10px] tracking-[1em] text-gray-500 mb-4 block">Hexa Relation // Official_Intro</span>
+            <h1 class="cinzel text-5xl md:text-8xl font-bold mb-8">Service_Log.</h1>
+            <p class="text-xl md:text-2xl font-light text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                あなたの活動を、<span class="text-white font-bold">「操作可能な物語」</span>へ。<br>
+                ポートフォリオをゲームのセーブデータとして再構築する。
+            </p>
+        </div>
+        <a href="#concept" class="mt-20 animate-bounce opacity-20 hover:opacity-100 transition-opacity">
+            <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center p-1">
+                <div class="w-1 h-2 bg-white rounded-full"></div>
+            </div>
+        </a>
+    </section>
+
+    <!-- 2. The Concept -->
+    <section id="concept" class="max-w-6xl mx-auto px-6 py-40">
+        <div class="grid md:grid-cols-2 gap-20 items-center">
+            <div class="reveal">
+                <h2 class="cinzel text-4xl mb-10 border-b border-white/10 pb-4">Concept.</h2>
+                <h3 class="text-3xl font-bold mb-6">情報の羅列から、<br>体験の共有へ。</h3>
+                <div class="space-y-6 text-gray-400 leading-relaxed">
+                    <p>Webサイトは本来、情報を見るだけの場所ではありません。特にクリエイターや活動者にとって、自分自身をプレゼンする場所は「自分の世界観そのもの」であるべきです。</p>
+                    <p>Hexa Relationは、あなたの実績、歴史、そして情熱を特定のゲームシステムに「翻訳」します。訪れる人がコマンドを選び、ステータスを確認し、時に仕掛けを発見する。その「能動的な体験」が、あなたへの強い関心と信頼へと繋がります。</p>
+                </div>
+            </div>
+            <div class="glass-panel p-10 reveal delay-200">
+                <ul class="space-y-8">
+                    <li class="flex gap-4">
+                        <span class="cinzel text-2xl text-gray-600">01</span>
+                        <div>
+                            <p class="font-bold text-lg">World Building</p>
+                            <p class="text-sm opacity-50">ヒアリングから独自の「ゲームルール」を設計します。</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="cinzel text-2xl text-gray-600">02</span>
+                        <div>
+                            <p class="font-bold text-lg">Interactive Gimmick</p>
+                            <p class="text-sm opacity-50">クリック音、演出、イースターエッグ。没入感を極限まで高めます。</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="cinzel text-2xl text-gray-600">03</span>
+                        <div>
+                            <p class="font-bold text-lg">Evolutionary Update</p>
+                            <p class="text-sm opacity-50">月1回の修正により、あなたの成長と共にサイトも進化します。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. The Styles (The Menu) -->
+    <section class="bg-white/5 py-40 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-24 reveal">
+                <h2 class="cinzel text-5xl mb-6">Style_Inventory.</h2>
+                <p class="text-gray-500 typewriter">実現可能な世界観の断片（サンプル）</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Retro RPG -->
+                <div class="glass-panel p-6 reveal">
+                    <div class="style-mockup mb-6 flex justify-center items-center">
+                        <div class="dq-border p-4 bg-black w-4/5 text-center">
+                            <p class="pixel text-sm">ゆうしゃ は サイト を<br>しらべた！</p>
+                        </div>
+                        <div class="mock-overlay">
+                            <span class="pixel text-xs">Retro-RPG Style</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">レトロ・ロールプレイング</h4>
+                    <p class="text-xs text-gray-400 leading-loose mb-6">
+                        ドラクエやポケモンのような、ドット絵とテキストウィンドウ。懐かしさと圧倒的な親しみやすさを提供します。実績を「ステータス」や「じゅもん」として表現。
+                    </p>
+                    <div class="flex gap-2"><span class="text-[9px] border px-2 py-1 opacity-40">DOT_ART</span><span class="text-[9px] border px-2 py-1 opacity-40">8-BIT_SOUND</span></div>
+                </div>
+
+                <!-- Cyber Tech -->
+                <div class="glass-panel p-6 reveal delay-100">
+                    <div class="style-mockup mb-6 flex justify-center items-center">
+                        <div class="border border-cyan-400 cyber-glow p-4 w-4/5">
+                            <p class="mono text-cyan-400 text-xs">> ACCESSING_DATA...</p>
+                        </div>
+                        <div class="mock-overlay">
+                            <span class="mono text-xs text-cyan-400">Cyber-Tech Style</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4 text-cyan-400">サイバー・テクニカル</h4>
+                    <p class="text-xs text-gray-400 leading-loose mb-6">
+                        近未来のハッカー画面や、FPSのUIを彷彿とさせる鋭いデザイン。技術力の高さやスピード感をアピールしたい活動者、エンジニアに最適です。
+                    </p>
+                    <div class="flex gap-2"><span class="text-[9px] border border-cyan-900 px-2 py-1 text-cyan-900">GLITCH</span><span class="text-[9px] border border-cyan-900 px-2 py-1 text-cyan-900">HIGH_RES</span></div>
+                </div>
+
+                <!-- Visual Novel -->
+                <div class="glass-panel p-6 reveal delay-200">
+                    <div class="style-mockup mb-6 flex justify-center items-end p-4">
+                        <div class="bg-black/80 border-2 border-white p-3 w-full">
+                            <div class="vn-name text-[10px]">ヒロイン</div>
+                            <p class="text-[10px] leading-relaxed">「あなたの物語を、もっと近くで感じてほしいな。」</p>
+                        </div>
+                        <div class="mock-overlay">
+                            <span class="text-xs">Visual Novel Style</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4 text-pink-500">ビジュアルノベル</h4>
+                    <p class="text-xs text-gray-400 leading-loose mb-6">
+                        アドベンチャーゲームのような、キャラクターと対話するレイアウト。VTuberや配信者、ストーリーテラーに最高の「没入」を提供します。
+                    </p>
+                    <div class="flex gap-2"><span class="text-[9px] border border-pink-900 px-2 py-1 text-pink-900">STORY_DRIVEN</span><span class="text-[9px] border border-pink-900 px-2 py-1 text-pink-900">AVATAR_READY</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Workflow (De-molding) -->
+    <section class="max-w-4xl mx-auto px-6 py-40">
+        <h2 class="cinzel text-4xl mb-20 text-center reveal">The_Forging_Process.</h2>
+        <div class="space-y-20">
+            <div class="flex gap-10 items-start reveal">
+                <div class="cinzel text-5xl opacity-10">01</div>
+                <div>
+                    <h4 class="text-2xl font-bold mb-4">Hearing / 魂の抽出</h4>
+                    <p class="text-gray-400">
+                        単なる「何を入れたいか」の質問ではありません。あなたの活動の核、最も大切にしている信念、そして「どのゲームの世界ならあなたの魂が輝くか」を共に探し出します。
+                    </p>
+                </div>
+            </div>
+            <div class="flex gap-10 items-start reveal">
+                <div class="cinzel text-5xl opacity-10">02</div>
+                <div>
+                    <h4 class="text-2xl font-bold mb-4">Forging / 鍛造</h4>
+                    <p class="text-gray-400">
+                        ヒアリングした情報を元に、エンジニアが1ドット、1行のコードから独自の世界を構築。汎用のテンプレートは一切使いません。あなた専用の「ゲームシステム」を鍛え上げます。
+                    </p>
+                </div>
+            </div>
+            <div class="flex gap-10 items-start reveal">
+                <div class="cinzel text-5xl opacity-10">03</div>
+                <div>
+                    <h4 class="text-2xl font-bold mb-4">Extraction / 脱型（公開）</h4>
+                    <p class="text-gray-400">
+                        テスト環境で十分に「プレイ（確認）」していただいた後、現実のドメインへとデプロイします。型枠を外し、あなたの真実の形がWebに現れる瞬間です。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. CTA -->
+    <section class="py-40 text-center border-t border-white/5">
+        <div class="reveal">
+            <h3 class="cinzel text-3xl mb-12 tracking-widest opacity-60">Ready to build your world?</h3>
+            <a href="../order/index.html?from=intro" class="inline-block border-2 border-white px-16 py-6 font-bold hover:bg-white hover:text-black transition-all">
+                新しい冒険（ご依頼）を始める
+            </a>
+            <p class="mt-10 text-[10px] mono text-gray-600 uppercase tracking-widest">Pricing: ¥20,000 ~ // Maintenance: Monthly Free Update</p>
+        </div>
+    </section>
+
+    <footer class="py-20 text-center opacity-10 text-[9px] cinzel tracking-[1em] uppercase">
+        &copy; 2026 Hexa Relation // Engineering Envy.
+    </footer>
+
+    <script>
+        function initApp() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+    </script>
+</body>
+</html>
