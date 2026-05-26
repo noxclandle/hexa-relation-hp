@@ -62,7 +62,7 @@ function sync() {
     if (fs.existsSync(NOX_INDEX)) {
         let noxContent = fs.readFileSync(NOX_INDEX, 'utf-8');
         const listStart = '<!-- 実績が増えたらここに追加 -->';
-        const listEnd = '<div class="p-4 border border-white/10 rounded opacity-40 italic text-center text-sm">';
+        const listEnd = '<div id="list-end-marker"';
         
         let newHtml = listStart + '\n';
         visiblePortfolios.forEach((p, index) => {
@@ -77,7 +77,7 @@ function sync() {
         const regex = new RegExp(`${listStart}[\\s\\S]*?${listEnd}`, 'm');
         noxContent = noxContent.replace(regex, newHtml + '                        ' + listEnd);
         fs.writeFileSync(NOX_INDEX, noxContent);
-        console.log('Updated save/nox/index.html (Hidden items excluded)');
+        console.log('Updated save/nox/index.html (Pagination support preserved)');
     }
 
     console.log('Sync complete.');

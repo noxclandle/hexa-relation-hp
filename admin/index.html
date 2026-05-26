@@ -187,6 +187,7 @@
 
                 querySnapshot.forEach((doc) => {
                     const id = doc.id;
+                    if (!ALL_PAGE_IDS.includes(id)) return; // Filter out unauthorized or deleted IDs
                     const data = doc.data();
                     currentAnalytics[id] = data;
                     totalHits += data.hits || 0;
