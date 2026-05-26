@@ -138,6 +138,25 @@
             <div class="mt-8 p-4 border border-dashed border-green-800 text-sm">
                 <p>※ Firebase Real-time 連携中...</p>
             </div>
+
+            <!-- Style Menu Preview Section -->
+            <div class="mt-12 pt-8 border-t border-green-900">
+                <h2 class="mb-6">▶ スタイル・メニュー（見本用）</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <a href="../save/retro-rpg/" target="_blank" class="p-4 border border-green-800 hover:bg-green-900 transition-colors">
+                        <p class="font-bold mb-2">Retro-RPG Style</p>
+                        <p class="text-xs opacity-60">ドラクエ・ポケモン風。懐かしさと親しみやすさ重視。</p>
+                    </a>
+                    <a href="../save/cyber-tech/" target="_blank" class="p-4 border border-green-800 hover:bg-green-900 transition-colors">
+                        <p class="font-bold mb-2">Cyber-Tech Style</p>
+                        <p class="text-xs opacity-60">サイバーパンク・FPS風。技術力と鋭さの演出。</p>
+                    </a>
+                    <a href="../save/visual-novel/" target="_blank" class="p-4 border border-green-800 hover:bg-green-900 transition-colors">
+                        <p class="font-bold mb-2">Visual Novel Style</p>
+                        <p class="text-xs opacity-60">アドベンチャー・ノベル風。ストーリーと対話重視。</p>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -170,7 +189,7 @@
         const db = firebase.firestore();
 
         // AUTO_INJECT_START
-        const ALL_PAGE_IDS = ['nox', 'choco', 'ten', 'sabanomiso'];
+        const ALL_PAGE_IDS = ['nox', 'choco', 'ten', 'sabanomiso', 'retro-rpg', 'cyber-tech', 'visual-novel'];
         // AUTO_INJECT_END
 
         let currentAnalytics = {};

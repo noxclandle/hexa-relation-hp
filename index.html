@@ -3,37 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hexa Relation | ゲーム風LP・ポートフォリオ制作</title>
+    <title>Hexa Relation | ゲームの世界を現実に。没入型LP・ポートフォリオ制作</title>
     <meta name="description" content="Hexa Relation (ヘキサ・リレーション) - ゲームの世界に住む、あなた専用のセーブデータ型ポートフォリオを制作。MOTHER2、FF、DBD、ロマサガ風など、多彩な世界観をオーダーメイドで構築。Webデザインに革命と没入感を。">
-    <meta name="keywords" content="ポートフォリオ 制作, ゲーム風 サイト, LP制作 依頼, VTuber LP, 自己紹介 ページ, Webデザイン ゲーム, MOTHER2風, FF風, DBD風, ロマサガ風">
+    <meta name="keywords" content="ポートフォリオ 制作, ゲーム風 サイト, LP制作 依頼, VTuber LP, 自己紹介 ページ, Webデザイン ゲーム, オーダーメイド Web制作">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hexa-relation.com/">
-    <meta property="og:title" content="Hexa Relation | ゲームの世界を現実に。没入型LP制作">
-    <meta property="og:description" content="あなたの活動を「最高のセーブデータ」として刻みます。ゲーム画面を操作するような驚きと没入感を、Webサイトに。">
+    <meta property="og:title" content="Hexa Relation | 最高のセーブデータを、Webに刻む。">
+    <meta property="og:description" content="あなたの活動を「ゲームの世界観」で凝縮。操作し、体験する。忘れられないポートフォリオを構築。">
     <meta property="og:image" content="https://hexa-relation.com/enhanced_E3FD57_1_102_o.png">
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://hexa-relation.com/">
-    <meta property="twitter:title" content="Hexa Relation | ゲーム風LP・ポートフォリオ制作">
-    <meta property="twitter:description" content="あなたの物語をゲームの世界観で凝縮。Webサイトに圧倒的な没入感を。">
-    <meta property="twitter:image" content="https://hexa-relation.com/enhanced_E3FD57_1_102_o.png">
-
-    <!-- Structured Data (JSON-LD) for SEO -->
+    <!-- Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Service",
-      "serviceType": "Web Design for Game-Style Portfolios",
+      "name": "Hexa Relation Game-Style Web Production",
+      "description": "ゲームの世界観をWebサイトで再現する、没入型ポートフォリオ制作サービス。",
       "provider": {
         "@type": "Organization",
-        "name": "Hexa Relation",
-        "url": "https://hexa-relation.com/"
+        "name": "Hexa Relation"
       },
-      "areaServed": "JP",
-      "description": "ゲームの世界観をWebサイトで再現する、没入型ポートフォリオ制作サービス。MOTHER2、Final Fantasy、Dead by Daylightなどのスタイルに対応。",
       "offers": {
         "@type": "Offer",
         "priceCurrency": "JPY",
@@ -42,238 +33,233 @@
     }
     </script>
 
-    <!-- Google Fonts: Cinzel (Gothic/Elegant), Noto Sans JP (Gothic) -->
+    <!-- Google Fonts: Cinzel, Noto Sans JP -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@300;400;700&family=DotGothic16&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS CDN -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            --primary-accent: #ffffff;
-            --secondary-accent: #888888;
-            --bg-deep: #050505;
-            --rpg-red: #ff0000;
+            --bg-dark: #030305;
+            --accent-white: #ffffff;
+            --text-muted: #888888;
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
 
         body {
-            background-color: var(--bg-deep);
-            color: var(--primary-accent);
+            background-color: var(--bg-dark);
+            color: var(--accent-white);
             font-family: 'Noto Sans JP', sans-serif;
             margin: 0; padding: 0;
             overflow-x: hidden;
             scroll-behavior: smooth;
-            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Gothic/Modern Background */
+        .cinzel { font-family: 'Cinzel', serif; }
+
+        /* Cinematic Background */
         .hero-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('enhanced_E3FD57_1_102_o.png');
             background-size: cover; background-position: center;
-            opacity: 0.35; filter: grayscale(20%) brightness(70%);
+            opacity: 0.3; filter: grayscale(40%) brightness(60%);
             z-index: -1;
         }
-
-        .overlay-vignette {
+        .vignette {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.9) 100%);
             z-index: -1;
         }
 
-        .content-container {
-            min-height: 100vh;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 2rem; text-align: center;
+        /* Glassmorphism Classes */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 4px;
+            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
-
-        .site-title {
-            font-family: 'Cinzel', serif; font-size: 3.5rem;
-            letter-spacing: 0.2em; text-transform: uppercase;
-            margin-bottom: 0.5rem; font-weight: 700; color: #fff;
-            text-shadow: 0 0 20px rgba(255,255,255,0.3);
-        }
-
-        .gateway-menu {
-            margin-top: 3rem; display: flex; flex-direction: column; gap: 1.5rem;
-            width: 100%; max-width: 320px;
-        }
-
-        .menu-link {
-            position: relative; padding: 1rem;
-            font-family: 'Cinzel', serif; font-size: 1.2rem;
-            letter-spacing: 0.1em; text-decoration: none;
-            color: var(--primary-accent);
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(5px);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            cursor: pointer; text-align: center;
-        }
-
-        .menu-link:hover {
-            background: rgba(255,255,255,1); color: #000;
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255,255,255,0.1);
         }
 
-        /* RPG Section Styles */
-        .rpg-section {
-            width: 100%; max-width: 1000px; margin: 4rem auto;
-            padding: 2rem;
+        /* Navigation links */
+        .nav-link {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.2em;
+            padding: 1.2rem;
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s;
+            text-align: center;
+        }
+        .nav-link:hover {
+            background: #fff; color: #000;
+            box-shadow: 0 0 30px rgba(255,255,255,0.2);
         }
 
-        .mother-window {
-            background-color: #000; border: 4px solid #ff0000;
-            border-radius: 16px; padding: 4px; margin-bottom: 2rem;
-            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
-            font-family: 'DotGothic16', sans-serif;
-        }
-
-        .mother-window-inner {
-            border: 2px solid #fff; border-radius: 12px;
-            padding: 1.5rem; text-align: left;
-        }
-
-        .command-cursor { color: #fff; margin-right: 10px; }
-        .command-item { display: flex; align-items: flex-start; margin-bottom: 1rem; }
-
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
+        /* Animations */
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        @media (max-width: 640px) {
-            .site-title { font-size: 2.2rem; }
+        .section-divider {
+            height: 1px; width: 100%;
+            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+            margin: 6rem 0;
+        }
+
+        .heading-decoration {
+            font-size: 0.6rem; letter-spacing: 1em; color: var(--text-muted);
+            text-transform: uppercase; margin-bottom: 1rem; display: block;
         }
     </style>
 </head>
 <body>
 
     <div class="hero-bg"></div>
-    <div class="overlay-vignette"></div>
+    <div class="vignette"></div>
 
     <!-- 1. Hero Gateway -->
-    <div class="content-container">
-        <header class="logo-header mb-8">
-            <img src="背景.png" alt="Hexa Relation 没入型ポートフォリオ制作サービス ロゴ" class="site-logo mx-auto mb-4 opacity-80" style="width: 80px; height: auto; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));">
-            <h1 class="site-title">Hexa Relation</h1>
-            <p id="philosophy-text" class="text-sm tracking-widest text-gray-400 italic max-w-2xl mx-auto leading-relaxed">
-                BLIND JUSTICE ENSURES FAIRNESS, BUT IT IS THE COURAGE TO TAKE ANOTHER'S HAND<br>
-                THAT IGNITES THE REAL PASSION IN YOUR LIFE.
+    <section class="min-h-screen flex flex-col justify-center items-center p-6 text-center">
+        <header class="mb-12">
+            <img src="背景.png" alt="Hexa Relation Emblem" class="w-20 mx-auto mb-6 opacity-60">
+            <h1 class="cinzel text-5xl md:text-7xl font-bold tracking-[0.3em] mb-4">Hexa Relation</h1>
+            <p id="philosophy-text" class="text-[10px] md:text-xs tracking-[0.4em] text-muted max-w-2xl mx-auto leading-loose uppercase">
+                Blind justice ensures fairness, but it is the courage to take another's hand<br>
+                that ignites the real passion in your life.
             </p>
         </header>
 
-        <nav class="gateway-menu">
-            <a href="save/nox/" class="menu-link">Master Portfolio</a>
-            <a href="#about" class="menu-link text-xs opacity-50">View System Info</a>
-            <a href="order/index.html?from=gateway" class="menu-link">Contact</a>
+        <nav class="flex flex-col gap-6 w-full max-w-sm">
+            <a href="save/nox/" class="nav-link">Master Portfolio</a>
+            <a href="#about" class="text-[9px] tracking-[1em] uppercase opacity-40 hover:opacity-100 transition-opacity">Discover System</a>
+            <a href="order/index.html?from=gateway" class="nav-link">Initiate Project</a>
         </nav>
-    </div>
+    </section>
 
-    <!-- 2. SEO Content: RPG Style System Info -->
-    <main id="about" class="rpg-section">
+    <!-- 2. System Information (Modern/Gothic) -->
+    <main id="about" class="max-w-5xl mx-auto px-6 pb-40">
         
-        <div class="mother-window reveal">
-            <div class="mother-window-inner">
-                <h2 class="text-2xl mb-6 border-b border-white pb-2">▼ システムのごあんない</h2>
-                <div class="space-y-6">
-                    <div class="command-item">
-                        <span class="command-cursor">▶︎</span>
-                        <div>
-                            <p class="font-bold text-xl text-red-500 mb-1">セーブデータ型ポートフォリオ</p>
-                            <p class="text-sm opacity-80 leading-relaxed">
-                                あなたの活動実績やプロフィールを、特定のゲームの世界観で凝縮します。
-                                見る人が「操作」し、「体験」する、忘れられないWebサイトを構築。
-                                (MOTHER2, FF, DBD, ロマサガ, ポケモン風など)
-                            </p>
-                        </div>
-                    </div>
-                    <div class="command-item">
-                        <span class="command-cursor">▶︎</span>
-                        <div>
-                            <p class="font-bold text-xl text-red-500 mb-1">レベルアップ・システム</p>
-                            <p class="text-sm opacity-80 leading-relaxed">
-                                制作して終わりではありません。月1回の無料修正により、あなたの成長に合わせて
-                                サイトも「レベルアップ」させることが可能です。
-                            </p>
-                        </div>
-                    </div>
+        <div class="section-divider"></div>
+
+        <section class="reveal">
+            <span class="heading-decoration">System_Overview_v2.0</span>
+            <h2 class="cinzel text-4xl md:text-6xl mb-12 font-bold">Concept.</h2>
+            <div class="grid md:grid-cols-2 gap-16">
+                <div class="glass-card p-10">
+                    <h3 class="cinzel text-xl mb-6 tracking-widest text-muted uppercase">01 // Save Data Structure</h3>
+                    <p class="text-sm leading-loose opacity-70">
+                        「ポートフォリオは単なる記録ではない。それは、あなたが歩んできた物語のセーブデータだ。」<br><br>
+                        Hexa Relationは、あなたの実績や個性を、特定のゲームの世界観の中に凝縮。見る者が「操作」し、「体験」することで、記憶に深く刻まれる唯一無二のデジタル・アーカイブを構築します。
+                    </p>
+                </div>
+                <div class="glass-card p-10">
+                    <h3 class="cinzel text-xl mb-6 tracking-widest text-muted uppercase">02 // Level-Up Protocol</h3>
+                    <p class="text-sm leading-loose opacity-70">
+                        「成長し続ける存在であるために、Webサイトも共にレベルアップするべきだ。」<br><br>
+                        制作完了はゴールではなく、冒険の始まりです。月1回の無料アップデート・プロトコルにより、あなたの最新の実績や変化に合わせて、サイトの情報を常に最適化し続けることが可能です。
+                    </p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="mother-window reveal">
-            <div class="mother-window-inner">
-                <h2 class="text-2xl mb-6 border-b border-white pb-2">▼ ごいらい の ながれ</h2>
-                <div class="grid md:grid-cols-4 gap-4 text-center">
-                    <div class="p-4 border border-white/20 rounded">
-                        <p class="text-red-500 font-bold mb-2">01. じゅんび</p>
-                        <p class="text-xs">好きなゲームや入れたい情報をヒアリング</p>
-                    </div>
-                    <div class="p-4 border border-white/20 rounded">
-                        <p class="text-red-500 font-bold mb-2">02. せいさく</p>
-                        <p class="text-xs">ドット絵やギミックを1ドットずつ丁寧に構築</p>
-                    </div>
-                    <div class="p-4 border border-white/20 rounded">
-                        <p class="text-red-500 font-bold mb-2">03. かくにん</p>
-                        <p class="text-xs">テスト環境で実際にプレイしていただき調整</p>
-                    </div>
-                    <div class="p-4 border border-white/20 rounded">
-                        <p class="text-red-500 font-bold mb-2">04. ぼうけんへ</p>
-                        <p class="text-xs">独自ドメインで本番デプロイ！世界へ公開</p>
-                    </div>
+        <div class="section-divider"></div>
+
+        <section class="reveal">
+            <span class="heading-decoration">Workflow_Sequence</span>
+            <h2 class="cinzel text-4xl md:text-6xl mb-12 font-bold">The Rite.</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="glass-card p-8 border-l-2 border-l-white/20">
+                    <p class="cinzel text-xs text-muted mb-4 uppercase">Phase 01</p>
+                    <h4 class="font-bold mb-4">Hearing</h4>
+                    <p class="text-[11px] leading-relaxed opacity-60">
+                        あなたの物語と、理想とするゲームの世界観を詳細にヒアリング。核となる「魂」を抽出します。
+                    </p>
+                </div>
+                <div class="glass-card p-8 border-l-2 border-l-white/20">
+                    <p class="cinzel text-xs text-muted mb-4 uppercase">Phase 02</p>
+                    <h4 class="font-bold mb-4">Forging</h4>
+                    <p class="text-[11px] leading-relaxed opacity-60">
+                        1ドット、1行のコードにこだわり、独自ギミックとデザインを鍛造。Webの枠を超えた体験を生み出します。
+                    </p>
+                </div>
+                <div class="glass-card p-8 border-l-2 border-l-white/20">
+                    <p class="cinzel text-xs text-muted mb-4 uppercase">Phase 03</p>
+                    <h4 class="font-bold mb-4">Tuning</h4>
+                    <p class="text-[11px] leading-relaxed opacity-60">
+                        テスト環境で実際に「プレイ」していただき、細部まで徹底的に調整。完成度を極限まで高めます。
+                    </p>
+                </div>
+                <div class="glass-card p-8 border-l-2 border-l-white/20">
+                    <p class="cinzel text-xs text-muted mb-4 uppercase">Phase 04</p>
+                    <h4 class="font-bold mb-4">Extraction</h4>
+                    <p class="text-[11px] leading-relaxed opacity-60">
+                        「脱型」。現実のドメインへ公開。あなたの物語が、世界の誰かに見つかるセーブデータとなります。
+                    </p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="text-center mt-20 reveal">
-            <a href="order/index.html?from=about" class="inline-block border-2 border-white px-12 py-4 font-bold hover:bg-white hover:text-black transition-all">
-                あたらしい世界を 依頼する
+        <div class="mt-40 text-center reveal">
+            <h3 class="cinzel text-2xl mb-8 tracking-widest opacity-50 uppercase">Ready to Start?</h3>
+            <a href="order/index.html?from=about" class="nav-link px-16 py-6 inline-block">
+                Initiate New Save
             </a>
         </div>
     </main>
 
-    <footer class="py-20 text-center opacity-30 text-[10px] tracking-[0.5em] uppercase">
-        &copy; 2026 Hexa Relation // Creative De-molding
+    <footer class="py-20 text-center opacity-20 text-[9px] cinzel tracking-[0.5em] uppercase border-t border-white/5">
+        &copy; 2026 Hexa Relation // Engineering Envy.
     </footer>
 
     <script>
-        // Scroll Reveal
+        // Scroll Reveal Implementation
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
             });
         }, { threshold: 0.1 });
+
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Retro Click Sound (Web Audio API)
+        // Interaction Sound
         function playClickSound() {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 const oscillator = audioCtx.createOscillator();
                 const gainNode = audioCtx.createGain();
                 oscillator.type = 'square';
-                oscillator.frequency.setValueAtTime(1000, audioCtx.currentTime); 
+                oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime); 
                 oscillator.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.05);
-                gainNode.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
                 oscillator.connect(gainNode);
                 gainNode.connect(audioCtx.destination);
-                oscillator.start();
-                oscillator.stop(audioCtx.currentTime + 0.05);
-            } catch (e) { console.error('Audio error:', e); }
+                oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.05);
+            } catch (e) {}
         }
 
         document.addEventListener('mousedown', (e) => {
-            if (e.target.closest('.menu-link') || e.target.closest('a')) {
-                playClickSound();
-            }
+            if (e.target.closest('a')) playClickSound();
         });
 
-        // Secret Admin Access (Click H-e-x-a in title area)
-        let clickPath = "";
-        document.querySelector('.site-title').addEventListener('click', (e) => {
-            // Simplified secret for now: triple click logo
-        });
+        // Secret Admin Check (Legacy placeholder)
+        const philText = document.getElementById('philosophy-text');
+        const originalContent = philText.innerText;
+        philText.innerHTML = originalContent.split('').map(char => `<span onclick="checkAce('${char.toUpperCase()}')">${char}</span>`).join('');
+        let aceStep = 0;
+        function checkAce(char) {
+            const seq = ['A', 'C', 'E'];
+            if (char === seq[aceStep]) {
+                aceStep++;
+                if (aceStep === seq.length) { window.location.href = 'admin/'; aceStep = 0; }
+            } else if (char !== ' ' && char !== '\n') { aceStep = 0; }
+        }
     </script>
 </body>
 </html>

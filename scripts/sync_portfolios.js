@@ -6,7 +6,7 @@ const NOX_INDEX = path.join(SAVE_DIR, 'nox/index.html');
 const ADMIN_INDEX = path.join(__dirname, '../admin/index.html');
 
 // 隠しページリスト（URLは有効だがインデックスには表示されない）
-const HIDDEN_IDS = [];
+const HIDDEN_IDS = ['retro-rpg', 'cyber-tech', 'visual-novel'];
 
 function sync() {
     console.log('Starting portfolio sync...');
