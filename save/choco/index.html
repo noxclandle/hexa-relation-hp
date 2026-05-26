@@ -368,18 +368,29 @@
 
         function checkLiveStatus() {
             const banner = document.getElementById('live-banner');
-
-            const img = new Image();
-            img.onload = function() {
-                banner.style.display = 'flex';
-                console.log('Live Status: Online');
-            };
-            img.onerror = function() {
-                banner.style.display = 'none';
-                console.log('Live Status: Offline');
-            };
-            // ライブ中のみ有効なサムネイルURLのパターン
-            img.src = `https://img.youtube.com/vi/live_stream/mqdefault.jpg?v=${new Date().getTime()}`;
+            
+            // CORSプロキシを使用してチャンネルのライブページの状態を確認
+            fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://www.youtube.com/channel/${channelId}/live`)}`)
+                .then(response => {
+                    if (response.ok) return response.json();
+                    throw new Error('Network response was not ok.');
+                })
+                .then(data => {
+                    // ライブ中であれば、HTML内に "isLive":true または特定のウォッチURLが含まれる
+                    const isLive = data.contents.includes('"isLive":true') || data.contents.includes('videoID');
+                    
+                    if (isLive && !data.contents.includes('Upcoming')) {
+                        banner.style.display = 'flex';
+                        console.log('Live Status: Online');
+                    } else {
+                        banner.style.display = 'none';
+                        console.log('Live Status: Offline');
+                    }
+                })
+                .catch(err => {
+                    console.log('Live Check Error:', err);
+                    banner.style.display = 'none'; // エラー時は非表示
+                });
         }
         checkLiveStatus();
 function toggleMagicMirror() {
