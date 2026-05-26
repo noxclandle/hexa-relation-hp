@@ -11,6 +11,26 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://hexa-relation.com/intro/</loc>
+        <lastmod>2026-05-26</lastmod>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://hexa-relation.com/intro/business/</loc>
+        <lastmod>2026-05-26</lastmod>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://hexa-relation.com/intro/engineer/</loc>
+        <lastmod>2026-05-26</lastmod>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://hexa-relation.com/intro/vtuber/</loc>
+        <lastmod>2026-05-26</lastmod>
+        <priority>0.9</priority>
+    </url>
+    <url>
         <loc>https://hexa-relation.com/save/choco/</loc>
         <lastmod>2026-05-26</lastmod>
         <priority>0.7</priority>

@@ -92,6 +92,7 @@ function generateSitemap(visiblePortfolios) {
     console.log('Generating sitemap.xml...');
     const baseUrl = 'https://hexa-relation.com';
     const today = new Date().toISOString().split('T')[0];
+    const INTRO_DIR = path.join(__dirname, '../intro');
 
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -104,7 +105,25 @@ function generateSitemap(visiblePortfolios) {
         <loc>${baseUrl}/save/nox/</loc>
         <lastmod>${today}</lastmod>
         <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>${baseUrl}/intro/</loc>
+        <lastmod>${today}</lastmod>
+        <priority>0.9</priority>
     </url>`;
+
+    // Add niche LPs from /intro/
+    if (fs.existsSync(INTRO_DIR)) {
+        const niches = fs.readdirSync(INTRO_DIR).filter(dir => fs.statSync(path.join(INTRO_DIR, dir)).isDirectory());
+        niches.forEach(n => {
+            sitemap += `
+    <url>
+        <loc>${baseUrl}/intro/${n}/</loc>
+        <lastmod>${today}</lastmod>
+        <priority>0.9</priority>
+    </url>`;
+        });
+    }
 
     visiblePortfolios.forEach(p => {
         sitemap += `

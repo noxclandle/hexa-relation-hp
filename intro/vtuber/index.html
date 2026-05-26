@@ -4,41 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VTuber・配信者向けゲーム風ポートフォリオ制作 | Hexa Relation</title>
-    <meta name="description" content="VTuber・配信者のための没入型自己紹介サイト。アバターの世界観をWebに。ビジュアルノベル風、RPG風など、ファンが喜ぶギミック満載のサイトを制作します。">
-    <meta name="keywords" content="VTuber 自己紹介 サイト, 配信者 ポートフォリオ, Vチューバー LP 依頼, ゲーム風 プロフィール">
+    <meta name="description" content="VTuber・配信者のための没入型自己紹介サイト。アバターの世界観をWebに。ビジュアルノベル風、RPG風など、ファンが喜ぶギミック満載のサイトを制作。YouTubeアルゴリズムに依存しない、あなたの「聖地」を構築します。">
+    <meta name="keywords" content="VTuber 自己紹介 サイト, 配信者 ポートフォリオ, Vチューバー LP 依頼, ゲーム風 プロフィール, VTuber ホームページ 制作">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@300;400;700&family=DotGothic16&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;400;700&family=DotGothic16&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #050505; --accent: #ff007f; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Noto Sans JP', sans-serif; }
+        :root { --bg: #050505; --accent: #ff007f; --glass: rgba(255, 255, 255, 0.03); }
+        body { background-color: var(--bg); color: #fff; font-family: 'Noto Sans JP', sans-serif; scroll-behavior: smooth; }
         .cinzel { font-family: 'Cinzel', serif; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .reveal { opacity: 0; transform: translateY(20px); transition: 1s all ease; }
+        .glass { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1.2s all cubic-bezier(0.2, 0.8, 0.2, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
+        .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,0,127,0.3), transparent); margin: 5rem 0; }
     </style>
 </head>
 <body class="overflow-x-hidden">
-    <!-- Simple high-end intro structure for VTuber niche -->
-    <section class="h-screen flex flex-col justify-center items-center text-center p-6">
-        <h1 class="cinzel text-5xl md:text-8xl mb-6 font-bold" style="color: var(--accent);">FOR_VTUBERS</h1>
-        <p class="text-xl md:text-3xl font-light opacity-80 leading-relaxed">
-            「ただの画像」から、<br>「操作できる世界」へ。
-        </p>
+    <!-- Hero -->
+    <section class="h-screen flex flex-col justify-center items-center text-center p-6 relative">
+        <div class="absolute inset-0 z-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--accent)_0%,_transparent_70%)]"></div>
+        <div class="reveal active z-10">
+            <span class="cinzel text-xs tracking-[1em] opacity-40 mb-4 block uppercase">For_VTuber_Chronicles</span>
+            <h1 class="cinzel text-5xl md:text-8xl mb-6 font-bold" style="color: var(--accent);">WORLD_BUILDING</h1>
+            <p class="text-xl md:text-3xl font-light opacity-80 leading-relaxed max-w-2xl mx-auto">
+                「ただの画像」から、<br>「ファンと呼吸する世界」へ。
+            </p>
+        </div>
+        <div class="mt-20 animate-bounce opacity-30">▼</div>
     </section>
 
     <main class="max-w-4xl mx-auto px-6 pb-40">
-        <div class="glass p-12 reveal mb-10">
-            <h2 class="text-2xl font-bold mb-6">ファンが喜ぶ「体験」を贈る。</h2>
-            <p class="text-gray-400 leading-loose">
-                視聴者はあなたのアバターだけでなく、その背後にある物語（世界観）を愛しています。Hexa Relationは、その物語をビジュアルノベル形式のメッセージウィンドウや、RPG風のステータス画面として具現化。あなたのWebサイトそのものを、ファンのための「聖地」に変えます。
-            </p>
-        </div>
-        <div class="text-center mt-20">
+        <!-- Section 1: The Problem -->
+        <section class="reveal">
+            <h2 class="text-3xl font-bold mb-8 border-l-4 border-pink-600 pl-6">なぜ今、独自のWebポートフォリオが必要なのか？</h2>
+            <div class="space-y-6 text-gray-300 leading-relaxed text-lg">
+                <p>YouTubeやSNSのアルゴリズムは常に変化し、あなたの魅力が十分に届かないことがあります。また、プラットフォームの制約の中では、あなたの「本当の世界観」を表現しきるのは困難です。</p>
+                <p>独自のWebサイトを持つことは、単なるリンク集を作ることではありません。それは、ファンが24時間いつでもあなたを感じられる「聖地」をインターネット上に建てることです。Hexa Relationは、その聖地の建設を代行します。</p>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 2: Features -->
+        <section class="reveal">
+            <h2 class="text-3xl font-bold mb-12 text-center cinzel tracking-widest">SPECIAL_GIMMICKS</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass p-8">
+                    <h3 class="text-xl font-bold mb-4 text-pink-400">Visual Novel Interface</h3>
+                    <p class="text-sm opacity-70 leading-loose">
+                        アバター画像を活かした対話形式のプロフィール。クリックするたびにセリフが流れ、まるでゲームのヒロインや主人公と話しているような体験をファンに提供。
+                    </p>
+                </div>
+                <div class="glass p-8">
+                    <h3 class="text-xl font-bold mb-4 text-pink-400">Hidden Voice & Easter Eggs</h3>
+                    <p class="text-sm opacity-70 leading-loose">
+                        特定の場所をクリックすると流れる限定ボイスや、コマンド入力で現れる隠しイラスト。ファン同士で「見つけた！」と共有したくなる仕掛けを忍ばせます。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 3: FAQ -->
+        <section class="reveal">
+            <h2 class="text-3xl font-bold mb-10 text-center cinzel tracking-widest">SYSTEM_FAQ</h2>
+            <div class="space-y-6">
+                <div class="glass p-6">
+                    <p class="font-bold text-pink-500 mb-2">Q. PCの知識がなくても管理できますか？</p>
+                    <p class="text-sm opacity-70">A. はい。サーバーの維持管理や更新はすべてこちらで行います。あなたは活動に集中するだけです。</p>
+                </div>
+                <div class="glass p-6">
+                    <p class="font-bold text-pink-500 mb-2">Q. 立ち絵や素材が少なくても大丈夫ですか？</p>
+                    <p class="text-sm opacity-70">A. はい。今ある素材を活かし、エフェクトやデザインの力で世界観を構築します。画像1枚からでも「ゲーム」は始まります。</p>
+                </div>
+                <div class="glass p-6">
+                    <p class="font-bold text-pink-500 mb-2">Q. 月1回の無料修正とは？</p>
+                    <p class="text-sm opacity-70">A. 新衣装の実装や実績の追加など、月に1回まで無料で内容をアップデート。あなたの成長に合わせてサイトも「進化」し続けます。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="text-center mt-32 reveal">
+            <h3 class="text-2xl mb-10 opacity-60">Your saga begins here.</h3>
             <a href="../../order/index.html?from=intro_vtuber" class="inline-block border-2 border-white px-16 py-6 font-bold hover:bg-white hover:text-black transition-all">
                 アバターの世界を 構築する
             </a>
+            <p class="mt-8 text-[10px] text-gray-500 uppercase tracking-widest">Pricing: ¥20,000 ~ // First-month free update included</p>
         </div>
     </main>
+
+    <footer class="py-20 text-center opacity-10 text-[9px] cinzel tracking-[1em] uppercase border-t border-white/5">
+        &copy; 2026 Hexa Relation // Engineering Envy.
+    </footer>
 
     <script>
         const observer = new IntersectionObserver((entries) => {

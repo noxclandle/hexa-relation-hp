@@ -4,40 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>エンジニア・クリエイター向けポートフォリオ制作 | Hexa Relation</title>
-    <meta name="description" content="エンジニアの技術力を「UIそのもの」で証明する。レトロゲーム風、コードライクなデザインなど、ギミック満載の面白いポートフォリオを構築します。">
-    <meta name="keywords" content="エンジニア ポートフォリオ, クリエイター サイト 制作, 面白い ポートフォリオ, ギミック Web制作">
+    <meta name="description" content="エンジニアの技術力を「UIそのもの」で証明する。レトロゲーム風、コードライクなデザインなど、ギミック満載の面白いポートフォリオを構築。テンプレートでは表現できない、あなたのスキルスタックを体験型のWebサイトへと昇華させます。">
+    <meta name="keywords" content="エンジニア ポートフォリオ, クリエイター サイト 制作, 面白い ポートフォリオ, ギミック Web制作, 技術スタック 可視化">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@300;400;700&family=Share+Tech+Mono&family=DotGothic16&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #000; --accent: #0f0; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Noto Sans JP', sans-serif; }
+        :root { --bg: #000; --accent: #0f0; --glass: rgba(0, 255, 0, 0.02); }
+        body { background-color: var(--bg); color: #fff; font-family: 'Noto Sans JP', sans-serif; scroll-behavior: smooth; }
         .cinzel { font-family: 'Cinzel', serif; }
-        .glass { background: rgba(0, 255, 0, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(0, 255, 0, 0.2); }
-        .reveal { opacity: 0; transform: translateY(20px); transition: 1s all ease; }
+        .mono { font-family: 'Share Tech Mono', monospace; }
+        .glass { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid rgba(0, 255, 0, 0.1); border-radius: 4px; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1.2s all cubic-bezier(0.2, 0.8, 0.2, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
+        .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(0,255,0,0.2), transparent); margin: 5rem 0; }
+        .terminal-line::before { content: "> "; color: var(--accent); }
     </style>
 </head>
 <body class="overflow-x-hidden">
-    <section class="h-screen flex flex-col justify-center items-center text-center p-6">
-        <h1 class="cinzel text-5xl md:text-8xl mb-6 font-bold" style="color: var(--accent);">FOR_CREATORS</h1>
-        <p class="text-xl md:text-3xl font-light opacity-80 leading-relaxed">
-            「コードの美しさ」を、<br>「体験の凄み」で語れ。
-        </p>
+    <!-- Hero -->
+    <section class="h-screen flex flex-col justify-center items-center text-center p-6 relative">
+        <div class="absolute inset-0 z-0 opacity-20 bg-[radial-gradient(circle_at_center,_rgba(0,255,0,0.1)_0%,_transparent_70%)]"></div>
+        <div class="reveal active z-10">
+            <span class="cinzel text-xs tracking-[1em] opacity-40 mb-4 block uppercase">For_Creators_Dev_Log</span>
+            <h1 class="cinzel text-5xl md:text-8xl mb-6 font-bold" style="color: var(--accent);">CODE_AS_ART</h1>
+            <p class="text-xl md:text-3xl font-light opacity-80 leading-relaxed max-w-2xl mx-auto">
+                「コードの美しさ」を、<br>「体験の凄み」で証明せよ。
+            </p>
+        </div>
+        <div class="mt-20 animate-bounce opacity-30 mono">>_ EXECUTE_SCROLL</div>
     </section>
 
     <main class="max-w-4xl mx-auto px-6 pb-40">
-        <div class="glass p-12 reveal mb-10">
-            <h2 class="text-2xl font-bold mb-6">技術力を、指先で感じさせる。</h2>
-            <p class="text-green-900 opacity-80 leading-loose" style="color: var(--accent);">
-                エンジニアにとって、ポートフォリオはそれ自体が「プロダクト」であるべきです。レトロゲームの隠しコマンド、動的なシステムログ、物理演算を使ったUI。Hexa Relationは、あなたのスキルレベルを直感的に証明する「驚き」を実装。他と圧倒的な差をつける技術のショーケースを制作します。
-            </p>
-        </div>
-        <div class="text-center mt-20">
-            <a href="../../order/index.html?from=intro_engineer" class="inline-block border-2 border-green-500 px-16 py-6 font-bold hover:bg-green-500 hover:text-black transition-all" style="color: var(--accent);">
+        <!-- Section 1: Skill Showcase -->
+        <section class="reveal">
+            <h2 class="text-3xl font-bold mb-8 border-l-4 border-green-600 pl-6">なぜ、エンジニアに「独自のUI」が必要なのか？</h2>
+            <div class="space-y-6 text-gray-300 leading-relaxed text-lg">
+                <p>GitHubの草やQiitaの記事も重要ですが、あなたの「センス」と「実装力」を最短で伝えるのは、ポートフォリオそのものの触り心地です。既存のテンプレートを使ったサイトでは、あなたの卓越した技術スタックは十分に証明できません。</p>
+                <p>Hexa Relationは、エンジニアのこだわりをWeb技術の限界まで引き出します。Web Audioによる音響演出、Canvasによる物理演算、複雑な条件分岐によるイースターエッグ。あなたのポートフォリオを、それ自体が一つの「完成されたプロダクト」へと昇華させます。</p>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 2: Features -->
+        <section class="reveal">
+            <h2 class="text-3xl font-bold mb-12 text-center cinzel tracking-widest text-green-500">ENGINEERING_GIMMICKS</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass p-8">
+                    <h3 class="text-xl font-bold mb-4 text-green-400">Terminal & Console UI</h3>
+                    <p class="text-sm opacity-70 leading-loose">
+                        コマンドラインを模したナビゲーションや、リアルタイムで流れるシステムログ。エンジニアなら誰もがニヤリとする、技術的背景を感じさせるインターフェースを構築。
+                    </p>
+                </div>
+                <div class="glass p-8">
+                    <h3 class="text-xl font-bold mb-4 text-green-400">Hidden Overrides</h3>
+                    <p class="text-sm opacity-70 leading-loose">
+                        特定のキー入力や、ソースコード内に隠されたヒントから辿り着く「管理者モード」。あなたの遊び心と実装の細かさを、スカウター（採用担当）に強烈にアピール。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 3: Tech FAQ -->
+        <section class="reveal">
+            <h2 class="text-3xl font-bold mb-10 text-center cinzel tracking-widest text-green-500">BUILD_FAQ</h2>
+            <div class="space-y-6">
+                <div class="glass p-6">
+                    <p class="font-bold text-green-500 mb-2">Q. 最新のフレームワークやライブラリの持ち込みは可能ですか？</p>
+                    <p class="text-sm opacity-70">A. はい。基本はピュアな技術で構築しますが、特定の技術（Three.js, React等）をベースにしたギミック制作も柔軟に対応します。</p>
+                </div>
+                <div class="glass p-6">
+                    <p class="font-bold text-green-500 mb-2">Q. 制作後のコードの受け渡しは？</p>
+                    <p class="text-sm opacity-70">A. もちろんです。GitHubリポジトリへの招待やソースコードの納品も対応。あなたがさらに改造を重ねるための「ベース」としてお使いください。</p>
+                </div>
+                <div class="glass p-6">
+                    <p class="font-bold text-green-500 mb-2">Q. パフォーマンスやSEOの考慮は？</p>
+                    <p class="text-sm opacity-70">A. ギミックを満載しつつ、軽量化とSEO最適化を両立。Googleの評価を落とさず、かつユーザー体験を最大化する設計を提供します。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="text-center mt-32 reveal">
+            <h3 class="text-2xl mb-10 opacity-60">Compile your vision.</h3>
+            <a href="../../order/index.html?from=intro_engineer" class="inline-block border-2 border-green-500 px-16 py-6 font-bold text-green-400 hover:bg-green-500 hover:text-black transition-all">
                 技術の結晶を 鍛造する
             </a>
+            <p class="mt-8 text-[10px] text-gray-500 uppercase tracking-widest">Built for the Digital Vanguard // &copy; 2026</p>
         </div>
     </main>
+
+    <footer class="py-20 text-center opacity-10 text-[9px] cinzel tracking-[1em] uppercase border-t border-white/5">
+        &copy; 2026 Hexa Relation // Engineering Envy.
+    </footer>
 
     <script>
         const observer = new IntersectionObserver((entries) => {

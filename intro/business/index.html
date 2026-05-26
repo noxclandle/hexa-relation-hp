@@ -4,40 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>経営者・起業家向けブランディングLP制作 | Hexa Relation</title>
-    <meta name="description" content="経営者のための「戦う名刺」。一級建築士や専門職、起業家の実績をゲームのステータスとして可視化。信頼性と遊び心を両立した、惹きつけるブランディングサイト。">
-    <meta name="keywords" content="経営者 ポートフォリオ, 企業サイト 制作, 個性的 Web制作, ブランディング LP">
+    <meta name="description" content="経営者のための「戦う名刺」。一級建築士や専門職、起業家の実績をゲームのステータスとして可視化。信頼性と遊び心を両立した、惹きつけるブランディングサイト。従来の退屈な企業紹介を、圧倒的な実績（ステータス）へと変換します。">
+    <meta name="keywords" content="経営者 ポートフォリオ, 企業サイト 制作, 個性的 Web制作, ブランディング LP, 会社案内 ゲーム風">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@300;400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #030305; --accent: #00f0ff; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Noto Sans JP', sans-serif; }
+        :root { --bg: #030305; --accent: #00f0ff; --glass: rgba(255, 255, 255, 0.02); }
+        body { background-color: var(--bg); color: #fff; font-family: 'Noto Sans JP', sans-serif; scroll-behavior: smooth; }
         .cinzel { font-family: 'Cinzel', serif; }
-        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .reveal { opacity: 0; transform: translateY(20px); transition: 1s all ease; }
+        .mono { font-family: 'Share Tech Mono', monospace; }
+        .glass { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 4px; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1.2s all cubic-bezier(0.2, 0.8, 0.2, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
+        .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(0,240,255,0.2), transparent); margin: 5rem 0; }
     </style>
 </head>
 <body class="overflow-x-hidden">
-    <section class="h-screen flex flex-col justify-center items-center text-center p-6">
-        <h1 class="cinzel text-5xl md:text-8xl mb-6 font-bold" style="color: var(--accent);">FOR_FOUNDERS</h1>
-        <p class="text-xl md:text-3xl font-light opacity-80 leading-relaxed">
-            「退屈な企業紹介」を、<br>「圧倒的な実績（ステータス）」へ。
-        </p>
+    <!-- Hero -->
+    <section class="h-screen flex flex-col justify-center items-center text-center p-6 relative">
+        <div class="absolute inset-0 z-0 opacity-10 bg-[linear-gradient(rgba(0,240,255,0.1)_1px,_transparent_1px),_linear-gradient(90deg,rgba(0,240,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+        <div class="reveal active z-10">
+            <span class="cinzel text-xs tracking-[1em] opacity-40 mb-4 block uppercase">For_Founders_Archive</span>
+            <h1 class="cinzel text-5xl md:text-8xl mb-6 font-bold" style="color: var(--accent);">EXEC_STATUS</h1>
+            <p class="text-xl md:text-3xl font-light opacity-80 leading-relaxed max-w-2xl mx-auto">
+                「退屈な会社案内」を、<br>「圧倒的な実績（ステータス）」へ。
+            </p>
+        </div>
+        <div class="mt-20 animate-bounce opacity-30 mono">SCROLL_DOWN</div>
     </section>
 
     <main class="max-w-4xl mx-auto px-6 pb-40">
-        <div class="glass p-12 reveal mb-10">
-            <h2 class="text-2xl font-bold mb-6">信頼は、視覚化される。</h2>
-            <p class="text-gray-400 leading-loose">
-                どんなに素晴らしい実績も、読まれないテキストの山の中では埋もれてしまいます。サイバーパンクな計器類や、洗練されたダッシュボード形式のデザインにより、あなたの専門性と「これまでの歴史」を直感的に伝えます。商談時の最強の武器となる、独自のデジタル・プレゼンスを。
-            </p>
-        </div>
-        <div class="text-center mt-20">
-            <a href="../../order/index.html?from=intro_business" class="inline-block border-2 border-white px-16 py-6 font-bold hover:bg-white hover:text-black transition-all" style="border-color: var(--accent); color: var(--accent);">
+        <!-- Section 1: Branding -->
+        <section class="reveal">
+            <h2 class="text-3xl font-bold mb-8 border-l-4 border-cyan-600 pl-6">なぜ、経営者に「遊び心」が必要なのか？</h2>
+            <div class="space-y-6 text-gray-300 leading-relaxed text-lg">
+                <p>ビジネスにおいて、最初の数秒で「この人は何かが違う」と思わせることは、どんなプレゼン資料よりも価値があります。ありふれたテンプレートの企業サイトでは、あなたの真の個性や突破力は伝わりません。</p>
+                <p>Hexa Relationは、あなたのこれまでの「戦歴」や「特殊技能」を、ゲームのパラメータやアーカイブとして可視化します。それは、初対面の相手の心に強烈な楔を打ち込み、商談の主導権を握るための「最高級の武器」となります。</p>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 2: Features -->
+        <section class="reveal">
+            <h2 class="text-3xl font-bold mb-12 text-center cinzel tracking-widest">SYSTEM_ADVANTAGE</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass p-8">
+                    <h3 class="text-xl font-bold mb-4 text-cyan-400">Parameter Visualization</h3>
+                    <p class="text-sm opacity-70 leading-loose">
+                        資格、経験年数、得意分野。これらを無機質な箇条書きではなく、RPGのステータス画面のようにデザイン。あなたの「実力」を直感的に、かつ謙虚にアピールします。
+                    </p>
+                </div>
+                <div class="glass p-8">
+                    <h3 class="text-xl font-bold mb-4 text-cyan-400">Survivor's Narrative</h3>
+                    <p class="text-sm opacity-70 leading-loose">
+                        これまでの苦難や独立の経緯を「生存記録」として物語化。共感と信頼を生むストーリーテリングを、ゲームの世界観を借りて最高級の演出で届けます。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 3: Professional FAQ -->
+        <section class="reveal">
+            <h2 class="text-3xl font-bold mb-10 text-center cinzel tracking-widest">BUSINESS_FAQ</h2>
+            <div class="space-y-6">
+                <div class="glass p-6">
+                    <p class="font-bold text-cyan-500 mb-2">Q. 既存のコーポレートサイトがあっても大丈夫ですか？</p>
+                    <p class="text-sm opacity-70">A. はい。メインサイトとは別に「経営者個人のポートフォリオ（特設LP）」として運用することで、よりパーソナルな信頼構築に役立ちます。</p>
+                </div>
+                <div class="glass p-6">
+                    <p class="font-bold text-cyan-500 mb-2">Q. SEOや検索順位への影響は？</p>
+                    <p class="text-sm opacity-70">A. 最新のSEO技術を標準装備。あなたの名前や社名で検索した際、最も魅力的な入り口として上位に表示されるよう最適化します。</p>
+                </div>
+                <div class="glass p-6">
+                    <p class="font-bold text-cyan-500 mb-2">Q. デザインが奇抜すぎて信頼を損ないませんか？</p>
+                    <p class="text-sm opacity-70">A. ご安心ください。あくまで「高品質・高級感」をベースにした上でゲーム要素をエッセンスとして加えます。洗練された大人な遊び心を演出します。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="text-center mt-32 reveal">
+            <h3 class="text-2xl mb-10 opacity-60">Ascend to the next stage.</h3>
+            <a href="../../order/index.html?from=intro_business" class="inline-block border-2 border-cyan-500 px-16 py-6 font-bold text-cyan-400 hover:bg-cyan-500 hover:text-black transition-all">
                 ブランディングを 始動する
             </a>
+            <p class="mt-8 text-[10px] text-gray-500 uppercase tracking-widest">Service for Visionary Founders // &copy; 2026</p>
         </div>
     </main>
+
+    <footer class="py-20 text-center opacity-10 text-[9px] cinzel tracking-[1em] uppercase border-t border-white/5">
+        &copy; 2026 Hexa Relation // Engineering Envy.
+    </footer>
 
     <script>
         const observer = new IntersectionObserver((entries) => {
