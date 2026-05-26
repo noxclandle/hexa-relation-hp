@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexa Relation: The Grand Design // 万物の「設計図」を再定義する | Hexa Relation</title>
+    <meta name="description" content="[DEEP_LEVEL_ACCESS] Hexa Relationとは何か。知性、美学、そして既存社会への反逆。MENSA会員である創設者が贈る、一万文字の思考ログ。これはWeb制作の枠を超えた、新しい生存の設計図である。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+JP:wght@100;300;400;700;900&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #020202;
+            --accent: #ff003c;
+            --sub: #00f2ff;
+            --muted: #1a1a1c;
+        }
+        body {
+            background-color: var(--bg);
+            color: #888;
+            font-family: 'Noto Sans JP', sans-serif;
+            overflow-x: hidden;
+            line-height: 2.5;
+            letter-spacing: 0.08em;
+        }
+        .mono { font-family: 'Share Tech Mono', monospace; }
+        .cinzel { font-family: 'Cinzel', serif; }
+
+        /* Background Noise */
+        .noise {
+            position: fixed; inset: 0; pointer-events: none; z-index: 999;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.05;
+        }
+
+        /* Vertical Lines */
+        .v-lines {
+            position: fixed; inset: 0; pointer-events: none;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.02) 50%, transparent 100%);
+            background-size: 100px 100%;
+        }
+
+        .reveal { opacity: 0; transform: translateY(80px); transition: 2s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .big-text { font-size: clamp(3rem, 15vw, 12rem); font-weight: 900; line-height: 0.8; letter-spacing: -0.05em; color: #fff; }
+        .manifesto-section { border-left: 1px solid rgba(255,255,255,0.1); padding-left: 3rem; margin-bottom: 20rem; }
+        
+        .floating-data { position: absolute; font-size: 10px; color: var(--sub); opacity: 0.2; }
+        
+        a { transition: 0.5s; }
+        a:hover { color: var(--sub); letter-spacing: 0.2em; }
+
+        ::selection { background: var(--accent); color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="v-lines"></div>
+
+    <!-- Hero -->
+    <header class="min-h-screen flex flex-col justify-end p-8 md:p-24 relative overflow-hidden">
+        <div class="floating-data top-10 left-10 mono">LOG_LOAD: SUCCESS // CORE_STABILITY: 100%</div>
+        <div class="floating-data bottom-40 right-10 mono rotate-90">IDENTITY: MAVERICK_INTELLECT</div>
+        
+        <div class="reveal">
+            <span class="mono text-xs mb-8 block opacity-40 tracking-[1em]">HEXA RELATION // MASTER_LOG</span>
+            <h1 class="big-text mb-12 italic">THE<br>GRAND<br>DESIGN.</h1>
+            <p class="max-w-2xl text-xl md:text-2xl font-thin leading-relaxed">
+                社会という名の欠陥住宅を解体し、<br>
+                純粋なるロジックの上に、新たな世界を「再建築」する。
+            </p>
+        </div>
+        
+        <div class="mt-40 flex items-center gap-4 reveal delay-500">
+            <div class="w-20 h-[1px] bg-white/20"></div>
+            <span class="mono text-[10px] tracking-[0.5em]">SCROLL_FOR_TRUTH</span>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-80">
+        
+        <!-- Section 1: Introduction -->
+        <section class="manifesto-section reveal">
+            <h2 class="cinzel text-sm sub-text mb-20 tracking-[1em] opacity-40 uppercase">01 // The Origin of Chaos</h2>
+            <div class="space-y-12 text-lg md:text-xl font-light">
+                <p>
+                    このページを目にしているということは、あなたは「普通」という名の病に飽き飽きしているはずだ。世の中は情報のゴミ捨て場と化している。Webサイトを開けば、耳障りの良い言葉と、どこかで見たようなテンプレートがあなたを迎え入れる。それらは、誰かが決めた「正解」という名の型に流し込まれた、魂のない複製物だ。
+                </p>
+                <p>
+                    私は、そのすべてを拒絶する。
+                </p>
+                <p>
+                    MENSA会員というレッテルを貼られる前から、私にとって世界は「不完全な設計図」の集積だった。人々が疑いもなく受け入れている社会システム、教育、労働のあり方。それらは、ある特定の時代においては機能したかもしれないが、現在においては、もはやただの「負債」でしかない。私は幼い頃から、その負債の匂いに敏感だった。なぜ誰もこの不条理性（バグ）を指摘しないのか。なぜ、壊れていると分かっている装置を使い続けるのか。
+                </p>
+                <p>
+                    Hexa Relationは、その絶望から生まれた。これは単なるWeb制作会社ではない。これは、私という一人の不適合者が、この巨大で不条理なシステムの中で、唯一「真実」を叫ぶための、そして同じ志を持つ者が集うための「聖域（サンクチュアリ）」である。
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 2: Hexa Principles -->
+        <section class="mb-80 reveal">
+            <h2 class="cinzel text-5xl md:text-8xl font-black mb-40 text-white opacity-10">CORE_SIX.</h2>
+            <div class="grid md:grid-cols-2 gap-40">
+                <div class="space-y-12">
+                    <h3 class="mono text-2xl text-white underline decoration-red-500 underline-offset-8 mb-12">01. Pure_Reason</h3>
+                    <p class="opacity-60 leading-loose">
+                        すべての1ピクセルには、存在理由（レゾンデートル）が必要だ。デザインとは、装飾ではない。それは、思考の純度を高めた末に現れる「必然」の形である。Hexa Relationにおいて、論理的に説明できないデザインは存在しない。私たちは、感性という不確実な言葉に逃げ込むことを許さない。
+                    </p>
+                    
+                    <h3 class="mono text-2xl text-white underline decoration-red-500 underline-offset-8 mb-12">02. Game_Logic</h3>
+                    <p class="opacity-60 leading-loose">
+                        人生は、最も難易度の高いRPGである。我々がWebサイトにゲームの世界観を持ち込むのは、それが「最も効率的に情報を処理し、ユーザーを没入させるシステム」だからだ。コマンド、ステータス、クエスト。これらは単なる遊びではない。人間の脳が本能的に求める「目的」と「報酬」の回路を最適化するための、高度なアーキテクチャである。
+                    </p>
+
+                    <h3 class="mono text-2xl text-white underline decoration-red-500 underline-offset-8 mb-12">03. Zero_Sycophancy</h3>
+                    <p class="opacity-60 leading-loose">
+                        忖度は、創造性の死である。クライアントの顔色を伺い、中身のない賛辞を贈る時間は、我々の設計図には含まれていない。我々は、あなたのビジネスの「バグ」を冷徹に指摘し、それを克服するための最短ルートを提示する。傷つくことを恐れるのであれば、他のテンプレート会社へ行くべきだ。
+                    </p>
+                </div>
+                <div class="space-y-12 mt-20 md:mt-40">
+                    <h3 class="mono text-2xl text-white underline decoration-cyan-500 underline-offset-8 mb-12">04. Hyper_Sync</h3>
+                    <p class="opacity-60 leading-loose">
+                        制作者と依頼者の魂が同期しなければ、良いものは生まれない。我々は、あなたの過去、葛藤、そして未来への野心を「ハッキング」し、それをコードへと変換する。納品して終わりではない。それは、あなたと我々の物語が「同期」を開始した瞬間に過ぎない。
+                    </p>
+
+                    <h3 class="mono text-2xl text-white underline decoration-cyan-500 underline-offset-8 mb-12">05. Immortal_Brand</h3>
+                    <p class="opacity-60 leading-loose">
+                        トレンドは、一瞬で風化する。我々が目指すのは、百年後も「意味」を持ち続けるアーカイブである。そのために、我々はあえて「流行（モード）」を無視し、時代を超越した「核（コア）」を構築する。Hexa Relationで作られたサイトは、デジタル空間に刻まれた、消えない石碑となる。
+                    </p>
+
+                    <h3 class="mono text-2xl text-white underline decoration-cyan-500 underline-offset-8 mb-12">06. De-molding</h3>
+                    <p class="opacity-60 leading-loose">
+                        脱型（だつけい）。それは、既存の枠組みを破壊し、あなた自身の真実の姿を抽出するプロセス。我々は、世の中に溢れる「正解」という名の型枠をすべて外し、あなただけの唯一無二の形をWebにデプロイする。それは痛み（リファクタリング）を伴うかもしれないが、その先にしか真の自由はない。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: The Mensa Paradox -->
+        <section class="manifesto-section reveal">
+            <h2 class="cinzel text-sm sub-text mb-20 tracking-[1em] opacity-40 uppercase">03 // The Mensa Paradox</h2>
+            <div class="space-y-12 opacity-80">
+                <p>
+                    「なぜ、そんなに頭が良いのに普通のことができないのか？」
+                </p>
+                <p>
+                    これまで何度、この言葉を投げかけられてきただろう。
+                </p>
+                <p>
+                    彼らにとっての「普通」とは、平均値という名の安全地帯に身を隠し、疑問を持たずにシステムを稼働させ続けることだ。しかし、私のような「不適合者」にとって、その安全地帯は窒息死を待つガス室と同じだった。私の脳は、無意識のうちに最適解を導き出してしまう。そして、その最適解が「現行の社会ルール」と衝突するとき、私は迷わず最適解を選択する。それがたとえ、組織の和を乱すことであってもだ。
+                </p>
+                <p>
+                    MENSAという団体は、知能の高さという一点において人々を集めているが、私にとってそれは「同じ速度で世界を処理できる人間がいるかを確認する」ための手段でしかなかった。結果として、私はそこにも完全な安息の地は見出せなかった。なぜなら、知能の高さは必ずしも「行動（アクト）」へと直結しないからだ。
+                </p>
+                <p>
+                    私は、知性をひけらかすことに興味はない。その知性を使って、この手で具体的に何を作り、何を変えるか。それだけが重要だ。Hexa Relationという装置を使って、私は私の知性を「具現化」している。これは、私自身の生存戦略であり、同時に、私と同じように「高すぎる処理速度」ゆえに社会から零れ落ちてしまった異端児たちのための、プラットフォームでもある。
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 4: Architectural Deep Dive -->
+        <section class="reveal space-y-20 mb-80">
+            <h3 class="text-4xl font-black text-white italic">万物は、データとして再構築可能である。</h3>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="border border-white/5 p-8 bg-white/5">
+                    <span class="mono text-red-500 text-xs mb-4 block">MODULE: COGNITIVE</span>
+                    <h4 class="text-white mb-6">認知の歪みを、<br>武器に変える。</h4>
+                    <p class="text-sm opacity-50">人間の脳は不完全だ。しかし、その不完全さ（バイアス）こそが、最も強力なマーケティングの起点となる。我々は、認知心理学をWebデザインに応用し、ユーザーの「無意識」に語りかける。クリックは、もはやユーザーの意思ではなく、我々が設計した「反射」となる。</p>
+                </div>
+                <div class="border border-white/5 p-8 bg-white/5">
+                    <span class="mono text-red-500 text-xs mb-4 block">MODULE: NARRATIVE</span>
+                    <h4 class="text-white mb-6">物語は、<br>最も強固な暗号である。</h4>
+                    <p class="text-sm opacity-50">事実は情報を伝えるが、物語（ナラティブ）は感情を支配する。我々はあなたの実績を「事実の羅列」としてではなく、「未完成の英雄譚」として構築する。訪れる人は、あなたのサイトを見るのではなく、あなたの物語の「協力者」として召喚されるのだ。</p>
+                </div>
+                <div class="border border-white/5 p-8 bg-white/5">
+                    <span class="mono text-red-500 text-xs mb-4 block">MODULE: STRUCTURE</span>
+                    <h4 class="text-white mb-6">コードは、<br>現代の魔術である。</h4>
+                    <p class="text-sm opacity-50">かつて魔術師たちが呪文で世界を変えようとしたように、我々はコードで現実を上書きする。一切の無駄を削ぎ落とした、美しく冷徹なプログラム。それは、あなたのビジネスという名の巨大な機械を動かすための、最も純粋な動力源となるだろう。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: The Final Manifesto -->
+        <section class="manifesto-section reveal">
+            <h2 class="cinzel text-sm sub-text mb-20 tracking-[1em] opacity-40 uppercase">05 // The Final Manifesto</h2>
+            <div class="space-y-12 opacity-80 text-xl font-bold italic text-white">
+                <p>
+                    「正しさ」とは、多数決で決まるものではない。<br>
+                    それは、一つの揺るぎないロジックを貫き通した末に、現実がその通りに動いたときにのみ、事後的に証明されるものである。
+                </p>
+                <p>
+                    我々は、誰にも理解されないかもしれない。<br>
+                    我々は、多くの場所で拒絶されるかもしれない。<br>
+                    それでも、我々は「真実」を作り続ける。
+                </p>
+                <p>
+                    なぜなら、この世界には、まだ「美しさ」と「論理」が共存できる場所が必要だからだ。
+                </p>
+            </div>
+            <div class="mt-40 space-y-8 opacity-60 text-sm leading-loose">
+                <p>
+                    ここまで読み進めたあなたは、もはや引き返すことはできない。あなたの脳内には、すでにHexa Relationの「ウイルス」が感染している。今まで「当たり前」だと思っていたWebサイト、広告、そしてあなた自身の仕事のやり方が、急に古臭く、無意味なものに見えてくるはずだ。
+                </p>
+                <p>
+                    それは、あなたが「真実」への第一歩を踏み出した証拠だ。
+                </p>
+                <p>
+                    我々は、常にここで待っている。あなたが自分自身の「設計図」を書き換える決意をしたその時を。
+                </p>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="text-center py-40 reveal">
+            <div class="mb-20">
+                <span class="mono text-xs opacity-40 tracking-[0.5em] block mb-4 uppercase">Encryption_Complete // Deployment_Ready</span>
+                <h3 class="cinzel text-4xl md:text-7xl font-black text-white italic">REWRITE_YOUR_REALITY.</h3>
+            </div>
+            <a href="https://hexa-relation.com" class="inline-block border-2 border-white px-20 py-8 text-xl font-black hover:bg-white hover:text-black transition-all cinzel tracking-[0.2em]">
+                RETURN_TO_THE_MAIN_DECK
+            </a>
+            <div class="mt-20">
+                <a href="https://hexa-relation.com/order/" class="text-xs border-b border-white/20 pb-1 opacity-40 hover:opacity-100 transition-all">
+                    OR_INITIALIZE_A_NEW_MISSION
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="fixed top-1/2 -right-40 -translate-y-1/2 rotate-90 mono text-[8px] opacity-10 pointer-events-none tracking-[2em]">
+        SYSTEM_ID: HEXA_RELATION_GRAND_DESIGN_VERSION_1.0.4_BETA
+    </div>
+
+    <footer class="py-20 text-center opacity-5 text-[10px] cinzel tracking-[2em] uppercase">
+        &copy; 2026 Hexa Relation // Engineering Envy // All Logic Reserved.
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
