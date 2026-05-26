@@ -365,15 +365,9 @@
 
         // ライブ状態の検出とテストモード
         const channelId = 'UCCkB_BgT8t3FgFe8BuIXyWg';
-        const isLiveTest = urlParams.get('live') === '1' || urlParams.get('test') === 'live';
 
         function checkLiveStatus() {
             const banner = document.getElementById('live-banner');
-            if (isLiveTest) {
-                banner.style.display = 'flex';
-                console.log('Live Test Mode: Active');
-                return;
-            }
 
             const img = new Image();
             img.onload = function() {
