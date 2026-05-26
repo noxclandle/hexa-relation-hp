@@ -82,6 +82,11 @@
         }
         .log-date { color: #888; font-size: 0.8rem; }
         .log-ref { color: var(--primary-color); font-weight: bold; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #000; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #004400; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #008800; }
     </style>
 </head>
 <body>
@@ -195,7 +200,7 @@
 
         // AUTO_INJECT_START
         const ALL_PAGE_IDS = ['nox', 'choco', 'ten', 'sabanomiso'];
-        const MARKETING_PAGES = [{"id":"archive","name":"Hexa Archive: 過去の「実績」を、永久保存する。","desc":"消えゆく実績を、美しい「アーカイブ」へ。Hexa Archiveは、あなたの過去作をミュージアムのように展示し、ブランドの価値を証明し続けます。"},{"id":"business","name":"経営者・起業家向けブランディングLP制作","desc":"経営者のための「戦う名刺」。一級建築士や専門職、起業家の実績をゲームのステータスとして可視化。信頼性と遊び心を両立した、惹きつけるブランディングサイト。従来の退屈な企業紹介を、圧倒的な実績（ステータス）へと変換します。"},{"id":"card","name":"Hexa Card: 次世代の「装備品」デジタル名刺","desc":"紙の名刺は、もう古い。Hexa Cardは、あなたのステータスを相手のスマホに直接転送する、次世代の「デジタル装備品」。RPG風のUIで、初対面の相手に強烈な印象を刻み込みます。"},{"id":"engineer","name":"エンジニア・クリエイター向けポートフォリオ制作","desc":"エンジニアの技術力を「UIそのもの」で証明する。レトロゲーム風、コードライクなデザインなど、ギミック満載の面白いポートフォリオを構築。テンプレートでは表現できない、あなたのスキルスタックを体験型のWebサイトへと昇華させます。"},{"id":"link","name":"Hexa Link: リンク集を、自分の世界観へ。","desc":"SNSのリンク集。それはあなたの「入り口」です。Hexa Linkは、凡庸なリンク集を、あなた専用の「コマンドメニュー」へと再定義します。"},{"id":"mensa","name":"MENSA Maverick // 異端知性の解析と再構築","desc":"[RESTRICTED ACCESS] 全人口上位2%の知能指数。社会不適合という名のギフト。MENSA会員が綴る、組織への決別と、Web構築における『純粋ロジック』の証明。2000文字のデータ・マニフェスト。"},{"id":"order-flow","name":"Hexa Order: 「依頼」を、ワクワクする体験に。","desc":"退屈な問い合わせフォームを、ゲームの「オーダー受注」画面へ。Hexa Orderは、入力のストレスを楽しみへと変え、成約率を向上させます。"},{"id":"origin","name":"The Origin: 異端の知性が描く「生存の設計図」","desc":"Hexa Relation創設者の全記録。メンサとしての知性、社会からの拒絶、探偵・マジシャン・ITを経て辿り着いた「嘘のないWeb制作」への情熱。なぜ私たちはゲームの世界観に拘るのか。その答えがここにあります。"},{"id":"portal","name":"Hexa Portal: 制作進捗を、クエスト形式で。","desc":"クライアント専用「冒険の拠点」。制作の進捗をリアルタイムでクエスト管理。煩わしい連絡を、楽しいゲーム体験へとアップデートします。"},{"id":"vtuber","name":"VTuber・配信者向けゲーム風ポートフォリオ制作","desc":"VTuber・配信者のための没入型自己紹介サイト。アバターの世界観をWebに。ビジュアルノベル風、RPG風など、ファンが喜ぶギミック満載のサイトを制作。YouTubeアルゴリズムに依存しない、あなたの「聖地」を構築します。"}];
+        const MARKETING_PAGES = [{"id":"archive","name":"Hexa Archive: 過去の「実績」を、永久保存する。","desc":"消えゆく実績を、美しい「アーカイブ」へ。Hexa Archiveは、あなたの過去作をミュージアムのように展示し、ブランドの価値を証明し続けます。"},{"id":"business","name":"経営者・起業家向けブランディングLP制作","desc":"経営者のための「戦う名刺」。一級建築士や専門職、起業家の実績をゲームのステータスとして可視化。信頼性と遊び心を両立した、惹きつけるブランディングサイト。従来の退屈な企業紹介を、圧倒的な実績（ステータス）へと変換します。"},{"id":"card","name":"Hexa Card: 次世代の「装備品」デジタル名刺","desc":"紙の名刺は、もう古い。Hexa Cardは、あなたのステータスを相手のスマホに直接転送する、次世代の「デジタル装備品」。RPG風のUIで、初対面の相手に強烈な印象を刻み込みます。"},{"id":"engineer","name":"エンジニア・クリエイター向けポートフォリオ制作","desc":"エンジニアの技術力を「UIそのもの」で証明する。レトロゲーム風、コードライクなデザインなど、ギミック満載の面白いポートフォリオを構築。テンプレートでは表現できない、あなたのスキルスタックを体験型のWebサイトへと昇華させます。"},{"id":"link","name":"Hexa Link: リンク集を、自分の世界観へ。","desc":"SNSのリンク集。それはあなたの「入り口」です。Hexa Linkは、凡庸なリンク集を、あなた専用の「コマンドメニュー」へと再定義します。"},{"id":"mensa","name":"MENSA Maverick // 異端知性の解析と再構築","desc":"[RESTRICTED ACCESS] 全人口上位2%の知能指数。社会不適合という名のギフト。MENSA会員が綴る、組織への決別と、Web構築における『純粋ロジック』の証明。2000文字のデータ・マニフェスト。"},{"id":"order-flow","name":"Hexa Order: 「依頼」を、ワクワクする体験に。","desc":"退屈な問い合わせフォームを、ゲームの「オーダー受注」画面へ。Hexa Orderは、入力のストレスを楽しみへと変え、成約率を向上させます。"},{"id":"origin","name":"The Origin: 異端の知性が描く「生存の設計図」","desc":"Hexa Relation創設者の全記録。メンサとしての知性、社会からの拒絶、探偵・マジシャン・ITを経て辿り着いた「嘘のないWeb制作」への情熱。なぜ私たちはゲームの世界観に拘るのか。その答えがここにあります。"},{"id":"portal","name":"Hexa Portal: 制作進捗を、クエスト形式で。","desc":"クライアント専用「冒険の拠点」。制作の進捗をリアルタイムでクエスト管理。煩わしい連絡を、楽しいゲーム体験へとアップデートします。"},{"id":"vtuber","name":"VTuber・配信者向けゲーム風ポートフォリオ制作","desc":"VTuber・配信者のための没入型自己紹介サイト。アバターの世界観をWebに。ビジュアルノベル風、RPG風など、ファンが喜ぶギミック満載েরサイトを制作。YouTubeアルゴリズムに依存しない、あなたの「聖地」を構築します。"}];
         // AUTO_INJECT_END
 
         let currentAnalytics = {};
@@ -205,37 +210,21 @@
         function startAnalytics() {
             db.collection('analytics').onSnapshot((querySnapshot) => {
                 let totalHits = 0;
-                
-                // Initialize currentAnalytics with all known IDs
-                ALL_PAGE_IDS.forEach(id => {
-                    currentAnalytics[id] = { hits: 0, orders: 0, lastVisit: null };
-                });
-
+                ALL_PAGE_IDS.forEach(id => { currentAnalytics[id] = { hits: 0, orders: 0, lastVisit: null }; });
                 querySnapshot.forEach((doc) => {
                     const id = doc.id;
-                    if (!ALL_PAGE_IDS.includes(id)) return; // Filter out unauthorized or deleted IDs
-                    const data = doc.data();
-                    currentAnalytics[id] = data;
-                    totalHits += data.hits || 0;
+                    if (!ALL_PAGE_IDS.includes(id)) return;
+                    currentAnalytics[id] = doc.data();
+                    totalHits += currentAnalytics[id].hits || 0;
                 });
-
                 renderTables();
                 document.getElementById('total-hits').innerText = totalHits.toLocaleString();
             });
-
-            // Keep cumulative orders at 0 for now as requested
             document.getElementById('total-orders').innerText = "0";
         }
 
-        function sortData(type) {
-            currentSort = type;
-            renderTables();
-        }
-
-        function filterLPs() {
-            searchTerm = document.getElementById('lp-search').value.toLowerCase();
-            renderTables();
-        }
+        function sortData(type) { currentSort = type; renderTables(); }
+        function filterLPs() { searchTerm = document.getElementById('lp-search').value.toLowerCase(); renderTables(); }
 
         function renderTables() {
             renderAnalyticsTable();
@@ -245,17 +234,11 @@
         function renderAnalyticsTable() {
             const tbody = document.querySelector('#analytics-table tbody');
             tbody.innerHTML = '';
-
             const filteredIds = ALL_PAGE_IDS.filter(id => id.toLowerCase().includes(searchTerm));
-
             const sortedIds = filteredIds.sort((a, b) => {
-                // Priority 1: Nox is always first
-                if (a === 'nox') return -1;
-                if (b === 'nox') return 1;
-
+                if (a === 'nox') return -1; if (b === 'nox') return 1;
                 const dataA = currentAnalytics[a] || { hits: 0, orders: 0, lastVisit: null };
                 const dataB = currentAnalytics[b] || { hits: 0, orders: 0, lastVisit: null };
-
                 if (currentSort === 'orders') return (dataB.orders || 0) - (dataA.orders || 0);
                 if (currentSort === 'hits') return (dataB.hits || 0) - (dataA.hits || 0);
                 if (currentSort === 'visit') {
@@ -265,7 +248,6 @@
                 }
                 return 0;
             });
-
             sortedIds.forEach((id) => {
                 const data = currentAnalytics[id] || { hits: 0, orders: 0, lastVisit: null };
                 const tr = document.createElement('tr');
@@ -275,35 +257,35 @@
                     <td>${data.hits || 0}</td>
                     <td class="cursor-pointer hover:underline text-green-400" onclick="showLogs('${id}')">
                         ${data.lastVisit ? data.lastVisit.toDate().toLocaleString() : '---'}
-                    </td>
-                `;
+                    </td>`;
                 tbody.appendChild(tr);
             });
         }
 
         function renderMarketingTable() {
             const tbody = document.querySelector('#marketing-table tbody');
+            if (!tbody) return;
             tbody.innerHTML = '';
-
-            // Add hardcoded "Official Intro" at top (if not already in MARKETING_PAGES)
             const baseIntro = { id: '', name: 'Official Intro', desc: '総合紹介ページ。全スタイルのショーケース。' };
             const pages = [baseIntro, ...MARKETING_PAGES];
-
             const filtered = pages.filter(p => 
-                p.id.toLowerCase().includes(searchTerm) || 
-                p.name.toLowerCase().includes(searchTerm) || 
-                p.desc.toLowerCase().includes(searchTerm)
+                p.id.toLowerCase().includes(searchTerm) || p.name.toLowerCase().includes(searchTerm) || p.desc.toLowerCase().includes(searchTerm)
             );
-
             filtered.forEach(p => {
+                let colorClass = 'text-green-500';
+                if (p.id.includes('vtuber')) colorClass = 'text-pink-500';
+                else if (p.id.includes('business') || p.id.includes('founder') || p.id.includes('portal')) colorClass = 'text-cyan-500';
+                else if (p.id.includes('mensa') || p.id.includes('origin')) colorClass = 'text-red-500 font-bold';
+                else if (p.id.includes('order') || p.id.includes('card')) colorClass = 'text-yellow-500';
+                else if (p.id.includes('engineer') || p.id.includes('archive')) colorClass = 'text-green-400';
+
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td class="p-2 border border-green-900 font-bold">${p.name}</td>
+                    <td class="p-2 border border-green-900 font-bold ${colorClass}">${p.name}</td>
                     <td class="p-2 border border-green-900 opacity-60">${p.desc}</td>
                     <td class="p-2 border border-green-900 text-center">
-                        <a href="../intro/${p.id}" target="_blank" class="text-green-400 hover:underline">OPEN</a>
-                    </td>
-                `;
+                        <a href="../intro/${p.id}${p.id ? '/' : ''}" target="_blank" class="text-green-400 hover:underline">OPEN</a>
+                    </td>`;
                 tbody.appendChild(tr);
             });
         }
@@ -312,20 +294,11 @@
             const modal = document.getElementById('log-modal');
             const content = document.getElementById('log-content');
             document.getElementById('log-title').innerText = `▶ ${pageId} の訪問履歴`;
-            
             content.innerHTML = '<p class="blink">LOADING...</p>';
             modal.style.display = 'flex';
-
             try {
-                // 最新20件のログを取得 (最新順)
-                const snapshot = await db.collection('referrals').doc(pageId).collection('logs')
-                    .orderBy('timestamp', 'desc').limit(20).get();
-                
-                if (snapshot.empty) {
-                    content.innerHTML = '<p class="opacity-50 italic">ログが ありません</p>';
-                    return;
-                }
-
+                const snapshot = await db.collection('referrals').doc(pageId).collection('logs').orderBy('timestamp', 'desc').limit(20).get();
+                if (snapshot.empty) { content.innerHTML = '<p class="opacity-50 italic">ログが ありません</p>'; return; }
                 content.innerHTML = '';
                 snapshot.forEach(doc => {
                     const log = doc.data();
@@ -335,46 +308,28 @@
                     div.innerHTML = `<span class="log-date">${date}</span> <span class="log-ref">${log.referrer}</span>`;
                     content.appendChild(div);
                 });
-            } catch (err) {
-                content.innerHTML = '<p class="text-red-500">エラーが おきました</p>';
-                console.error(err);
-            }
+            } catch (err) { content.innerHTML = '<p class="text-red-500">エラーが おきました</p>'; }
         }
 
-        function closeLogModal() {
-            document.getElementById('log-modal').style.display = 'none';
-        }
-// 生存日数の計算
-const startDate = new Date('2026-05-21'); // メメインドメイン使用開始日: 2026/05/21
-const today = new Date();
-const diffTime = today - startDate;
-const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-document.getElementById('days-active').innerText = diffDays;
-
+        function closeLogModal() { document.getElementById('log-modal').style.display = 'none'; }
+        const startDate = new Date('2026-05-21');
+        const today = new Date();
+        document.getElementById('days-active').innerText = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
 
         function checkPass() {
             const pass = document.getElementById('admin-pass').value;
-            if (pass === '2213') {
-                localStorage.setItem('admin_auth', 'true');
-                showAdminContent();
-            } else {
-                alert('パスワードが ちがいます');
-            }
+            if (pass === '2213') { localStorage.setItem('admin_auth', 'true'); showAdminContent(); } else { alert('パスワードが ちがいます'); }
         }
 
         function showAdminContent() {
             document.getElementById('password-gate').classList.add('hidden');
             document.getElementById('admin-content').classList.remove('hidden');
+            renderMarketingTable();
             startAnalytics();
         }
 
-        if (localStorage.getItem('admin_auth') === 'true') {
-            showAdminContent();
-        }
-
-        document.getElementById('admin-pass').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') checkPass();
-        });
+        if (localStorage.getItem('admin_auth') === 'true') { showAdminContent(); }
+        document.getElementById('admin-pass').addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPass(); });
     </script>
 </body>
 </html>
