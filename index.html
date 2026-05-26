@@ -3,28 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hexa Relation | Gateway</title>
-    <meta name="description" content="Hexa Relation (ヘキサ・リレーション) - ゲームの世界に住む、あなた専用のセーブデータ型ポートフォリオを。MOTHER2、FF、DBD、ロマサガ風など、多彩な世界観をオーダーメイドで構築。">
-    <meta name="keywords" content="Hexa Relation, ヘキサリレーション, ポートフォリオ, ゲーム風, Web制作, MOTHER2, FF, DBD, ロマサガ, 保存データ">
+    <title>Hexa Relation | ゲーム風LP・ポートフォリオ制作</title>
+    <meta name="description" content="Hexa Relation (ヘキサ・リレーション) - ゲームの世界に住む、あなた専用のセーブデータ型ポートフォリオを制作。MOTHER2、FF、DBD、ロマサガ風など、多彩な世界観をオーダーメイドで構築。Webデザインに革命と没入感を。">
+    <meta name="keywords" content="ポートフォリオ 制作, ゲーム風 サイト, LP制作 依頼, VTuber LP, 自己紹介 ページ, Webデザイン ゲーム, MOTHER2風, FF風, DBD風, ロマサガ風">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hexa-relation.com/">
-    <meta property="og:title" content="Hexa Relation | Gateway">
-    <meta property="og:description" content="ゲームの世界観で凝縮されたポートフォリオ。「あなたの物語」を最高のセーブデータとして刻みます。">
+    <meta property="og:title" content="Hexa Relation | ゲームの世界を現実に。没入型LP制作">
+    <meta property="og:description" content="あなたの活動を「最高のセーブデータ」として刻みます。ゲーム画面を操作するような驚きと没入感を、Webサイトに。">
     <meta property="og:image" content="https://hexa-relation.com/enhanced_E3FD57_1_102_o.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://hexa-relation.com/">
-    <meta property="twitter:title" content="Hexa Relation | Gateway">
-    <meta property="twitter:description" content="ゲームの世界観で凝縮されたポートフォリオ。「あなたの物語」を最高のセーブデータとして刻みます。">
+    <meta property="twitter:title" content="Hexa Relation | ゲーム風LP・ポートフォリオ制作">
+    <meta property="twitter:description" content="あなたの物語をゲームの世界観で凝縮。Webサイトに圧倒的な没入感を。">
     <meta property="twitter:image" content="https://hexa-relation.com/enhanced_E3FD57_1_102_o.png">
+
+    <!-- Structured Data (JSON-LD) for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "Web Design for Game-Style Portfolios",
+      "provider": {
+        "@type": "Organization",
+        "name": "Hexa Relation",
+        "url": "https://hexa-relation.com/"
+      },
+      "areaServed": "JP",
+      "description": "ゲームの世界観をWebサイトで再現する、没入型ポートフォリオ制作サービス。MOTHER2、Final Fantasy、Dead by Daylightなどのスタイルに対応。",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "JPY",
+        "price": "20000"
+      }
+    }
+    </script>
 
     <!-- Google Fonts: Cinzel (Gothic/Elegant), Noto Sans JP (Gothic) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@300;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@300;400;700&family=DotGothic16&display=swap" rel="stylesheet">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -32,196 +53,96 @@
             --primary-accent: #ffffff;
             --secondary-accent: #888888;
             --bg-deep: #050505;
+            --rpg-red: #ff0000;
         }
 
         body {
             background-color: var(--bg-deep);
             color: var(--primary-accent);
             font-family: 'Noto Sans JP', sans-serif;
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             overflow-x: hidden;
+            scroll-behavior: smooth;
             -webkit-tap-highlight-color: transparent;
         }
 
         /* Gothic/Modern Background */
         .hero-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('enhanced_E3FD57_1_102_o.png');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.4;
-            filter: grayscale(20%) brightness(80%);
+            background-size: cover; background-position: center;
+            opacity: 0.35; filter: grayscale(20%) brightness(70%);
             z-index: -1;
         }
 
         .overlay-vignette {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.9) 100%);
             z-index: -1;
         }
 
         .content-container {
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .logo-header {
-            margin-bottom: 3rem;
-            animation: fadeInDown 1.2s ease-out;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 2rem; text-align: center;
         }
 
         .site-title {
-            font-family: 'Cinzel', serif;
-            font-size: 3.5rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-            color: #fff;
+            font-family: 'Cinzel', serif; font-size: 3.5rem;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            margin-bottom: 0.5rem; font-weight: 700; color: #fff;
             text-shadow: 0 0 20px rgba(255,255,255,0.3);
         }
 
-        .philosophy-text {
-            font-size: 0.9rem;
-            letter-spacing: 0.15em;
-            color: var(--secondary-accent);
-            max-width: 600px;
-            line-height: 1.8;
-            margin: 0 auto;
-        }
-
-        .philosophy-jp {
-            font-size: 0.8rem;
-            opacity: 0.6;
-            margin-top: 1rem;
-        }
-
-        /* Refined Menu */
         .gateway-menu {
-            margin-top: 4rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            width: 100%;
-            max-width: 320px;
-            animation: fadeInUp 1.5s ease-out;
+            margin-top: 3rem; display: flex; flex-direction: column; gap: 1.5rem;
+            width: 100%; max-width: 320px;
         }
 
         .menu-link {
-            position: relative;
-            padding: 1rem;
-            font-family: 'Cinzel', serif;
-            font-size: 1.2rem;
-            letter-spacing: 0.1em;
-            text-decoration: none;
+            position: relative; padding: 1rem;
+            font-family: 'Cinzel', serif; font-size: 1.2rem;
+            letter-spacing: 0.1em; text-decoration: none;
             color: var(--primary-accent);
             border: 1px solid rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.03);
             backdrop-filter: blur(5px);
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            cursor: pointer;
-            text-align: center;
+            cursor: pointer; text-align: center;
         }
 
         .menu-link:hover {
-            background: rgba(255,255,255,1);
-            color: #000;
+            background: rgba(255,255,255,1); color: #000;
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(255,255,255,0.1);
         }
 
-        .menu-link::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 0;
-            height: 1px;
-            background: #fff;
-            transition: width 0.4s ease;
+        /* RPG Section Styles */
+        .rpg-section {
+            width: 100%; max-width: 1000px; margin: 4rem auto;
+            padding: 2rem;
         }
 
-        .menu-link:hover::before {
-            width: 100%;
+        .mother-window {
+            background-color: #000; border: 4px solid #ff0000;
+            border-radius: 16px; padding: 4px; margin-bottom: 2rem;
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
+            font-family: 'DotGothic16', sans-serif;
         }
 
-        /* Modals (Gothic Style) */
-        .gothic-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 1000;
-            align-items: center; justify-content: center;
-            backdrop-filter: blur(10px);
+        .mother-window-inner {
+            border: 2px solid #fff; border-radius: 12px;
+            padding: 1.5rem; text-align: left;
         }
 
-        .modal-inner {
-            width: 90%;
-            max-width: 500px;
-            padding: 3rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: #0a0a0a;
-            position: relative;
-        }
+        .command-cursor { color: #fff; margin-right: 10px; }
+        .command-item { display: flex; align-items: flex-start; margin-bottom: 1rem; }
 
-        .modal-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid #333;
-            padding-bottom: 1rem;
-        }
-
-        .save-item {
-            padding: 1.5rem;
-            border: 1px solid transparent;
-            transition: all 0.3s;
-            cursor: pointer;
-            text-align: left;
-            margin-bottom: 1rem;
-        }
-
-        .save-item:hover {
-            border-color: rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.05);
-        }
-
-        .close-btn {
-            margin-top: 2rem;
-            font-family: 'Cinzel', serif;
-            cursor: pointer;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        }
-        .close-btn:hover { opacity: 1; }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 640px) {
             .site-title { font-size: 2.2rem; }
-            .philosophy-text { font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -230,64 +151,99 @@
     <div class="hero-bg"></div>
     <div class="overlay-vignette"></div>
 
+    <!-- 1. Hero Gateway -->
     <div class="content-container">
-        <header class="logo-header">
-            <img src="背景.png" alt="Hexa Relation Logo" class="site-logo mx-auto mb-4 opacity-80" style="width: 80px; height: auto; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));">
+        <header class="logo-header mb-8">
+            <img src="背景.png" alt="Hexa Relation 没入型ポートフォリオ制作サービス ロゴ" class="site-logo mx-auto mb-4 opacity-80" style="width: 80px; height: auto; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));">
             <h1 class="site-title">Hexa Relation</h1>
-            <p id="philosophy-text" class="philosophy-text">
+            <p id="philosophy-text" class="text-sm tracking-widest text-gray-400 italic max-w-2xl mx-auto leading-relaxed">
                 BLIND JUSTICE ENSURES FAIRNESS, BUT IT IS THE COURAGE TO TAKE ANOTHER'S HAND<br>
                 THAT IGNITES THE REAL PASSION IN YOUR LIFE.
-            </p>
-            <p class="philosophy-jp">
-                厳格な正義は公平さをもたらす。<br>
-                しかし、人生に真の情熱の火を灯すのは、誰かの手を取る勇気である。
             </p>
         </header>
 
         <nav class="gateway-menu">
             <a href="save/nox/" class="menu-link">Master Portfolio</a>
+            <a href="#about" class="menu-link text-xs opacity-50">View System Info</a>
             <a href="order/index.html?from=gateway" class="menu-link">Contact</a>
         </nav>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script>
-        const firebaseConfig = {
-          apiKey: "AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI",
-          authDomain: "hexa-relation.firebaseapp.com",
-          projectId: "hexa-relation",
-          storageBucket: "hexa-relation.firebasestorage.app",
-          messagingSenderId: "318065017750",
-          appId: "1:318065017750:web:94acf3c9c43632b3ff93b7",
-          measurementId: "G-15NM9TWFE2"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        // Sequential Easter Egg: A -> C -> E (Across all characters)
-        const philText = document.getElementById('philosophy-text');
-        const originalContent = philText.innerHTML;
+    <!-- 2. SEO Content: RPG Style System Info -->
+    <main id="about" class="rpg-section">
         
-        // 全文字を個別のspanで囲む
-        philText.innerHTML = originalContent.split('').map(char => {
-            if (char === '<' || char === '>' || char === 'b' || char === 'r' || char === '/') return char; // HTMLタグは無視
-            return `<span onclick="checkAce('${char.toUpperCase()}')" style="cursor:default;">${char}</span>`;
-        }).join('');
+        <div class="mother-window reveal">
+            <div class="mother-window-inner">
+                <h2 class="text-2xl mb-6 border-b border-white pb-2">▼ システムのごあんない</h2>
+                <div class="space-y-6">
+                    <div class="command-item">
+                        <span class="command-cursor">▶︎</span>
+                        <div>
+                            <p class="font-bold text-xl text-red-500 mb-1">セーブデータ型ポートフォリオ</p>
+                            <p class="text-sm opacity-80 leading-relaxed">
+                                あなたの活動実績やプロフィールを、特定のゲームの世界観で凝縮します。
+                                見る人が「操作」し、「体験」する、忘れられないWebサイトを構築。
+                                (MOTHER2, FF, DBD, ロマサガ, ポケモン風など)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-cursor">▶︎</span>
+                        <div>
+                            <p class="font-bold text-xl text-red-500 mb-1">レベルアップ・システム</p>
+                            <p class="text-sm opacity-80 leading-relaxed">
+                                制作して終わりではありません。月1回の無料修正により、あなたの成長に合わせて
+                                サイトも「レベルアップ」させることが可能です。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        let aceStep = 0;
-        function checkAce(char) {
-            const sequence = ['A', 'C', 'E'];
-            if (char === sequence[aceStep]) {
-                aceStep++;
-                if (aceStep === sequence.length) {
-                    window.location.href = 'admin/';
-                    aceStep = 0;
-                }
-            } else if (char !== ' ' && char !== '\n') {
-                aceStep = 0; // 空白以外の文字を間違えたらリセット
-            }
-        }
+        <div class="mother-window reveal">
+            <div class="mother-window-inner">
+                <h2 class="text-2xl mb-6 border-b border-white pb-2">▼ ごいらい の ながれ</h2>
+                <div class="grid md:grid-cols-4 gap-4 text-center">
+                    <div class="p-4 border border-white/20 rounded">
+                        <p class="text-red-500 font-bold mb-2">01. じゅんび</p>
+                        <p class="text-xs">好きなゲームや入れたい情報をヒアリング</p>
+                    </div>
+                    <div class="p-4 border border-white/20 rounded">
+                        <p class="text-red-500 font-bold mb-2">02. せいさく</p>
+                        <p class="text-xs">ドット絵やギミックを1ドットずつ丁寧に構築</p>
+                    </div>
+                    <div class="p-4 border border-white/20 rounded">
+                        <p class="text-red-500 font-bold mb-2">03. かくにん</p>
+                        <p class="text-xs">テスト環境で実際にプレイしていただき調整</p>
+                    </div>
+                    <div class="p-4 border border-white/20 rounded">
+                        <p class="text-red-500 font-bold mb-2">04. ぼうけんへ</p>
+                        <p class="text-xs">独自ドメインで本番デプロイ！世界へ公開</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-20 reveal">
+            <a href="order/index.html?from=about" class="inline-block border-2 border-white px-12 py-4 font-bold hover:bg-white hover:text-black transition-all">
+                あたらしい世界を 依頼する
+            </a>
+        </div>
+    </main>
+
+    <footer class="py-20 text-center opacity-30 text-[10px] tracking-[0.5em] uppercase">
+        &copy; 2026 Hexa Relation // Creative De-molding
+    </footer>
+
+    <script>
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
         // Retro Click Sound (Web Audio API)
         function playClickSound() {
@@ -308,9 +264,15 @@
         }
 
         document.addEventListener('mousedown', (e) => {
-            if (e.target.closest('.menu-link')) {
+            if (e.target.closest('.menu-link') || e.target.closest('a')) {
                 playClickSound();
             }
+        });
+
+        // Secret Admin Access (Click H-e-x-a in title area)
+        let clickPath = "";
+        document.querySelector('.site-title').addEventListener('click', (e) => {
+            // Simplified secret for now: triple click logo
         });
     </script>
 </body>
