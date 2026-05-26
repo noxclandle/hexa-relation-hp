@@ -25,6 +25,7 @@
             --rs3-lp-blue: #2a4fa3;
             --rs3-accent-green: #0a4d2e;
             --rs3-accent-orange: #7a3a0a;
+            --rs3-live-red: #cc0000;
         }
 
         body {
@@ -87,8 +88,86 @@
 
         .char-info { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
         .char-name { font-size: 1.4rem; line-height: 1.1; word-break: break-all; }
-        .char-stats { display: flex; gap: 1rem; font-size: 1.2rem; font-weight: bold; }
-        .lp-label { color: var(--rs3-lp-blue); margin-left: 0.2rem; }
+        .char-stats { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; font-size: 1.1rem; font-weight: bold; }
+        .stat-val { color: var(--rs3-accent-orange); }
+        .lp-label { color: var(--rs3-lp-blue); margin-left: 0.1rem; }
+
+        .live-banner {
+            display: none; /* 初期状態は非表示 */
+            background: #000;
+            color: #fff;
+            padding: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            border: 2px solid #fff;
+            margin-bottom: 0.5rem;
+            animation: pulse-border 2s infinite;
+            cursor: pointer;
+            z-index: 50;
+        }
+        @keyframes pulse-border {
+            0% { border-color: #fff; }
+            50% { border-color: var(--rs3-live-red); }
+            100% { border-color: #fff; }
+        }
+        .live-dot {
+            width: 10px; height: 10px; background: var(--rs3-live-red); border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* 小窓（魔法の鏡）スタイル */
+        .magic-mirror-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+            height: 112px;
+            background: #000;
+            border: 4px solid #b08d57;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            z-index: 2000;
+            display: none; /* 初期は非表示 */
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        .mirror-header {
+            background: #b08d57;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 2px 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .mirror-close { cursor: pointer; font-weight: bold; }
+        .mirror-iframe { width: 100%; height: calc(100% - 20px); border: none; }
+
+        .crystal-ball {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 30% 30%, #fff, #87ceeb, #4682b4);
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(135, 206, 235, 0.6), inset -5px -5px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            animation: float 3s ease-in-out infinite;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            color: #fff;
+            text-shadow: 1px 1px 2px #000;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .crystal-ball::after { content: '見守り'; position: absolute; bottom: -15px; width: 100%; text-align: center; color: #b08d57; font-size: 0.7rem; }
 
         .menu-list {
             display: grid;
@@ -138,7 +217,7 @@
             .status-grid { flex-direction: row; justify-content: space-around; }
             .char-sprite { width: 140px; height: 140px; }
             .char-name { font-size: 1.8rem; }
-            .char-stats { font-size: 1.8rem; gap: 2rem; }
+            .char-stats { font-size: 1.5rem; gap: 1.5rem; }
             .menu-list { grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
             .menu-item { font-size: 1.8rem; padding: 1.2rem; }
             .bottom-info { flex-direction: row; justify-content: space-around; font-size: 1.5rem; }
@@ -157,14 +236,6 @@
         .modal-footer { margin-top: 1.5rem; display: flex; justify-content: flex-end; }
         .modal-btn { padding: 0.5rem 1.5rem; border: 2px solid var(--rs3-text-dark); cursor: pointer; font-size: 1.2rem; background: rgba(0,0,0,0.05); }
         #modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 900; }
-
-        .commander-active .status-grid { flex-direction: column; align-items: center; gap: 3rem; }
-        .commander-active .mother-window { background-color: #f0e68c; box-shadow: 0 0 50px rgba(255, 215, 0, 0.4); }
-        .commander-active .menu-list { display: none; }
-        #commander-exit { display: none; margin-top: 2rem; width: 100%; }
-        .commander-active #commander-exit { display: block; }
-
-        #spark-bulb { display: none; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); width: 50px; height: 50px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23fff"><path d="M12,2A7,7,0,0,0,5,9c0,3.11,2.06,5.74,4.91,6.67A3,3,0,0,0,12,18a3,3,0,0,0,2.09-2.33C16.94,14.74,19,12.11,19,9A7,7,0,0,0,12,2ZM11,22h2v-2h-2v2Z"/></svg>'); background-size: contain; filter: drop-shadow(0 0 10px #ff0); z-index: 100; animation: bulbPop 0.5s forwards; }
 
         .service-accordion { width: 100%; background: #111; border: 4px solid #fff; border-radius: 12px; margin-top: 2rem; overflow: hidden; color: #fff; }
         .accordion-header { padding: 1.5rem; cursor: pointer; text-align: center; font-size: 1.3rem; background: #222; }
@@ -192,26 +263,36 @@
     </div>
 
     <main class="page-container">
+        <!-- ライブ告知バナー -->
+        <div id="live-banner" class="live-banner" onclick="confirmExternal('https://www.youtube.com/@choco_777/live')">
+            <div class="live-dot"></div>
+            <span>LIVE: チョコ隊長 実況配信中！</span>
+        </div>
+
         <div id="game-window" class="mother-window">
+            <!-- 見守りの水晶玉 -->
+            <div class="crystal-ball" onclick="toggleMagicMirror()"></div>
+
             <div class="status-grid">
                 <div class="char-entry">
-                    <div id="spark-bulb"></div>
-                    <div id="choco-sprite" class="char-sprite" onclick="triggerSpark()"></div>
+                    <div id="choco-sprite" class="char-sprite" onclick="openChocoProfile()"></div>
                     <div class="char-info">
                         <div class="char-name">チョコたいちょー</div>
-                        <div class="char-stats"><span>HP:120</span><span>LP:<span class="lp-label">16</span></span></div>
+                        <div class="char-stats">
+                            <span>HP:<span class="stat-val">20000</span></span>
+                            <span>LP:<span class="lp-label">8000</span></span>
+                            <span>実:<span class="stat-val">2500+</span></span>
+                        </div>
+                        <div class="text-xs opacity-60 mt-1">DbDモバイル公認実況者</div>
                     </div>
                 </div>
                 <div class="char-entry">
                     <div id="claudette-sprite" class="char-sprite" onclick="openClaudetteTalk()"></div>
                     <div class="char-info">
-                        <div class="char-name">クローデット<br>おもらし</div>
-                        <div class="char-stats"><span>HP:85</span><span>LP:<span class="lp-label">10</span></span></div>
+                        <div class="char-name">クローデット</div>
+                        <div class="char-stats"><span>HP:100</span><span>LP:<span class="lp-label">10</span></span></div>
                     </div>
                 </div>
-            </div>
-            <div id="location-display" class="hidden text-center mt-4 text-orange-900 font-bold">
-                <p>🚩 マルチ縦列陣形 / 聖王廟 (隠し部屋)</p>
             </div>
         </div>
 
@@ -220,23 +301,22 @@
                 <div class="menu-item" onclick="openEquip()"><div class="finger-cursor"></div>装備</div>
                 <div class="menu-item" onclick="openSkill()"><div class="finger-cursor"></div>技</div>
                 <div class="menu-item" onclick="openMagic()"><div class="finger-cursor"></div>術</div>
-                <div class="menu-item" onclick="openItem()"><div class="finger-cursor"></div>持ち物</div>
-                <div id="formation-menu" class="menu-item" onclick="openFormation()"><div class="finger-cursor"></div>陣形</div>
+                <div class="menu-item" onclick="openItem()"><div class="finger-cursor"></div>実績</div>
+                <div class="menu-item" onclick="openTrade()"><div class="finger-cursor"></div>取引</div>
                 <div class="menu-item" onclick="openConfig()"><div class="finger-cursor"></div>設定</div>
-                <div class="menu-item" onclick="openSave()"><div class="finger-cursor"></div>セーブ</div>
+                <div class="menu-item" onclick="openSave()"><div class="finger-cursor"></div>記録</div>
             </nav>
 
             <div class="bottom-info">
-                <div class="info-row"><span>✚ チョコのまい</span><span>🌍 霧の森</span></div>
+                <div class="info-row"><span>✚ チョコのまい</span><span>🌍 霧の森 (DbD)</span></div>
                 <div class="info-row coin-wrapper" onclick="openTrade()">
                     <span>所持金:</span>
                     <div class="flex items-center gap-1">
                         <div class="pixel-coin">G</div>
-                        <span class="font-bold">1,000,000</span>
+                        <span class="font-bold">2,500,000</span>
                     </div>
                 </div>
             </div>
-            <button id="commander-exit" class="modal-btn mt-4" onclick="toggleCommander(false)">じんけい を もどす</button>
         </div>
 
         <div class="service-accordion">
@@ -258,6 +338,15 @@
         </div>
     </main>
 
+    <!-- 魔法の鏡（ライブ小窓） -->
+    <div id="magic-mirror" class="magic-mirror-container">
+        <div class="mirror-header">
+            <span>見守りの鏡</span>
+            <span class="mirror-close" onclick="toggleMagicMirror()">×</span>
+        </div>
+        <iframe id="mirror-frame" class="mirror-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script>
@@ -274,7 +363,46 @@
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        let isCommanderMode = false;
+        // ライブ状態の検出とテストモード
+        const channelId = 'UCCkB_BgT8t3FgFe8BuIXyWg';
+        const isLiveTest = urlParams.get('live') === '1' || urlParams.get('test') === 'live';
+
+        function checkLiveStatus() {
+            const banner = document.getElementById('live-banner');
+            if (isLiveTest) {
+                banner.style.display = 'flex';
+                console.log('Live Test Mode: Active');
+                return;
+            }
+
+            const img = new Image();
+            img.onload = function() {
+                banner.style.display = 'flex';
+                console.log('Live Status: Online');
+            };
+            img.onerror = function() {
+                banner.style.display = 'none';
+                console.log('Live Status: Offline');
+            };
+            // ライブ中のみ有効なサムネイルURLのパターン
+            img.src = `https://img.youtube.com/vi/live_stream/mqdefault.jpg?v=${new Date().getTime()}`;
+        }
+        checkLiveStatus();
+
+        function toggleMagicMirror() {
+            const mirror = document.getElementById('magic-mirror');
+            const frame = document.getElementById('mirror-frame');
+            const isVisible = window.getComputedStyle(mirror).display === 'block';
+
+            if (isVisible) {
+                mirror.style.display = 'none';
+                frame.src = ''; 
+            } else {
+                mirror.style.display = 'block';
+                frame.src = `https://www.youtube.com/embed/live_stream?channel=${channelId}&autoplay=1&mute=1`;
+                playKyupiSound();
+            }
+        }
 
         function playKyupiSound() {
             try {
@@ -289,74 +417,40 @@
             } catch (e) {}
         }
 
-        function triggerSpark() {
-            if (isCommanderMode) return;
-            const bulb = document.getElementById('spark-bulb');
-            bulb.style.display = 'block';
-            setTimeout(() => {
-                bulb.style.display = 'none';
-                document.getElementById('formation-menu').innerHTML = '<div class="finger-cursor"></div>コマンダー';
-                openModal('▼ ひらめいた！', 'チョコたいちょー は<br>「コマンダーモード」を<br>ひらめいた！');
-            }, 600);
+        function openChocoProfile() {
+            openModal('▼ チョコたいちょー', 'Dead by Daylight Mobile<br>公式認定の 公認実況者だ！<br><br>「みんなで 楽しく」を モットーに<br>霧の森を 駆け抜けているぞ。');
         }
 
-        function openClaudetteTalk() { openModal('▼ クローデット', 'いっけな〜い！<br>ちこく ちこくぅ〜！'); }
-
-        function toggleCommander(active) {
-            isCommanderMode = active;
-            const win = document.getElementById('game-window');
-            const loc = document.getElementById('location-display');
-            if (active) {
-                document.body.classList.add('commander-active');
-                win.classList.add('commander-active');
-                loc.classList.remove('hidden');
-            } else {
-                document.body.classList.remove('commander-active');
-                win.classList.remove('commander-active');
-                loc.classList.add('hidden');
-            }
-            playKyupiSound();
-        }
-
-        function openFormation() {
-            if (document.getElementById('formation-menu').innerText.includes('コマンダー')) toggleCommander(true);
-            else openModal('▼ じんけい', 'ソロ配信中心ですが、コラボ案件などは X よりご相談ください。');
-        }
+        function openClaudetteTalk() { openModal('▼ クローデット', 'チョコたいちょー！<br>あっちに ハンターが いるみたい！'); }
 
         function toggleAccordion() { document.getElementById('accordion-content').classList.toggle('open'); playKyupiSound(); }
         function openModal(title, content) { document.getElementById('modal-title').innerText = title; document.getElementById('modal-content').innerHTML = content; document.getElementById('rs3-modal').style.display = 'block'; document.getElementById('modal-overlay').style.display = 'block'; playKyupiSound(); }
         function closeModal() { document.querySelectorAll('.rs3-modal').forEach(m => m.style.display = 'none'); document.getElementById('modal-overlay').style.display = 'none'; }
         function confirmExternal(url) { document.getElementById('confirm-modal').style.display = 'block'; document.getElementById('modal-overlay').style.display = 'block'; document.getElementById('confirm-yes').onclick = () => { window.open(url, '_blank'); closeModal(); }; playKyupiSound(); }
 
-        function openEquip() { openModal('▼ そうび', `<div class="space-y-3"><div class="p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://www.youtube.com/@choco_777')">▶ YouTube (メイン)</div><div class="p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://x.com/0915_tkrrr')">▶ X (コンタクト)</div></div>`); }
-        function openSkill() { openModal('▼ わざ', '・千手観音 (マルチ配信)<br>・大震撃 (トレンド拡散)'); }
-        function openMagic() { openModal('▼ じゅつ', '・活殺自在 (動画編集の魔力)'); }
-        function openItem() { openModal('▼ もちもの', `これまでの 素晴らしい 実績を<br>ここに リストアップ することが できます。<br><br>掲載したい 過去の 冒険（実績）が<br>ありましたら、ぜひ 教えてください！`); }
+        function openEquip() { openModal('▼ そうび', `<div class="space-y-3"><div class="p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://www.youtube.com/@choco_777')">▶ YouTube (メイン 2万人)</div><div class="p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://x.com/0915_tkrrr')">▶ X (フォロワー 8000人)</div><div class="p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://www.tiktok.com/@choco_7770')">▶ TikTok (同時配信中)</div></div>`); }
+        function openSkill() { openModal('▼ わざ', '・チェイスの極意 (DbD)<br>・初心者導引 (わかりやすい解説)<br>・千手観音 (マルチプラットフォーム配信)'); }
+        function openMagic() { openModal('▼ じゅつ', '・拡散の月術 (Twitter 8000フォロワー)<br>・2万人の波動 (YouTubeの団結力)<br>・活殺自在 (動画編集の魔力)'); }
+        function openItem() { openModal('▼ 実績', '・DbDモバイル公認実況者 認定<br>・YouTube登録者 20,000人突破<br>・プレゼント配布実績 2,500件以上<br>・サブチャンネル「チョコんち」運営'); }
+        function openTrade() { confirmExternal('https://suzuri.jp/0915_tkrrr'); }
         function openConfig() { openModal('▼ せってい', '【ポリシー】リスナーとの距離を大切に、楽しく自由に！'); }
-        async function openSave() { openModal('▼ セーブ', '記録を 読み込んでいます...'); try { const doc = await db.collection('analytics').doc(pageId).get(); const hits = doc.exists ? doc.data().hits : '???'; openModal('▼ セーブ', `【ぼうけんの きろく】<br><br>・活動開始 : 2018年 04月<br>・現在の 訪問者 : ${hits} 人目`); } catch (err) { openModal('▼ セーブ', '活動記録を 保存しました！'); } }
+        async function openSave() { openModal('▼ 記録', '記録を 読み込んでいます...'); try { const doc = await db.collection('analytics').doc(pageId).get(); const hits = doc.exists ? doc.data().hits : '???'; openModal('▼ 記録', `【ぼうけんの きろく】<br><br>・活動開始 : 2018年 04月<br>・現在の 訪問者 : ${hits} 人目`); } catch (err) { openModal('▼ 記録', '活動記録を 保存しました！'); } }
 
         const chocoSprites = ['歩く/Gemini_Generated_Image_2ioqx62ioqx62ioq-removebg-preview.png', '歩く/Gemini_Generated_Image_gbm4zugbm4zugbm4-removebg-preview.png', '歩く/Gemini_Generated_Image_gm0wzmgm0wzmgm0w-removebg-preview.png'];
         const claudetteSprites = ['くろ/Gemini_Generated_Image_9vb55o9vb55o9vb5-removebg-preview.png', 'くろ/Gemini_Generated_Image_hpvdlwhpvdlwhpvd-removebg-preview.png'];
         
-        // --- Preload Images to fix mobile flickering ---
-        [...chocoSprites, ...claudetteSprites].forEach(path => {
-            const img = new Image();
-            img.src = path;
-        });
+        [...chocoSprites, ...claudetteSprites].forEach(path => { const img = new Image(); img.src = path; });
 
         let chocoIdx = 0, claudetteIdx = 0;
         const chocoEl = document.getElementById('choco-sprite'), claudetteEl = document.getElementById('claudette-sprite');
 
         function animate() {
-            // Pre-calculate frame to avoid logic delay
             const chocoFrame = [0, 1, 2, 1][chocoIdx];
             chocoEl.style.backgroundImage = `url('${chocoSprites[chocoFrame]}')`;
             chocoIdx = (chocoIdx + 1) % 4;
-            
             claudetteEl.style.backgroundImage = `url('${claudetteSprites[claudetteIdx]}')`;
             claudetteIdx = (claudetteIdx + 1) % 2;
-            
-            setTimeout(animate, isCommanderMode ? 80 : 180);
+            setTimeout(animate, 180);
         }
         animate();
     </script>
