@@ -167,13 +167,77 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
-        .crystal-ball::after { content: '見守り'; position: absolute; bottom: -15px; width: 100%; text-align: center; color: #b08d57; font-size: 0.7rem; }
 
-        .menu-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.8rem;
-            width: 100%;
+        /* 教授のペット */
+        #prof-pet {
+            position: fixed;
+            bottom: -50px;
+            left: -100px;
+            width: 60px;
+            height: 60px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            image-rendering: pixelated;
+            z-index: 100;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        #prof-pet:hover { transform: scale(1.2) rotate(10deg); }
+        .pet-bubble {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            border: 2px solid #000;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            display: none;
+            border-radius: 10px;
+        }
+        #prof-pet:hover .pet-bubble { display: block; }
+
+        /* トレード画面風 */
+        .trade-screen { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
+        .property-card {
+            background: rgba(0,0,0,0.05);
+            border-left: 5px solid var(--rs3-accent-orange);
+            padding: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .property-name { font-weight: bold; font-size: 1.1rem; }
+        .property-yield { color: #b45309; font-size: 0.9rem; }
+        .group-skill-btn {
+            background: #b08d57;
+            color: #fff;
+            padding: 2px 10px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* 閃き電球（再実装・強化） */
+        #spark-bulb-v2 {
+            display: none;
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffff00"><path d="M12,2A7,7,0,0,0,5,9c0,3.11,2.06,5.74,4.91,6.67A3,3,0,0,0,12,18a3,3,0,0,0,2.09-2.33C16.94,14.74,19,12.11,19,9A7,7,0,0,0,12,2ZM11,22h2v-2h-2v2Z"/></svg>');
+            background-size: contain;
+            filter: drop-shadow(0 0 15px #ff0);
+            z-index: 100;
+            animation: bulbPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            cursor: pointer;
+        }
+        @keyframes bulbPop {
+            0% { transform: translateX(-50%) scale(0); }
+            100% { transform: translateX(-50%) scale(1.2); }
         }
 
         .menu-item {
@@ -270,6 +334,8 @@
         </div>
 
         <div id="game-window" class="mother-window">
+            <!-- 閃き電球V2 -->
+            <div id="spark-bulb-v2" onclick="showSparkTech()"></div>
             <!-- 見守りの水晶玉 -->
             <div class="crystal-ball" onclick="toggleMagicMirror()"></div>
 
@@ -338,6 +404,11 @@
         </div>
     </main>
 
+    <!-- 教授のペット -->
+    <div id="prof-pet" onclick="confirmExternal('https://www.youtube.com/@choco_777/join')">
+        <div class="pet-bubble">メンバー登録はこちら！</div>
+    </div>
+
     <!-- 魔法の鏡（ライブ小窓） -->
     <div id="magic-mirror" class="magic-mirror-container">
         <div class="mirror-header">
@@ -376,39 +447,33 @@
                     throw new Error('Network response was not ok.');
                 })
                 .then(data => {
-                    // ライブ中であれば、HTML内に "isLive":true または特定のウォッチURLが含まれる
                     const isLive = data.contents.includes('"isLive":true') || data.contents.includes('videoID');
-                    
                     if (isLive && !data.contents.includes('Upcoming')) {
                         banner.style.display = 'flex';
-                        console.log('Live Status: Online');
                     } else {
                         banner.style.display = 'none';
-                        console.log('Live Status: Offline');
                     }
                 })
                 .catch(err => {
-                    console.log('Live Check Error:', err);
-                    banner.style.display = 'none'; // エラー時は非表示
+                    banner.style.display = 'none';
                 });
         }
         checkLiveStatus();
-function toggleMagicMirror() {
-    const mirror = document.getElementById('magic-mirror');
-    const frame = document.getElementById('mirror-frame');
-    const isVisible = window.getComputedStyle(mirror).display === 'block';
 
-    if (isVisible) {
-        mirror.style.display = 'none';
-        frame.src = ''; 
-    } else {
-        mirror.style.display = 'block';
-        // 正しい埋め込みURL形式: https://www.youtube.com/embed/live_stream?channel=[CHANNEL_ID]
-        frame.src = `https://www.youtube.com/embed/live_stream?channel=${channelId}&autoplay=1&mute=1&origin=${window.location.origin}`;
-        playKyupiSound();
-    }
-}
+        function toggleMagicMirror() {
+            const mirror = document.getElementById('magic-mirror');
+            const frame = document.getElementById('mirror-frame');
+            const isVisible = window.getComputedStyle(mirror).display === 'block';
 
+            if (isVisible) {
+                mirror.style.display = 'none';
+                frame.src = ''; 
+            } else {
+                mirror.style.display = 'block';
+                frame.src = `https://www.youtube.com/embed/live_stream?channel=${channelId}&autoplay=1&mute=1&origin=${window.location.origin}`;
+                playKyupiSound();
+            }
+        }
 
         function playKyupiSound() {
             try {
@@ -427,18 +492,73 @@ function toggleMagicMirror() {
             openModal('▼ チョコたいちょー', 'Dead by Daylight Mobile<br>公式認定の 公認実況者だ！<br><br>「みんなで 楽しく」を モットーに<br>霧の森を 駆け抜けているぞ。');
         }
 
-        function openClaudetteTalk() { openModal('▼ クローデット', 'チョコたいちょー！<br>あっちに ハンターが いるみたい！'); }
+        // --- ロマサガ3 深掘りギミック ---
 
+        // 閃きシステム
+        const techs = [
+            { name: 'チェイスの極意', desc: 'ハンターを 翻弄する！<br>「窓枠 越えたら、そこは チョコんち」' },
+            { name: '千手観音', desc: 'YouTube, TikTok, X...<br>全ての コメントを 拾い上げる 秘技！' },
+            { name: '大震撃', desc: '拡散の 波動で トレンドを 揺らす！' },
+            { name: '活殺自在', desc: '動画編集の 魔力で<br>視聴者の 時間を 奪い去る！' },
+            { name: 'チョコのまい', desc: '見ているだけで 癒やされる<br>伝説の 舞踊技だ。' }
+        ];
+
+        function randomSpark() {
+            if (Math.random() > 0.3) {
+                const bulb = document.getElementById('spark-bulb-v2');
+                bulb.style.display = 'block';
+                playKyupiSound();
+                setTimeout(() => { bulb.style.display = 'none'; }, 5000);
+            }
+        }
+        setInterval(randomSpark, 30000);
+
+        function showSparkTech() {
+            const tech = techs[Math.floor(Math.random() * techs.length)];
+            openModal(`▼ 閃いた！：${tech.name}`, tech.desc);
+            document.getElementById('spark-bulb-v2').style.display = 'none';
+        }
+
+        function summonPet() {
+            const pet = document.getElementById('prof-pet');
+            pet.style.backgroundImage = `url('${claudetteSprites[0]}')`;
+            pet.style.bottom = '20px';
+            pet.style.left = '-100px';
+            let pos = -100;
+            const id = setInterval(() => {
+                if (pos >= window.innerWidth + 100) { clearInterval(id); }
+                else { pos += 2; pet.style.left = pos + 'px'; }
+            }, 20);
+        }
+        setTimeout(summonPet, 5000);
+        setInterval(summonPet, 60000);
+
+        function openItem() {
+            const properties = [
+                { name: 'YouTube実況チャンネル', yield: '20,000人', skill: '独立' },
+                { name: 'DbDモバイル公認権', yield: '公式認定', skill: '買収不可' },
+                { name: 'プレゼント配布実績', yield: '2,500件', skill: 'グループ技' },
+                { name: 'サブチャンネル：チョコんち', yield: '成長中', skill: '子会社' },
+                { name: '公式グッズショップ', yield: 'SUZURI', skill: '提携' }
+            ];
+            let html = '<div class="trade-screen">';
+            properties.forEach(p => {
+                html += `<div class="property-card"><div><div class="property-name">${p.name}</div><div class="property-yield">収益：${p.yield}</div></div><div class="group-skill-btn">${p.skill}</div></div>`;
+            });
+            html += '</div><p class="mt-4 text-xs">※ フルブライト演説は まだ 使用できません</p>';
+            openModal('▼ トレード（実績一覧）', html);
+        }
+
+        function openTrade() { confirmExternal('https://suzuri.jp/0915_tkrrr'); }
+
+        function openClaudetteTalk() { openModal('▼ クローデット', 'チョコたいちょー！<br>あっちに ハンターが いるみたい！'); }
         function toggleAccordion() { document.getElementById('accordion-content').classList.toggle('open'); playKyupiSound(); }
         function openModal(title, content) { document.getElementById('modal-title').innerText = title; document.getElementById('modal-content').innerHTML = content; document.getElementById('rs3-modal').style.display = 'block'; document.getElementById('modal-overlay').style.display = 'block'; playKyupiSound(); }
         function closeModal() { document.querySelectorAll('.rs3-modal').forEach(m => m.style.display = 'none'); document.getElementById('modal-overlay').style.display = 'none'; }
         function confirmExternal(url) { document.getElementById('confirm-modal').style.display = 'block'; document.getElementById('modal-overlay').style.display = 'block'; document.getElementById('confirm-yes').onclick = () => { window.open(url, '_blank'); closeModal(); }; playKyupiSound(); }
-
         function openEquip() { openModal('▼ そうび', `<div class="space-y-3"><div class="p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://www.youtube.com/@choco_777')">▶ YouTube (メイン 2万人)</div><div class="p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://x.com/0915_tkrrr')">▶ X (フォロワー 8000人)</div><div class="p-3 border border-black/10 hover:bg-black/5 cursor-pointer" onclick="confirmExternal('https://www.tiktok.com/@choco_7770')">▶ TikTok (同時配信中)</div></div>`); }
         function openSkill() { openModal('▼ わざ', '・チェイスの極意 (DbD)<br>・初心者導引 (わかりやすい解説)<br>・千手観音 (マルチプラットフォーム配信)'); }
         function openMagic() { openModal('▼ じゅつ', '・拡散の月術 (Twitter 8000フォロワー)<br>・2万人の波動 (YouTubeの団結力)<br>・活殺自在 (動画編集の魔力)'); }
-        function openItem() { openModal('▼ 実績', '・DbDモバイル公認実況者 認定<br>・YouTube登録者 20,000人突破<br>・プレゼント配布実績 2,500件以上<br>・サブチャンネル「チョコんち」運営'); }
-        function openTrade() { confirmExternal('https://suzuri.jp/0915_tkrrr'); }
         function openConfig() { openModal('▼ せってい', '【ポリシー】リスナーとの距離を大切に、楽しく自由に！'); }
         async function openSave() { openModal('▼ 記録', '記録を 読み込んでいます...'); try { const doc = await db.collection('analytics').doc(pageId).get(); const hits = doc.exists ? doc.data().hits : '???'; openModal('▼ 記録', `【ぼうけんの きろく】<br><br>・活動開始 : 2018年 04月<br>・現在の 訪問者 : ${hits} 人目`); } catch (err) { openModal('▼ 記録', '活動記録を 保存しました！'); } }
 
