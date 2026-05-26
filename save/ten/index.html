@@ -721,7 +721,7 @@
         }
 
         async function checkYouTubeLive() {
-            const channelId = 'UCp1Z6733vL_6_S9-j9r8_7g'; // TEN様のチャンネルID (ハンドルから推測、または要確認)
+            const channelId = 'UCh6DUGkgltL6gpJUcCdhG5Q'; // TEN様の正しいチャンネルID
             const channelHandle = '@TENpon_ch';
             const url = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.youtube.com/' + channelHandle + '/live')}`;
             
@@ -729,19 +729,18 @@
                 const response = await fetch(url);
                 const data = await response.json();
                 
-                // YouTubeのHTML内に "liveStreamOffline" が含まれていなければライブ中と判定
-                // ※より正確には "isLive":true などの文字列を探す
-                const isLive = data.contents.includes('\"isLive\":true') || data.contents.includes('yt-live-chat-renderer');
+                // YouTubeのHTML内にライブ配信中を示す文字列が含まれているか判定
+                const isLive = data.contents.includes('\"isLive\":true') || 
+                               data.contents.includes('yt-live-chat-renderer') ||
+                               data.contents.includes('liveStreamOffline":false');
                 
                 if (isLive) {
                     const badge = document.getElementById('live-badge');
                     if (badge) badge.style.display = 'flex';
                     addChatMsg("システム：TENは現在ライブ配信中です！", true);
                     
-                    // 埋め込み用URLをセット (チャンネルIDベース)
-                    // 注: TEN様の正確なチャンネルIDが不明な場合は、ハンドル名での埋め込みは制限があるため
-                    // 公開されている配信URLから取得するロジックが必要になる場合があります。
-                    document.getElementById('live-iframe').src = `https://www.youtube.com/embed/live?channel=UCp1Z6733vL_6_S9-j9r8_7g&autoplay=1`;
+                    // 埋め込み用URLをセット (正しいチャンネルIDを使用)
+                    document.getElementById('live-iframe').src = `https://www.youtube.com/embed/live?channel=${channelId}&autoplay=1`;
                 }
             } catch (e) { console.error("Live check failed:", e); }
         }
@@ -751,8 +750,8 @@
             document.getElementById('live-modal').style.display = 'flex';
             // モーダルが開いた時にiframeを再読み込みして最新の状態にする
             const iframe = document.getElementById('live-iframe');
-            if (iframe.src === "") {
-                iframe.src = `https://www.youtube.com/embed/live?channel=UCp1Z6733vL_6_S9-j9r8_7g&autoplay=1`;
+            if (iframe.src === "" || iframe.src.includes('UCp1Z6733vL_6_S9-j9r8_7g')) {
+                iframe.src = `https://www.youtube.com/embed/live?channel=UCh6DUGkgltL6gpJUcCdhG5Q&autoplay=1`;
             }
         }
 
