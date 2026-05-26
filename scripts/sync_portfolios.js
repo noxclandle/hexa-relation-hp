@@ -49,7 +49,9 @@ function sync() {
     // 2. Update admin/index.html (Inject ALL_PAGE_IDS - Keep hidden pages here for admin)
     if (fs.existsSync(ADMIN_INDEX)) {
         let adminContent = fs.readFileSync(ADMIN_INDEX, 'utf-8');
-        const idList = portfolios.map(p => `'${p.id}'`).join(', ');
+        // 'nox' を含めた全IDを抽出
+        const allIds = ['nox', ...portfolios.map(p => p.id)];
+        const idList = allIds.map(id => `'${id}'`).join(', ');
         const injectStart = '// AUTO_INJECT_START';
         const injectEnd = '// AUTO_INJECT_END';
         const regex = new RegExp(`${injectStart}[\\s\\S]*?${injectEnd}`, 'm');
