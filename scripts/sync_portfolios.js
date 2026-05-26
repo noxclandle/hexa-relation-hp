@@ -83,6 +83,43 @@ function sync() {
     }
 
     console.log('Sync complete.');
+
+    // 4. Generate sitemap.xml
+    generateSitemap(visiblePortfolios);
+}
+
+function generateSitemap(visiblePortfolios) {
+    console.log('Generating sitemap.xml...');
+    const baseUrl = 'https://hexa-relation.com';
+    const today = new Date().toISOString().split('T')[0];
+
+    let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>${baseUrl}/</loc>
+        <lastmod>${today}</lastmod>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>${baseUrl}/save/nox/</loc>
+        <lastmod>${today}</lastmod>
+        <priority>0.8</priority>
+    </url>`;
+
+    visiblePortfolios.forEach(p => {
+        sitemap += `
+    <url>
+        <loc>${baseUrl}/save/${p.id}/</loc>
+        <lastmod>${today}</lastmod>
+        <priority>0.7</priority>
+    </url>`;
+    });
+
+    sitemap += `
+</urlset>`;
+
+    fs.writeFileSync(path.join(__dirname, '../sitemap.xml'), sitemap);
+    console.log('sitemap.xml generated successfully.');
 }
 
 sync();

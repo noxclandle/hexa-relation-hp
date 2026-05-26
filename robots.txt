@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /order/
+
+Sitemap: https://hexa-relation.com/sitemap.xml
