@@ -88,10 +88,11 @@
         ::-webkit-scrollbar-thumb { background: var(--blood-red); }
 
         #intro-gate {
-            position: fixed; inset: 0; background: #000; z-index: 10000;
+            position: fixed; inset: 0; background: #000; z-index: 20000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            cursor: pointer; transition: opacity 1.5s ease;
+            cursor: pointer; transition: opacity 1s ease;
             user-select: none; -webkit-user-select: none;
+            pointer-events: auto;
         }
 
         /* Perk-style Badge */
@@ -397,7 +398,7 @@
         <div class="rivet" style="bottom: 20px; left: 20px;" onclick="eggTrigger(event)"></div>
         <div class="rivet" style="bottom: 20px; right: 20px;" onclick="eggTrigger(event)"></div>
         
-        <div class="horror-font text-blood-red text-7xl md:text-[10rem] tracking-widest glitch-text mb-8">SABANOMISO</div>
+        <div class="horror-font text-blood-red text-7xl md:text-[10rem] tracking-widest glitch-text mb-8" style="color: #af0000 !important;">SABANOMISO</div>
         <div class="typewriter text-white/40 text-sm tracking-[0.5em] animate-pulse">TRUE_FORM_EXTRACTION</div>
         <div class="mt-24 text-[9px] mono text-white/20 uppercase tracking-[1.5em] animate-bounce">[ CLICK TO DE-MOLD THE REALITY ]</div>
     </div>
@@ -664,6 +665,37 @@
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             return audioCtx;
         }
+
+        let isUnlocked = false;
+        function unlockRite() {
+            if (isUnlocked) return;
+            isUnlocked = true;
+            
+            const gate = document.getElementById('intro-gate');
+            if (gate) {
+                gate.style.opacity = '0';
+                gate.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    gate.remove();
+                    const main = document.getElementById('main-content');
+                    if (main) main.style.opacity = '1';
+                    addBP(2000, "ESCAPE_READY");
+                }, 1000);
+            }
+
+            // Audio is secondary, don't let it block transition
+            try {
+                const ctx = getAudioCtx();
+                ctx.resume().then(() => playClank()).catch(() => {});
+            } catch (e) {}
+        }
+
+        // Global click listener as a safety fallback
+        window.addEventListener('click', (e) => {
+            if (!isUnlocked && document.getElementById('intro-gate')) {
+                unlockRite();
+            }
+        });
 
         function playSound(freq, type = 'square', duration = 0.6, vol = 0.2) {
             const ctx = getAudioCtx();
