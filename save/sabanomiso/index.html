@@ -627,17 +627,7 @@
                             <option value="Streaming">配信コラボ / その他</option>
                         </select>
                         <textarea id="form-message" required class="input-box h-48" placeholder="YOUR WILL / 魂のメッセージ"></textarea>
-                        
-                        <!-- EXIT GATE SWITCH UI -->
-                        <div class="gate-switch-container mt-12">
-                            <div class="gate-lamp" id="gate-lamp"></div>
-                            <div class="gate-lever" id="gate-lever" onclick="triggerGate(event)"></div>
-                            <p class="mono text-[10px] text-center text-gray-500 uppercase tracking-widest">Pull Lever to Escape</p>
-                            <div class="gate-progress-bg">
-                                <div class="gate-progress-bar" id="gate-progress"></div>
-                            </div>
-                            <button type="submit" id="submit-btn" class="hidden"></button>
-                        </div>
+                        <button type="submit" id="submit-btn" class="w-full bg-blood-red text-white py-6 font-bold tracking-[2em] hover:bg-white hover:text-black transition-all">TRANSMIT</button>
                     </form>
                 </div>
             </div>
@@ -795,6 +785,54 @@
             }
         }
 
+        // Skill Check System (Score Attack Mode)
+        let scActive = false;
+        let scCombo = 0;
+        let scBaseDuration = 2200;
+        let scAnimId;
+
+        function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+            const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+            return {
+                x: centerX + (radius * Math.cos(angleInRadians)),
+                y: centerY + (radius * Math.sin(angleInRadians))
+            };
+        }
+
+        function describeArc(x, y, radius, startAngle, endAngle) {
+            const start = polarToCartesian(x, y, radius, startAngle);
+            const end = polarToCartesian(x, y, radius, endAngle);
+            const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+            return [
+                "M", start.x, start.y, 
+                "A", radius, radius, 0, largeArcFlag, 1, end.x, end.y
+            ].join(" ");
+        }
+
+        function initSkillCheck() {
+            const gen = document.querySelector('img[src="gen_opt.jpg"]');
+            if (gen) {
+                gen.style.cursor = 'pointer';
+                const tooltip = document.getElementById('gen-tooltip');
+                gen.parentElement.addEventListener('mousemove', (e) => {
+                    tooltip.style.left = (e.clientX + 20) + 'px';
+                    tooltip.style.top = (e.clientY + 20) + 'px';
+                    tooltip.style.opacity = '1';
+                });
+                gen.parentElement.addEventListener('mouseleave', () => {
+                    tooltip.style.opacity = '0';
+                });
+
+                gen.parentElement.addEventListener('click', () => {
+                    if (!scActive && document.getElementById('name-entry-overlay').style.display !== 'flex') {
+                        scCombo = 0;
+                        updateComboDisplay();
+                        startSkillCheck();
+                    }
+                });
+            }
+        }
+
         function updateComboDisplay() {
             const el = document.getElementById('sc-combo-display-internal');
             el.innerText = scCombo;
@@ -822,36 +860,37 @@
             needle.style.transform = `rotate(0deg)`; 
             
             let currentAngleInternal = 0;
-            let inputAllowed = false;
+            let needleRunning = false;
 
             const handleInput = (e) => {
-                if (!inputAllowed) return;
+                if (!needleRunning) return;
                 if (e.code === 'Space' || e.type === 'click') {
                     if (e.type === 'click' && e.target !== btn) return;
                     e.preventDefault();
-                    cleanup();
-                    checkSkillCheck(currentAngleInternal, targetRotation, targetWidth, greatWidth);
+                    finishRound(currentAngleInternal);
                 }
             };
 
-            const cleanup = () => {
+            const finishRound = (angle) => {
                 scActive = false;
+                needleRunning = false;
                 if (scAnimId) cancelAnimationFrame(scAnimId);
                 window.removeEventListener('keydown', handleInput);
                 btn.removeEventListener('click', handleInput);
+                checkSkillCheck(angle, targetRotation, targetWidth, greatWidth);
             };
 
             playPing();
             
             setTimeout(() => {
                 if (!scActive) return;
-                inputAllowed = true;
+                needleRunning = true;
                 
                 const duration = Math.max(400, scBaseDuration - (scCombo * 100));
                 const start = performance.now();
                 
                 function animate(now) {
-                    if (!scActive) return;
+                    if (!needleRunning) return;
                     const progress = (now - start) / duration;
                     currentAngleInternal = progress * 360;
                     
@@ -860,8 +899,7 @@
                         scAnimId = requestAnimationFrame(animate);
                     } else {
                         needle.style.transform = `rotate(360deg)`;
-                        cleanup();
-                        failSkillCheck();
+                        finishRound(360); // Auto fail
                     }
                 }
                 
@@ -880,13 +918,13 @@
                 playSound(1200, 'sine', 0.15);
                 flashCircle('#fff');
                 updateComboDisplay();
-                setTimeout(startSkillCheck, 400);
+                setTimeout(startSkillCheck, 300); 
             } else if (diff > greatWidth && diff <= targetWidth) {
                 scCombo += 1;
                 addBP(500, "GOOD_SKILL_CHECK");
                 flashCircle('rgba(255,255,255,0.5)');
                 updateComboDisplay();
-                setTimeout(startSkillCheck, 600);
+                setTimeout(startSkillCheck, 500);
             } else {
                 failSkillCheck();
             }
@@ -900,6 +938,22 @@
                 circle.style.borderColor = "";
                 circle.style.boxShadow = "";
             }, 300);
+        }
+
+        function failSkillCheck() {
+            scActive = false;
+            const finalScore = scCombo;
+            scCombo = 0;
+            updateComboDisplay();
+            document.getElementById('skill-check-container').style.display = 'none';
+            playSound(50, 'square', 0.5, 0.5);
+            document.body.style.animation = "glitch 0.2s 3";
+            setTimeout(() => document.body.style.animation = "", 600);
+            document.getElementById('status-sabanomiso').classList.add('injured');
+            
+            if (finalScore > 0) {
+                setTimeout(() => openNameEntry(finalScore), 1000);
+            }
         }
 
         function failSkillCheck() {
