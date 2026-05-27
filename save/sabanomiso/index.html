@@ -797,32 +797,35 @@
 
         function updateComboDisplay() {
             const el = document.getElementById('sc-combo-display-internal');
-            if (scCombo >= 0) {
-                el.innerText = scCombo;
-            }
+            el.innerText = scCombo;
+            if (scActive) document.getElementById('skill-check-container').style.display = 'flex';
         }
 
         function startSkillCheck() {
             if (scAnimId) cancelAnimationFrame(scAnimId);
             scActive = true;
+            
             const container = document.getElementById('skill-check-container');
             const needle = container.querySelector('.skill-check-needle');
             const arcGood = document.getElementById('sc-arc-good');
             const arcGreat = document.getElementById('sc-arc-great');
             const btn = document.getElementById('sc-button');
             
-            const targetRotation = 60 + Math.random() * 240;
-            const targetWidth = Math.max(12, 60 - (scCombo * 2.5));
+            const targetRotation = 60 + Math.random() * 220;
+            const targetWidth = Math.max(10, 60 - (scCombo * 3));
             const greatWidth = targetWidth * 0.25;
             
             arcGood.setAttribute("d", describeArc(100, 100, 90, targetRotation, targetRotation + targetWidth));
             arcGreat.setAttribute("d", describeArc(100, 100, 90, targetRotation, targetRotation + greatWidth));
             
             container.style.display = 'flex';
-            needle.style.transform = `rotate(0deg)`;
+            needle.style.transform = `rotate(0deg)`; 
             
             let currentAngleInternal = 0;
+            let inputAllowed = false;
+
             const handleInput = (e) => {
+                if (!inputAllowed) return;
                 if (e.code === 'Space' || e.type === 'click') {
                     if (e.type === 'click' && e.target !== btn) return;
                     e.preventDefault();
@@ -842,7 +845,9 @@
             
             setTimeout(() => {
                 if (!scActive) return;
-                const duration = Math.max(500, scBaseDuration - (scCombo * 80));
+                inputAllowed = true;
+                
+                const duration = Math.max(400, scBaseDuration - (scCombo * 100));
                 const start = performance.now();
                 
                 function animate(now) {
@@ -867,23 +872,34 @@
         }
 
         function checkSkillCheck(angle, targetRotation, targetWidth, greatWidth) {
-            document.getElementById('skill-check-container').style.display = 'none';
             const diff = angle - targetRotation;
             
             if (diff >= 0 && diff <= greatWidth) {
                 scCombo += 2;
                 addBP(2000, "GREAT_SKILL_CHECK");
                 playSound(1200, 'sine', 0.15);
+                flashCircle('#fff');
                 updateComboDisplay();
                 setTimeout(startSkillCheck, 400);
             } else if (diff > greatWidth && diff <= targetWidth) {
                 scCombo += 1;
                 addBP(500, "GOOD_SKILL_CHECK");
+                flashCircle('rgba(255,255,255,0.5)');
                 updateComboDisplay();
                 setTimeout(startSkillCheck, 600);
             } else {
                 failSkillCheck();
             }
+        }
+
+        function flashCircle(color) {
+            const circle = document.querySelector('.skill-check-circle');
+            circle.style.borderColor = color;
+            circle.style.boxShadow = `0 0 30px ${color}`;
+            setTimeout(() => {
+                circle.style.borderColor = "";
+                circle.style.boxShadow = "";
+            }, 300);
         }
 
         function failSkillCheck() {
