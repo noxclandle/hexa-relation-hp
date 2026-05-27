@@ -192,6 +192,12 @@
             text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); display: none;
             pointer-events: none; text-align: right;
         }
+        .gen-label {
+            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            background: var(--blood-red); color: #fff; font-family: 'Share Tech Mono', monospace;
+            font-size: 10px; padding: 2px 10px; white-space: nowrap; z-index: 30;
+            letter-spacing: 2px; box-shadow: 0 0 10px var(--blood-red);
+        }
         .skill-check-circle {
             width: 200px; height: 200px; position: relative;
             background: rgba(0,0,0,0.4); border-radius: 50%;
@@ -497,6 +503,7 @@
             <div class="grid md:grid-cols-2 gap-16 items-start reveal delay-300">
                 <!-- Left: Generator -->
                 <div class="glass-panel p-4 bg-white/5 relative overflow-hidden group border-blood-red/20">
+                    <div class="gen-label">SYSTEM: REPAIRABLE_UNIT</div>
                     <img src="gen_opt.jpg" class="w-full h-auto opacity-70 mix-blend-screen transition-transform duration-[4s] group-hover:scale-110" style="filter: drop-shadow(0 0 30px rgba(175,0,0,0.3)) grayscale(0.5);">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                     <!-- Generator Animation Overlay -->
@@ -790,6 +797,7 @@
         let scActive = false;
         let scCombo = 0;
         let scBaseDuration = 2200;
+        let scAnimId;
 
         function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
             const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
@@ -813,9 +821,7 @@
             const gen = document.querySelector('img[src="gen_opt.jpg"]');
             if (gen) {
                 gen.style.cursor = 'pointer';
-                gen.title = "CLICK TO START REPAIR CHALLENGE";
                 
-                // Show/Hide Tooltip on mousemove
                 const tooltip = document.getElementById('gen-tooltip');
                 gen.parentElement.addEventListener('mousemove', (e) => {
                     tooltip.style.left = (e.clientX + 20) + 'px';
@@ -839,7 +845,7 @@
         function updateComboDisplay() {
             const el = document.getElementById('sc-combo-display');
             if (scCombo > 0) {
-                el.innerText = `COMBO x${scCombo}`;
+                el.innerText = `SCORE: ${scCombo}`;
                 el.style.display = 'block';
             } else {
                 el.style.display = 'none';
@@ -847,46 +853,50 @@
         }
 
         function startSkillCheck() {
+            if (scAnimId) cancelAnimationFrame(scAnimId);
             scActive = true;
             const container = document.getElementById('skill-check-container');
             const needle = container.querySelector('.skill-check-needle');
             const arcGood = document.getElementById('sc-arc-good');
             const arcGreat = document.getElementById('sc-arc-great');
             
-            // Randomize target position (60 to 300 degrees for reaction time)
+            // Randomize target position (60 to 300 degrees)
             const targetRotation = 60 + Math.random() * 240;
-            // Shrink target zone as combo increases
-            const targetWidth = Math.max(15, 60 - (scCombo * 4));
-            const greatWidth = targetWidth * 0.3;
+            // Shrink target zone based on combo
+            const targetWidth = Math.max(12, 60 - (scCombo * 3));
+            const greatWidth = targetWidth * 0.25;
             
             // Draw SVG Arcs
             arcGood.setAttribute("d", describeArc(100, 100, 90, targetRotation + 90, targetRotation + 90 + targetWidth));
             arcGreat.setAttribute("d", describeArc(100, 100, 90, targetRotation + 90, targetRotation + 90 + greatWidth));
             
             container.style.display = 'block';
-            needle.style.transform = `rotate(0deg)`; // 12 o'clock start
+            needle.style.transform = `rotate(0deg)`; // Reset to 12 o'clock
             
-            // Define handleInput in scope so it can be cleaned up
+            let currentAngleInternal = 0;
             const handleInput = (e) => {
                 if (e.code === 'Space' || e.type === 'mousedown') {
                     if (e.type === 'mousedown') e.preventDefault();
-                    window.removeEventListener('keydown', handleInput);
-                    window.removeEventListener('mousedown', handleInput);
-                    scActive = false; // Stop animation immediately
+                    cleanup();
                     checkSkillCheck(currentAngleInternal, targetRotation, targetWidth, greatWidth);
                 }
             };
 
-            let currentAngleInternal = 0; 
-            
+            const cleanup = () => {
+                scActive = false;
+                if (scAnimId) cancelAnimationFrame(scAnimId);
+                window.removeEventListener('keydown', handleInput);
+                window.removeEventListener('mousedown', handleInput);
+            };
+
             // 1. Warning Ping
             playPing();
             
-            // 2. Wait for reaction time (600ms) then start needle
+            // 2. Start needle after delay
             setTimeout(() => {
                 if (!scActive) return;
                 
-                const duration = Math.max(600, scBaseDuration - (scCombo * 120));
+                const duration = Math.max(500, scBaseDuration - (scCombo * 100));
                 const start = performance.now();
                 
                 function animate(now) {
@@ -896,37 +906,34 @@
                     
                     if (progress < 1) {
                         needle.style.transform = `rotate(${currentAngleInternal}deg)`;
-                        requestAnimationFrame(animate);
+                        scAnimId = requestAnimationFrame(animate);
                     } else {
-                        // 1周（360度）到達で失敗
+                        // Fail on 360deg
                         needle.style.transform = `rotate(360deg)`;
-                        window.removeEventListener('keydown', handleInput);
-                        window.removeEventListener('mousedown', handleInput);
+                        cleanup();
                         failSkillCheck();
                     }
                 }
                 
                 window.addEventListener('keydown', handleInput);
                 window.addEventListener('mousedown', handleInput);
-                requestAnimationFrame(animate);
+                scAnimId = requestAnimationFrame(animate);
             }, 600);
         }
 
         function checkSkillCheck(angle, targetRotation, targetWidth, greatWidth) {
-            scActive = false;
             document.getElementById('skill-check-container').style.display = 'none';
-            
             const diff = angle - targetRotation;
             
             if (diff >= 0 && diff <= greatWidth) {
-                scCombo++;
-                addBP(1000 + (scCombo * 200), "GREAT_SKILL_CHECK");
+                scCombo += 2; // +2 for Great
+                addBP(2000, "GREAT_SKILL_CHECK");
                 playSound(1200, 'sine', 0.15);
                 updateComboDisplay();
                 setTimeout(startSkillCheck, 400);
             } else if (diff > greatWidth && diff <= targetWidth) {
-                scCombo++;
-                addBP(300 + (scCombo * 50), "GOOD_SKILL_CHECK");
+                scCombo += 1; // +1 for Good
+                addBP(500, "GOOD_SKILL_CHECK");
                 updateComboDisplay();
                 setTimeout(startSkillCheck, 600);
             } else {
