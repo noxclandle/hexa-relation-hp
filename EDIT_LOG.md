@@ -9,6 +9,19 @@
 
 ## 📝 Change History
 
+### 2026-05-27: Sabanomiso LP Readability & Worldview Update
+- **Task:** Improve visibility, mobile optimization, and enhance DBD-themed interactive elements.
+- **Changes:**
+  - **Readability:** Adjusted text colors (text-gray-300) and removed excessive opacity for better contrast on dark backgrounds.
+  - **Mobile Optimization:** Scaled down horror fonts and optimized padding/margins for vertical smartphone screens.
+  - **LIVE Status:** Added a red pulsing "🔴 ON AIR" badge linked to YouTube Live.
+  - **DBD Worldview:** 
+    - Redesigned "THE ARSENAL" icons into a diamond Perk-style UI.
+    - Added a "Hex Totem" SVG element with a horror scream effect (Web Audio API) and visual curse.
+    - Implemented Konami Code (`↑↑↓↓`) for instant generator repair visual/sound effect.
+  - **Interactive:** Added pulse animations and refined transition timings.
+- **Notes:** This update addresses usability issues while deepening the thematic immersion. Counts as the free monthly edit refinement.
+
 ### 2026-05-27: Restore Admin Access Gimmick
 - **Task:** Restore the A-C-E sequential clicking gimmick on the gateway page.
 - **Changes:**
