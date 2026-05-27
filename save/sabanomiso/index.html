@@ -398,6 +398,13 @@
         <p class="horror-font text-white text-center mt-4 text-xs tracking-widest">SKILL CHECK</p>
     </div>
 
+    <!-- GENERATOR REPAIR TOOLTIP -->
+    <div id="gen-tooltip" class="fixed z-[3000] pointer-events-none opacity-0 transition-opacity duration-500">
+        <div class="glass-panel px-4 py-2 border-blood-red/40 bg-black/80">
+            <p class="mono text-[10px] text-white tracking-widest animate-pulse">🛠️ [ CLICK_GENERATOR_TO_REPAIR ]</p>
+        </div>
+    </div>
+
     <!-- LIVE STATUS -->
     <a href="https://www.youtube.com/@さばの味噌/live" target="_blank" class="live-badge">
         <div class="live-dot"></div>
@@ -807,6 +814,18 @@
             if (gen) {
                 gen.style.cursor = 'pointer';
                 gen.title = "CLICK TO START REPAIR CHALLENGE";
+                
+                // Show/Hide Tooltip on mousemove
+                const tooltip = document.getElementById('gen-tooltip');
+                gen.parentElement.addEventListener('mousemove', (e) => {
+                    tooltip.style.left = (e.clientX + 20) + 'px';
+                    tooltip.style.top = (e.clientY + 20) + 'px';
+                    tooltip.style.opacity = '1';
+                });
+                gen.parentElement.addEventListener('mouseleave', () => {
+                    tooltip.style.opacity = '0';
+                });
+
                 gen.parentElement.addEventListener('click', () => {
                     if (!scActive && document.getElementById('name-entry-overlay').style.display !== 'flex') {
                         scCombo = 0;
@@ -853,15 +872,15 @@
             // 2. Wait for reaction time (600ms) then start needle
             setTimeout(() => {
                 if (!scActive) return;
-                let angle = 0;
+                let currentAngle = 0; // Local variable to ensure clean start
                 const duration = Math.max(600, scBaseDuration - (scCombo * 120));
                 const start = performance.now();
                 
                 function animate(now) {
                     if (!scActive) return;
                     const progress = (now - start) / duration;
-                    angle = progress * 360;
-                    needle.style.transform = `rotate(${angle}deg)`;
+                    currentAngle = progress * 360;
+                    needle.style.transform = `rotate(${currentAngle}deg)`;
                     
                     if (progress < 1) {
                         requestAnimationFrame(animate);
@@ -876,7 +895,7 @@
                         if (e.type === 'mousedown') e.preventDefault();
                         window.removeEventListener('keydown', handleInput);
                         window.removeEventListener('mousedown', handleInput);
-                        checkSkillCheck(angle, targetRotation, targetWidth, greatWidth);
+                        checkSkillCheck(currentAngle, targetRotation, targetWidth, greatWidth);
                     }
                 };
                 window.addEventListener('keydown', handleInput);
