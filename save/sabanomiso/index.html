@@ -864,7 +864,20 @@
             arcGreat.setAttribute("d", describeArc(100, 100, 90, targetRotation + 90, targetRotation + 90 + greatWidth));
             
             container.style.display = 'block';
-            needle.style.transform = `rotate(0deg)`;
+            needle.style.transform = `rotate(0deg)`; // 12 o'clock start
+            
+            // Define handleInput in scope so it can be cleaned up
+            const handleInput = (e) => {
+                if (e.code === 'Space' || e.type === 'mousedown') {
+                    if (e.type === 'mousedown') e.preventDefault();
+                    window.removeEventListener('keydown', handleInput);
+                    window.removeEventListener('mousedown', handleInput);
+                    scActive = false; // Stop animation immediately
+                    checkSkillCheck(currentAngleInternal, targetRotation, targetWidth, greatWidth);
+                }
+            };
+
+            let currentAngleInternal = 0; 
             
             // 1. Warning Ping
             playPing();
@@ -872,34 +885,30 @@
             // 2. Wait for reaction time (600ms) then start needle
             setTimeout(() => {
                 if (!scActive) return;
-                let currentAngle = 0; // Local variable to ensure clean start
+                
                 const duration = Math.max(600, scBaseDuration - (scCombo * 120));
                 const start = performance.now();
                 
                 function animate(now) {
                     if (!scActive) return;
                     const progress = (now - start) / duration;
-                    currentAngle = progress * 360;
-                    needle.style.transform = `rotate(${currentAngle}deg)`;
+                    currentAngleInternal = progress * 360;
                     
                     if (progress < 1) {
+                        needle.style.transform = `rotate(${currentAngleInternal}deg)`;
                         requestAnimationFrame(animate);
                     } else {
+                        // 1周（360度）到達で失敗
+                        needle.style.transform = `rotate(360deg)`;
+                        window.removeEventListener('keydown', handleInput);
+                        window.removeEventListener('mousedown', handleInput);
                         failSkillCheck();
                     }
                 }
-                requestAnimationFrame(animate);
                 
-                const handleInput = (e) => {
-                    if (e.code === 'Space' || e.type === 'mousedown') {
-                        if (e.type === 'mousedown') e.preventDefault();
-                        window.removeEventListener('keydown', handleInput);
-                        window.removeEventListener('mousedown', handleInput);
-                        checkSkillCheck(currentAngle, targetRotation, targetWidth, greatWidth);
-                    }
-                };
                 window.addEventListener('keydown', handleInput);
                 window.addEventListener('mousedown', handleInput);
+                requestAnimationFrame(animate);
             }, 600);
         }
 
