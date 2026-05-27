@@ -184,40 +184,28 @@
         /* Skill Check UI */
         #skill-check-container {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: 5000; display: none; pointer-events: none;
+            z-index: 5000; display: none; flex-direction: column; align-items: center;
+            pointer-events: auto;
         }
-        #sc-combo-display {
-            position: fixed; top: 120px; right: 30px; z-index: 3000;
-            font-family: 'Creepster', cursive; font-size: 2rem; color: var(--gold);
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); display: none;
-            pointer-events: none; text-align: right;
-        }
-        .gen-label {
-            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-            background: var(--blood-red); color: #fff; font-family: 'Share Tech Mono', monospace;
-            font-size: 10px; padding: 2px 10px; white-space: nowrap; z-index: 30;
-            letter-spacing: 2px; box-shadow: 0 0 10px var(--blood-red);
+        #sc-combo-display-internal {
+            position: absolute; top: -30px; right: -30px;
+            font-family: 'Creepster', cursive; font-size: 2.5rem; color: var(--gold);
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+            pointer-events: none; z-index: 60;
         }
         .skill-check-circle {
             width: 200px; height: 200px; position: relative;
-            background: rgba(0,0,0,0.4); border-radius: 50%;
+            background: rgba(0,0,0,0.6); border-radius: 50%;
             border: 2px solid rgba(255,255,255,0.1);
         }
-        #sc-svg {
-            position: absolute; inset: 0; transform: rotate(-90deg);
+        #sc-button {
+            margin-top: 40px; background: var(--blood-red); color: #fff;
+            padding: 20px 60px; font-family: 'Share Tech Mono', monospace;
+            font-weight: 900; font-size: 1.5rem; cursor: pointer;
+            border: 3px solid #fff; box-shadow: 0 0 30px var(--blood-red);
+            transition: 0.2s; letter-spacing: 4px;
         }
-        .sc-arc-good { fill: none; stroke: rgba(255,255,255,0.3); stroke-width: 12; }
-        .sc-arc-great { fill: none; stroke: #fff; stroke-width: 12; }
-        .skill-check-needle {
-            position: absolute; top: 50%; left: 50%; width: 3px; height: 90px;
-            background: #fff; transform-origin: bottom center;
-            margin-left: -1.5px; margin-top: -90px; z-index: 10;
-            box-shadow: 0 0 10px #fff;
-        }
-        .sc-center {
-            position: absolute; top: 50%; left: 50%; width: 10px; height: 10px;
-            background: #fff; border-radius: 50%; transform: translate(-50%, -50%); z-index: 11;
-        }
+        #sc-button:active { transform: scale(0.95); filter: brightness(1.3); }
 
         /* Leaderboard & Name Entry */
         #leaderboard-container {
@@ -389,11 +377,11 @@
 
     <!-- BLOODPOINT NOTIFICATIONS -->
     <div id="bp-container"></div>
-    <div id="sc-combo-display">COMBO x0</div>
 
     <!-- SKILL CHECK UI -->
     <div id="skill-check-container">
         <div class="skill-check-circle">
+            <div id="sc-combo-display-internal">0</div>
             <svg id="sc-svg" viewBox="0 0 200 200">
                 <path id="sc-arc-good" class="sc-arc-good" d=""></path>
                 <path id="sc-arc-great" class="sc-arc-great" d=""></path>
@@ -401,7 +389,8 @@
             <div class="skill-check-needle"></div>
             <div class="sc-center"></div>
         </div>
-        <p class="horror-font text-white text-center mt-4 text-xs tracking-widest">SKILL CHECK</p>
+        <button id="sc-button">STRIKE !!</button>
+        <p class="mono text-white/30 text-[9px] mt-4 tracking-[0.5em] uppercase">Press SPACE or Click Button</p>
     </div>
 
     <!-- GENERATOR REPAIR TOOLTIP -->
@@ -436,7 +425,8 @@
             <div class="retro-char" id="char-1">_</div>
             <div class="retro-char" id="char-2">_</div>
         </div>
-        <p class="mono text-white/40 mt-12 text-[10px] uppercase tracking-widest">Use Keyboard to Type // Backspace to Delete</p>
+        <p class="mono text-gold mt-12 text-sm uppercase tracking-widest animate-pulse">[ PRESS ENTER TO SUBMIT RECORD ]</p>
+        <p class="mono text-white/20 mt-4 text-[9px] uppercase tracking-widest">Backspace to Delete // A-Z only</p>
     </div>
 
     <!-- 0. THE RITE OF DE-MOLDING -->
@@ -843,12 +833,12 @@
         }
 
         function updateComboDisplay() {
-            const el = document.getElementById('sc-combo-display');
+            const el = document.getElementById('sc-combo-display-internal');
             if (scCombo > 0) {
-                el.innerText = `SCORE: ${scCombo}`;
-                el.style.display = 'block';
+                el.innerText = scCombo;
+                el.parentElement.parentElement.style.display = 'flex'; // Container
             } else {
-                el.style.display = 'none';
+                el.innerText = '0';
             }
         }
 
@@ -859,24 +849,24 @@
             const needle = container.querySelector('.skill-check-needle');
             const arcGood = document.getElementById('sc-arc-good');
             const arcGreat = document.getElementById('sc-arc-great');
+            const btn = document.getElementById('sc-button');
             
             // Randomize target position (60 to 300 degrees)
             const targetRotation = 60 + Math.random() * 240;
-            // Shrink target zone based on combo
-            const targetWidth = Math.max(12, 60 - (scCombo * 3));
+            const targetWidth = Math.max(12, 60 - (scCombo * 2.5));
             const greatWidth = targetWidth * 0.25;
             
-            // Draw SVG Arcs
             arcGood.setAttribute("d", describeArc(100, 100, 90, targetRotation + 90, targetRotation + 90 + targetWidth));
             arcGreat.setAttribute("d", describeArc(100, 100, 90, targetRotation + 90, targetRotation + 90 + greatWidth));
             
-            container.style.display = 'block';
-            needle.style.transform = `rotate(0deg)`; // Reset to 12 o'clock
+            container.style.display = 'flex';
+            needle.style.transform = `rotate(0deg)`;
             
             let currentAngleInternal = 0;
             const handleInput = (e) => {
-                if (e.code === 'Space' || e.type === 'mousedown') {
-                    if (e.type === 'mousedown') e.preventDefault();
+                if (e.code === 'Space' || e.type === 'click') {
+                    if (e.type === 'click' && e.target !== btn) return;
+                    e.preventDefault();
                     cleanup();
                     checkSkillCheck(currentAngleInternal, targetRotation, targetWidth, greatWidth);
                 }
@@ -886,17 +876,14 @@
                 scActive = false;
                 if (scAnimId) cancelAnimationFrame(scAnimId);
                 window.removeEventListener('keydown', handleInput);
-                window.removeEventListener('mousedown', handleInput);
+                btn.removeEventListener('click', handleInput);
             };
 
-            // 1. Warning Ping
             playPing();
             
-            // 2. Start needle after delay
             setTimeout(() => {
                 if (!scActive) return;
-                
-                const duration = Math.max(500, scBaseDuration - (scCombo * 100));
+                const duration = Math.max(500, scBaseDuration - (scCombo * 80));
                 const start = performance.now();
                 
                 function animate(now) {
@@ -908,7 +895,6 @@
                         needle.style.transform = `rotate(${currentAngleInternal}deg)`;
                         scAnimId = requestAnimationFrame(animate);
                     } else {
-                        // Fail on 360deg
                         needle.style.transform = `rotate(360deg)`;
                         cleanup();
                         failSkillCheck();
@@ -916,7 +902,7 @@
                 }
                 
                 window.addEventListener('keydown', handleInput);
-                window.addEventListener('mousedown', handleInput);
+                btn.addEventListener('click', handleInput);
                 scAnimId = requestAnimationFrame(animate);
             }, 600);
         }
