@@ -48,19 +48,39 @@
             opacity: 0.1; z-index: 2; animation: fogMove 60s linear infinite; pointer-events: none;
         }
         @keyframes fogMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+/* Intensified Horror FX */
+.entity-vignette {
+    position: fixed; inset: 0; pointer-events: none; z-index: 999;
+    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.95) 100%);
+    animation: pulse-void 6s infinite alternate;
+}
+@keyframes pulse-void { from { opacity: 0.7; } to { opacity: 1; } }
 
-        .entity-vignette {
-            position: fixed; inset: 0; pointer-events: none; z-index: 999;
-            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.98) 100%);
-            animation: pulse-void 8s infinite alternate;
-        }
-        @keyframes pulse-void { from { opacity: 0.8; } to { opacity: 1; } }
+body::before {
+    content: ''; position: fixed; inset: 0; z-index: -1;
+    background: 
+        url('https://www.transparenttextures.com/patterns/carbon-fibre.png'),
+        radial-gradient(circle at center, #1a0505 0%, #030305 100%);
+    opacity: 0.4;
+}
 
-        .scratch-overlay {
-            position: fixed; inset: 0; pointer-events: none; z-index: 998;
-            background: url('https://www.transparenttextures.com/patterns/pinstripe.png');
-            opacity: 0.1; mix-blend-mode: screen;
-        }
+.scratch-overlay {
+    position: fixed; inset: 0; pointer-events: none; z-index: 998;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png');
+    opacity: 0.05; mix-blend-mode: overlay;
+}
+
+/* Red Scratch Marks (DBD style) */
+.scratches {
+    position: absolute; width: 150px; height: 100px;
+    background: linear-gradient(90deg, transparent, rgba(175,0,0,0.4), transparent);
+    transform: rotate(-45deg) skewX(20deg);
+    filter: blur(8px); pointer-events: none; opacity: 0.3;
+}
+
+.horror-text-shadow { text-shadow: 0 0 10px rgba(175, 0, 0, 0.8), 0 0 20px rgba(0,0,0,1); }
+.section-title { font-family: 'Creepster', cursive; letter-spacing: 0.1em; color: #fff; text-shadow: 0 0 20px rgba(175,0,0,0.5); }
+
 
         /* Glassmorphism */
         .glass-panel {
@@ -337,6 +357,9 @@
         
         <!-- 1. HERO -->
         <section class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden">
+            <div class="scratches top-20 left-10"></div>
+            <div class="scratches bottom-40 right-20" style="transform: rotate(150deg);"></div>
+            
             <div class="symbol-bg top-0 left-0">BLOOD</div>
             <div class="symbol-bg bottom-0 right-0">ENTITY</div>
             <div class="absolute inset-0 opacity-20 pointer-events-none">
@@ -345,7 +368,7 @@
             
             <div class="relative z-10 text-center reveal">
                 <span class="mono text-tech-cyan text-xs tracking-[1em] block mb-10 opacity-60">SURVIVOR_LEVEL_99</span>
-                <h1 class="horror-font text-8xl md:text-[15rem] leading-none text-white tracking-tighter mb-10 obsession-bracket">
+                <h1 class="horror-font text-8xl md:text-[15rem] leading-none text-white tracking-tighter mb-10 obsession-bracket horror-text-shadow">
                     SABANOMISO
                 </h1>
                 <p class="text-xl md:text-3xl mono text-blood-red tracking-[0.5em] uppercase font-bold glitch-text mb-6">Formwork Architect</p>
@@ -372,6 +395,7 @@
 
         <!-- 2. THE MANTRA -->
         <section class="max-w-7xl mx-auto px-6 py-60 relative overflow-hidden" id="mantra">
+            <div class="scratches top-40 right-10" style="transform: rotate(30deg);"></div>
             <div class="symbol-bg top-1/2 left-1/4">FAITH</div>
             <div class="max-w-4xl mb-32 reveal">
                 <span class="text-blood-red mono text-xs tracking-widest block mb-6">ARCHIVE_DATA // PHILOSOPHY</span>
@@ -394,7 +418,7 @@
                     <p class="typewriter text-blood-red text-2xl mb-4 italic">真実の形は、脱型の瞬間に。</p>
                     <p class="text-xs text-gray-400 leading-loose mb-10">型枠大工歴13年。一級建築士としての視点。すべての工程に妥協はない。</p>
                     <div id="leaderboard-container" class="mt-4 border-t border-white/5 pt-8">
-                        <p class="horror-font text-gold text-center mb-6 text-2xl tracking-widest">TOP REPAIRERS</p>
+                        <p class="horror-font text-gold text-center mb-6 text-2xl tracking-widest horror-text-shadow">TOP REPAIRERS</p>
                         <div id="leaderboard-list" class="space-y-2">
                             <div class="leader-row opacity-30"><span class="mono">---</span><span class="mono">000</span></div>
                         </div>
@@ -405,6 +429,7 @@
 
         <!-- 3. THE ARSENAL -->
         <section class="py-60 bg-gradient-to-b from-transparent via-blood-red/5 to-transparent relative">
+            <div class="scratches bottom-20 left-1/4" style="transform: rotate(20deg); opacity: 0.1;"></div>
             <div class="max-w-5xl mx-auto px-6 text-center">
                 <span class="text-tech-cyan mono text-xs tracking-widest block mb-10">ELITE_STATUS_DATA</span>
                 <h3 class="horror-font text-6xl md:text-8xl text-white mb-32 opacity-30 reveal section-title">THE_ARSENAL</h3>
