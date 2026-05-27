@@ -186,9 +186,16 @@
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 5000; display: none; pointer-events: none;
         }
+        #sc-combo-display {
+            position: fixed; top: 120px; right: 30px; z-index: 3000;
+            font-family: 'Creepster', cursive; font-size: 2rem; color: var(--gold);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); display: none;
+            pointer-events: none; text-align: right;
+        }
         .skill-check-circle {
-            width: 160px; height: 160px; border: 4px solid rgba(255,255,255,0.1);
+            width: 180px; height: 180px; border: 6px solid rgba(255,255,255,0.1);
             border-radius: 50%; position: relative;
+            background: rgba(0,0,0,0.2);
         }
         .skill-check-target {
             position: absolute; inset: -4px; border-radius: 50%;
@@ -286,6 +293,7 @@
 
     <!-- BLOODPOINT NOTIFICATIONS -->
     <div id="bp-container"></div>
+    <div id="sc-combo-display">COMBO x0</div>
 
     <!-- SKILL CHECK UI -->
     <div id="skill-check-container">
@@ -633,7 +641,7 @@
 
         // Bloodpoint System
         function addBP(score, category) {
-            playBP();
+            // playBP(); // Sound removed as per request
             const container = document.getElementById('bp-container');
             const el = document.createElement('div');
             el.className = 'bp-popup';
@@ -642,15 +650,33 @@
             setTimeout(() => el.remove(), 3000);
         }
 
-        // Skill Check System
+        // Skill Check System (Score Attack Mode)
         let scActive = false;
+        let scCombo = 0;
+        let scBaseDuration = 2000;
+
         function initSkillCheck() {
-            // Trigger skill check on generator click
             const gen = document.querySelector('img[src="gen_opt.jpg"]');
             if (gen) {
+                gen.style.cursor = 'pointer';
+                gen.title = "CLICK TO START REPAIR CHALLENGE";
                 gen.parentElement.addEventListener('click', () => {
-                    if (!scActive) startSkillCheck();
+                    if (!scActive) {
+                        scCombo = 0;
+                        updateComboDisplay();
+                        startSkillCheck();
+                    }
                 });
+            }
+        }
+
+        function updateComboDisplay() {
+            const el = document.getElementById('sc-combo-display');
+            if (scCombo > 0) {
+                el.innerText = `COMBO x${scCombo}`;
+                el.style.display = 'block';
+            } else {
+                el.style.display = 'none';
             }
         }
 
@@ -658,10 +684,17 @@
             scActive = true;
             const container = document.getElementById('skill-check-container');
             const needle = container.querySelector('.skill-check-needle');
+            const target = container.querySelector('.skill-check-target');
+            
+            // Randomize target position (45 to 300 degrees)
+            const targetRotation = 45 + Math.random() * 250;
+            target.style.transform = `rotate(${targetRotation}deg)`;
+            
             container.style.display = 'block';
             
             let angle = 0;
-            const duration = 2000;
+            // Speed up based on combo
+            const duration = Math.max(800, scBaseDuration - (scCombo * 150));
             const start = performance.now();
             
             function animate(now) {
@@ -680,23 +713,37 @@
             
             const handleInput = (e) => {
                 if (e.code === 'Space' || e.type === 'mousedown') {
+                    e.preventDefault();
                     window.removeEventListener('keydown', handleInput);
                     window.removeEventListener('mousedown', handleInput);
-                    checkSkillCheck(angle);
+                    checkSkillCheck(angle, targetRotation);
                 }
             };
             window.addEventListener('keydown', handleInput);
             window.addEventListener('mousedown', handleInput);
         }
 
-        function checkSkillCheck(angle) {
+        function checkSkillCheck(angle, targetRotation) {
             scActive = false;
             document.getElementById('skill-check-container').style.display = 'none';
-            if (angle >= 45 && angle <= 90) {
-                addBP(1000, "GREAT_SKILL_CHECK");
+            
+            // Skill check hit zone: targetRotation to targetRotation + 45 (Good)
+            // Great zone: first 15 degrees of the target zone
+            const diff = angle - targetRotation;
+            
+            if (diff >= 0 && diff <= 15) {
+                scCombo++;
+                addBP(1000 + (scCombo * 200), "GREAT_SKILL_CHECK");
                 playSound(1200, 'sine', 0.2);
-            } else if (angle > 90 && angle <= 130) {
-                addBP(300, "GOOD_SKILL_CHECK");
+                updateComboDisplay();
+                // Chain to next check
+                setTimeout(startSkillCheck, 400);
+            } else if (diff > 15 && diff <= 45) {
+                scCombo++;
+                addBP(300 + (scCombo * 50), "GOOD_SKILL_CHECK");
+                updateComboDisplay();
+                // Chain to next check
+                setTimeout(startSkillCheck, 600);
             } else {
                 failSkillCheck();
             }
@@ -704,6 +751,8 @@
 
         function failSkillCheck() {
             scActive = false;
+            scCombo = 0;
+            updateComboDisplay();
             document.getElementById('skill-check-container').style.display = 'none';
             playSound(50, 'square', 0.5, 0.5);
             document.body.style.animation = "glitch 0.2s 3";
