@@ -141,6 +141,90 @@
             pointer-events: none; z-index: 0;
         }
 
+        /* DBD HUD: Survivor Status */
+        #dbd-hud {
+            position: fixed; bottom: 20px; left: 20px; z-index: 2000;
+            display: flex; flex-direction: column; gap: 8px;
+            pointer-events: none;
+        }
+        .survivor-status {
+            display: flex; align-items: center; gap: 10px;
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+            padding: 4px 10px; border-left: 2px solid #555;
+            transition: 0.5s; opacity: 0.8;
+        }
+        .survivor-status.injured { border-left-color: var(--blood-red); }
+        .survivor-status.injured .status-icon { filter: sepia(1) saturate(5) hue-rotate(-50deg); }
+        .status-icon {
+            width: 32px; height: 32px; background: #222; border-radius: 2px;
+            display: flex; align-items: center; justify-content: center; font-size: 14px;
+        }
+        .status-name { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: #aaa; text-transform: uppercase; }
+
+        /* Bloodpoint Notification */
+        #bp-container {
+            position: fixed; top: 30px; right: 30px; z-index: 3000;
+            display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+            pointer-events: none;
+        }
+        .bp-popup {
+            background: rgba(0,0,0,0.85); border-right: 3px solid var(--blood-red);
+            padding: 8px 15px; display: flex; flex-direction: column; align-items: flex-end;
+            animation: bp-slide 3s forwards;
+        }
+        @keyframes bp-slide {
+            0% { transform: translateX(50px); opacity: 0; }
+            10% { transform: translateX(0); opacity: 1; }
+            80% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(20px); opacity: 0; }
+        }
+        .bp-score { color: #fff; font-weight: bold; font-family: 'Share Tech Mono', monospace; }
+        .bp-category { color: var(--blood-red); font-size: 9px; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Skill Check UI */
+        #skill-check-container {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 5000; display: none; pointer-events: none;
+        }
+        .skill-check-circle {
+            width: 160px; height: 160px; border: 4px solid rgba(255,255,255,0.1);
+            border-radius: 50%; position: relative;
+        }
+        .skill-check-target {
+            position: absolute; inset: -4px; border-radius: 50%;
+            border: 4px solid transparent; border-top-color: rgba(255,255,255,0.5);
+            transform: rotate(45deg); /* Target zone */
+        }
+        .skill-check-needle {
+            position: absolute; top: 50%; left: 50%; width: 2px; height: 80px;
+            background: #fff; transform-origin: bottom center;
+            margin-left: -1px; margin-top: -80px;
+        }
+
+        /* Exit Gate Switch UI */
+        .gate-switch-container {
+            background: #111; border: 4px solid #222; padding: 30px;
+            position: relative; overflow: hidden;
+        }
+        .gate-lever {
+            width: 40px; height: 100px; background: #333; margin: 0 auto 20px;
+            position: relative; cursor: pointer; border-radius: 4px;
+            transition: 0.3s;
+        }
+        .gate-lever::after {
+            content: ''; position: absolute; bottom: 0; left: 50%;
+            width: 10px; height: 60px; background: #af0000;
+            transform: translateX(-50%); transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .gate-lever.active::after { height: 10px; bottom: auto; top: 0; }
+        .gate-progress-bg { width: 100%; height: 10px; background: #000; margin-top: 20px; }
+        .gate-progress-bar { width: 0%; height: 100%; background: var(--blood-red); transition: width 0.1s linear; }
+        .gate-lamp {
+            width: 15px; height: 15px; background: #200; border-radius: 50%;
+            margin: 0 auto; transition: 0.3s;
+        }
+        .gate-lamp.on { background: #f00; box-shadow: 0 0 15px #f00; }
+
         /* LIVE Badge */
         .live-badge {
             position: fixed; bottom: 30px; right: 30px; z-index: 1000;
@@ -155,7 +239,7 @@
 
         /* Cursed Totem (Easter Egg) */
         #hex-totem {
-            position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px;
+            position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
             z-index: 100; cursor: pointer; opacity: 0.3; transition: 0.5s;
         }
         #hex-totem:hover { opacity: 1; transform: scale(1.2) rotate(10deg); filter: drop-shadow(0 0 10px var(--blood-red)); }
@@ -165,6 +249,10 @@
             .section-title { font-size: 2.5rem !important; }
             .badge-slot { width: 90px; height: 90px; margin: 10px; }
             .badge-slot span { font-size: 1.5rem; }
+            #dbd-hud { bottom: 10px; left: 10px; transform: scale(0.8); transform-origin: bottom left; }
+            #bp-container { top: 10px; right: 10px; transform: scale(0.8); transform-origin: top right; }
+            #hex-totem { bottom: 10px; right: 10px; width: 40px; height: 40px; }
+            .live-badge { bottom: 60px; right: 10px; padding: 6px 12px; font-size: 10px; }
         }
 
     </style>
@@ -175,6 +263,38 @@
     <div class="entity-vignette"></div>
     <div class="scratch-overlay"></div>
     <div id="notification"></div>
+
+    <!-- DBD HUD: SURVIVOR STATUS -->
+    <div id="dbd-hud">
+        <div class="survivor-status" id="status-sabano">
+            <div class="status-icon">🪓</div>
+            <div class="status-name">SABANO</div>
+        </div>
+        <div class="survivor-status" id="status-nox">
+            <div class="status-icon">🦊</div>
+            <div class="status-name">NOX</div>
+        </div>
+        <div class="survivor-status" id="status-choco">
+            <div class="status-icon">🍫</div>
+            <div class="status-name">CHOCO</div>
+        </div>
+        <div class="survivor-status" id="status-meimei">
+            <div class="status-icon">🐑</div>
+            <div class="status-name">MEIMEI</div>
+        </div>
+    </div>
+
+    <!-- BLOODPOINT NOTIFICATIONS -->
+    <div id="bp-container"></div>
+
+    <!-- SKILL CHECK UI -->
+    <div id="skill-check-container">
+        <div class="skill-check-circle">
+            <div class="skill-check-target"></div>
+            <div class="skill-check-needle"></div>
+        </div>
+        <p class="horror-font text-white text-center mt-4 text-xs tracking-widest">SKILL CHECK</p>
+    </div>
 
     <!-- LIVE STATUS -->
     <a href="https://www.youtube.com/@さばの味噌/live" target="_blank" class="live-badge">
@@ -409,7 +529,17 @@
                             <option value="Streaming">配信コラボ / その他</option>
                         </select>
                         <textarea id="form-message" required class="input-box h-48" placeholder="YOUR WILL / 魂のメッセージ"></textarea>
-                        <button type="submit" id="submit-btn" class="w-full bg-blood-red text-white py-6 font-bold tracking-[2em] hover:bg-white hover:text-black transition-all">TRANSMIT</button>
+                        
+                        <!-- EXIT GATE SWITCH UI -->
+                        <div class="gate-switch-container mt-12">
+                            <div class="gate-lamp" id="gate-lamp"></div>
+                            <div class="gate-lever" id="gate-lever" onclick="triggerGate(event)"></div>
+                            <p class="mono text-[10px] text-center text-gray-500 uppercase tracking-widest">Pull Lever to Escape</p>
+                            <div class="gate-progress-bg">
+                                <div class="gate-progress-bar" id="gate-progress"></div>
+                            </div>
+                            <button type="submit" id="submit-btn" class="hidden"></button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -446,31 +576,23 @@
             return audioCtx;
         }
 
-        function playClank() {
+        function playSound(freq, type = 'square', duration = 0.6, vol = 0.2) {
             const ctx = getAudioCtx();
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
             osc.connect(gain); gain.connect(ctx.destination);
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(120, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.6);
-            gain.gain.setValueAtTime(0.2, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
-            osc.start(); osc.stop(ctx.currentTime + 0.6);
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            if (duration > 0.5) osc.frequency.exponentialRampToValueAtTime(freq/2, ctx.currentTime + duration);
+            gain.gain.setValueAtTime(vol, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+            osc.start(); osc.stop(ctx.currentTime + duration);
         }
 
-        function playScream() {
-            const ctx = getAudioCtx();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain); gain.connect(ctx.destination);
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(800, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 1.5);
-            gain.gain.setValueAtTime(0.1, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
-            osc.start(); osc.stop(ctx.currentTime + 1.5);
-        }
+        function playBP() { playSound(880, 'sine', 0.3, 0.1); }
+        function playClank() { playSound(120, 'square', 0.6, 0.2); }
+        function playScream() { playSound(800, 'sawtooth', 1.5, 0.1); }
+        function playBuzzer() { playSound(100, 'triangle', 2.0, 0.3); }
 
         function unlockRite() {
             getAudioCtx().resume().then(() => {
@@ -479,6 +601,7 @@
                 setTimeout(() => {
                     document.getElementById('intro-gate').remove();
                     document.getElementById('main-content').style.opacity = '1';
+                    addBP(2000, "ESCAPE_READY");
                 }, 1500);
             });
         }
@@ -496,15 +619,131 @@
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('active');
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        if (entry.target.tagName === 'SECTION') addBP(500, "BOLDNESS");
+                    }
                 });
             }, { threshold: 0.1 });
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            document.querySelectorAll('.reveal, section').forEach(el => observer.observe(el));
             
             initKonami();
+            initSkillCheck();
         }
 
-        // Konami Code Implementation
+        // Bloodpoint System
+        function addBP(score, category) {
+            playBP();
+            const container = document.getElementById('bp-container');
+            const el = document.createElement('div');
+            el.className = 'bp-popup';
+            el.innerHTML = `<span class="bp-score">+${score}</span><span class="bp-category">${category}</span>`;
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 3000);
+        }
+
+        // Skill Check System
+        let scActive = false;
+        function initSkillCheck() {
+            // Trigger skill check on generator click
+            const gen = document.querySelector('img[src="gen_opt.jpg"]');
+            if (gen) {
+                gen.parentElement.addEventListener('click', () => {
+                    if (!scActive) startSkillCheck();
+                });
+            }
+        }
+
+        function startSkillCheck() {
+            scActive = true;
+            const container = document.getElementById('skill-check-container');
+            const needle = container.querySelector('.skill-check-needle');
+            container.style.display = 'block';
+            
+            let angle = 0;
+            const duration = 2000;
+            const start = performance.now();
+            
+            function animate(now) {
+                if (!scActive) return;
+                const progress = (now - start) / duration;
+                angle = progress * 360;
+                needle.style.transform = `rotate(${angle}deg)`;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    failSkillCheck();
+                }
+            }
+            requestAnimationFrame(animate);
+            
+            const handleInput = (e) => {
+                if (e.code === 'Space' || e.type === 'mousedown') {
+                    window.removeEventListener('keydown', handleInput);
+                    window.removeEventListener('mousedown', handleInput);
+                    checkSkillCheck(angle);
+                }
+            };
+            window.addEventListener('keydown', handleInput);
+            window.addEventListener('mousedown', handleInput);
+        }
+
+        function checkSkillCheck(angle) {
+            scActive = false;
+            document.getElementById('skill-check-container').style.display = 'none';
+            if (angle >= 45 && angle <= 90) {
+                addBP(1000, "GREAT_SKILL_CHECK");
+                playSound(1200, 'sine', 0.2);
+            } else if (angle > 90 && angle <= 130) {
+                addBP(300, "GOOD_SKILL_CHECK");
+            } else {
+                failSkillCheck();
+            }
+        }
+
+        function failSkillCheck() {
+            scActive = false;
+            document.getElementById('skill-check-container').style.display = 'none';
+            playSound(50, 'square', 0.5, 0.5);
+            document.body.style.animation = "glitch 0.2s 3";
+            setTimeout(() => document.body.style.animation = "", 600);
+            document.getElementById('status-sabano').classList.add('injured');
+        }
+
+        // Exit Gate Switch
+        let gateProgress = 0;
+        let gateActive = false;
+        function triggerGate(e) {
+            if (gateActive) return;
+            const form = document.getElementById('contact-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            gateActive = true;
+            playBuzzer();
+            document.getElementById('gate-lever').classList.add('active');
+            document.getElementById('gate-lamp').classList.add('on');
+            
+            const interval = setInterval(() => {
+                gateProgress += 2;
+                document.getElementById('gate-progress').style.width = gateProgress + '%';
+                if (gateProgress >= 100) {
+                    clearInterval(interval);
+                    completeGate();
+                }
+            }, 50);
+        }
+
+        function completeGate() {
+            addBP(5000, "ESCAPE");
+            playSound(1500, 'sine', 1.0);
+            document.getElementById('submit-btn').click();
+        }
+
+        // Konami Code
         function initKonami() {
             let keys = [];
             const konami = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown'];
@@ -512,39 +751,30 @@
                 keys.push(e.key);
                 keys = keys.slice(-4);
                 if (JSON.stringify(keys) === JSON.stringify(konami)) {
-                    repairGenerator();
+                    addBP(3000, "DEVELOPER_BONUS");
+                    playClank();
                 }
             });
-        }
-
-        function repairGenerator() {
-            showNotify("SYSTEM: GENERATOR_REPAIRED. GATE_POWER_UP.");
-            document.body.style.filter = "brightness(2) contrast(1.5)";
-            playClank();
-            setTimeout(() => document.body.style.filter = "", 1000);
         }
 
         function curseReality() {
             playScream();
             document.querySelector('.entity-vignette').style.background = "radial-gradient(circle, rgba(175,0,0,0.4) 0%, rgba(0,0,0,1) 100%)";
             showNotify("HEX: THE_VOID_HAS_CONSUMED_YOUR_SOUL.");
+            document.querySelectorAll('.survivor-status').forEach(s => s.classList.add('injured'));
             setTimeout(() => {
                 document.querySelector('.entity-vignette').style.background = "";
             }, 3000);
         }
 
-        // Discord Webhook Implementation
+        // Discord Webhook
         const webhookUrl = 'https://discord.com/api/webhooks/1507236311180771348/P-wdDn_xEgm7ig5w7s3WHuP3waVmARS1sNi9lkvsmzMuDnUm8S2lKrx6Dv7ieQmtTFO1';
         
         document.getElementById('contact-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('submit-btn');
-            btn.disabled = true;
-            btn.innerText = "SENDING...";
-
             const payload = {
                 embeds: [{
-                    title: "🔔 SABANO 新着コンタクト",
+                    title: "🔔 SABANO 脱出成功 (コンタクト)",
                     color: 0xaf0000,
                     fields: [
                         { name: "Identity", value: document.getElementById('form-name').value, inline: true },
@@ -558,23 +788,21 @@
             };
 
             try {
-                const response = await fetch(webhookUrl, {
+                await fetch(webhookUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-
-                if (response.ok) {
-                    showNotify("TRANSMISSION SUCCESSFUL / 通信に成功しました。");
-                    document.getElementById('contact-form').reset();
-                } else {
-                    throw new Error();
-                }
+                showNotify("ESCAPE SUCCESSFUL / 脱出に成功しました。");
+                document.getElementById('contact-form').reset();
             } catch (err) {
                 showNotify("TRANSMISSION FAILED / エラーが発生しました。");
             } finally {
-                btn.disabled = false;
-                btn.innerText = "TRANSMIT";
+                gateActive = false;
+                gateProgress = 0;
+                document.getElementById('gate-progress').style.width = '0%';
+                document.getElementById('gate-lever').classList.remove('active');
+                document.getElementById('gate-lamp').classList.remove('on');
             }
         });
 

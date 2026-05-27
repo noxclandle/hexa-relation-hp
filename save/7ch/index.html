@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7CH - Portfolio (Unknown Style)</title>
+    <meta name="description" content="7chanのポートフォリオ。クロノトリガー風の世界観で構成された麻雀の記録。">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+
+        :root {
+            --ct-blue-start: #0000ad;
+            --ct-blue-end: #000052;
+            --ct-border: #efefef;
+            --ct-gold: #ffd700;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: #000;
+            background-image: url('bg_timegate.svg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'DotGothic16', sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* CT Window Style */
+        .ct-window {
+            background: linear-gradient(180deg, var(--ct-blue-start) 0%, var(--ct-blue-end) 100%);
+            border: 2px solid var(--ct-border);
+            border-radius: 8px;
+            box-shadow: 0 0 0 2px #000, 4px 4px 0 rgba(0,0,0,0.5);
+            padding: 16px;
+            position: relative;
+        }
+
+        .ct-window::before {
+            content: '';
+            position: absolute;
+            top: 2px; left: 2px; right: 2px; bottom: 2px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            pointer-events: none;
+        }
+
+        /* ATB Gauge */
+        .atb-container {
+            width: 100%;
+            height: 10px;
+            background: #222;
+            border: 1px solid #444;
+            margin-top: 4px;
+        }
+        .atb-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4488ff, #aaccff);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* Time Warp Animation */
+        #time-warp {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 0%, black 100%);
+            z-index: 9999;
+            pointer-events: none;
+            display: none;
+        }
+        .warp-active {
+            display: block !important;
+            animation: warp-effect 1.2s ease-in-out forwards;
+        }
+        @keyframes warp-effect {
+            0% { transform: scale(1) rotate(0deg); opacity: 0; }
+            50% { transform: scale(5) rotate(720deg); opacity: 1; }
+            100% { transform: scale(10) rotate(1440deg); opacity: 1; background: black; }
+        }
+
+        .pixel-text {
+            text-shadow: 2px 2px #000;
+        }
+
+        .nani-kiru-tile {
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .nani-kiru-tile:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Floating Gate Key */
+        #gate-key {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--ct-gold);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            animation: float 2s ease-in-out infinite;
+            z-index: 100;
+            box-shadow: 0 0 15px var(--ct-gold);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div id="time-warp"></div>
+
+    <div class="max-w-md mx-auto space-y-6 pb-24">
+        
+        <!-- Header: Status -->
+        <div class="ct-window">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-2xl pixel-text text-yellow-300">7chan</h1>
+                    <p class="text-sm opacity-80">時を駆ける雀士</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs">LV. 77</p>
+                    <p class="text-xs text-blue-300">HP 7777 / 7777</p>
+                    <p class="text-xs text-green-300">MP 999 / 999</p>
+                </div>
+            </div>
+            <div class="mt-4">
+                <p class="text-xs mb-1">思考時間 (ATB)</p>
+                <div class="atb-container">
+                    <div id="main-atb" class="atb-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Character Portrait (Placeholder) -->
+        <div class="relative group">
+            <div class="w-full h-64 bg-slate-900 rounded-lg flex items-center justify-center border-2 border-blue-900 overflow-hidden">
+                <span class="text-4xl">🀄️</span>
+                <!-- In a real scenario, this would be an avatar image -->
+            </div>
+            <div class="absolute bottom-0 left-0 w-full bg-black/60 p-2 text-xs">
+                 A.D. 1000 - 現代の雀荘にて
+            </div>
+        </div>
+
+        <!-- Menu / Navigation -->
+        <div class="ct-window space-y-2">
+            <button onclick="warpTo('AD1000')" class="w-full text-left hover:text-yellow-300 flex justify-between">
+                <span>▶ AD 1000 (現代 - プロフィール)</span>
+                <span class="opacity-50">現代</span>
+            </button>
+            <button onclick="warpTo('AD2300')" class="w-full text-left hover:text-yellow-300 flex justify-between">
+                <span>▶ AD 2300 (未来 - ネット麻雀)</span>
+                <span class="opacity-50">未来</span>
+            </button>
+            <button onclick="warpTo('END_OF_TIME')" class="w-full text-left hover:text-yellow-300 flex justify-between">
+                <span>▶ 時の最果て (リンク/X)</span>
+                <span class="opacity-50">∞</span>
+            </button>
+        </div>
+
+        <!-- Main Content Area (Dynamic) -->
+        <div id="content-area" class="ct-window min-h-[200px]">
+            <div id="AD1000" class="content-section">
+                <h2 class="text-lg text-yellow-200 mb-2 border-b border-white/20">A.D. 1000: 現代の雀士</h2>
+                <p class="text-sm leading-relaxed">
+                    麻雀という盤上の小宇宙に魅了された旅人。<br>
+                    東風、半荘、いかなるルールも「運命」として受け入れ、<br>
+                    ただ一打の最適解を求めて時を駆ける。
+                </p>
+                <div class="mt-4 space-y-2">
+                    <p class="text-xs text-blue-200">主な戦術（Tech）:</p>
+                    <ul class="text-xs list-disc list-inside opacity-80">
+                        <li>超速立直 (Riichi)</li>
+                        <li>絶対防壁 (Beta-Ori)</li>
+                        <li>時空和了 (Tsumo)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="AD2300" class="content-section hidden">
+                <h2 class="text-lg text-cyan-200 mb-2 border-b border-white/20">A.D. 2300: デジタル戦域</h2>
+                <p class="text-sm">遥か未来、麻雀は魂のデータとして昇華された。</p>
+                <div class="mt-4 p-2 bg-black/40 rounded border border-cyan-900/50">
+                    <p class="text-xs font-bold text-cyan-300">雀魂 - Mahjong Soul</p>
+                    <p class="text-sm">ランク: 雀豪以上</p>
+                    <p class="text-xs opacity-70">最高スコア: 777,777 pts</p>
+                </div>
+                <div class="mt-2 p-2 bg-black/40 rounded border border-cyan-900/50">
+                    <p class="text-xs font-bold text-cyan-300">天鳳 - Tenhou</p>
+                    <p class="text-sm">七段 / 安定段位 8.2</p>
+                </div>
+            </div>
+
+            <div id="END_OF_TIME" class="content-section hidden">
+                <h2 class="text-lg text-purple-200 mb-2 border-b border-white/20">時の最果て: 交流の門</h2>
+                <p class="text-sm">すべての時代が交差する場所。</p>
+                <div class="mt-4 space-y-4">
+                    <a href="https://x.com/n71969926" target="_blank" class="block p-4 border border-purple-500/50 bg-purple-900/20 rounded hover:bg-purple-900/40 transition">
+                        <p class="text-xs opacity-60">X (Twitter)</p>
+                        <p class="text-sm">@n71969926 をフォローする</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mini Game: 何切る？ -->
+        <div class="ct-window">
+            <h3 class="text-sm text-yellow-100 mb-3 flex items-center">
+                <span class="mr-2">⚔️</span> 訓練: 時空の「何切る？」
+            </h3>
+            <div class="flex justify-center space-x-1 mb-4">
+                <!-- Simple representation of Mahjong tiles -->
+                <div class="nani-kiru-tile bg-white text-black w-8 h-10 rounded-sm flex items-center justify-center font-bold text-xs" onclick="answer('X')">一</div>
+                <div class="nani-kiru-tile bg-white text-black w-8 h-10 rounded-sm flex items-center justify-center font-bold text-xs" onclick="answer('X')">二</div>
+                <div class="nani-kiru-tile bg-white text-black w-8 h-10 rounded-sm flex items-center justify-center font-bold text-xs" onclick="answer('X')">三</div>
+                <div class="nani-kiru-tile bg-white text-black w-8 h-10 rounded-sm flex items-center justify-center font-bold text-xs" onclick="answer('O')">九</div>
+                <div class="nani-kiru-tile bg-white text-black w-8 h-10 rounded-sm flex items-center justify-center font-bold text-xs" onclick="answer('X')">中</div>
+            </div>
+            <p id="game-msg" class="text-center text-xs h-4 text-green-400"></p>
+        </div>
+
+    </div>
+
+    <!-- Floating Gate Key (Top) -->
+    <div id="gate-key" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <span class="text-[10px] font-bold text-black">TOP</span>
+    </div>
+
+    <script>
+        // ATB Gauge Animation
+        const atb = document.getElementById('main-atb');
+        let progress = 0;
+        function updateATB() {
+            progress += 1;
+            if (progress > 100) progress = 0;
+            atb.style.width = progress + '%';
+            requestAnimationFrame(updateATB);
+        }
+        updateATB();
+
+        // Warp Logic
+        function warpTo(sectionId) {
+            const warp = document.getElementById('time-warp');
+            warp.classList.add('warp-active');
+            
+            setTimeout(() => {
+                // Switch sections
+                document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
+                document.getElementById(sectionId).classList.remove('hidden');
+                
+                // Scroll to content area
+                document.getElementById('content-area').scrollIntoView({ behavior: 'smooth' });
+            }, 600);
+
+            setTimeout(() => {
+                warp.classList.remove('warp-active');
+            }, 1200);
+        }
+
+        // Mini Game Logic
+        function answer(res) {
+            const msg = document.getElementById('game-msg');
+            if (res === 'O') {
+                msg.innerText = "和了の運命を引き寄せた！ (正解)";
+                msg.classList.replace('text-red-400', 'text-green-400');
+            } else {
+                msg.innerText = "放銃の予感がする... (不正解)";
+                msg.classList.replace('text-green-400', 'text-red-400');
+            }
+        }
+
+        // Firebase-like Visitor Log (Mock)
+        console.log("Visitor logged. Referrer:", document.referrer);
+    </script>
+</body>
+</html>
