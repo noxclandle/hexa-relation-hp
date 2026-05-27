@@ -194,6 +194,23 @@
         }
         .skill-check-circle {
             width: 200px; height: 200px; position: relative;
+            background: rgba(0,0,0,0.4); border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        #sc-svg {
+            position: absolute; inset: 0; transform: rotate(-90deg);
+        }
+        .sc-arc-good { fill: none; stroke: rgba(255,255,255,0.3); stroke-width: 12; }
+        .sc-arc-great { fill: none; stroke: #fff; stroke-width: 12; }
+        .skill-check-needle {
+            position: absolute; top: 50%; left: 50%; width: 3px; height: 90px;
+            background: #fff; transform-origin: bottom center;
+            margin-left: -1.5px; margin-top: -90px; z-index: 10;
+            box-shadow: 0 0 10px #fff;
+        }
+        .sc-center {
+            position: absolute; top: 50%; left: 50%; width: 10px; height: 10px;
+            background: #fff; border-radius: 50%; transform: translate(-50%, -50%); z-index: 11;
         }
 
         /* Leaderboard & Name Entry */
@@ -371,8 +388,12 @@
     <!-- SKILL CHECK UI -->
     <div id="skill-check-container">
         <div class="skill-check-circle">
-            <div class="skill-check-target"></div>
+            <svg id="sc-svg" viewBox="0 0 200 200">
+                <path id="sc-arc-good" class="sc-arc-good" d=""></path>
+                <path id="sc-arc-great" class="sc-arc-great" d=""></path>
+            </svg>
             <div class="skill-check-needle"></div>
+            <div class="sc-center"></div>
         </div>
         <p class="horror-font text-white text-center mt-4 text-xs tracking-widest">SKILL CHECK</p>
     </div>
@@ -702,6 +723,7 @@
         function playClank() { playSound(120, 'square', 0.6, 0.2); }
         function playScream() { playSound(800, 'sawtooth', 1.5, 0.1); }
         function playBuzzer() { playSound(100, 'triangle', 2.0, 0.3); }
+        function playPing() { playSound(600, 'sine', 0.1, 0.2); }
 
         function unlockRite() {
             getAudioCtx().resume().then(() => {
@@ -762,6 +784,24 @@
         let scCombo = 0;
         let scBaseDuration = 2200;
 
+        function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+            const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+            return {
+                x: centerX + (radius * Math.cos(angleInRadians)),
+                y: centerY + (radius * Math.sin(angleInRadians))
+            };
+        }
+
+        function describeArc(x, y, radius, startAngle, endAngle) {
+            const start = polarToCartesian(x, y, radius, endAngle);
+            const end = polarToCartesian(x, y, radius, startAngle);
+            const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+            return [
+                "M", start.x, start.y, 
+                "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
+            ].join(" ");
+        }
+
         function initSkillCheck() {
             const gen = document.querySelector('img[src="gen_opt.jpg"]');
             if (gen) {
@@ -791,64 +831,72 @@
             scActive = true;
             const container = document.getElementById('skill-check-container');
             const needle = container.querySelector('.skill-check-needle');
-            const target = container.querySelector('.skill-check-target');
+            const arcGood = document.getElementById('sc-arc-good');
+            const arcGreat = document.getElementById('sc-arc-great');
             
-            // Randomize target position (45 to 300 degrees)
-            const targetRotation = 45 + Math.random() * 250;
+            // Randomize target position (60 to 300 degrees for reaction time)
+            const targetRotation = 60 + Math.random() * 240;
             // Shrink target zone as combo increases
-            const targetWidth = Math.max(10, 45 - (scCombo * 3));
-            target.style.transform = `rotate(${targetRotation}deg)`;
-            target.style.borderTopColor = 'rgba(255,255,255,0.6)';
-            // Note: border-top is 90deg, for finer control we'd need SVG, but this provides a baseline ramp.
+            const targetWidth = Math.max(15, 60 - (scCombo * 4));
+            const greatWidth = targetWidth * 0.3;
+            
+            // Draw SVG Arcs
+            arcGood.setAttribute("d", describeArc(100, 100, 90, targetRotation + 90, targetRotation + 90 + targetWidth));
+            arcGreat.setAttribute("d", describeArc(100, 100, 90, targetRotation + 90, targetRotation + 90 + greatWidth));
             
             container.style.display = 'block';
+            needle.style.transform = `rotate(0deg)`;
             
-            let angle = 0;
-            // Speed up based on combo
-            const duration = Math.max(600, scBaseDuration - (scCombo * 120));
-            const start = performance.now();
+            // 1. Warning Ping
+            playPing();
             
-            function animate(now) {
+            // 2. Wait for reaction time (600ms) then start needle
+            setTimeout(() => {
                 if (!scActive) return;
-                const progress = (now - start) / duration;
-                angle = progress * 360;
-                needle.style.transform = `rotate(${angle}deg)`;
+                let angle = 0;
+                const duration = Math.max(600, scBaseDuration - (scCombo * 120));
+                const start = performance.now();
                 
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                } else {
-                    failSkillCheck();
+                function animate(now) {
+                    if (!scActive) return;
+                    const progress = (now - start) / duration;
+                    angle = progress * 360;
+                    needle.style.transform = `rotate(${angle}deg)`;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        failSkillCheck();
+                    }
                 }
-            }
-            requestAnimationFrame(animate);
-            
-            const handleInput = (e) => {
-                if (e.code === 'Space' || e.type === 'mousedown') {
-                    if (e.type === 'mousedown') e.preventDefault();
-                    window.removeEventListener('keydown', handleInput);
-                    window.removeEventListener('mousedown', handleInput);
-                    checkSkillCheck(angle, targetRotation, targetWidth);
-                }
-            };
-            window.addEventListener('keydown', handleInput);
-            window.addEventListener('mousedown', handleInput);
+                requestAnimationFrame(animate);
+                
+                const handleInput = (e) => {
+                    if (e.code === 'Space' || e.type === 'mousedown') {
+                        if (e.type === 'mousedown') e.preventDefault();
+                        window.removeEventListener('keydown', handleInput);
+                        window.removeEventListener('mousedown', handleInput);
+                        checkSkillCheck(angle, targetRotation, targetWidth, greatWidth);
+                    }
+                };
+                window.addEventListener('keydown', handleInput);
+                window.addEventListener('mousedown', handleInput);
+            }, 600);
         }
 
-        function checkSkillCheck(angle, targetRotation, targetWidth) {
+        function checkSkillCheck(angle, targetRotation, targetWidth, greatWidth) {
             scActive = false;
             document.getElementById('skill-check-container').style.display = 'none';
             
             const diff = angle - targetRotation;
-            const hitZone = targetWidth; 
-            const greatZone = hitZone * 0.3;
             
-            if (diff >= 0 && diff <= greatZone) {
+            if (diff >= 0 && diff <= greatWidth) {
                 scCombo++;
                 addBP(1000 + (scCombo * 200), "GREAT_SKILL_CHECK");
                 playSound(1200, 'sine', 0.15);
                 updateComboDisplay();
                 setTimeout(startSkillCheck, 400);
-            } else if (diff > greatZone && diff <= hitZone) {
+            } else if (diff > greatWidth && diff <= targetWidth) {
                 scCombo++;
                 addBP(300 + (scCombo * 50), "GOOD_SKILL_CHECK");
                 updateComboDisplay();
