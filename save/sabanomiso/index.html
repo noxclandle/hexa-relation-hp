@@ -90,7 +90,8 @@
         #intro-gate {
             position: fixed; inset: 0; background: #000; z-index: 10000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            cursor: pointer; transition: opacity 2s ease;
+            cursor: pointer; transition: opacity 1.5s ease;
+            user-select: none; -webkit-user-select: none;
         }
 
         /* Perk-style Badge */
@@ -683,16 +684,25 @@
         function playBuzzer() { playSound(100, 'triangle', 2.0, 0.3); }
         function playPing() { playSound(600, 'sine', 0.1, 0.2); }
 
+        let isUnlocked = false;
         function unlockRite() {
-            getAudioCtx().resume().then(() => {
-                playClank();
-                document.getElementById('intro-gate').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('intro-gate').remove();
-                    document.getElementById('main-content').style.opacity = '1';
-                    addBP(2000, "ESCAPE_READY");
-                }, 1500);
-            });
+            if (isUnlocked) return;
+            isUnlocked = true;
+            
+            // Audio setup (optional, don't let it block)
+            try {
+                getAudioCtx().resume().then(() => playClank()).catch(() => {});
+            } catch (e) {}
+
+            const gate = document.getElementById('intro-gate');
+            gate.style.opacity = '0';
+            gate.style.pointerEvents = 'none';
+            
+            setTimeout(() => {
+                gate.remove();
+                document.getElementById('main-content').style.opacity = '1';
+                addBP(2000, "ESCAPE_READY");
+            }, 1500);
         }
 
         function initApp() {
