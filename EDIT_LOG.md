@@ -9,6 +9,13 @@
 
 ## 📝 Change History
 
+### 2026-05-27: Restore Admin Access Gimmick
+- **Task:** Restore the A-C-E sequential clicking gimmick on the gateway page.
+- **Changes:**
+  - Replaced keydown-based access with the original character-clicking script in `index.html`.
+  - Executed `scripts/sync_portfolios.js` to synchronize indices and update `sitemap.xml`.
+- **Notes:** Fixed the issue where smartphone users could not access the admin room.
+
 ### 2026-05-21: Add New Portfolio "meimei"
 - **Task:** Create a dedicated portfolio for "meimei" and register to the index.
 - **Changes:**

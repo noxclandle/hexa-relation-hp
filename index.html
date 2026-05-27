@@ -251,16 +251,29 @@
             if (e.target.closest('a')) playClickSound();
         });
 
-        // Secret Admin Access (Keydown sequence)
-        let combo = "";
-        window.addEventListener('keydown', (e) => {
-            combo += e.key.toUpperCase();
-            if (combo.includes("ACE")) {
-                window.location.href = 'admin/';
-                combo = "";
+        // Secret Admin Access (Sequential Click: A -> C -> E)
+        const philText = document.getElementById('philosophy-text');
+        const originalContent = philText.innerHTML;
+        let aceStep = 0;
+
+        function checkAce(char) {
+            const sequence = ['A', 'C', 'E'];
+            if (char === sequence[aceStep]) {
+                aceStep++;
+                if (aceStep === sequence.length) {
+                    window.location.href = 'admin/';
+                    aceStep = 0;
+                }
+            } else if (char !== ' ' && char !== '\n') {
+                aceStep = 0;
             }
-            if (combo.length > 10) combo = combo.substring(1);
-        });
+        }
+
+        // Wrap each character to enable clicking (ignoring HTML tags)
+        philText.innerHTML = originalContent.split('').map(char => {
+            if (char === '<' || char === '>' || char === 'b' || char === 'r' || char === '/') return char;
+            return `<span onclick="checkAce('${char.toUpperCase()}')" style="cursor:default;">${char}</span>`;
+        }).join('');
     </script>
 </body>
 </html>
