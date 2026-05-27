@@ -49,7 +49,6 @@
         }
         @keyframes fogMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* Intensified Horror FX */
         .entity-vignette {
             position: fixed; inset: 0; pointer-events: none; z-index: 999;
             background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.98) 100%);
@@ -71,7 +70,6 @@
         }
         .glass-panel:hover { border-color: var(--blood-red); box-shadow: 0 0 40px rgba(175,0,0,0.2); transform: translateY(-5px); }
 
-        /* Reveal Animation */
         .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
@@ -87,15 +85,7 @@
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: var(--blood-red); }
 
-        #intro-gate {
-            position: fixed; inset: 0; background: #000; z-index: 20000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            cursor: pointer; transition: opacity 1s ease;
-            user-select: none; -webkit-user-select: none;
-            pointer-events: auto;
-        }
-
-        /* Perk-style Badge */
+        /* Perk UI */
         .badge-slot {
             width: 120px; height: 120px; background: #0a0a0a;
             transform: rotate(45deg);
@@ -123,10 +113,7 @@
         .glitch-text { animation: glitch 4s infinite; }
         @keyframes glitch { 0% { transform: skew(0); } 1% { transform: skew(3deg); opacity: 0.8; } 2% { transform: skew(0); opacity: 1; } }
 
-        /* Obsession Brackets */
-        .obsession-bracket {
-            display: inline-block; position: relative; padding: 0 40px;
-        }
+        .obsession-bracket { display: inline-block; position: relative; padding: 0 40px; }
         .obsession-bracket::before, .obsession-bracket::after {
             content: ''; position: absolute; top: 50%; width: 30px; height: 100%;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23af0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21l-4-4 4-4"/><path d="M17 3l4 4-4 4"/><path d="M3 17h18"/></svg>');
@@ -137,7 +124,6 @@
         .obsession-bracket::after { right: 0; transform: translateY(-50%) rotate(180deg); }
         @keyframes obsession-move { from { opacity: 0.4; } to { opacity: 1; } }
 
-        /* Survivor Symbols */
         .symbol-bg {
             position: absolute; font-size: 15rem; opacity: 0.02; font-family: 'Creepster';
             pointer-events: none; z-index: 0;
@@ -146,8 +132,7 @@
         /* DBD HUD: Survivor Status */
         #dbd-hud {
             position: fixed; bottom: 20px; left: 20px; z-index: 2000;
-            display: flex; flex-direction: column; gap: 8px;
-            pointer-events: none;
+            display: flex; flex-direction: column; gap: 8px; pointer-events: none;
         }
         .survivor-status {
             display: flex; align-items: center; gap: 10px;
@@ -166,8 +151,7 @@
         /* Bloodpoint Notification */
         #bp-container {
             position: fixed; top: 30px; right: 30px; z-index: 3000;
-            display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
-            pointer-events: none;
+            display: flex; flex-direction: column; align-items: flex-end; gap: 10px; pointer-events: none;
         }
         .bp-popup {
             background: rgba(0,0,0,0.85); border-right: 3px solid var(--blood-red);
@@ -200,9 +184,7 @@
             background: rgba(0,0,0,0.7); border-radius: 50%;
             border: 3px solid rgba(255,255,255,0.1);
         }
-        #sc-svg {
-            position: absolute; inset: 0; z-index: 5;
-        }
+        #sc-svg { position: absolute; inset: 0; z-index: 5; }
         .sc-arc-good { fill: none; stroke: rgba(255,255,255,0.4); stroke-width: 25; }
         .sc-arc-great { fill: none; stroke: #fff; stroke-width: 25; }
         .skill-check-needle {
@@ -249,30 +231,6 @@
             font-size: 4rem; text-align: center; color: #fff; font-family: 'Creepster';
         }
 
-        /* Exit Gate Switch UI */
-        .gate-switch-container {
-            background: #111; border: 4px solid #222; padding: 30px;
-            position: relative; overflow: hidden;
-        }
-        .gate-lever {
-            width: 40px; height: 100px; background: #333; margin: 0 auto 20px;
-            position: relative; cursor: pointer; border-radius: 4px;
-            transition: 0.3s;
-        }
-        .gate-lever::after {
-            content: ''; position: absolute; bottom: 0; left: 50%;
-            width: 10px; height: 60px; background: #af0000;
-            transform: translateX(-50%); transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .gate-lever.active::after { height: 10px; bottom: auto; top: 0; }
-        .gate-progress-bg { width: 100%; height: 10px; background: #000; margin-top: 20px; }
-        .gate-progress-bar { width: 0%; height: 100%; background: var(--blood-red); transition: width 0.1s linear; }
-        .gate-lamp {
-            width: 15px; height: 15px; background: #200; border-radius: 50%;
-            margin: 0 auto; transition: 0.3s;
-        }
-        .gate-lamp.on { background: #f00; box-shadow: 0 0 15px #f00; }
-
         /* LIVE Badge */
         .live-badge {
             position: fixed; bottom: 30px; right: 30px; z-index: 1000;
@@ -285,7 +243,6 @@
         .live-dot { width: 8px; height: 8px; background: #fff; border-radius: 50%; }
         @keyframes live-pulse { 0% { box-shadow: 0 0 0 0 rgba(175, 0, 0, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(175, 0, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(175, 0, 0, 0); } }
 
-        /* Cursed Totem (Easter Egg) */
         #hex-totem {
             position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
             z-index: 100; cursor: pointer; opacity: 0.3; transition: 0.5s;
@@ -296,14 +253,11 @@
             .horror-font { font-size: 4rem; }
             .section-title { font-size: 2.5rem !important; }
             .badge-slot { width: 90px; height: 90px; margin: 10px; }
-            .badge-slot span { font-size: 1.5rem; }
-            #dbd-hud { bottom: 10px; left: 10px; transform: scale(0.8); transform-origin: bottom left; }
+            #dbd-hud { bottom: 10px; left: 10px; transform: scale(0.7); transform-origin: bottom left; }
             #bp-container { top: 10px; right: 10px; transform: scale(0.8); transform-origin: top right; }
             #sc-combo-display-internal { top: -20px; right: -20px; font-size: 2rem; }
             #hex-totem { bottom: 10px; right: 10px; width: 40px; height: 40px; }
             .live-badge { bottom: 60px; right: 10px; padding: 6px 12px; font-size: 10px; }
-            .mantra-grid { display: flex; flex-direction: column; gap: 40px; }
-            .mantra-box { position: static !important; margin-top: 20px; }
             .skill-check-circle { width: 160px; height: 160px; }
             .skill-check-needle { height: 70px; margin-top: -70px; }
             #sc-button { padding: 15px 40px; font-size: 1.2rem; }
@@ -355,20 +309,17 @@
         <p class="mono text-white/30 text-[9px] mt-4 tracking-[0.5em] uppercase">Press SPACE or Click Button</p>
     </div>
 
-    <!-- GENERATOR REPAIR TOOLTIP -->
     <div id="gen-tooltip" class="fixed z-[3000] pointer-events-none opacity-0 transition-opacity duration-500">
         <div class="glass-panel px-4 py-2 border-blood-red/40 bg-black/80">
             <p class="mono text-[10px] text-white tracking-widest animate-pulse">🛠️ [ CLICK_GENERATOR_TO_REPAIR ]</p>
         </div>
     </div>
 
-    <!-- LIVE STATUS -->
     <a href="https://www.youtube.com/@さばの味噌/live" target="_blank" class="live-badge">
         <div class="live-dot"></div>
         <span class="mono text-[10px] font-bold tracking-widest text-white">🔴 ON AIR</span>
     </a>
 
-    <!-- HEX TOTEM (EASTER EGG) -->
     <div id="hex-totem" onclick="curseReality()">
         <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M50 10L15 80H85L50 10Z" stroke="#af0000" stroke-width="2"/>
@@ -378,7 +329,6 @@
         </svg>
     </div>
 
-    <!-- NAME ENTRY OVERLAY -->
     <div id="name-entry-overlay">
         <h2 class="horror-font text-blood-red text-6xl mb-8">NEW RECORD</h2>
         <p class="mono text-white tracking-widest">ENTER YOUR INITIALS</p>
@@ -393,11 +343,10 @@
 
     <div id="main-content" style="opacity: 1;">
         
-        <!-- 1. HERO: THE ASCENDED SURVIVOR -->
+        <!-- 1. HERO -->
         <section class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden">
-            <div class="symbol-bg top-0 left-0" style="transform: rotate(-20deg);">BLOOD</div>
-            <div class="symbol-bg bottom-0 right-0" style="transform: rotate(15deg);">ENTITY</div>
-
+            <div class="symbol-bg top-0 left-0">BLOOD</div>
+            <div class="symbol-bg bottom-0 right-0">ENTITY</div>
             <div class="absolute inset-0 opacity-20 pointer-events-none">
                 <img src="entity_opt.png" class="w-full h-full object-cover mix-blend-screen scale-150 rotate-6" style="filter: blur(15px) sepia(1) hue-rotate(-50deg);">
             </div>
@@ -407,62 +356,32 @@
                 <h1 class="horror-font text-8xl md:text-[15rem] leading-none text-white tracking-tighter mb-10 obsession-bracket">
                     SABANOMISO
                 </h1>
-                <p class="text-xl md:text-3xl mono text-blood-red tracking-[0.5em] uppercase font-bold glitch-text">
-                    Formwork Architect
-                </p>
-                <div class="mt-20 flex flex-col md:flex-row gap-8 justify-center items-center">
-                    <div class="glass-panel px-8 py-4 border-l-4 border-l-blood-red text-left min-w-[280px]">
-                        <p class="mono text-[10px] text-gray-500 mb-1">REAL_IDENTITY</p>
-                        <p class="text-xl font-bold tracking-widest">Sabanomiso</p>
-                    </div>
-                    <div class="glass-panel px-8 py-4 border-l-4 border-l-tech-cyan text-left min-w-[280px]">
-                        <p class="mono text-[10px] text-gray-500 mb-1">MAIN_PERK</p>
-                        <p class="text-xl font-bold tracking-widest">KOTSU KOTSU</p>
-                    </div>
-                </div>
+                <p class="text-xl md:text-3xl mono text-blood-red tracking-[0.5em] uppercase font-bold glitch-text">Formwork Architect</p>
             </div>
-
-            <a href="#contact" class="absolute bottom-20 left-1/2 -translate-x-1/2 mono text-[10px] tracking-[1.5em] opacity-30 hover:opacity-100 transition-opacity animate-pulse">
-                SCROLL_TO_REPAIR_GATE
-            </a>
         </section>
 
-        <!-- 2. THE MANTRA: KOTSU KOTSU -->
+        <!-- 2. THE MANTRA -->
         <section class="max-w-7xl mx-auto px-6 py-60 relative overflow-hidden">
             <div class="symbol-bg top-1/2 left-1/4">FAITH</div>
-            
-            <!-- Intro Text -->
             <div class="max-w-4xl mb-32 reveal">
                 <span class="text-blood-red mono text-xs tracking-widest block mb-6">ARCHIVE_DATA // PHILOSOPHY</span>
-                <h2 class="text-5xl md:text-8xl font-bold mb-12 leading-tight section-title">
-                    「コツコツが<br><span class="text-blood-red glitch-text">勝つコツ</span>」
-                </h2>
+                <h2 class="text-5xl md:text-8xl font-bold mb-12 leading-tight section-title">「コツコツが<br><span class="text-blood-red glitch-text">勝つコツ</span>」</h2>
                 <div class="space-y-10 text-gray-300 leading-relaxed text-xl max-w-2xl">
-                    <p>「恩師から授かったこの言葉を、私は一秒たりとも忘れたことはない。仕事も、配信も、そして人生も。地味な積み重ねだけが、霧の向こう側へ辿り著く唯一の手段だ。」</p>
-                    <p>自分が建てた枠にコンクリートを流し、脱型した瞬間に建物の真実の形が現れる。あの瞬間の誇りのために、私は「嘘のない世界」を築き続ける。</p>
+                    <p>「恩師から授かったこの言葉を、私は一秒たりとも忘れたことはない。仕事も、配信も、そして人生も。」</p>
+                    <p>自分が建てた枠にコンクリートを流し、脱型した瞬間に建物の真実の形が現れる。あの瞬間の誇りのために。</p>
                 </div>
             </div>
 
-            <!-- Interaction Area: Generator & Leaderboard (No Overlap) -->
             <div class="grid md:grid-cols-2 gap-16 items-start reveal delay-300">
-                <!-- Left: Generator -->
                 <div class="glass-panel p-4 bg-white/5 relative overflow-hidden group border-blood-red/20">
                     <div class="gen-label">SYSTEM: REPAIRABLE_UNIT</div>
-                    <img src="gen_opt.jpg" class="w-full h-auto opacity-70 mix-blend-screen transition-transform duration-[4s] group-hover:scale-110" style="filter: drop-shadow(0 0 30px rgba(175,0,0,0.3)) grayscale(0.5);">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                    <!-- Generator Animation Overlay -->
-                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none bg-red-900/10 animate-pulse"></div>
-                    <p class="absolute bottom-4 left-4 mono text-[8px] text-white/40 tracking-widest">[ GENERATOR_UNIT_01 ]</p>
+                    <img src="gen_opt.jpg" class="w-full h-auto opacity-70 mix-blend-screen transition-transform duration-[4s] group-hover:scale-110">
+                    <div class="absolute inset-0 bg-red-900/10 animate-pulse opacity-0 group-hover:opacity-100 pointer-events-none"></div>
                 </div>
 
-                <!-- Right: Status Box & Leaderboard -->
                 <div class="glass-panel p-10 border-blood-red/40 bg-black/40 shadow-2xl backdrop-blur-xl">
                     <p class="typewriter text-blood-red text-2xl mb-4 italic">真実の形は、脱型の瞬間に。</p>
-                    <p class="text-xs text-gray-400 leading-loose mb-10">
-                        型枠大工歴13年。一級建築士としての視点。すべての工程に妥協はない。
-                    </p>
-                    
-                    <!-- HIGH SCORE LEADERBOARD -->
+                    <p class="text-xs text-gray-400 leading-loose mb-10">型枠大工歴13年。一級建築士としての視点。すべての工程に妥協はない。</p>
                     <div id="leaderboard-container" class="mt-4 border-t border-white/5 pt-8">
                         <p class="horror-font text-gold text-center mb-6 text-2xl tracking-widest">TOP REPAIRERS</p>
                         <div id="leaderboard-list" class="space-y-2">
@@ -473,77 +392,44 @@
             </div>
         </section>
 
-        <!-- 3. STATUS: THE ARSENAL -->
+        <!-- 3. THE ARSENAL -->
         <section class="py-60 bg-gradient-to-b from-transparent via-blood-red/5 to-transparent relative">
             <div class="max-w-5xl mx-auto px-6 text-center">
-                <span class="text-tech-cyan mono text-xs tracking-widest block mb-10">ELITE_STATUS_DATA</span>
-                <h3 class="horror-font text-6xl md:text-8xl text-white mb-32 opacity-30 reveal section-title">THE_ARSENAL</h3>
+                <h3 class="horror-font text-6xl md:text-8xl text-white mb-32 opacity-30 reveal">THE_ARSENAL</h3>
                 <div class="flex flex-wrap justify-center gap-10 md:gap-20 reveal">
-                    <div class="badge-slot group" onclick="showNotify('ULTRARARE: 1st CLASS ARCHITECT')">
-                        <div class="badge-content">
-                            <span class="text-3xl filter drop-shadow(0 0 10px #fff)">🏗️</span>
-                            <p class="text-[9px] mono mt-4 opacity-50 group-hover:opacity-100">ARCHITECT_1ST</p>
-                        </div>
+                    <div class="badge-slot group" onclick="showNotify('ULTRARARE: 1ST CLASS ARCHITECT')">
+                        <div class="badge-content"><span class="text-3xl">🏗️</span><p class="text-[9px] mono mt-4 opacity-50">ARCHITECT_1ST</p></div>
                     </div>
                     <div class="badge-slot group" onclick="showNotify('ULTRARARE: FORMWORK MASTER')">
-                        <div class="badge-content">
-                            <span class="text-3xl filter drop-shadow(0 0 10px #fff)">🧱</span>
-                            <p class="text-[9px] mono mt-4 opacity-50 group-hover:opacity-100">FORMWORK_MSTR</p>
-                        </div>
+                        <div class="badge-content"><span class="text-3xl">🧱</span><p class="text-[9px] mono mt-4 opacity-50">FORMWORK_MSTR</p></div>
                     </div>
-                    <div class="badge-slot group" onclick="showNotify('ULTRARARE: BOOKKEEPING LEVEL 1')">
-                        <div class="badge-content">
-                            <span class="text-3xl filter drop-shadow(0 0 10px #fff)">📈</span>
-                            <p class="text-[9px] mono mt-4 opacity-50 group-hover:opacity-100">BOOKKEEPING_L1</p>
-                        </div>
+                    <div class="badge-slot group" onclick="showNotify('ULTRARARE: BOOKKEEPING L1')">
+                        <div class="badge-content"><span class="text-3xl">📈</span><p class="text-[9px] mono mt-4 opacity-50">BOOKKEEPING_L1</p></div>
                     </div>
                     <div class="badge-slot group" onclick="showNotify('ELITE: 400M SPECIALIST')">
-                        <div class="badge-content">
-                            <span class="text-3xl filter drop-shadow(0 0 10px #fff)">🏃</span>
-                            <p class="text-[9px] mono mt-4 opacity-50 group-hover:opacity-100">400M_ELITE</p>
-                        </div>
+                        <div class="badge-content"><span class="text-3xl">🏃</span><p class="text-[9px] mono mt-4 opacity-50">400M_ELITE</p></div>
                     </div>
                 </div>
-                <p class="mt-20 text-gray-300 typewriter text-sm md:text-base max-w-2xl mx-auto leading-loose px-4">
-                    「勉強は苦手だ」。だからこそ、1日1ページを8年続けた。<br>
-                    やりたくない意識を殺した先に、この設計図がある。
-                </p>
             </div>
         </section>
 
         <!-- 4. CHRONICLES -->
-        <section class="max-w-6xl mx-auto px-6 py-60 relative">
-            <span class="text-blood-red mono text-xs tracking-widest block mb-12">CHRONICLES_02 // SURVIVAL</span>
+        <section class="max-w-6xl mx-auto px-6 py-60">
             <div class="space-y-32">
                 <div class="reveal">
                     <div class="glass-panel p-10 md:p-24 border-l-8 border-l-blood-red relative overflow-hidden group">
-                        <div class="absolute -top-10 -right-10 horror-font text-[10rem] md:text-[15rem] opacity-[0.02] pointer-events-none group-hover:opacity-[0.05] transition-opacity">2013</div>
-                        <div class="grid md:grid-cols-3 gap-12">
-                            <div class="col-span-1">
-                                <p class="mono text-blood-red text-sm mb-4 tracking-widest uppercase">Phase: Origin</p>
-                                <h4 class="text-3xl md:text-4xl font-bold mb-6">HS Grad &<br>Darkness</h4>
-                                <p class="text-sm text-gray-400">2013年 高校卒業。化粧品会社を経て、上京。23歳で独立。</p>
-                            </div>
-                            <div class="col-span-2 text-gray-300 text-lg md:text-xl leading-relaxed">
-                                「これ以上成長できない」。師匠と同じレベルに達した確信が、私を独立へと駆り立てた。しかし待っていたのは、手元に1円も残らない地獄の借金生活。1期から3期まで、私は生ける屍のように、昼夜問わず現場を回した。
-                            </div>
-                        </div>
+                        <div class="absolute -top-10 -right-10 horror-font text-[10rem] opacity-[0.02] pointer-events-none">2013</div>
+                        <p class="mono text-blood-red text-sm mb-4 tracking-widest uppercase">Phase: Origin</p>
+                        <h4 class="text-3xl md:text-4xl font-bold mb-6 text-white">HS Grad & Darkness</h4>
+                        <p class="text-gray-300 text-lg leading-relaxed">師匠と同じレベルに達した確信が、私を独立へと駆り立てた。しかし待っていたのは地獄の借金生活。</p>
                     </div>
                 </div>
-
                 <div class="reveal">
                     <div class="glass-panel p-10 md:p-24 border-r-8 border-r-tech-cyan text-right group">
-                        <div class="absolute -top-10 -left-10 horror-font text-[10rem] md:text-[15rem] opacity-[0.02] pointer-events-none group-hover:opacity-[0.05] transition-opacity">WORK</div>
-                        <div class="grid md:grid-cols-3 gap-12">
-                            <div class="col-span-2 text-gray-300 text-lg md:text-xl leading-relaxed order-2 md:order-1 text-left md:text-right">
-                                昼だけでは足りず、夜勤もすべて請け負った。不眠不休の日々を「コツコツ」と積み上げ、私はようやく経営の軌道を修正した。成功とは、達成できるかギリギリの目標を定め、それを踏破し続けた先にある報酬だ。
-                            </div>
-                            <div class="col-span-1 order-1 md:order-2">
-                                <p class="mono text-tech-cyan text-sm mb-4 tracking-widest uppercase">Phase: Ascension</p>
-                                <h4 class="text-3xl md:text-4xl font-bold mb-6">The Night<br>Shift</h4>
-                                <p class="text-sm text-gray-400">霧の追撃を振り切り、ゲートを開く鍵を手に入れた。独立8期目、私はまだ止まらない。</p>
-                            </div>
-                        </div>
+                        <div class="absolute -top-10 -left-10 horror-font text-[10rem] opacity-[0.02] pointer-events-none">WORK</div>
+                        <p class="mono text-tech-cyan text-sm mb-4 tracking-widest uppercase">Phase: Ascension</p>
+                        <h4 class="text-3xl md:text-4xl font-bold mb-6 text-white">The Night Shift</h4>
+                        <p class="text-gray-300 text-lg leading-relaxed">不眠不休の日々を「コツコツ」と積み上げ、経営の軌道を修正した。</p>
                     </div>
                 </div>
             </div>
@@ -551,15 +437,10 @@
 
         <!-- 5. MISSION -->
         <section class="py-60 bg-white/5 relative overflow-hidden">
-            <div class="symbol-bg top-0 left-1/2 opacity-[0.02]">REFORM</div>
             <div class="max-w-4xl mx-auto px-6 text-center reveal">
-                <span class="text-blood-red mono text-xs tracking-widest block mb-12">MISSION_03 // VISION</span>
-                <h3 class="text-4xl md:text-8xl font-bold mb-16 leading-tight section-title">
-                    若手が、<br><span class="text-tech-cyan glitch-text">呼吸できる業界へ。</span>
-                </h3>
-                <div class="space-y-10 text-gray-300 text-xl md:text-2xl leading-relaxed">
-                    <p>「建設業界の古い常識を壊し、若手が働きやすい環境、福利厚生が充実した場所を創りたい。」</p>
-                    <p>平均年齢が低く、しがらみのないフラットな組織。上下関係よりもコミュニケーションを。私は未来の職人たちのための、霧の中の「セーフハウス」を構築する。一つ一つ丁寧な仕事で、足元を救われぬよう歩む。</p>
+                <h3 class="text-4xl md:text-8xl font-bold mb-16 leading-tight section-title text-white">若手が、<br><span class="text-tech-cyan glitch-text">呼吸できる業界へ。</span></h3>
+                <div class="space-y-10 text-gray-300 text-xl leading-relaxed">
+                    <p>平均年齢が低く、しがらみのないフラットな組織。私は未来の職人たちのための「セーフハウス」を構築する。</p>
                 </div>
             </div>
         </section>
@@ -568,67 +449,42 @@
         <section class="max-w-6xl mx-auto px-6 py-60">
             <div class="grid md:grid-cols-2 gap-20 items-center">
                 <div class="reveal">
-                    <span class="text-blood-red mono text-xs tracking-widest block mb-10">CONNECT_04 // ENTERTAINMENT</span>
                     <h3 class="horror-font text-5xl md:text-6xl text-white mb-10">KIRINOMORI_BROADCAST</h3>
-                    <p class="text-gray-300 text-lg md:text-xl leading-relaxed mb-8">
-                        「嫌なことがあった時、私の配信を見て元気になってほしい。」<br>
-                        DBDの霧の森で、リスナーと同じ目線で楽しみ、共に元気を分かち合う。経営者としての裏話や哲学を「包み隠さず」共有する、唯一無二の接続ポイント。視野を広げ、人を観察する目を養う場。
-                    </p>
+                    <p class="text-gray-300 text-lg leading-relaxed mb-8">嫌なことがあった時、私の配信を見て元気になってほしい。</p>
                     <div class="flex flex-wrap gap-6">
-                        <a href="https://www.youtube.com/@さばの味噌" target="_blank" class="glass-panel px-10 py-5 mono text-xs hover:bg-blood-red transition-all">YT_SIGNAL_LIVE</a>
-                        <a href="https://x.com/sabanomiso1218" target="_blank" class="glass-panel px-10 py-5 mono text-xs hover:bg-tech-cyan transition-all">X_DATA_SYNCED</a>
+                        <a href="https://www.youtube.com/@さばの味噌" target="_blank" class="glass-panel px-10 py-5 mono text-xs hover:bg-blood-red">YT_SIGNAL_LIVE</a>
+                        <a href="https://x.com/sabanomiso1218" target="_blank" class="glass-panel px-10 py-5 mono text-xs hover:bg-tech-cyan">X_DATA_SYNCED</a>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4 reveal delay-400 relative">
-                    <div class="symbol-bg -top-20 -right-10 opacity-10">LIFE</div>
-                    <div class="glass-panel p-10 text-center"><div class="text-4xl mb-4">🏕️</div><p class="mono text-[10px] text-gray-400 uppercase">CAMPING</p></div>
-                    <div class="glass-panel p-10 text-center"><div class="text-4xl mb-4">🚗</div><p class="mono text-[10px] text-gray-400 uppercase">DRIVING</p></div>
-                    <div class="glass-panel p-10 text-center col-span-2"><div class="text-4xl mb-4">🎮</div><p class="mono text-[10px] text-gray-300 uppercase tracking-widest">Dead_By_Daylight</p></div>
+                <div class="grid grid-cols-2 gap-4 reveal relative">
+                    <div class="glass-panel p-10 text-center"><div class="text-4xl">🏕️</div><p class="mono text-[10px] text-gray-400">CAMPING</p></div>
+                    <div class="glass-panel p-10 text-center"><div class="text-4xl">🚗</div><p class="mono text-[10px] text-gray-400">DRIVING</p></div>
+                    <div class="glass-panel p-10 text-center col-span-2"><div class="text-4xl">🎮</div><p class="mono text-[10px] text-gray-300">DEAD BY DAYLIGHT</p></div>
                 </div>
             </div>
         </section>
 
-        <!-- 7. PACT: THE COVENANT -->
+        <!-- 7. CONTACT -->
         <section class="max-w-5xl mx-auto px-6 py-60" id="contact">
-            <div class="glass-panel p-8 md:p-32 relative border-2 border-blood-red/20 shadow-2xl">
-                <div class="absolute -top-10 -right-5 horror-font text-[10rem] md:text-[14rem] opacity-5 pointer-events-none">PACT</div>
-                <h3 class="horror-font text-6xl md:text-[10rem] text-white mb-12 section-title">SIGN THE PACT</h3>
-                
-                <div class="grid md:grid-cols-2 gap-16">
-                    <div class="space-y-16">
-                        <div class="reveal">
-                            <p class="text-blood-red mono text-[10px] mb-2 tracking-[0.5em]">MISSION_01</p>
-                            <p class="font-bold text-2xl mb-4">🏃 陸上コーチング (400m)</p>
-                            <p class="text-sm text-gray-300 leading-relaxed">ただメニューをこなすのではなく、練習の「意図」を理解させる。伸び悩む君へ、私の12年のマインドを。 </p>
-                        </div>
-                        <div class="reveal">
-                            <p class="text-blood-red mono text-[10px] mb-2 tracking-[0.5em]">MISSION_02</p>
-                            <p class="font-bold text-2xl mb-4">🏗️ 型枠大工・経営伝承</p>
-                            <p class="text-sm text-gray-300 leading-relaxed">一級建築士から直接学ぶ、本物の職人魂。未来への一歩が踏み出せない君を、私は見捨てない。</p>
-                        </div>
-                    </div>
-
-                    <form id="contact-form" class="space-y-8">
-                        <input type="text" id="form-name" required class="input-box" placeholder="IDENTITY / 名前">
-                        <input type="email" id="form-email" required class="input-box" placeholder="CHANNEL / メールアドレス">
-                        <select id="form-type" class="input-box">
-                            <option value="Construction">型枠大工への応募 / 経営修業</option>
-                            <option value="Coaching">陸上コーチング希望</option>
-                            <option value="Streaming">配信コラボ / その他</option>
-                        </select>
-                        <textarea id="form-message" required class="input-box h-48" placeholder="YOUR WILL / 魂のメッセージ"></textarea>
-                        <button type="submit" id="submit-btn" class="w-full bg-blood-red text-white py-6 font-bold tracking-[2em] hover:bg-white hover:text-black transition-all">TRANSMIT</button>
-                    </form>
-                </div>
+            <div class="glass-panel p-8 md:p-32 relative border-2 border-blood-red/20">
+                <h3 class="horror-font text-6xl md:text-[10rem] text-white mb-12">SIGN THE PACT</h3>
+                <form id="contact-form" class="space-y-8">
+                    <input type="text" id="form-name" required class="input-box" placeholder="IDENTITY / 名前">
+                    <input type="email" id="form-email" required class="input-box" placeholder="CHANNEL / メールアドレス">
+                    <select id="form-type" class="input-box">
+                        <option value="Construction">型枠大工への応募 / 経営修業</option>
+                        <option value="Coaching">陸上コーチング希望</option>
+                        <option value="Streaming">配信コラボ / その他</option>
+                    </select>
+                    <textarea id="form-message" required class="input-box h-48" placeholder="YOUR WILL"></textarea>
+                    <button type="submit" id="submit-btn" class="w-full bg-blood-red text-white py-6 font-bold tracking-[2em] hover:bg-white hover:text-black transition-all">TRANSMIT</button>
+                </form>
             </div>
         </section>
 
-        <!-- FOOTER -->
         <footer class="py-20 border-t border-white/5 text-center">
-            <p class="text-[10px] mono opacity-10 tracking-[1.5em] mb-4 uppercase">The_Architecture_of_Survival</p>
-            <p class="text-[8px] mono opacity-10 uppercase tracking-widest">Project: Hexa Relation // Official_Save_Sabano // &copy; 2026</p>
+            <p class="text-[8px] mono opacity-10 uppercase tracking-widest">&copy; 2026 Hexa Relation // Official_Save_Sabanomiso</p>
         </footer>
-
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -654,76 +510,25 @@
             return audioCtx;
         }
 
-        let isUnlocked = false;
-        function unlockRite() {
-            if (isUnlocked) return;
-            isUnlocked = true;
-            
-            const gate = document.getElementById('intro-gate');
-            if (gate) {
-                gate.style.opacity = '0';
-                gate.style.pointerEvents = 'none';
-                setTimeout(() => {
-                    gate.remove();
-                    const main = document.getElementById('main-content');
-                    if (main) main.style.opacity = '1';
-                    addBP(2000, "ESCAPE_READY");
-                }, 1000);
-            }
-
-            // Audio is secondary, don't let it block transition
+        function playSound(freq, type = 'square', duration = 0.6, vol = 0.2) {
             try {
                 const ctx = getAudioCtx();
-                ctx.resume().then(() => playClank()).catch(() => {});
-            } catch (e) {}
-        }
-
-        // Global click listener as a safety fallback
-        window.addEventListener('click', (e) => {
-            if (!isUnlocked && document.getElementById('intro-gate')) {
-                unlockRite();
-            }
-        });
-
-        function playSound(freq, type = 'square', duration = 0.6, vol = 0.2) {
-            const ctx = getAudioCtx();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain); gain.connect(ctx.destination);
-            osc.type = type;
-            osc.frequency.setValueAtTime(freq, ctx.currentTime);
-            if (duration > 0.5) osc.frequency.exponentialRampToValueAtTime(freq/2, ctx.currentTime + duration);
-            gain.gain.setValueAtTime(vol, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-            osc.start(); osc.stop(ctx.currentTime + duration);
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                if (duration > 0.5) osc.frequency.exponentialRampToValueAtTime(freq/2, ctx.currentTime + duration);
+                gain.gain.setValueAtTime(vol, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+                osc.start(); osc.stop(ctx.currentTime + duration);
+            } catch(e) {}
         }
 
         function playBP() { playSound(880, 'sine', 0.3, 0.1); }
         function playClank() { playSound(120, 'square', 0.6, 0.2); }
         function playScream() { playSound(800, 'sawtooth', 1.5, 0.1); }
-        function playBuzzer() { playSound(100, 'triangle', 2.0, 0.3); }
         function playPing() { playSound(600, 'sine', 0.1, 0.2); }
-
-        let isUnlocked = false;
-        function unlockRite() {
-            if (isUnlocked) return;
-            isUnlocked = true;
-            
-            // Audio setup (optional, don't let it block)
-            try {
-                getAudioCtx().resume().then(() => playClank()).catch(() => {});
-            } catch (e) {}
-
-            const gate = document.getElementById('intro-gate');
-            gate.style.opacity = '0';
-            gate.style.pointerEvents = 'none';
-            
-            setTimeout(() => {
-                gate.remove();
-                document.getElementById('main-content').style.opacity = '1';
-                addBP(2000, "ESCAPE_READY");
-            }, 1500);
-        }
 
         function initApp() {
             db.collection('analytics').doc(PAGE_ID).set({
@@ -749,130 +554,61 @@
             initKonami();
             initSkillCheck();
             loadLeaderboard();
+            addBP(2000, "WELCOME");
         }
 
-        // Leaderboard System
         async function loadLeaderboard() {
             const list = document.getElementById('leaderboard-list');
             try {
                 const snapshot = await db.collection('leaderboard').orderBy('score', 'desc').limit(5).get();
-                if (snapshot.empty) return;
                 list.innerHTML = '';
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     list.innerHTML += `<div class="leader-row"><span class="mono">${data.name}</span><span class="mono">${data.score}</span></div>`;
                 });
-            } catch (err) {
-                console.error("Leaderboard load failed", err);
-            }
+            } catch (err) {}
         }
 
-        // Skill Check System (Score Attack Mode)
         let scActive = false;
         let scCombo = 0;
-        let scBaseDuration = 2200;
         let scAnimId;
 
         function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
             const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
-            return {
-                x: centerX + (radius * Math.cos(angleInRadians)),
-                y: centerY + (radius * Math.sin(angleInRadians))
-            };
+            return { x: centerX + (radius * Math.cos(angleInRadians)), y: centerY + (radius * Math.sin(angleInRadians)) };
         }
 
         function describeArc(x, y, radius, startAngle, endAngle) {
             const start = polarToCartesian(x, y, radius, startAngle);
             const end = polarToCartesian(x, y, radius, endAngle);
             const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-            return [
-                "M", start.x, start.y, 
-                "A", radius, radius, 0, largeArcFlag, 1, end.x, end.y
-            ].join(" ");
+            return ["M", start.x, start.y, "A", radius, radius, 0, largeArcFlag, 1, end.x, end.y].join(" ");
         }
 
         function initSkillCheck() {
             const gen = document.querySelector('img[src="gen_opt.jpg"]');
             if (gen) {
-                gen.style.cursor = 'pointer';
                 const tooltip = document.getElementById('gen-tooltip');
                 gen.parentElement.addEventListener('mousemove', (e) => {
-                    tooltip.style.left = (e.clientX + 20) + 'px';
-                    tooltip.style.top = (e.clientY + 20) + 'px';
+                    tooltip.style.left = (e.clientX + 20) + 'px'; tooltip.style.top = (e.clientY + 20) + 'px';
                     tooltip.style.opacity = '1';
                 });
-                gen.parentElement.addEventListener('mouseleave', () => {
-                    tooltip.style.opacity = '0';
-                });
-
+                gen.parentElement.addEventListener('mouseleave', () => tooltip.style.opacity = '0');
                 gen.parentElement.addEventListener('click', () => {
                     if (!scActive && document.getElementById('name-entry-overlay').style.display !== 'flex') {
-                        scCombo = 0;
-                        updateComboDisplay();
-                        startSkillCheck();
-                    }
-                });
-            }
-        }
-
-        // Skill Check System (Score Attack Mode)
-        let scActive = false;
-        let scCombo = 0;
-        let scBaseDuration = 2200;
-        let scAnimId;
-
-        function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
-            const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
-            return {
-                x: centerX + (radius * Math.cos(angleInRadians)),
-                y: centerY + (radius * Math.sin(angleInRadians))
-            };
-        }
-
-        function describeArc(x, y, radius, startAngle, endAngle) {
-            const start = polarToCartesian(x, y, radius, startAngle);
-            const end = polarToCartesian(x, y, radius, endAngle);
-            const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-            return [
-                "M", start.x, start.y, 
-                "A", radius, radius, 0, largeArcFlag, 1, end.x, end.y
-            ].join(" ");
-        }
-
-        function initSkillCheck() {
-            const gen = document.querySelector('img[src="gen_opt.jpg"]');
-            if (gen) {
-                gen.style.cursor = 'pointer';
-                const tooltip = document.getElementById('gen-tooltip');
-                gen.parentElement.addEventListener('mousemove', (e) => {
-                    tooltip.style.left = (e.clientX + 20) + 'px';
-                    tooltip.style.top = (e.clientY + 20) + 'px';
-                    tooltip.style.opacity = '1';
-                });
-                gen.parentElement.addEventListener('mouseleave', () => {
-                    tooltip.style.opacity = '0';
-                });
-
-                gen.parentElement.addEventListener('click', () => {
-                    if (!scActive && document.getElementById('name-entry-overlay').style.display !== 'flex') {
-                        scCombo = 0;
-                        updateComboDisplay();
-                        startSkillCheck();
+                        scCombo = 0; updateComboDisplay(); startSkillCheck();
                     }
                 });
             }
         }
 
         function updateComboDisplay() {
-            const el = document.getElementById('sc-combo-display-internal');
-            el.innerText = scCombo;
-            if (scActive) document.getElementById('skill-check-container').style.display = 'flex';
+            document.getElementById('sc-combo-display-internal').innerText = scCombo;
         }
 
         function startSkillCheck() {
             if (scAnimId) cancelAnimationFrame(scAnimId);
             scActive = true;
-            
             const container = document.getElementById('skill-check-container');
             const needle = container.querySelector('.skill-check-needle');
             const arcGood = document.getElementById('sc-arc-good');
@@ -902,134 +638,74 @@
             };
 
             const finishRound = (angle) => {
-                scActive = false;
-                needleRunning = false;
+                scActive = false; needleRunning = false;
                 if (scAnimId) cancelAnimationFrame(scAnimId);
                 window.removeEventListener('keydown', handleInput);
                 btn.removeEventListener('click', handleInput);
-                checkSkillCheck(angle, targetRotation, targetWidth, greatWidth);
+                checkResult(angle, targetRotation, targetWidth, greatWidth);
             };
 
             playPing();
-            
             setTimeout(() => {
                 if (!scActive) return;
                 needleRunning = true;
-                
-                const duration = Math.max(400, scBaseDuration - (scCombo * 100));
+                const duration = Math.max(400, 2200 - (scCombo * 100));
                 const start = performance.now();
-                
                 function animate(now) {
                     if (!needleRunning) return;
                     const progress = (now - start) / duration;
                     currentAngleInternal = progress * 360;
-                    
                     if (progress < 1) {
                         needle.style.transform = `rotate(${currentAngleInternal}deg)`;
                         scAnimId = requestAnimationFrame(animate);
                     } else {
-                        needle.style.transform = `rotate(360deg)`;
-                        finishRound(360); // Auto fail
+                        needle.style.transform = `rotate(360deg)`; finishRound(360);
                     }
                 }
-                
                 window.addEventListener('keydown', handleInput);
                 btn.addEventListener('click', handleInput);
                 scAnimId = requestAnimationFrame(animate);
             }, 600);
         }
 
-        function checkSkillCheck(angle, targetRotation, targetWidth, greatWidth) {
+        function checkResult(angle, targetRotation, targetWidth, greatWidth) {
             const diff = angle - targetRotation;
-            
             if (diff >= 0 && diff <= greatWidth) {
-                scCombo += 2;
-                addBP(2000, "GREAT_SKILL_CHECK");
-                playSound(1200, 'sine', 0.15);
-                flashCircle('#fff');
-                updateComboDisplay();
-                setTimeout(startSkillCheck, 300); 
+                scCombo += 2; addBP(2000, "GREAT"); flashCircle('#fff'); updateComboDisplay(); setTimeout(startSkillCheck, 400);
             } else if (diff > greatWidth && diff <= targetWidth) {
-                scCombo += 1;
-                addBP(500, "GOOD_SKILL_CHECK");
-                flashCircle('rgba(255,255,255,0.5)');
-                updateComboDisplay();
-                setTimeout(startSkillCheck, 500);
+                scCombo += 1; addBP(500, "GOOD"); flashCircle('rgba(255,255,255,0.5)'); updateComboDisplay(); setTimeout(startSkillCheck, 600);
             } else {
-                failSkillCheck();
+                failGame();
             }
         }
 
         function flashCircle(color) {
             const circle = document.querySelector('.skill-check-circle');
-            circle.style.borderColor = color;
-            circle.style.boxShadow = `0 0 30px ${color}`;
-            setTimeout(() => {
-                circle.style.borderColor = "";
-                circle.style.boxShadow = "";
-            }, 300);
+            circle.style.borderColor = color; circle.style.boxShadow = `0 0 30px ${color}`;
+            setTimeout(() => { circle.style.borderColor = ""; circle.style.boxShadow = ""; }, 300);
         }
 
-        function failSkillCheck() {
-            scActive = false;
-            const finalScore = scCombo;
-            scCombo = 0;
-            updateComboDisplay();
+        function failGame() {
+            scActive = false; const finalScore = scCombo; scCombo = 0; updateComboDisplay();
             document.getElementById('skill-check-container').style.display = 'none';
             playSound(50, 'square', 0.5, 0.5);
             document.body.style.animation = "glitch 0.2s 3";
             setTimeout(() => document.body.style.animation = "", 600);
             document.getElementById('status-sabanomiso').classList.add('injured');
-            
-            if (finalScore > 0) {
-                setTimeout(() => openNameEntry(finalScore), 1000);
-            }
+            if (finalScore > 0) setTimeout(() => openNameEntry(finalScore), 1000);
         }
 
-        function failSkillCheck() {
-            scActive = false;
-            const finalScore = scCombo;
-            scCombo = 0;
-            updateComboDisplay();
-            document.getElementById('skill-check-container').style.display = 'none';
-            playSound(50, 'square', 0.5, 0.5);
-            document.body.style.animation = "glitch 0.2s 3";
-            setTimeout(() => document.body.style.animation = "", 600);
-            document.getElementById('status-sabanomiso').classList.add('injured');
-            
-            if (finalScore > 0) {
-                setTimeout(() => openNameEntry(finalScore), 1000);
-            }
-        }
-
-        // Retro Name Entry
-        let entryScore = 0;
-        let entryChars = ['', '', ''];
-        let entryIndex = 0;
-
+        let entryScore = 0; let entryChars = ['', '', '']; let entryIndex = 0;
         function openNameEntry(score) {
-            entryScore = score;
-            entryChars = ['', '', ''];
-            entryIndex = 0;
+            entryScore = score; entryChars = ['', '', '']; entryIndex = 0;
             document.getElementById('name-entry-overlay').style.display = 'flex';
-            updateNameDisplay();
-            window.addEventListener('keydown', handleNameInput);
+            updateNameDisplay(); window.addEventListener('keydown', handleNameInput);
         }
 
         function handleNameInput(e) {
-            if (e.key === 'Backspace') {
-                if (entryIndex > 0) {
-                    entryIndex--;
-                    entryChars[entryIndex] = '';
-                }
-            } else if (e.key.length === 1 && /^[a-zA-Z0-9]$/.test(e.key)) {
-                if (entryIndex < 3) {
-                    entryChars[entryIndex] = e.key.toUpperCase();
-                    entryIndex++;
-                }
-            } else if (e.key === 'Enter') {
-                if (entryIndex === 3) submitScore();
-            }
+            if (e.key === 'Backspace') { if (entryIndex > 0) { entryIndex--; entryChars[entryIndex] = ''; } }
+            else if (e.key.length === 1 && /^[a-zA-Z0-9]$/.test(e.key)) { if (entryIndex < 3) { entryChars[entryIndex] = e.key.toUpperCase(); entryIndex++; } }
+            else if (e.key === 'Enter') { if (entryIndex === 3) submitScore(); }
             updateNameDisplay();
         }
 
@@ -1044,127 +720,55 @@
             window.removeEventListener('keydown', handleNameInput);
             const name = entryChars.join('');
             try {
-                await db.collection('leaderboard').add({
-                    name: name,
-                    score: entryScore,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                document.getElementById('name-entry-overlay').style.display = 'none';
-                showNotify("RECORDS_UPDATED. WELL DONE SURVIVOR.");
-                loadLeaderboard();
-            } catch (err) {
-                console.error("Score submit failed", err);
-                document.getElementById('name-entry-overlay').style.display = 'none';
-            }
+                await db.collection('leaderboard').add({ name, score: entryScore, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                document.getElementById('name-entry-overlay').style.display = 'none'; loadLeaderboard();
+            } catch (err) {}
         }
 
-        // Exit Gate Switch
-        let gateProgress = 0;
-        let gateActive = false;
-        function triggerGate(e) {
-            if (gateActive) return;
-            const form = document.getElementById('contact-form');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-            
-            gateActive = true;
-            playBuzzer();
-            document.getElementById('gate-lever').classList.add('active');
-            document.getElementById('gate-lamp').classList.add('on');
-            
-            const interval = setInterval(() => {
-                gateProgress += 2;
-                document.getElementById('gate-progress').style.width = gateProgress + '%';
-                if (gateProgress >= 100) {
-                    clearInterval(interval);
-                    completeGate();
-                }
-            }, 50);
-        }
-
-        function completeGate() {
-            addBP(5000, "ESCAPE");
-            playSound(1500, 'sine', 1.0);
-            document.getElementById('submit-btn').click();
-        }
-
-        // Konami Code
         function initKonami() {
-            let keys = [];
-            const konami = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown'];
+            let keys = []; const konami = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown'];
             window.addEventListener('keydown', (e) => {
-                keys.push(e.key);
-                keys = keys.slice(-4);
-                if (JSON.stringify(keys) === JSON.stringify(konami)) {
-                    addBP(3000, "DEVELOPER_BONUS");
-                    playClank();
-                }
+                keys.push(e.key); keys = keys.slice(-4);
+                if (JSON.stringify(keys) === JSON.stringify(konami)) { addBP(3000, "BONUS"); playClank(); }
             });
         }
 
         function curseReality() {
             playScream();
             document.querySelector('.entity-vignette').style.background = "radial-gradient(circle, rgba(175,0,0,0.4) 0%, rgba(0,0,0,1) 100%)";
-            showNotify("HEX: THE_VOID_HAS_CONSUMED_YOUR_SOUL.");
+            showNotify("HEX: CONSUMED");
             document.querySelectorAll('.survivor-status').forEach(s => s.classList.add('injured'));
-            setTimeout(() => {
-                document.querySelector('.entity-vignette').style.background = "";
-            }, 3000);
+            setTimeout(() => document.querySelector('.entity-vignette').style.background = "", 3000);
         }
 
-        // Discord Webhook
-        const webhookUrl = 'https://discord.com/api/webhooks/1507236311180771348/P-wdDn_xEgm7ig5w7s3WHuP3waVmARS1sNi9lkvsmzMuDnUm8S2lKrx6Dv7ieQmtTFO1';
-        
-        document.getElementById('contact-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const payload = {
-                embeds: [{
-                    title: "🔔 SABANO 脱出成功 (コンタクト)",
-                    color: 0xaf0000,
-                    fields: [
-                        { name: "Identity", value: document.getElementById('form-name').value, inline: true },
-                        { name: "Channel", value: document.getElementById('form-email').value, inline: true },
-                        { name: "Type", value: document.getElementById('form-type').value, inline: true },
-                        { name: "Message", value: document.getElementById('form-message').value }
-                    ],
-                    footer: { text: "Hexa Relation Transmission System" },
-                    timestamp: new Date().toISOString()
-                }]
-            };
-
-            try {
-                await fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                showNotify("ESCAPE SUCCESSFUL / 脱出に成功しました。");
-                document.getElementById('contact-form').reset();
-            } catch (err) {
-                showNotify("TRANSMISSION FAILED / エラーが発生しました。");
-            } finally {
-                gateActive = false;
-                gateProgress = 0;
-                document.getElementById('gate-progress').style.width = '0%';
-                document.getElementById('gate-lever').classList.remove('active');
-                document.getElementById('gate-lamp').classList.remove('on');
-            }
-        });
+        function addBP(score, category) {
+            const container = document.getElementById('bp-container');
+            const el = document.createElement('div');
+            el.className = 'bp-popup'; el.innerHTML = `<span class="bp-score">+${score}</span><span class="bp-category">${category}</span>`;
+            container.appendChild(el); setTimeout(() => el.remove(), 3000);
+        }
 
         function showNotify(msg) {
             const el = document.getElementById('notification');
-            el.innerText = msg;
-            el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 5000);
+            el.innerText = msg; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 5000);
         }
 
-        function eggTrigger(e) {
-            e.stopPropagation();
-            playClank();
-            showNotify("SYSTEM: RIVET_SECURED. THE VOID IS WATCHING.");
-        }
+        document.getElementById('contact-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            btn.disabled = true; btn.innerText = "SENDING...";
+            const payload = { embeds: [{ title: "🔔 SABANOMISO 脱出成功", color: 0xaf0000, fields: [
+                { name: "Identity", value: document.getElementById('form-name').value, inline: true },
+                { name: "Channel", value: document.getElementById('form-email').value, inline: true },
+                { name: "Type", value: document.getElementById('form-type').value, inline: true },
+                { name: "Message", value: document.getElementById('form-message').value }
+            ], footer: { text: "Hexa Relation Transmission System" }, timestamp: new Date().toISOString() }] };
+            try {
+                await fetch('https://discord.com/api/webhooks/1507236311180771348/P-wdDn_xEgm7ig5w7s3WHuP3waVmARS1sNi9lkvsmzMuDnUm8S2lKrx6Dv7ieQmtTFO1', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                showNotify("TRANSMISSION SUCCESSFUL"); document.getElementById('contact-form').reset();
+            } catch (err) { showNotify("TRANSMISSION FAILED"); }
+            finally { btn.disabled = false; btn.innerText = "TRANSMIT"; }
+        });
     </script>
 </body>
 </html>
