@@ -434,29 +434,32 @@
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // ライブ状態の検出とテストモード
+        // ライブ状態の検出
         const channelId = 'UCCkB_BgT8t3FgFe8BuIXyWg';
 
-        function checkLiveStatus() {
+        async function checkLiveStatus() {
             const banner = document.getElementById('live-banner');
+            const proxyUrl = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent('https://www.youtube.com/channel/' + channelId + '/live')}`;
             
-            // CORSプロキシを使用してチャンネルのライブページの状態を確認
-            fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://www.youtube.com/channel/${channelId}/live`)}`)
-                .then(response => {
-                    if (response.ok) return response.json();
-                    throw new Error('Network response was not ok.');
-                })
-                .then(data => {
-                    const isLive = data.contents.includes('"isLive":true') || data.contents.includes('videoID');
-                    if (isLive && !data.contents.includes('Upcoming')) {
-                        banner.style.display = 'flex';
-                    } else {
-                        banner.style.display = 'none';
-                    }
-                })
-                .catch(err => {
+            try {
+                const response = await fetch(proxyUrl);
+                if (!response.ok) throw new Error('Proxy response not ok');
+                const text = await response.text();
+                
+                const isLive = text.includes('"isLive":true') || 
+                               text.includes('yt-live-chat-renderer') ||
+                               text.includes('"liveStreamOffline":false') ||
+                               (text.includes('videoId') && !text.includes('Upcoming'));
+                
+                if (isLive) {
+                    banner.style.display = 'flex';
+                } else {
                     banner.style.display = 'none';
-                });
+                }
+            } catch (e) { 
+                console.error("Live check failed:", e);
+                banner.style.display = 'none';
+            }
         }
         checkLiveStatus();
 
