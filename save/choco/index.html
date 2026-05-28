@@ -365,7 +365,7 @@
         <div id="menu-window" class="mother-window">
             <nav class="menu-list">
                 <div class="menu-item" onclick="openEquip()"><div class="finger-cursor"></div>装備</div>
-                <div class="menu-item" onclick="openSkill()"><div class="finger-cursor"></div>技</div>
+                <div class="menu-item" onclick="openSetsunaGame()"><div class="finger-cursor"></div>技</div>
                 <div class="menu-item" onclick="openMagic()"><div class="finger-cursor"></div>術</div>
                 <div class="menu-item" onclick="openItem()"><div class="finger-cursor"></div>実績</div>
                 <div class="menu-item" onclick="openTrade()"><div class="finger-cursor"></div>取引</div>
@@ -493,28 +493,95 @@
 
         function openChocoProfile() {
             openModal('▼ チョコたいちょー', 'Dead by Daylight Mobile<br>公式認定の 公認実況者だ！<br><br>「みんなで 楽しく」を モットーに<br>霧の森を 駆け抜けているぞ。');
+            manualSpark();
         }
 
         // --- ロマサガ3 深掘りギミック ---
 
         // 閃きシステム
         const techs = [
-            { name: 'チェイスの極意', desc: 'ハンターを 翻弄する！<br>「窓枠 越えたら、そこは チョコんち」' },
+            { name: 'チェイスの極意', desc: 'ハンターを 翻弄する！<br>「窓枠 越れたら、そこは チョコんち」' },
             { name: '千手観音', desc: 'YouTube, TikTok, X...<br>全ての コメントを 拾い上げる 秘技！' },
             { name: '大震撃', desc: '拡散の 波動で トレンドを 揺らす！' },
             { name: '活殺自在', desc: '動画編集の 魔力で<br>視聴者の 時間を 奪い去る！' },
             { name: 'チョコのまい', desc: '見ているだけで 癒やされる<br>伝説の 舞踊技だ。' }
         ];
 
-        function randomSpark() {
-            if (Math.random() > 0.3) {
-                const bulb = document.getElementById('spark-bulb-v2');
+        function manualSpark() {
+            const bulb = document.getElementById('spark-bulb-v2');
+            bulb.style.display = 'block';
+            playKyupiSound();
+            setTimeout(() => { bulb.style.display = 'none'; }, 5000);
+        }
+
+        // 刹那の閃きミニゲーム
+        let setsunaActive = false;
+        let setsunaStartTime = 0;
+        let setsunaTimer = null;
+
+        function startSetsuna() {
+            const btn = document.getElementById('setsuna-btn');
+            const result = document.getElementById('setsuna-result');
+            const bulb = document.getElementById('setsuna-bulb');
+            
+            setsunaActive = false;
+            btn.innerText = '・・・';
+            btn.disabled = true;
+            result.innerText = '';
+            bulb.style.display = 'none';
+
+            const waitTime = 1000 + Math.random() * 4000;
+            setsunaTimer = setTimeout(() => {
+                setsunaActive = true;
+                setsunaStartTime = performance.now();
+                btn.innerText = '閃きっ！';
+                btn.disabled = false;
                 bulb.style.display = 'block';
                 playKyupiSound();
-                setTimeout(() => { bulb.style.display = 'none'; }, 5000);
-            }
+
+                // 5秒経過で強制終了
+                setsunaTimer = setTimeout(() => {
+                    if (setsunaActive) {
+                        endSetsuna(true);
+                    }
+                }, 5000);
+            }, waitTime);
         }
-        setInterval(randomSpark, 30000);
+
+        function endSetsuna(isTimeout = false) {
+            if (!setsunaActive && !isTimeout) return;
+            
+            const btn = document.getElementById('setsuna-btn');
+            const result = document.getElementById('setsuna-result');
+            const bulb = document.getElementById('setsuna-bulb');
+            
+            if (isTimeout) {
+                result.innerText = 'タイムアップ！ (5.000s超)';
+            } else {
+                const endTime = performance.now();
+                const diff = (endTime - setsunaStartTime) / 1000;
+                result.innerText = `タイム: ${diff.toFixed(3)}s`;
+            }
+            
+            setsunaActive = false;
+            btn.innerText = 'もういちど';
+            bulb.style.display = 'none';
+            clearTimeout(setsunaTimer);
+        }
+
+        function openSetsunaGame() {
+            const html = `
+                <div class="text-center p-4">
+                    <p class="mb-4">「閃き」のマークが出たら<br>最速でボタンを押せ！</p>
+                    <div class="relative h-20 flex items-center justify-center">
+                        <div id="setsuna-bulb" style="display:none; font-size:3rem; filter: drop-shadow(0 0 10px #ff0);">💡</div>
+                    </div>
+                    <button id="setsuna-btn" class="modal-btn w-full py-4 text-2xl" onclick="setsunaActive ? endSetsuna() : startSetsuna()">スタート</button>
+                    <div id="setsuna-result" class="mt-4 text-2xl font-bold text-orange-600"></div>
+                </div>
+            `;
+            openModal('▼ 刹那の閃き', html);
+        }
 
         function showSparkTech() {
             const tech = techs[Math.floor(Math.random() * techs.length)];
