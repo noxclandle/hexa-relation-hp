@@ -362,6 +362,44 @@
             </div>
         </div>
 
+        <!-- 刹那の一瞬ミニゲームセクション -->
+        <div id="isshun-window" class="mother-window">
+            <h2 class="text-xl mb-4 border-b border-black pb-2 text-center">▼ 刹那の一瞬 (スコアアタック)</h2>
+            <div class="flex flex-col md:flex-row gap-6 items-center justify-around">
+                <div class="text-center">
+                    <div class="relative h-24 w-24 flex items-center justify-center mx-auto mb-2">
+                        <div id="isshun-bulb" style="display:none; font-size:4rem; filter: drop-shadow(0 0 15px #ff0);">💡</div>
+                    </div>
+                    <button id="isshun-btn" class="modal-btn w-48 py-4 text-2xl" onclick="isshunActive ? endIsshun() : startIsshun()">スタート</button>
+                    <div id="isshun-timer-display" class="mt-2 text-3xl font-mono font-bold text-orange-600">0.000s</div>
+                </div>
+                
+                <div class="w-full md:w-64 bg-black/5 p-4 rounded border border-black/10">
+                    <p class="text-sm font-bold mb-2 text-center border-b border-black/20">🏆 歴代TOP 5</p>
+                    <div id="isshun-leaderboard" class="text-sm space-y-1 font-mono">
+                        <div class="flex justify-between"><span>1. ---</span><span>---s</span></div>
+                        <div class="flex justify-between"><span>2. ---</span><span>---s</span></div>
+                        <div class="flex justify-between"><span>3. ---</span><span>---s</span></div>
+                        <div class="flex justify-between"><span>4. ---</span><span>---s</span></div>
+                        <div class="flex justify-between"><span>5. ---</span><span>---s</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 名前入力用モーダル -->
+        <div id="name-entry-modal" class="rs3-modal">
+            <div class="modal-title">ランクイン！</div>
+            <div class="modal-content text-center">
+                <p class="mb-4">名前を入力してください (最大8文字)</p>
+                <input type="text" id="entry-name" maxlength="8" class="w-full p-2 border border-black text-xl text-center bg-white/50" placeholder="なまえ">
+                <p id="entry-score-display" class="mt-4 text-2xl font-bold text-orange-600"></p>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-btn" onclick="submitIsshunScore()">登録する</div>
+            </div>
+        </div>
+
         <div id="menu-window" class="mother-window">
             <nav class="menu-list">
                 <div class="menu-item" onclick="openEquip()"><div class="finger-cursor"></div>装備</div>
@@ -514,73 +552,127 @@
             setTimeout(() => { bulb.style.display = 'none'; }, 5000);
         }
 
-        // 刹那の閃きミニゲーム
-        let setsunaActive = false;
-        let setsunaStartTime = 0;
-        let setsunaTimer = null;
+        // 刹那の一瞬 (常設版)
+        let isshunActive = false;
+        let isshunStartTime = 0;
+        let isshunWaitTimer = null;
+        let isshunVisualTimer = null;
+        let isshunCurrentScore = 0;
 
-        function startSetsuna() {
-            const btn = document.getElementById('setsuna-btn');
-            const result = document.getElementById('setsuna-result');
-            const bulb = document.getElementById('setsuna-bulb');
+        async function loadIsshunLeaderboard() {
+            try {
+                const snapshot = await db.collection('leaderboard_isshun').orderBy('score', 'asc').limit(5).get();
+                const container = document.getElementById('isshun-leaderboard');
+                container.innerHTML = '';
+                let count = 1;
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    container.innerHTML += `<div class="flex justify-between"><span>${count}. ${data.name}</span><span>${data.score.toFixed(3)}s</span></div>`;
+                    count++;
+                });
+                while (count <= 5) {
+                    container.innerHTML += `<div class="flex justify-between"><span>${count}. ---</span><span>---s</span></div>`;
+                    count++;
+                }
+            } catch (err) { console.error("Leaderboard load error:", err); }
+        }
+        loadIsshunLeaderboard();
+
+        function startIsshun() {
+            const btn = document.getElementById('isshun-btn');
+            const display = document.getElementById('isshun-timer-display');
+            const bulb = document.getElementById('isshun-bulb');
             
-            setsunaActive = false;
+            isshunActive = false;
             btn.innerText = '・・・';
             btn.disabled = true;
-            result.innerText = '';
+            display.innerText = '0.000s';
+            display.style.color = '';
             bulb.style.display = 'none';
 
             const waitTime = 1000 + Math.random() * 4000;
-            setsunaTimer = setTimeout(() => {
-                setsunaActive = true;
-                setsunaStartTime = performance.now();
+            isshunWaitTimer = setTimeout(() => {
+                isshunActive = true;
+                isshunStartTime = performance.now();
                 btn.innerText = '閃きっ！';
                 btn.disabled = false;
                 bulb.style.display = 'block';
                 playKyupiSound();
 
-                // 5秒経過で強制終了
-                setsunaTimer = setTimeout(() => {
-                    if (setsunaActive) {
-                        endSetsuna(true);
-                    }
-                }, 5000);
+                // カウントアップタイマー
+                isshunVisualTimer = setInterval(() => {
+                    const now = performance.now();
+                    const diff = (now - isshunStartTime) / 1000;
+                    display.innerText = diff.toFixed(3) + 's';
+                    if (diff >= 5) endIsshun(true);
+                }, 10);
             }, waitTime);
         }
 
-        function endSetsuna(isTimeout = false) {
-            if (!setsunaActive && !isTimeout) return;
+        async function endIsshun(isTimeout = false) {
+            if (!isshunActive && !isTimeout) return;
             
-            const btn = document.getElementById('setsuna-btn');
-            const result = document.getElementById('setsuna-result');
-            const bulb = document.getElementById('setsuna-bulb');
+            clearInterval(isshunVisualTimer);
+            clearTimeout(isshunWaitTimer);
+            
+            const btn = document.getElementById('isshun-btn');
+            const display = document.getElementById('isshun-timer-display');
+            const bulb = document.getElementById('isshun-bulb');
             
             if (isTimeout) {
-                result.innerText = 'タイムアップ！ (5.000s超)';
+                isshunCurrentScore = 5.000;
+                display.innerText = 'TIME UP!';
+                display.style.color = '#cc0000';
             } else {
                 const endTime = performance.now();
-                const diff = (endTime - setsunaStartTime) / 1000;
-                result.innerText = `タイム: ${diff.toFixed(3)}s`;
+                isshunCurrentScore = (endTime - isshunStartTime) / 1000;
+                display.innerText = isshunCurrentScore.toFixed(3) + 's';
             }
             
-            setsunaActive = false;
+            isshunActive = false;
             btn.innerText = 'もういちど';
             bulb.style.display = 'none';
-            clearTimeout(setsunaTimer);
+
+            if (!isTimeout) {
+                checkIsshunRank(isshunCurrentScore);
+            }
         }
 
+        async function checkIsshunRank(score) {
+            const snapshot = await db.collection('leaderboard_isshun').orderBy('score', 'asc').limit(5).get();
+            let isRankIn = false;
+            if (snapshot.size < 5) {
+                isRankIn = true;
+            } else {
+                const lastDoc = snapshot.docs[snapshot.size - 1];
+                if (score < lastDoc.data().score) {
+                    isRankIn = true;
+                }
+            }
+
+            if (isRankIn) {
+                document.getElementById('entry-score-display').innerText = score.toFixed(3) + 's';
+                document.getElementById('name-entry-modal').style.display = 'block';
+                document.getElementById('modal-overlay').style.display = 'block';
+            }
+        }
+
+        async function submitIsshunScore() {
+            const name = document.getElementById('entry-name').value.trim() || 'ななし';
+            try {
+                await db.collection('leaderboard_isshun').add({
+                    name: name,
+                    score: isshunCurrentScore,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                closeModal();
+                loadIsshunLeaderboard();
+            } catch (err) { console.error("Score submit error:", err); }
+        }
+
+        // 刹那の閃きミニゲーム (旧・モーダル版は削除または「技」の説明に変更)
         function openSetsunaGame() {
-            const html = `
-                <div class="text-center p-4">
-                    <p class="mb-4">「閃き」のマークが出たら<br>最速でボタンを押せ！</p>
-                    <div class="relative h-20 flex items-center justify-center">
-                        <div id="setsuna-bulb" style="display:none; font-size:3rem; filter: drop-shadow(0 0 10px #ff0);">💡</div>
-                    </div>
-                    <button id="setsuna-btn" class="modal-btn w-full py-4 text-2xl" onclick="setsunaActive ? endSetsuna() : startSetsuna()">スタート</button>
-                    <div id="setsuna-result" class="mt-4 text-2xl font-bold text-orange-600"></div>
-                </div>
-            `;
-            openModal('▼ 刹那の閃き', html);
+            openModal('▼ 技：刹那の一瞬', '上の「スタート」ボタンを押して<br>電球が 出た瞬間に クリックだ！<br><br>最速の 閃きを 目指せ！');
         }
 
         function showSparkTech() {
