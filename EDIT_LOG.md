@@ -9,6 +9,24 @@
 
 ## 📝 Change History
 
+### 2026-05-28: Sabanomiso Scoreboard Name Limit Update
+- **Task:** Increase the character limit for the high score name entry from 3 to 10.
+- **Changes:**
+  - Updated `save/sabanomiso/index.html` CSS: Scaled down `retro-char` size to fit 10 characters.
+  - Updated `save/sabanomiso/index.html` HTML: Added 10 character slots to the name entry overlay.
+  - Updated `save/sabanomiso/index.html` JS: Modified entry logic to handle 10 characters and allow alphanumeric + spaces.
+  - Increased leaderboard container width to 400px to accommodate longer names.
+- **Notes:** Improved usability for users with longer handles.
+
+### 2026-05-28: Request Fee Update (30,000 ~ 100,000)
+- **Task:** Update the production fee from ¥20,000 to ¥30,000 across the site and portfolio pages.
+- **Changes:**
+  - Updated `save/nox/index.html` (Main Portfolio Hub) pricing to ¥30,000 〜 ¥100,000.
+  - Updated `intro/index.html` and `intro/vtuber/index.html` pricing to ¥30,000 ~.
+  - Updated `save/choco/index.html` base pricing to ¥30,000 〜.
+  - Executed `scripts/sync_portfolios.js` to synchronize indices.
+- **Notes:** Standardized the minimum request fee to 30,000 yen as requested.
+
 ### 2026-05-27: Sabanomiso LP Readability & Worldview Update
 - **Task:** Improve visibility, mobile optimization, and enhance DBD-themed interactive elements.
 - **Changes:**
