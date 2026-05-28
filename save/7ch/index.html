@@ -239,7 +239,15 @@
         <span class="text-[10px] font-bold text-black">TOP</span>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
     <script>
+        const firebaseConfig = { apiKey: "AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI", authDomain: "hexa-relation.firebaseapp.com", projectId: "hexa-relation", storageBucket: "hexa-relation.firebasestorage.app", messagingSenderId: "318065017750", appId: "1:318065017750:web:94acf3c9c43632b3ff93b7", measurementId: "G-15NM9TWFE2" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const PAGE_ID = '7ch';
+
         // ATB Gauge Animation
         const atb = document.getElementById('main-atb');
         let progress = 0;
@@ -282,8 +290,21 @@
             }
         }
 
-        // Firebase-like Visitor Log (Mock)
-        console.log("Visitor logged. Referrer:", document.referrer);
+        function initApp() {
+            db.collection('analytics').doc(PAGE_ID).set({
+                hits: firebase.firestore.FieldValue.increment(1),
+                lastVisit: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true }).catch(err => console.error("Hit counter error:", err));
+
+            db.collection('visitor_logs').add({
+                pageId: PAGE_ID,
+                referrer: document.referrer || 'direct',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                userAgent: navigator.userAgent
+            }).catch(err => console.error("Visitor log error:", err));
+        }
+
+        window.addEventListener('load', initApp);
     </script>
 </body>
 </html>

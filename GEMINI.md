@@ -19,7 +19,7 @@
 ## 4. Portfolio & URL Specifications
 - **Client URL Structure:** Use a sub-directory format based on the "Save Data" concept: `hexa-relation.com/save/[unique_id]`.
 - **Title Naming Convention:** All portfolio pages MUST follow the format: `<NAME> - Portfolio (<THEME>風)`.
-- **Mandatory Analytics & Logging:** Every LP must implement Firebase-based hit counting and referrer logging (Visitor Log).
+- **CRITICAL: Mandatory Analytics & Logging:** EVERY single portfolio page (`/save/*`) and marketing LP (`/intro/*`) MUST implement Firebase-based hit counting and referrer logging (Visitor Log). A page is considered INCOMPLETE and MUST NOT be deployed without verified tracking code.
 - **Automated Sync:** After creating or modifying an LP, `scripts/sync_portfolios.js` MUST be executed to synchronize the admin console and public index.
 - **Mobile-First Standard:** 100% responsiveness on vertical smartphone screens is mandatory.
 - **Interactive Gimmicks:** Every LP should feature between 3 to 10 game-like interactive elements (e.g., Dialogue, Loot, Quest, etc.).
