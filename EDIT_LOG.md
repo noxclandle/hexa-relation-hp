@@ -9,6 +9,20 @@
 
 ## 📝 Change History
 
+### 2026-05-29: 7ch LP Reconstruction (Chrono Trigger x Mahjong)
+- **Task:** Rebuild the 7ch LP with a high-conversion design based on PASONA law and Chrono Trigger theme.
+- **Changes:**
+  - **Design & Copy:** Implemented PASONA-based copywriting ("Chrono Tactics") focusing on Mahjong logic and quantified achievements (Tenhou 7-dan, Stable Rank 8.2).
+  - **Interactive Gimmicks:**
+    - **Time Warp:** Smoothed transition effect for navigation.
+    - **Active Time Battle (ATB):** Pulsing thinking time gauge.
+    - **Mahjong Quiz:** Interactive "Nani-kiru?" (What to discard?) training with feedback.
+    - **Dialogue Box:** CT-style interactive profile introduction.
+    - **Epoch (Sylbird) Button:** Quick scroll-to-top with warp effect.
+  - **Logic:** Integrated Firebase tracking for hits and visitor logs.
+  - **Sync:** Updated `scripts/sync_portfolios.js` to support "クロノトリガー風" and synchronized indices.
+- **Notes:** Transformed a thin portfolio into a highly engaging, conversion-oriented "Battle" LP.
+
 ### 2026-05-28: Sabanomiso Scoreboard Name Limit Update
 - **Task:** Increase the character limit for the high score name entry from 3 to 10.
 - **Changes:**
