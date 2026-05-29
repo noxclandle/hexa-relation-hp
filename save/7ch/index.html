@@ -233,20 +233,33 @@
             </div>
         </section>
 
-        <!-- NANI-KIRU GIMMICK (INTERACTIVE) -->
-        <section id="quiz" class="ct-window">
-            <h2 class="ct-header">⚔️ TRAINING: WHAT TO CUT?</h2>
+        /* NANI-KIRU GIMMICK (INTERACTIVE) */
+        section id="quiz" class="ct-window">
+            <h2 class="ct-header">⚔️ TRAINING: WHAT TO DISCARD?</h2>
             <div id="quiz-container">
-                <p id="quiz-q" class="text-xs mb-4">Q1: 南1局 平場 5巡目 何を切る？</p>
-                <div class="flex justify-center space-x-1 mb-6">
-                    <div class="tile-btn" onclick="checkAnswer(1, this)">三</div>
-                    <div class="tile-btn" onclick="checkAnswer(2, this)">四</div>
-                    <div class="tile-btn" onclick="checkAnswer(0, this)">中</div>
-                    <div class="tile-btn" onclick="checkAnswer(0, this)">発</div>
-                    <div class="tile-btn" onclick="checkAnswer(0, this)">白</div>
+                <p id="quiz-q" class="text-[10px] mb-4 text-cyan-200">南1局 平場 5巡目 ドラ: 三 <br>指針: 効率的なテンパイを目指せ</p>
+                
+                <!-- 14 Tiles Display -->
+                <div class="flex flex-wrap justify-center gap-1 mb-6">
+                    <!-- 13 in hand + 1 drawn -->
+                    <div class="tile-btn text-red-600">三</div>
+                    <div class="tile-btn text-red-600">四</div>
+                    <div class="tile-btn text-red-600">五</div>
+                    <div class="tile-btn text-blue-600">四</div>
+                    <div class="tile-btn text-blue-600">五</div>
+                    <div class="tile-btn text-blue-600">六</div>
+                    <div class="tile-btn text-green-700">二</div>
+                    <div class="tile-btn text-green-700" onclick="checkAnswer(0, this)">二</div>
+                    <div class="tile-btn text-green-700" onclick="checkAnswer(1, this)">三</div>
+                    <div class="tile-btn text-green-700" onclick="checkAnswer(0, this)">四</div>
+                    <div class="tile-btn text-green-700" onclick="checkAnswer(0, this)">五</div>
+                    <div class="tile-btn text-green-700" onclick="checkAnswer(2, this)">六</div>
+                    <div class="tile-btn text-green-700" onclick="checkAnswer(0, this)">七</div>
+                    <div class="ml-2 tile-btn text-green-700 border-yellow-400" onclick="checkAnswer(0, this)">八</div>
                 </div>
-                <div id="quiz-feedback" class="h-12 text-center text-xs flex flex-col justify-center items-center">
-                    <p id="feedback-text" class="text-yellow-300">タイルを選択せよ...</p>
+
+                <div id="quiz-feedback" class="min-h-[60px] text-center text-xs flex flex-col justify-center items-center bg-black/40 p-2 border border-white/10">
+                    <p id="feedback-text" class="text-yellow-300">捨てる牌を選択せよ（14枚目：ツモ牌）</p>
                 </div>
             </div>
         </section>
@@ -353,11 +366,11 @@
             el.classList.add('selected');
 
             if (isCorrect === 1) {
-                feedback.innerHTML = "<span class='text-green-400'>正解！</span> 孤立している三よりも、受け入れの広い打牌だ。";
+                feedback.innerHTML = "<span class='text-green-400 font-bold'>【正解：打 三索】</span><br>三-六-九索の三面張を維持しつつ、タンヤオ・平和への渡りも見える最適解だ。";
             } else if (isCorrect === 2) {
-                feedback.innerHTML = "<span class='text-blue-300'>惜しい。</span> 四も悪くないが、三の方が柔軟性がある。";
+                feedback.innerHTML = "<span class='text-blue-300 font-bold'>【妥協：打 六索】</span><br>悪くはないが、受け入れ枚数で三索に劣る。未来の和了率が数％低下するぞ。";
             } else {
-                feedback.innerHTML = "<span class='text-red-400'>不正解。</span> 字牌を切る前に、数牌の形を整えるべきだ。";
+                feedback.innerHTML = "<span class='text-red-400 font-bold'>【不正解：悪手】</span><br>その一打でテンパイが遠のいた。麻雀の神様（確率）は嘘をつかないぞ。";
             }
         }
 
