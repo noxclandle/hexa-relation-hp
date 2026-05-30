@@ -82,12 +82,12 @@
         .character-portrait-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; width: 260px; }
         .character-portrait { width: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.4)); }
 
-        .details-btn, .save-list-btn {
+        .details-btn, .save-list-btn, .gift-btn {
             margin-top: 10px; background: var(--bg-color); border: 2px solid var(--accent-color);
             color: var(--accent-color); padding: 6px 16px; border-radius: 8px; cursor: pointer;
             font-size: 0.9rem; transition: all 0.2s; width: 100%; text-align: center;
         }
-        .details-btn:hover, .save-list-btn:hover { background: var(--accent-color); color: var(--bg-color); }
+        .details-btn:hover, .save-list-btn:hover, .gift-btn:hover { background: var(--accent-color); color: var(--bg-color); }
 
         /* Save List Modal */
         #save-list-view {
@@ -360,6 +360,7 @@
                         <div class="flex flex-col gap-2 w-full">
                             <button class="details-btn" onclick="toggleDetails()">▼ つよさをみる</button>
                             <button class="save-list-btn" onclick="openSaveList()">▼ セーブデータをみる</button>
+                            <button class="gift-btn" onclick="openGiftMenu()">▼ ギフトをあげる</button>
                         </div>
                         <div id="details-popup" class="fade-in">
                             <div class="details-inner">
@@ -436,6 +437,14 @@
                 <div id="menu-equip-under-construction" class="hidden flex flex-col gap-3">
                     <p class="text-xl mb-2">hexa card は<br>現在 準備中 です。</p>
                     <div class="command-item text-2xl" onclick="showSubMenu('menu-goods-list')"><span class="command-cursor">▶︎</span>もどる</div>
+                </div>
+
+                <div id="menu-gift" class="hidden flex flex-col gap-3">
+                    <p class="text-lg mb-2">ほしいものリストを<br>みてみますか？</p>
+                    <div class="flex flex-col gap-2">
+                        <a href="https://www.amazon.jp/hz/wishlist/ls/6OKE569P2QT3?ref_=wl_share" target="_blank" class="command-item text-2xl" onclick="resetMenu(); trackEvent('gift_click')"><span class="command-cursor">▶︎</span>Amazon (外部サイト)</a>
+                        <div class="command-item text-2xl" onclick="showSubMenu('menu-main')"><span class="command-cursor">▶︎</span>もどる</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -927,7 +936,7 @@
         }
 
         function showSubMenu(menuId) {
-            ['menu-main', 'menu-goods-list', 'menu-service-info', 'menu-service-order', 'menu-equip-under-construction', 'menu-check-egg', 'menu-talk-quiz', 'menu-talk-yes', 'menu-talk-no'].forEach(id => {
+            ['menu-main', 'menu-goods-list', 'menu-service-info', 'menu-service-order', 'menu-equip-under-construction', 'menu-check-egg', 'menu-talk-quiz', 'menu-talk-yes', 'menu-talk-no', 'menu-gift'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
@@ -935,6 +944,14 @@
             if (target) target.classList.remove('hidden');
         }
         function resetMenu() { setTimeout(() => showSubMenu('menu-main'), 1000); }
+
+        function openGiftMenu() {
+            showSubMenu('menu-gift');
+            // コマンドメニューまでスクロール
+            const menuElement = document.getElementById('menu-gift').closest('.mother-window');
+            menuElement.scrollIntoView({ behavior: 'smooth' });
+            playClickSound();
+        }
 
         const overlay = document.getElementById('encounter-overlay');
         const siteTitle = document.getElementById('site-title');

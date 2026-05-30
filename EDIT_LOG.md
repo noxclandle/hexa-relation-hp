@@ -9,6 +9,14 @@
 
 ## 📝 Change History
 
+### 2026-05-30: Nox LP Gift Button & Wishlist Integration
+- **Task:** Add a "Give a gift" button to the Nox portrait and link it to an Amazon wishlist.
+- **Changes:**
+  - Added `.gift-btn` to `save/nox/index.html` CSS and HTML.
+  - Implemented `openGiftMenu()` to scroll to the command menu and show the gift submenu.
+  - Created `menu-gift` submenu with a link to the Amazon wishlist.
+- **Notes:** Improved monetization/gifting accessibility for the user.
+
 ### 2026-05-30: Nox LP Interactive Speech Bubble Gimmick
 - **Task:** Add an interactive speech bubble to the Nox portrait that cycles through recruitment messages.
 - **Changes:**
