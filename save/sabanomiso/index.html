@@ -350,7 +350,7 @@ body::before {
         </div>
     </div>
 
-    <a href="https://www.youtube.com/@さばの味噌/live" target="_blank" class="live-badge">
+    <a href="https://www.youtube.com/@さばの味噌/live" target="_blank" class="live-badge" id="live-badge" style="display: none;">
         <div class="live-dot"></div>
         <span class="mono text-[10px] font-bold tracking-widest text-white">🔴 ON AIR</span>
     </a>
@@ -664,12 +664,27 @@ body::before {
         function playScream() { playSound(800, 'sawtooth', 1.5, 0.1); }
         function playPing() { playSound(600, 'sine', 0.1, 0.2); }
 
+        async function checkYouTubeLive() {
+            const channelHandle = '@さばの味噌';
+            const proxyUrl = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent('https://www.youtube.com/' + channelHandle + '/live')}`;
+            try {
+                const response = await fetch(proxyUrl);
+                if (!response.ok) throw new Error('Proxy response not ok');
+                const text = await response.text();
+                const isLive = text.includes('"isLive":true') || text.includes('yt-live-chat-renderer');
+                if (isLive) {
+                    const badge = document.getElementById('live-badge');
+                    if (badge) badge.style.display = 'flex';
+                }
+            } catch (e) { console.error("Live check failed:", e); }
+        }
+
         function initApp() {
             db.collection('analytics').doc(PAGE_ID).set({ hits: firebase.firestore.FieldValue.increment(1), lastVisit: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
             db.collection('referrals').doc(PAGE_ID).collection('logs').add({ referrer: document.referrer || 'direct', timestamp: firebase.firestore.FieldValue.serverTimestamp() });
             const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); if (entry.target.tagName === 'SECTION') addBP(500, "BOLDNESS"); } }); }, { threshold: 0.1 });
             document.querySelectorAll('.reveal, section').forEach(el => observer.observe(el));
-            initKonami(); initSkillCheck(); loadLeaderboard(); addBP(2000, "WELCOME");
+            initKonami(); initSkillCheck(); loadLeaderboard(); addBP(2000, "WELCOME"); checkYouTubeLive();
         }
 
         async function loadLeaderboard() {

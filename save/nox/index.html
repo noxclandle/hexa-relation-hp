@@ -234,6 +234,65 @@
             animation: fadeIn 0.4s ease-out forwards;
         }
         .collapsible-content.show { display: block; }
+
+        /* Character Talk Bubble */
+        .talk-bubble {
+            position: absolute;
+            top: -20px;
+            right: -10px;
+            background-color: var(--bg-color);
+            border: 3px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 2px;
+            z-index: 150;
+            cursor: pointer;
+            max-width: 200px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            animation: float 3s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        /* 初期状態（...）の時だけキャラクターの真上に来るようにする */
+        .talk-bubble.is-initial {
+            right: auto;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -45px;
+        }
+        .talk-bubble-inner {
+            border: 1px solid var(--border-inner);
+            border-radius: 9px;
+            padding: 8px 12px;
+            width: 100%;
+            height: 100%;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: var(--accent-color);
+            white-space: pre-wrap;
+        }
+        .talk-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 10px solid var(--primary-color);
+        }
+        .talk-bubble.is-initial::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        @keyframes float {
+            0%, 100% { margin-top: 0; }
+            50% { margin-top: -8px; }
+        }
+        @media (max-width: 640px) {
+            .talk-bubble { right: -20px; top: -30px; max-width: 160px; }
+            .talk-bubble.is-initial { right: auto; left: 50%; top: -50px; }
+        }
     </style>
 </head>
 <body class="p-4 sm:p-8">
@@ -293,6 +352,10 @@
                         </div>
                     </div>
                     <div class="character-portrait-wrapper">
+                        <!-- Talk Bubble -->
+                        <div class="talk-bubble is-initial" onclick="nextTalk()">
+                            <div class="talk-bubble-inner" id="talk-text">...</div>
+                        </div>
                         <img src="../../Gemini_Generated_Image_ezkos8ezkos8ezko-removebg-preview.png" alt="Character" class="character-portrait">
                         <div class="flex flex-col gap-2 w-full">
                             <button class="details-btn" onclick="toggleDetails()">▼ つよさをみる</button>
@@ -589,6 +652,27 @@
 
         function closeJobDetail() {
             document.getElementById('job-popup').style.display = 'none';
+        }
+
+        let talkState = 0;
+        const talkMessages = [
+            "...",
+            "一緒にネットサービスを考えてくれる人を探しているよ！",
+            "プログラムはできなくても大丈夫だよ！"
+        ];
+        function nextTalk() {
+            talkState = (talkState + 1) % talkMessages.length;
+            const bubble = document.querySelector('.talk-bubble');
+            document.getElementById('talk-text').innerText = talkMessages[talkState];
+            
+            if (talkState === 0) {
+                bubble.classList.add('is-initial');
+            } else {
+                bubble.classList.remove('is-initial');
+            }
+
+            playClickSound();
+            trackEvent('character_talk_' + talkState);
         }
 
         // Retro Click Sound (Web Audio API)

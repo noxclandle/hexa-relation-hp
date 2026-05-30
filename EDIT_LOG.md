@@ -2,12 +2,29 @@
 
 ## 🛠 Maintenance Status
 - **Current Month:** 2026年5月
-- **Free Edits Used:** 1 / 1 (Initial) + 1 (meimei page)
+- **Free Edits Used:** 1 / 1 (Initial) + 1 (meimei page) + 1 (nox bubble)
 - **Next Reset:** 2026年6月1日
 
 ---
 
 ## 📝 Change History
+
+### 2026-05-30: Nox LP Interactive Speech Bubble Gimmick
+- **Task:** Add an interactive speech bubble to the Nox portrait that cycles through recruitment messages.
+- **Changes:**
+  - Added `.talk-bubble` and `.talk-bubble-inner` CSS with MOTHER2-style (red border, black background, white inner border).
+  - Implemented `nextTalk()` JS function to cycle through messages: "...", "一緒にネットサービスを考えてくれる人を探しているよ！", and "プログラムはできなくても大丈夫だよ！".
+  - Integrated click sound and Firebase event tracking for the speech bubble.
+- **Notes:** Added a "speaking" character gimmick as requested to improve engagement.
+
+### 2026-05-29: Sabanomiso LP Dynamic LIVE Status Update
+- **Task:** Make the YouTube "LIVE" badge appear only when a stream is actually in progress.
+- **Changes:**
+  - Modified `save/sabanomiso/index.html` to hide the "🔴 ON AIR" badge by default.
+  - Implemented `checkYouTubeLive` function using `api.codetabs.com` as a CORS proxy to fetch YouTube live status.
+  - Added logic to detect `"isLive":true` or `yt-live-chat-renderer` in the YouTube page source.
+  - Integrated the check into the `initApp` initialization flow.
+- **Notes:** Automated the live status display to ensure accuracy and reduce manual updates.
 
 ### 2026-05-29: 7ch LP Reconstruction (Chrono Trigger x Mahjong)
 - **Task:** Rebuild the 7ch LP with a high-conversion design based on PASONA law and Chrono Trigger theme.
