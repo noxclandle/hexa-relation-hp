@@ -360,7 +360,7 @@
                         <div class="flex flex-col gap-2 w-full">
                             <button class="details-btn" onclick="toggleDetails()">▼ つよさをみる</button>
                             <button class="save-list-btn" onclick="openSaveList()">▼ セーブデータをみる</button>
-                            <button class="gift-btn" onclick="openGiftMenu()">▼ ギフトをあげる</button>
+                            <button class="gift-btn" onclick="toggleGift()">▼ ギフトをあげる</button>
                         </div>
                         <div id="details-popup" class="fade-in">
                             <div class="details-inner">
@@ -372,6 +372,19 @@
                                 <div class="stat-row"><span>IQ</span><span>255</span></div>
                                 <div class="stat-row"><span>ラック</span><span>100</span></div>
                                 <div class="psi-text">▼ PSI<br>・ひとのココロをよむことができる<br><span id="psi-star-trigger" onclick="tryStarstorm()">・ほしをおとすことができる</span></div>
+                            </div>
+                        </div>
+                        <!-- Gift Popup (Strength Style) -->
+                        <div id="gift-popup" class="fade-in" style="display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 280px; z-index: 200; margin-top: 15px;">
+                            <div class="details-inner">
+                                <h3 class="text-lg mb-3 border-b border-white pb-1">▼ ギフトをおくる</h3>
+                                <p class="text-sm mb-4 leading-relaxed">ほしいものリストを<br>みてみますか？</p>
+                                <div class="flex flex-col gap-2">
+                                    <a href="https://www.amazon.jp/hz/wishlist/ls/6OKE569P2QT3?ref_=wl_share" target="_blank" class="command-item text-xl" onclick="toggleGift(); trackEvent('gift_click')"><span class="command-cursor">▶︎</span>Amazon (外部サイト)</a>
+                                    <div class="command-item text-xl justify-center mt-2 pt-2 border-t border-white/20" onclick="toggleGift()">
+                                        <span class="command-cursor">▶︎</span>とじる
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -437,14 +450,6 @@
                 <div id="menu-equip-under-construction" class="hidden flex flex-col gap-3">
                     <p class="text-xl mb-2">hexa card は<br>現在 準備中 です。</p>
                     <div class="command-item text-2xl" onclick="showSubMenu('menu-goods-list')"><span class="command-cursor">▶︎</span>もどる</div>
-                </div>
-
-                <div id="menu-gift" class="hidden flex flex-col gap-3">
-                    <p class="text-lg mb-2">ほしいものリストを<br>みてみますか？</p>
-                    <div class="flex flex-col gap-2">
-                        <a href="https://www.amazon.jp/hz/wishlist/ls/6OKE569P2QT3?ref_=wl_share" target="_blank" class="command-item text-2xl" onclick="resetMenu(); trackEvent('gift_click')"><span class="command-cursor">▶︎</span>Amazon (外部サイト)</a>
-                        <div class="command-item text-2xl" onclick="showSubMenu('menu-main')"><span class="command-cursor">▶︎</span>もどる</div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -863,14 +868,35 @@
 
         function toggleDetails() {
             const popup = document.getElementById('details-popup');
+            const giftPopup = document.getElementById('gift-popup');
             const btn = document.querySelector('.details-btn');
+            const giftBtn = document.querySelector('.gift-btn');
             const isVisible = (popup.style.display === 'block');
 
-            // セーブデータ一覧が開いていたら閉じる
+            // セーブデータ一覧やギフトを閉じる
             closeSaveList();
+            giftPopup.style.display = 'none';
+            giftBtn.textContent = '▼ ギフトをあげる';
 
             popup.style.display = isVisible ? 'none' : 'block';
             btn.textContent = isVisible ? '▼ つよさをみる' : '▲ とじる';
+        }
+
+        function toggleGift() {
+            const popup = document.getElementById('gift-popup');
+            const detailsPopup = document.getElementById('details-popup');
+            const btn = document.querySelector('.gift-btn');
+            const detailsBtn = document.querySelector('.details-btn');
+            const isVisible = (popup.style.display === 'block');
+
+            // セーブデータ一覧やステータスを閉じる
+            closeSaveList();
+            detailsPopup.style.display = 'none';
+            detailsBtn.textContent = '▼ つよさをみる';
+
+            popup.style.display = isVisible ? 'none' : 'block';
+            btn.textContent = isVisible ? '▼ ギフトをあげる' : '▲ とじる';
+            playClickSound();
         }
 
         let currentSavePage = 0;
@@ -936,7 +962,7 @@
         }
 
         function showSubMenu(menuId) {
-            ['menu-main', 'menu-goods-list', 'menu-service-info', 'menu-service-order', 'menu-equip-under-construction', 'menu-check-egg', 'menu-talk-quiz', 'menu-talk-yes', 'menu-talk-no', 'menu-gift'].forEach(id => {
+            ['menu-main', 'menu-goods-list', 'menu-service-info', 'menu-service-order', 'menu-equip-under-construction', 'menu-check-egg', 'menu-talk-quiz', 'menu-talk-yes', 'menu-talk-no'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
@@ -944,14 +970,6 @@
             if (target) target.classList.remove('hidden');
         }
         function resetMenu() { setTimeout(() => showSubMenu('menu-main'), 1000); }
-
-        function openGiftMenu() {
-            showSubMenu('menu-gift');
-            // コマンドメニューまでスクロール
-            const menuElement = document.getElementById('menu-gift').closest('.mother-window');
-            menuElement.scrollIntoView({ behavior: 'smooth' });
-            playClickSound();
-        }
 
         const overlay = document.getElementById('encounter-overlay');
         const siteTitle = document.getElementById('site-title');
