@@ -9,6 +9,12 @@
 
 ## 📝 Change History
 
+### 2026-05-31: Nox LP Talk Bubble Text Update
+- **Task:** Update the recruitment message in the Nox portrait speech bubble.
+- **Changes:**
+  - Changed "プログラムはできなくても大丈夫だよ！" to "プログラムはできなくても大丈夫だよ！連絡くださいね♪" in `save/nox/index.html`.
+- **Notes:** Minor wording adjustment as requested by the client.
+
 ### 2026-05-30: Nox LP Gift Button & Wishlist Integration
 - **Task:** Add a "Give a gift" button to the Nox portrait and link it to an Amazon wishlist.
 - **Changes:**
