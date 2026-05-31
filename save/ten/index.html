@@ -738,6 +738,10 @@
             }, err => console.error("MIP sync error:", err));
 
             checkYouTubeLive();
+            spawnMinions();
+
+            // Charge LB on interactions
+            document.addEventListener('click', () => chargeLB(1));
         }
 
         let currentLiveVideoId = null;
@@ -1123,6 +1127,72 @@
 
         function triggerAchievement(name) {
             const popup = document.getElementById('achievement-popup');
+            document.getElementById('achievement-name').innerText = name + " Explorer";
+            popup.classList.add('show');
+            setTimeout(() => popup.classList.remove('show'), 3000);
+        }
+
+        function addCommend() {
+            playSound(900);
+            db.collection('analytics').doc(PAGE_ID).set({
+                mip: firebase.firestore.FieldValue.increment(1)
+            }, { merge: true }).then(() => {
+                addChatMsg("システム：MIP推薦を獲得しました！");
+                triggerAchievement('MVP Player');
+            });
+        }
+
+        const QUESTS = [
+            { icon: "🏆", title: "配信活動 3周年到達", desc: "リスナーと共に歩んだ、3年間の冒険の軌跡。", status: "COMPLETE" },
+            { icon: "⚔️", title: "暁月のフィナーレ踏破", desc: "絶望を乗り越え、星の終わりを救いし者。", status: "COMPLETE" },
+            { icon: "👻", title: "ホラゲリレー2026 完走", desc: "「呪われたデジカメ」の恐怖を克服し生還。", status: "COMPLETE" },
+            { icon: "😱", title: "Poppy Playtime 耐久クリア", desc: "迫りくる恐怖に屈せず、最後まで走り抜いた証。", status: "COMPLETE" },
+            { icon: "🎨", title: "TEN'S SPECIAL GOODS 開設", desc: "公式グッズショップ SUZURIにて展開中。", status: "ACTIVE" },
+            { icon: "🎮", title: "多世界同時進行中", desc: "DbD, 雀魂, モンハン等、数多の世界を探索。", status: "ONGOING" }
+        ];
+
+        function openQuestLog() {
+            playSound(1200);
+            const modal = document.getElementById('quest-log-modal');
+            const list = document.getElementById('quest-list');
+            list.innerHTML = '';
+            modal.style.display = 'flex';
+
+            QUESTS.forEach((q, i) => {
+                const item = document.createElement('div');
+                item.className = 'flex gap-3 items-start opacity-0 translate-x-4 transition-all duration-500';
+                item.style.transitionDelay = `${i * 150}ms`;
+                item.innerHTML = `
+                    <div class="text-xl">${q.icon}</div>
+                    <div>
+                        <div class="text-xs font-bold text-white flex items-center gap-2">
+                            ${q.title} 
+                            <span class="bg-sky-600 text-[8px] px-1 rounded">${q.status}</span>
+                        </div>
+                        <div class="text-[9px] text-slate-400 mt-0.5">${q.desc}</div>
+                    </div>
+                `;
+                list.appendChild(item);
+                // Trigger animation
+                setTimeout(() => {
+                    item.classList.remove('opacity-0', 'translate-x-4');
+                }, 50);
+            });
+        }
+
+        function closeQuestLog() {
+            playSound(800);
+            document.getElementById('quest-log-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>    function closeQuestLog() {
+            playSound(800);
+            document.getElementById('quest-log-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>ievement-popup');
             document.getElementById('achievement-name').innerText = name + " Explorer";
             popup.classList.add('show');
             setTimeout(() => popup.classList.remove('show'), 3000);
