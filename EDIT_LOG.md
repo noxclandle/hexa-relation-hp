@@ -9,6 +9,13 @@
 
 ## 📝 Change History
 
+### 2026-05-31: [ten] 冒険の記憶（実績ログ）の追加
+- **Task:** X(Twitter)のリサーチに基づき、活動実績をまとめた「冒険の記憶」機能をメニューに追加。
+- **Changes:**
+  - メインメニューに「Adventure Records」を追加。
+  - 実績データ（3周年、FF14暁月踏破、ホラゲリレー完走等）をモーダル形式で表示する機能を実装。
+- **Notes:** リサーチに基づき、LPに未掲載だった最新の実績や過去のクリア実績を統合。
+
 ### 2026-05-31: Nox LP Talk Bubble Text Update
 - **Task:** Update the recruitment message in the Nox portrait speech bubble.
 - **Changes:**

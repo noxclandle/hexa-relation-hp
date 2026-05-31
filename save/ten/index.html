@@ -596,6 +596,13 @@
                         <span class="menu-desc">Latest Updates & News</span>
                     </div>
                 </a>
+                <div class="menu-card cursor-pointer" onclick="openQuestLog()">
+                    <div class="menu-icon">📜</div>
+                    <div class="menu-info">
+                        <span class="menu-title">Adventure Records</span>
+                        <span class="menu-desc">Quest Log & Achievements</span>
+                    </div>
+                </div>
                 <div class="menu-card cursor-pointer" onclick="openLoot()">
                     <div class="menu-icon">🎁</div>
                     <div class="menu-info">
@@ -604,6 +611,19 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="quest-log-modal" class="fixed inset-0 bg-black/85 z-[4000] hidden items-center justify-center p-5" onclick="closeQuestLog()">
+        <div class="window max-w-sm w-full bg-slate-900 border-2 border-slate-700 p-6 relative" onclick="event.stopPropagation()" style="background: rgba(15, 23, 42, 0.95); border: 1px solid #334155;">
+            <div class="text-sky-400 font-bold text-sm mb-4 border-b border-slate-700 pb-2 flex justify-between items-center">
+                <span>📜 冒険の記憶 - QUEST LOG</span>
+                <span class="text-[10px] text-slate-500">COMPLETE: 6 / 6</span>
+            </div>
+            <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2" id="quest-list">
+                <!-- Quest items will be added via JS -->
+            </div>
+            <div class="mt-8 text-center text-xs text-slate-500 cursor-pointer hover:text-slate-300 transition" onclick="closeQuestLog()">[×] CLOSE</div>
         </div>
     </div>
 
@@ -1116,6 +1136,49 @@
                 addChatMsg("システム：MIP推薦を獲得しました！");
                 triggerAchievement('MVP Player');
             });
+        }
+
+        const QUESTS = [
+            { icon: "🏆", title: "配信活動 3周年到達", desc: "リスナーと共に歩んだ、3年間の冒険の軌跡。", status: "COMPLETE" },
+            { icon: "⚔️", title: "暁月のフィナーレ踏破", desc: "絶望を乗り越え、星の終わりを救いし者。", status: "COMPLETE" },
+            { icon: "👻", title: "ホラゲリレー2026 完走", desc: "「呪われたデジカメ」の恐怖を克服し生還。", status: "COMPLETE" },
+            { icon: "😱", title: "Poppy Playtime 耐久クリア", desc: "迫りくる恐怖に屈せず、最後まで走り抜いた証。", status: "COMPLETE" },
+            { icon: "🎨", title: "TEN'S SPECIAL GOODS 開設", desc: "公式グッズショップ SUZURIにて展開中。", status: "ACTIVE" },
+            { icon: "🎮", title: "多世界同時進行中", desc: "DbD, 雀魂, モンハン等、数多の世界を探索。", status: "ONGOING" }
+        ];
+
+        function openQuestLog() {
+            playSound(1200);
+            const modal = document.getElementById('quest-log-modal');
+            const list = document.getElementById('quest-list');
+            list.innerHTML = '';
+            modal.style.display = 'flex';
+
+            QUESTS.forEach((q, i) => {
+                const item = document.createElement('div');
+                item.className = 'flex gap-3 items-start opacity-0 translate-x-4 transition-all duration-500';
+                item.style.transitionDelay = `${i * 150}ms`;
+                item.innerHTML = `
+                    <div class="text-xl">${q.icon}</div>
+                    <div>
+                        <div class="text-xs font-bold text-white flex items-center gap-2">
+                            ${q.title} 
+                            <span class="bg-sky-600 text-[8px] px-1 rounded">${q.status}</span>
+                        </div>
+                        <div class="text-[9px] text-slate-400 mt-0.5">${q.desc}</div>
+                    </div>
+                `;
+                list.appendChild(item);
+                // Trigger animation
+                setTimeout(() => {
+                    item.classList.remove('opacity-0', 'translate-x-4');
+                }, 50);
+            });
+        }
+
+        function closeQuestLog() {
+            playSound(800);
+            document.getElementById('quest-log-modal').style.display = 'none';
         }
     </script>
 </body>
