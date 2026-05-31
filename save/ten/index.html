@@ -1184,71 +1184,96 @@
             playSound(800);
             document.getElementById('quest-log-modal').style.display = 'none';
         }
-    </script>
-</body>
-</html>    function closeQuestLog() {
-            playSound(800);
-            document.getElementById('quest-log-modal').style.display = 'none';
-        }
-    </script>
-</body>
-</html>ievement-popup');
-            document.getElementById('achievement-name').innerText = name + " Explorer";
-            popup.classList.add('show');
-            setTimeout(() => popup.classList.remove('show'), 3000);
-        }
 
-        function addCommend() {
-            playSound(900);
-            db.collection('analytics').doc(PAGE_ID).set({
-                mip: firebase.firestore.FieldValue.increment(1)
-            }, { merge: true }).then(() => {
-                addChatMsg("システム：MIP推薦を獲得しました！");
-                triggerAchievement('MVP Player');
-            });
-        }
+        let lbGauge = 0;
+        let isLBActive = false;
 
-        const QUESTS = [
-            { icon: "🏆", title: "配信活動 3周年到達", desc: "リスナーと共に歩んだ、3年間の冒険の軌跡。", status: "COMPLETE" },
-            { icon: "⚔️", title: "暁月のフィナーレ踏破", desc: "絶望を乗り越え、星の終わりを救いし者。", status: "COMPLETE" },
-            { icon: "👻", title: "ホラゲリレー2026 完走", desc: "「呪われたデジカメ」の恐怖を克服し生還。", status: "COMPLETE" },
-            { icon: "😱", title: "Poppy Playtime 耐久クリア", desc: "迫りくる恐怖に屈せず、最後まで走り抜いた証。", status: "COMPLETE" },
-            { icon: "🎨", title: "TEN'S SPECIAL GOODS 開設", desc: "公式グッズショップ SUZURIにて展開中。", status: "ACTIVE" },
-            { icon: "🎮", title: "多世界同時進行中", desc: "DbD, 雀魂, モンハン等、数多の世界を探索。", status: "ONGOING" }
+        const minionData = [
+            { id: 'cat-kiji', icon: '🐱', name: 'キジトラ', x: -50 },
+            { id: 'cat-rag', icon: '🐈', name: 'ラガマフィン', x: -100 }
         ];
 
-        function openQuestLog() {
-            playSound(1200);
-            const modal = document.getElementById('quest-log-modal');
-            const list = document.getElementById('quest-list');
-            list.innerHTML = '';
-            modal.style.display = 'flex';
-
-            QUESTS.forEach((q, i) => {
-                const item = document.createElement('div');
-                item.className = 'flex gap-3 items-start opacity-0 translate-x-4 transition-all duration-500';
-                item.style.transitionDelay = `${i * 150}ms`;
-                item.innerHTML = `
-                    <div class="text-xl">${q.icon}</div>
-                    <div>
-                        <div class="text-xs font-bold text-white flex items-center gap-2">
-                            ${q.title} 
-                            <span class="bg-sky-600 text-[8px] px-1 rounded">${q.status}</span>
-                        </div>
-                        <div class="text-[9px] text-slate-400 mt-0.5">${q.desc}</div>
-                    </div>
-                `;
-                list.appendChild(item);
-                // Trigger animation
-                setTimeout(() => {
-                    item.classList.remove('opacity-0', 'translate-x-4');
-                }, 50);
+        function spawnMinions() {
+            minionData.forEach(m => {
+                const el = document.createElement('div');
+                el.id = m.id;
+                el.className = 'minion';
+                el.innerHTML = `<div class="minion-bubble" id="${m.id}-bubble">${m.name}🐾</div><div class="text-2xl">${m.icon}</div>`;
+                el.style.left = `${m.x}px`;
+                el.onclick = () => {
+                    chargeLB(10);
+                    showMinionBubble(m.id);
+                    playSound(1500, 0.1, 0.05);
+                };
+                document.body.appendChild(el);
             });
+            moveMinions();
         }
 
-        function closeQuestLog() {
-            playSound(800);
-            document.getElementById('quest-log-modal').style.display = 'none';
+        function moveMinions() {
+            minionData.forEach(m => {
+                const el = document.getElementById(m.id);
+                if (!el) return;
+                const targetX = Math.random() * (window.innerWidth - 50);
+                el.style.left = `${targetX}px`;
+            });
+            setTimeout(moveMinions, 5000 + Math.random() * 5000);
+        }
+
+        function showMinionBubble(id) {
+            const bubble = document.getElementById(`${id}-bubble`);
+            if (bubble) {
+                bubble.style.opacity = '1';
+                setTimeout(() => bubble.style.opacity = '0', 2000);
+            }
+        }
+
+        function chargeLB(amount) {
+            if (isLBActive) return;
+            lbGauge = Math.min(100, lbGauge + amount);
+            updateLBUI();
+        }
+
+        function updateLBUI() {
+            const fill = document.getElementById('lb-fill');
+            const btn = document.getElementById('lb-btn');
+            if (fill) fill.style.width = `${lbGauge}%`;
+            if (btn) {
+                if (lbGauge >= 100) {
+                    fill.classList.add('lb-full');
+                    btn.style.display = 'block';
+                } else {
+                    fill.classList.remove('lb-full');
+                    btn.style.display = 'none';
+                }
+            }
+        }
+
+        function executeLimitBreak() {
+            if (lbGauge < 100 || isLBActive) return;
+            isLBActive = true;
+            lbGauge = 0;
+            updateLBUI();
+
+            playSound(400, 1.5, 0.2);
+            const flash = document.getElementById('lb-flash');
+            if (flash) flash.style.display = 'block';
+            
+            document.body.style.animation = 'shake 0.5s ease-in-out infinite';
+            
+            setTimeout(() => {
+                if (flash) flash.style.display = 'none';
+                document.body.style.animation = '';
+                triggerDuty("LIMIT BREAK !!");
+                addChatMsg("システム：TENがリミットブレイクを発動！", true);
+                triggerAchievement("Limit Breaker");
+                
+                document.body.style.filter = 'sepia(0.5) saturate(2) brightness(1.2) hue-rotate(-10deg)';
+                setTimeout(() => {
+                    document.body.style.filter = '';
+                    isLBActive = false;
+                }, 10000);
+            }, 500);
         }
     </script>
 </body>
