@@ -448,9 +448,59 @@
         #achievement-popup.show { 
             right: 20px; /* 出現時 */
         }
+
+        /* Limit Break Gauge */
+        #lb-container {
+            position: fixed; top: 10px; right: 10px; z-index: 500;
+            background: rgba(0,0,0,0.7); border: 1px solid #444;
+            padding: 5px; border-radius: 4px; display: flex; flex-direction: column; gap: 2px;
+            width: 120px;
+        }
+        .lb-slot {
+            height: 10px; background: #222; border: 1px solid #555; position: relative; overflow: hidden;
+        }
+        .lb-fill {
+            height: 100%; width: 0%; background: linear-gradient(90deg, #facc15, #fb923c);
+            transition: width 0.3s ease-out;
+            box-shadow: 0 0 10px #fb923c;
+        }
+        .lb-full { animation: lb-pulse 0.5s infinite alternate; }
+        @keyframes lb-pulse {
+            from { filter: brightness(1) drop-shadow(0 0 2px #fff); }
+            to { filter: brightness(1.5) drop-shadow(0 0 8px #facc15); }
+        }
+        #lb-btn {
+            background: #fb923c; color: #000; font-size: 10px; font-weight: bold; text-align: center;
+            cursor: pointer; display: none; margin-top: 4px; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
+
+        /* LB Flash Effect */
+        #lb-flash {
+            position: fixed; inset: 0; z-index: 10000; background: white; display: none;
+            mix-blend-mode: overlay; pointer-events: none;
+        }
+
+        /* Cat Minions */
+        .minion {
+            position: fixed; bottom: 10px; width: 40px; height: 40px; z-index: 400;
+            pointer-events: auto; cursor: pointer; transition: left 1s linear, bottom 0.5s;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+        }
+        .minion-bubble {
+            position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+            background: white; color: black; font-size: 10px; padding: 2px 6px;
+            border-radius: 10px; border: 1px solid #ccc; opacity: 0; transition: opacity 0.3s;
+            white-space: nowrap; pointer-events: none;
+        }
     </style>
 </head>
 <body onload="initApp()">
+    <div id="lb-container">
+        <div class="text-[8px] text-white font-bold italic tracking-tighter">LIMIT BREAK</div>
+        <div class="lb-slot"><div id="lb-fill" class="lb-fill"></div></div>
+        <div id="lb-btn" onclick="executeLimitBreak()">LIMIT BREAK</div>
+    </div>
+    <div id="lb-flash"></div>
     <div id="live-badge" onclick="openLiveModal()"><div class="live-dot"></div> LIVE NOW</div>
 
     <!-- YouTube Live Modal -->
