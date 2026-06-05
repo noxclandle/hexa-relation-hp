@@ -1,13 +1,20 @@
 # Hexa Relation - Edit Log & Maintenance Tracker
 
 ## 🛠 Maintenance Status
-- **Current Month:** 2026年5月
-- **Free Edits Used:** 1 / 1 (Initial) + 1 (meimei page) + 1 (nox bubble)
-- **Next Reset:** 2026年6月1日
+- **Current Month:** 2026年6月
+- **Free Edits Used:** 1 / 1 (Sabanomiso Mobile Fix)
+- **Next Reset:** 2026年7月1日
 
 ---
 
 ## 📝 Change History
+
+### 2026-06-04: [sabanomiso] Mobile Name Entry & Control Fix
+- **Task:** Fix mobile name entry and unresponsive "STRIKE!!" button.
+- **Changes:**
+  - Added hidden input for mobile keyboard support during name entry.
+  - Added `touchstart` event support and refined event listener handling for the game button.
+- **Notes:** Ensures stable gameplay and record submission across all devices. Counts as the free monthly edit refinement for June.
 
 ### 2026-05-31: [ten] 冒険の記憶（実績ログ）の追加
 - **Task:** X(Twitter)のリサーチに基づき、活動実績をまとめた「冒険の記憶」機能をメニューに追加。
