@@ -769,7 +769,20 @@ body::before {
         function flashCircle(color) { const circle = document.querySelector('.skill-check-circle'); circle.style.borderColor = color; circle.style.boxShadow = `0 0 30px ${color}`; setTimeout(() => { circle.style.borderColor = ""; circle.style.boxShadow = ""; }, 300); }
         function failGame() {
             scActive = false; const finalScore = scCombo; scCombo = 0; updateComboDisplay(); document.getElementById('skill-check-container').style.display = 'none'; playSound(50, 'square', 0.5, 0.5); document.body.style.animation = "glitch 0.2s 3"; setTimeout(() => document.body.style.animation = "", 600); document.getElementById('status-sabanomiso').classList.add('injured');
-            if (finalScore > 0) setTimeout(() => openNameEntry(finalScore), 1000);
+            if (finalScore > 0) setTimeout(() => checkAndOpenNameEntry(finalScore), 1000);
+        }
+        async function checkAndOpenNameEntry(score) {
+            try {
+                const snapshot = await db.collection('leaderboard').orderBy('score', 'desc').limit(5).get();
+                let qualifies = false;
+                if (snapshot.size < 5) {
+                    qualifies = true;
+                } else {
+                    const fifthPlaceScore = snapshot.docs[4].data().score;
+                    if (score > fifthPlaceScore) qualifies = true;
+                }
+                if (qualifies) openNameEntry(score);
+            } catch (err) { console.error(err); }
         }
         let entryScore = 0;
         function openNameEntry(score) { 
