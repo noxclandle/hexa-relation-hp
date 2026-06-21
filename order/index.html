@@ -90,6 +90,8 @@
         <div class="mother-window-inner">
             <h1>▼ ぼうけんの じゅんび</h1>
             
+            <p id="guidance-text" class="text-[11px] leading-relaxed tracking-wider mb-6 text-slate-500 text-center"></p>
+            
             <form id="order-form">
                 <div class="input-group">
                     <label>▶ おなまえ (2文字以上)</label>
@@ -142,6 +144,14 @@
         const urlParams = new URLSearchParams(window.location.search);
         const ref = urlParams.get('ref') || urlParams.get('from') || 'ちょくせつ';
         document.getElementById('referrer').value = ref;
+
+        // Dynamic Guidance message
+        const guidanceEl = document.getElementById('guidance-text');
+        if (ref === 'hexa_archive' || ref === 'hexa_card') {
+            guidanceEl.innerHTML = "デジタル名刺「Hexa Card」に関するご質問、またはシステム連携・LP開発などのご依頼窓口です。<br>ご相談内容を下記よりお気軽にお書き込みください。";
+        } else {
+            guidanceEl.innerHTML = "Hexa Relationへのご依頼・お問い合わせ窓口です。<br>システム開発、制作のご相談など、何でもお気軽に下記よりお尋ねください。";
+        }
 
         const form = document.getElementById('order-form');
         const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1507236311180771348/P-wdDn_xEgm7ig5w7s3WHuP3waVmARS1sNi9lkvsmzMuDnUm8S2lKrx6Dv7ieQmtTFO1';
