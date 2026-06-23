@@ -57,17 +57,21 @@
 
         .cinzel { font-family: 'Cinzel', serif; }
 
+        h1, p {
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95), 0 1px 3px rgba(0, 0, 0, 0.9);
+        }
+
         /* Cinematic Background */
         .hero-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('enhanced_E3FD57_1_102_o.png');
             background-size: cover; background-position: center;
-            opacity: 0.3; filter: grayscale(40%) brightness(60%);
+            opacity: 0.9; filter: grayscale(5%) brightness(95%);
             z-index: -1;
         }
         .vignette {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.9) 100%);
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.6) 100%);
             z-index: -1;
         }
 
@@ -92,12 +96,17 @@
             letter-spacing: 0.2em;
             padding: 1.2rem;
             border: 1px solid var(--glass-border);
+            background: rgba(3, 3, 5, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             transition: all 0.4s;
             text-align: center;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
         }
         .nav-link:hover {
             background: #fff; color: #000;
-            box-shadow: 0 0 30px rgba(255,255,255,0.2);
+            box-shadow: 0 0 30px rgba(255,255,255,0.25);
+            text-shadow: none;
         }
 
         /* Animations */
@@ -129,105 +138,22 @@
             <p id="philosophy-text" class="text-[10px] md:text-xs tracking-[0.4em] text-muted max-w-3xl mx-auto leading-loose uppercase">
                 Blind justice ensures fairness, but it is the courage<br>to take another's hand that ignites the real passion in your life.
             </p>
-            <p class="text-[10px] md:text-xs tracking-[0.15em] opacity-40 mt-4 max-w-2xl mx-auto leading-loose">
+            <p class="text-[10px] md:text-xs tracking-[0.15em] opacity-75 mt-4 max-w-2xl mx-auto leading-loose">
                 厳格な正義は公平さをもたらす。<br>
                 しかし、人生に真の情熱の火を灯すのは、誰かの手を取る勇気である。
             </p>
         </header>
 
         <nav class="flex flex-col gap-6 w-full max-w-sm">
-            <a href="save/nox/" class="nav-link">Master Portfolio</a>
-            <a href="#about" class="text-[9px] tracking-[1em] uppercase opacity-40 hover:opacity-100 transition-opacity">Discover System</a>
-            <a href="order/index.html?from=gateway" class="nav-link">Initiate Project</a>
+            <a href="save/nox/" class="nav-link">DEVELOPER // 開発者</a>
         </nav>
     </section>
-
-    <!-- 2. System Information (Modern/Gothic) -->
-    <main id="about" class="max-w-5xl mx-auto px-6 pb-40">
-        
-        <div class="section-divider"></div>
-
-        <section class="reveal">
-            <span class="heading-decoration">System_Overview_v2.0</span>
-            <h2 class="cinzel text-4xl md:text-6xl mb-12 font-bold">Concept.</h2>
-            <div class="grid md:grid-cols-2 gap-16">
-                <div class="glass-card p-10">
-                    <h3 class="cinzel text-xl mb-6 tracking-widest text-muted uppercase">01 // Save Data Structure</h3>
-                    <p class="text-sm leading-loose opacity-70">
-                        「ポートフォリオは単なる記録ではない。それは、あなたが歩んできた物語のセーブデータだ。」<br><br>
-                        Hexa Relationは、あなたの実績や個性を、特定のゲームの世界観の中に凝縮。見る者が「操作」し、「体験」することで、記憶に深く刻まれる唯一無二のデジタル・アーカイブを構築します。
-                    </p>
-                </div>
-                <div class="glass-card p-10">
-                    <h3 class="cinzel text-xl mb-6 tracking-widest text-muted uppercase">02 // Level-Up Protocol</h3>
-                    <p class="text-sm leading-loose opacity-70">
-                        「成長し続ける存在であるために、Webサイトも共にレベルアップするべきだ。」<br><br>
-                        制作完了はゴールではなく、冒険の始まりです。月1回の無料アップデート・プロトコルにより、あなたの最新の実績や変化に合わせて、サイトの情報を常に最適化し続けることが可能です。
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <div class="section-divider"></div>
-
-        <section class="reveal">
-            <span class="heading-decoration">Workflow_Sequence</span>
-            <h2 class="cinzel text-4xl md:text-6xl mb-12 font-bold">The Rite.</h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="glass-card p-8 border-l-2 border-l-white/20">
-                    <p class="cinzel text-xs text-muted mb-4 uppercase">Phase 01</p>
-                    <h4 class="font-bold mb-4">Hearing</h4>
-                    <p class="text-[11px] leading-relaxed opacity-60">
-                        あなたの物語と、理想とするゲームの世界観を詳細にヒアリング。核となる「魂」を抽出します。
-                    </p>
-                </div>
-                <div class="glass-card p-8 border-l-2 border-l-white/20">
-                    <p class="cinzel text-xs text-muted mb-4 uppercase">Phase 02</p>
-                    <h4 class="font-bold mb-4">Forging</h4>
-                    <p class="text-[11px] leading-relaxed opacity-60">
-                        1ドット、1行のコードにこだわり、独自ギミックとデザインを鍛造。Webの枠を超えた体験を生み出します。
-                    </p>
-                </div>
-                <div class="glass-card p-8 border-l-2 border-l-white/20">
-                    <p class="cinzel text-xs text-muted mb-4 uppercase">Phase 03</p>
-                    <h4 class="font-bold mb-4">Tuning</h4>
-                    <p class="text-[11px] leading-relaxed opacity-60">
-                        テスト環境で実際に「プレイ」していただき、細部まで徹底的に調整。完成度を極限まで高めます。
-                    </p>
-                </div>
-                <div class="glass-card p-8 border-l-2 border-l-white/20">
-                    <p class="cinzel text-xs text-muted mb-4 uppercase">Phase 04</p>
-                    <h4 class="font-bold mb-4">Extraction</h4>
-                    <p class="text-[11px] leading-relaxed opacity-60">
-                        「脱型」。現実のドメインへ公開。あなたの物語が、世界の誰かに見つかるセーブデータとなります。
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <div class="mt-40 text-center reveal">
-            <h3 class="cinzel text-2xl mb-8 tracking-widest opacity-50 uppercase">Ready to Start?</h3>
-            <a href="order/index.html?from=about" class="nav-link px-16 py-6 inline-block">
-                Initiate New Save
-            </a>
-        </div>
-    </main>
 
     <footer class="py-20 text-center opacity-20 text-[9px] cinzel tracking-[0.5em] uppercase border-t border-white/5">
         &copy; 2026 Hexa Relation // Engineering Envy.
     </footer>
 
     <script>
-        // Scroll Reveal Implementation
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
         // Interaction Sound
         function playClickSound() {
