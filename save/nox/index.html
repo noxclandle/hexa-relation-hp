@@ -217,6 +217,15 @@
             cursor: pointer; text-decoration: underline wavy; animation: pulsePsi 1.5s infinite;
         }
         @keyframes pulsePsi { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .pulse-btn {
+            animation: pulseBtn 1.5s infinite !important;
+            border-color: var(--psi-color) !important;
+            box-shadow: 0 0 10px var(--psi-color) !important;
+        }
+        @keyframes pulseBtn {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
 
         /* Collapsible Intro Style */
         .collapsible-trigger {
@@ -322,7 +331,7 @@
                 <h2 class="text-xl mb-6 border-b border-white pb-2">▼ ステータス</h2>
                 <div class="status-container">
                     <div class="status-info grid grid-cols-1 gap-4 text-lg">
-                        <div><span class="status-label">なまえ:</span><span>Nox (ノクス)</span></div>
+                        <div><span class="status-label">なまえ:</span><span id="status-name">Nox (ノクス)</span> <span id="status-level" class="ml-2 text-sm text-yellow-400 font-mono">Lv. 4</span></div>
                         <div><span class="status-label">しょくぎょう:</span><span>フリーランス (元・探偵 / 元・マジシャン / IT専門卒)</span></div>
                         <div><span class="status-label">しょぞく:</span><span>MENSA</span></div>
                         <div class="relative">
@@ -369,7 +378,7 @@
                                 <div class="stat-row"><span>スピード</span><span>200</span></div>
                                 <div class="stat-row"><span>ガッツ</span><span>200</span></div>
                                 <div class="stat-row"><span>バイタリティ</span><span>200</span></div>
-                                <div class="stat-row"><span>IQ</span><span>255</span></div>
+                                <div class="stat-row"><span>IQ</span><span id="status-iq">255</span></div>
                                 <div class="stat-row"><span>ラック</span><span>100</span></div>
                                 <div class="psi-text">▼ PSI<br>・ひとのココロをよむことができる<br><span id="psi-star-trigger" onclick="tryStarstorm()">・ほしをおとすことができる</span></div>
                             </div>
@@ -629,6 +638,18 @@
     </script>
 
     <script>
+        // セーブデータの数をカウントしてレベルを表示
+        window.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('save-data-container');
+            if (container) {
+                const items = Array.from(container.children).filter(el => el.classList.contains('p-3'));
+                const levelEl = document.getElementById('status-level');
+                if (levelEl) {
+                    levelEl.innerText = `Lv. ${items.length}`;
+                }
+            }
+        });
+
         const jobData = {
             hplp: {
                 title: "▼ HP/LP作成",
@@ -670,15 +691,26 @@
         }
 
         let talkState = 0;
-        const talkMessages = [
-            "...",
-            "一緒にネットサービスを考えてくれる人を探しているよ！",
-            "プログラムはできなくても大丈夫だよ！連絡くださいね♪"
-        ];
+        function getTalkMessages() {
+            const base = [
+                "...",
+                "一緒にネットサービスを考えてくれる人を探しているよ！",
+                "プログラムはできなくても大丈夫だよ！連絡くださいね♪"
+            ];
+            if (hasUsedStarstorm) {
+                base.push("PKスターストームの威力はどうだった？");
+            } else if (foxCatchCount >= 5) {
+                base.push("つよさ画面からPSIを使ってみてね！");
+            } else {
+                base.push("狐を5回捕まえてつよさをみると・・・？");
+            }
+            return base;
+        }
         function nextTalk() {
-            talkState = (talkState + 1) % talkMessages.length;
+            const msgs = getTalkMessages();
+            talkState = (talkState + 1) % msgs.length;
             const bubble = document.querySelector('.talk-bubble');
-            document.getElementById('talk-text').innerText = talkMessages[talkState];
+            document.getElementById('talk-text').innerText = msgs[talkState];
             
             if (talkState === 0) {
                 bubble.classList.add('is-initial');
@@ -709,6 +741,30 @@
 
                 oscillator.start();
                 oscillator.stop(audioCtx.currentTime + 0.08);
+            } catch (e) { console.error('Audio error:', e); }
+        }
+
+        // Retro Unlock Sound (NES style upward arpeggio)
+        function playUnlockSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const now = audioCtx.currentTime;
+                // ピコピコーンというアルペジオ (C5 -> E5 -> G5 -> C6)
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                    
+                    gainNode.gain.setValueAtTime(0.04, now + idx * 0.08);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.12);
+                    
+                    osc.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    osc.start(now + idx * 0.08);
+                    osc.stop(now + idx * 0.08 + 0.12);
+                });
             } catch (e) { console.error('Audio error:', e); }
         }
 
@@ -976,6 +1032,7 @@
         const siteTitle = document.getElementById('site-title');
         let clickCount = 0, clickTimer;
         let foxCatchCount = 0; // キツネを捕まえた回数
+        let hasUsedStarstorm = false; // PSIを使用したか
 
         function triggerEncounter() { 
             overlay.style.display = 'flex'; 
@@ -994,6 +1051,16 @@
                 
                 const trigger = document.getElementById('psi-star-trigger');
                 trigger.classList.add('psi-unlocked');
+                
+                if (foxCatchCount === 5) {
+                    playUnlockSound();
+                    
+                    const detailsBtn = document.querySelector('.details-btn');
+                    if (detailsBtn) {
+                        detailsBtn.innerHTML = "▼ つよさをみる <span style='color: var(--psi-color); font-weight: bold;'>★</span>";
+                        detailsBtn.classList.add('pulse-btn');
+                    }
+                }
             }
             
             console.log("Fox Catch Count:", foxCatchCount);
@@ -1011,6 +1078,21 @@
             const msgBox = document.getElementById('starstorm-msg');
             const msgText = document.getElementById('starstorm-text');
             
+            hasUsedStarstorm = true;
+            
+            // つよさボタンの強調を解除
+            const detailsBtn = document.querySelector('.details-btn');
+            if (detailsBtn) {
+                detailsBtn.innerHTML = "▼ つよさをみる";
+                detailsBtn.classList.remove('pulse-btn');
+            }
+            
+            // ステータス表示の変更
+            const nameEl = document.getElementById('status-name');
+            const iqEl = document.getElementById('status-iq');
+            if (nameEl) nameEl.innerText = "Nox (PSIマスター)";
+            if (iqEl) iqEl.innerText = "999";
+
             // ステータスを閉じる
             const popup = document.getElementById('details-popup');
             const btn = document.querySelector('.details-btn');
