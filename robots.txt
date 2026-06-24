@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /order/
 
-Sitemap: https://hexa-relation.com/sitemap.xml
+Sitemap: https://www.hexa-relation.com/sitemap.xml
