@@ -70,20 +70,23 @@ def main():
         with open(JSON_PATH, 'w', encoding='utf-8') as f:
             json.dump(new_data, f, indent=2, ensure_ascii=False)
             
-        # Git コマンドでプッシュ
-        try:
-            # カレントディレクトリをプロジェクトルートにするために移動
-            project_dir = os.path.dirname(os.path.abspath(__file__))
-            os.chdir(project_dir)
-            
-            # git status を確認し、変更があればコミット
-            subprocess.run(["git", "add", "live_status.json"], check=True)
-            commit_msg = f"auto-update: ten live status changed (isLive={is_live}, videoId={video_id})"
-            subprocess.run(["git", "commit", "-m", commit_msg], check=True)
-            subprocess.run(["git", "push"], check=True)
-            print("Successfully updated and pushed new status to remote repository.")
-        except Exception as git_err:
-            print(f"Git operations failed: {git_err}")
+        # Git コマンドでプッシュ (GitHub Actions上ではない場合のみ実行)
+        if "GITHUB_ACTIONS" not in os.environ:
+            try:
+                # カレントディレクトリをプロジェクトルートにするために移動
+                project_dir = os.path.dirname(os.path.abspath(__file__))
+                os.chdir(project_dir)
+                
+                # git status を確認し、変更があればコミット
+                subprocess.run(["git", "add", "live_status.json"], check=True)
+                commit_msg = f"auto-update: ten live status changed (isLive={is_live}, videoId={video_id})"
+                subprocess.run(["git", "commit", "-m", commit_msg], check=True)
+                subprocess.run(["git", "push"], check=True)
+                print("Successfully updated and pushed new status to remote repository.")
+            except Exception as git_err:
+                print(f"Git operations failed: {git_err}")
+        else:
+            print("Running on GitHub Actions. Skipping internal git operations.")
     else:
         print("No change in live status.")
 

@@ -1,0 +1,40 @@
+name: Check TEN YouTube Live Status
+
+on:
+  schedule:
+    # 5分おきにクラウド上で実行
+    - cron: '*/5 * * * *'
+  workflow_dispatch: # 手動実行もサポート
+
+jobs:
+  check-live:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Run check live script
+      run: |
+        python save/ten/check_live.py
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        
+        # 変更の有無を確認
+        if git status --porcelain | grep -q "live_status.json"; then
+          git add save/ten/live_status.json
+          git commit -m "auto-update: ten live status changed (GitHub Actions)"
+          git push
+        else
+          echo "No changes in live status."
+        fi
