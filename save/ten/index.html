@@ -357,6 +357,216 @@
         @keyframes fadeInOut { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
         @keyframes popScale { 0% { transform: scale(0); } 100% { transform: scale(1.5); } }
 
+        /* ========== LIVE侵入演出オーバーレイ ========== */
+        #live-intrusion-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 15000;
+            justify-content: center; align-items: center;
+            flex-direction: column;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        #live-intrusion-overlay.active { display: flex; }
+
+        /* スキャンライン演出 */
+        #live-intrusion-overlay::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255,0,0,0.03) 2px,
+                rgba(255,0,0,0.03) 4px
+            );
+            pointer-events: none;
+            animation: scanline-move 3s linear infinite;
+        }
+        @keyframes scanline-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100px; }
+        }
+
+        /* コーナー装飾 */
+        .live-corner {
+            position: absolute;
+            width: 60px; height: 60px;
+            border-color: #ff0000;
+            border-style: solid;
+            border-width: 0;
+        }
+        .live-corner.tl { top: 20px; left: 20px; border-top-width: 4px; border-left-width: 4px; animation: corner-expand 0.5s ease-out forwards; }
+        .live-corner.tr { top: 20px; right: 20px; border-top-width: 4px; border-right-width: 4px; animation: corner-expand 0.5s ease-out 0.1s forwards; }
+        .live-corner.bl { bottom: 20px; left: 20px; border-bottom-width: 4px; border-left-width: 4px; animation: corner-expand 0.5s ease-out 0.2s forwards; }
+        .live-corner.br { bottom: 20px; right: 20px; border-bottom-width: 4px; border-right-width: 4px; animation: corner-expand 0.5s ease-out 0.3s forwards; }
+        @keyframes corner-expand {
+            from { opacity: 0; width: 0; height: 0; }
+            to { opacity: 1; width: 60px; height: 60px; }
+        }
+
+        /* メインLIVEテキスト */
+        #live-intrusion-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(60px, 15vw, 140px);
+            font-weight: 900;
+            color: #ff0000;
+            letter-spacing: 0.15em;
+            text-shadow:
+                0 0 10px #ff0000,
+                0 0 40px #ff0000,
+                0 0 80px rgba(255,0,0,0.5),
+                4px 4px 0 #000;
+            animation: live-title-in 0.6s cubic-bezier(0.17,0.89,0.32,1.28) forwards;
+            position: relative;
+        }
+        @keyframes live-title-in {
+            0% { opacity: 0; transform: scale(3) skewX(-15deg); filter: blur(20px); }
+            60% { filter: blur(0); }
+            100% { opacity: 1; transform: scale(1) skewX(0); }
+        }
+
+        /* グリッチエフェクト */
+        #live-intrusion-title::before,
+        #live-intrusion-title::after {
+            content: '⚠ LIVE NOW ⚠';
+            position: absolute; inset: 0;
+            animation: glitch 2s infinite linear;
+        }
+        #live-intrusion-title::before {
+            color: #00ffff;
+            clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+            animation-delay: -0.5s;
+        }
+        #live-intrusion-title::after {
+            color: #ff00ff;
+            clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+        }
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); opacity: 0; }
+            91% { transform: translate(-4px, 2px); opacity: 0.8; }
+            93% { transform: translate(4px, -2px); opacity: 0.8; }
+            95% { transform: translate(-2px, 4px); opacity: 0.6; }
+            97% { transform: translate(3px, -1px); opacity: 0; }
+        }
+
+        /* サブテキスト */
+        #live-intrusion-sub {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(16px, 4vw, 28px);
+            color: #ffffff;
+            letter-spacing: 0.4em;
+            margin-top: 12px;
+            opacity: 0;
+            animation: fade-up-in 0.5s ease-out 0.4s forwards;
+        }
+        #live-intrusion-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(20px, 5vw, 36px);
+            color: #facc15;
+            letter-spacing: 0.2em;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(250,204,21,0.8);
+            margin-top: 4px;
+            opacity: 0;
+            animation: fade-up-in 0.5s ease-out 0.55s forwards;
+        }
+        @keyframes fade-up-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 「タップで視聴」ボタン */
+        #live-intrusion-btn {
+            margin-top: 40px;
+            padding: 18px 48px;
+            background: #ff0000;
+            color: white;
+            font-family: 'Oswald', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            border: 3px solid white;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0;
+            animation: fade-up-in 0.5s ease-out 0.8s forwards,
+                       btn-pulse 1.5s ease-in-out 1.3s infinite;
+            box-shadow: 0 0 30px rgba(255,0,0,0.6);
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        #live-intrusion-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(255,0,0,0.9);
+        }
+        @keyframes btn-pulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(255,0,0,0.6); }
+            50% { box-shadow: 0 0 60px rgba(255,0,0,1), 0 0 100px rgba(255,0,0,0.4); }
+        }
+
+        /* スキップテキスト */
+        #live-intrusion-skip {
+            position: absolute;
+            bottom: 30px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 0.2em;
+            opacity: 0;
+            animation: fade-up-in 0.5s ease-out 1.2s forwards;
+        }
+
+        /* パーティクル */
+        .live-particle {
+            position: absolute;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle-fly 1.5s ease-out forwards;
+        }
+        @keyframes particle-fly {
+            0% { transform: translate(0,0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        /* ライブバッジの強化版 */
+        #live-badge {
+            display: none; align-items: center; gap: 10px;
+            background: linear-gradient(90deg, #cc0000, #ff4444, #cc0000);
+            background-size: 200% 100%;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
+            letter-spacing: 0.15em;
+            position: fixed; top: 18px; left: 50%;
+            transform: translateX(-50%);
+            z-index: 11000;
+            border: 2px solid rgba(255,255,255,0.9);
+            box-shadow: 0 0 20px rgba(255,0,0,0.8), 0 0 40px rgba(255,0,0,0.4);
+            animation: badge-shine 1.5s linear infinite, badge-glow-pulse 2s ease-in-out infinite;
+            cursor: pointer;
+            pointer-events: auto;
+            white-space: nowrap;
+        }
+        @keyframes badge-shine {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        @keyframes badge-glow-pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,0,0,0.8), 0 0 40px rgba(255,0,0,0.4); }
+            50% { box-shadow: 0 0 40px rgba(255,0,0,1), 0 0 80px rgba(255,0,0,0.6), 0 0 120px rgba(255,100,100,0.3); }
+        }
+        .live-dot {
+            width: 12px; height: 12px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 6px white;
+            animation: blink 0.8s infinite;
+        }
+
         /* アチーブメント通知 (右下に移動) */
         /* Main Menu Redesign */
         .main-menu-grid {
@@ -501,7 +711,20 @@
         <div id="lb-btn" onclick="executeLimitBreak()">LIMIT BREAK</div>
     </div>
     <div id="lb-flash"></div>
-    <div id="live-badge" onclick="openLiveModal()"><div class="live-dot"></div> LIVE NOW</div>
+    <div id="live-badge" onclick="openLiveModal()"><div class="live-dot"></div> ⚡ LIVE NOW ⚡</div>
+
+    <!-- ド派手LIVE侵入オーバーレイ -->
+    <div id="live-intrusion-overlay" onclick="dismissLiveIntrusion()">
+        <div class="live-corner tl"></div>
+        <div class="live-corner tr"></div>
+        <div class="live-corner bl"></div>
+        <div class="live-corner br"></div>
+        <div id="live-intrusion-title">⚠ LIVE NOW ⚠</div>
+        <div id="live-intrusion-sub">TEN IS STREAMING</div>
+        <div id="live-intrusion-name">🐈 てん / TENPON 🐈</div>
+        <button id="live-intrusion-btn" onclick="event.stopPropagation(); dismissLiveIntrusion(); openLiveModal();">▶ 今すぐ視聴する</button>
+        <div id="live-intrusion-skip">── 画面をタップして閉じる ──</div>
+    </div>
 
     <!-- YouTube Live Modal -->
     <div id="live-modal" onclick="closeLiveModal()">
@@ -811,6 +1034,74 @@
         }
 
         let currentLiveVideoId = null;
+        let liveIntrusionShown = false;
+
+        function spawnLiveParticles() {
+            const overlay = document.getElementById('live-intrusion-overlay');
+            const colors = ['#ff0000','#ff4444','#ff8800','#ffff00','#ff00ff','#00ffff'];
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const p = document.createElement('div');
+                    p.className = 'live-particle';
+                    const angle = Math.random() * 360;
+                    const dist = 120 + Math.random() * 300;
+                    const tx = Math.cos(angle * Math.PI / 180) * dist + 'px';
+                    const ty = Math.sin(angle * Math.PI / 180) * dist + 'px';
+                    p.style.cssText = `
+                        left: ${40 + Math.random()*20}%;
+                        top: ${40 + Math.random()*20}%;
+                        background: ${colors[Math.floor(Math.random()*colors.length)]};
+                        --tx: ${tx}; --ty: ${ty};
+                        box-shadow: 0 0 6px currentColor;
+                        animation-duration: ${0.8 + Math.random()*1}s;
+                    `;
+                    overlay.appendChild(p);
+                    setTimeout(() => p.remove(), 2000);
+                }, i * 20);
+            }
+        }
+
+        function triggerLiveIntrusion() {
+            if (liveIntrusionShown) return;
+            liveIntrusionShown = true;
+
+            const overlay = document.getElementById('live-intrusion-overlay');
+            overlay.classList.add('active');
+
+            // 画面シェイク
+            document.body.style.animation = 'shake 0.4s ease-out';
+            setTimeout(() => document.body.style.animation = '', 400);
+
+            // パーティクル爆発
+            spawnLiveParticles();
+
+            // 効果音: 爆発的な高音 → 低音
+            try {
+                const ac = new (window.AudioContext || window.webkitAudioContext)();
+                [[880,0.0,0.15],[660,0.1,0.15],[440,0.25,0.3],[220,0.4,0.5]].forEach(([f,t,d]) => {
+                    const o = ac.createOscillator();
+                    const g = ac.createGain();
+                    o.connect(g); g.connect(ac.destination);
+                    o.frequency.value = f;
+                    o.type = 'sawtooth';
+                    g.gain.setValueAtTime(0.3, ac.currentTime + t);
+                    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + t + d);
+                    o.start(ac.currentTime + t);
+                    o.stop(ac.currentTime + t + d);
+                });
+            } catch(e) { liveNotificationPending = true; }
+        }
+
+        function dismissLiveIntrusion() {
+            const overlay = document.getElementById('live-intrusion-overlay');
+            overlay.style.transition = 'opacity 0.3s';
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                overlay.style.opacity = '';
+                overlay.style.transition = '';
+            }, 300);
+        }
 
         function setLiveState(isLive, videoId) {
             const badge = document.getElementById('live-badge');
@@ -822,14 +1113,9 @@
                     currentLiveVideoId = newVideoId;
                     
                     if (badge) badge.style.display = 'flex';
-                    addChatMsg("システム：TENは現在ライブ配信中です！", true);
+                    addChatMsg("システム：🔴 TENが今ライブ配信中！！今すぐ視聴しよう！", true);
                     
-                    // 音声再生を試みる
-                    const ctx = playSound(1200, 0.3, 0.05);
-                    if (ctx && ctx.state === 'suspended') {
-                        liveNotificationPending = true;
-                    }
-                    
+                    // iframe セット
                     if (iframe) {
                         if (videoId) {
                             iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
@@ -837,8 +1123,12 @@
                             iframe.src = `https://www.youtube.com/embed/live?channel=UCh6DUGkgltL6gpJUcCdhG5Q&autoplay=1`;
                         }
                     }
+
+                    // ド派手侵入演出を起動
+                    triggerLiveIntrusion();
                 }
             } else {
+                liveIntrusionShown = false; // ライブ終了でリセット
                 if (currentLiveVideoId !== null) {
                     currentLiveVideoId = null;
                     if (badge) badge.style.display = 'none';
