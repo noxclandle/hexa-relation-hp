@@ -121,18 +121,16 @@
 
         /* Player */
         #player {
-            position: absolute; bottom: 18%; width: 52px; height: 64px;
+            position: absolute; bottom: 18%; width: 64px; height: 78px;
             z-index: 15;
         }
         #player.face-left { transform: scaleX(-1); }
-        #player-canvas {
+        #player-sprite {
             width: 100%; height: 100%; display: block;
-            image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
+            object-fit: contain;
             filter: drop-shadow(2px 3px 0 rgba(0,0,0,0.35));
         }
-        #player-canvas.walk { animation: walk-bounce 0.3s infinite; }
+        #player-sprite.walk { animation: walk-bounce 0.3s infinite; }
         @keyframes walk-bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
         /* Prompt */
@@ -196,7 +194,7 @@
         </div>
 
         <div id="player">
-            <canvas id="player-canvas" width="32" height="40" class="walk"></canvas>
+            <img id="player-sprite" src="assets/player-character.png" class="walk" alt="">
         </div>
 
         <div id="prompt"></div>
@@ -243,24 +241,8 @@
     <script>
         const game = document.getElementById('game');
         const player = document.getElementById('player');
-        const playerCanvas = document.getElementById('player-canvas');
+        const playerSprite = document.getElementById('player-sprite');
         const prompt = document.getElementById('prompt');
-
-        // Draw the character sprite pixelated (downscale onto a small canvas)
-        (function drawPixelSprite() {
-            const ctx = playerCanvas.getContext('2d');
-            const img = new Image();
-            img.onload = () => {
-                ctx.imageSmoothingEnabled = true;
-                ctx.clearRect(0, 0, playerCanvas.width, playerCanvas.height);
-                // Fit the image into the canvas while preserving aspect ratio
-                const scale = Math.min(playerCanvas.width / img.width, playerCanvas.height / img.height);
-                const w = img.width * scale;
-                const h = img.height * scale;
-                ctx.drawImage(img, (playerCanvas.width - w) / 2, playerCanvas.height - h, w, h);
-            };
-            img.src = 'assets/player-character.png';
-        })();
 
         const objects = Array.from(document.querySelectorAll('.obj'));
         let playerX = 4; // percent
@@ -329,7 +311,7 @@
             }
             updatePlayerPosition();
             player.classList.toggle('face-left', facing === -1);
-            playerCanvas.classList.toggle('walk', moving);
+            playerSprite.classList.toggle('walk', moving);
             updatePrompt();
         }
 

@@ -3,60 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hexa Card: 次世代の「装備品」デジタル名刺 | Hexa Relation</title>
-    <meta name="description" content="紙の名刺は、もう古い。Hexa Cardは、あなたのステータスを相手のスマホに直接転送する、次世代の「デジタル装備品」。RPG風のUIで、初対面の相手に強烈な印象を刻み込みます。">
+    <title>Hexa Card | 次世代NFCデジタル名刺 - 月額無料の買い切りモデル | Hexa Relation</title>
+    <meta name="description" content="Hexa Cardは、スマホをタップするだけで名刺交換が完了する次世代NFCデジタル名刺。AI-OCR紙名刺スキャン、二重アイデンティティ、月額無料の買い切りモデルなど、紙の名刺を超える機能を搭載。">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
     <style>
         body { background: #000; color: #fff; font-family: 'DotGothic16', sans-serif; overflow-x: hidden; }
-        .card-frame { border: 4px solid #fff; box-shadow: 0 0 0 4px #000, 0 0 0 8px #fff; border-radius: 8px; background: #000; padding: 2rem; }
-        .pixel-btn { border: 2px solid #fff; padding: 10px 20px; transition: all 0.2s; cursor: pointer; display: inline-block; }
+        .frame { border: 4px solid #fff; box-shadow: 0 0 0 4px #000, 0 0 0 8px #fff; border-radius: 8px; }
+        .pixel-btn { border: 2px solid #fff; padding: 14px 24px; transition: all 0.2s; cursor: pointer; display: inline-block; }
         .pixel-btn:hover { background: #fff; color: #000; }
-        .stat-bar { height: 10px; background: #333; position: relative; overflow: hidden; }
-        .stat-fill { height: 100%; background: #00ff00; width: 85%; }
+        .pixel-btn.primary { background: #fff; color: #000; }
+        .pixel-btn.primary:hover { background: #ffaa00; border-color: #ffaa00; }
+        .feature-card { border: 2px solid rgba(255,255,255,0.15); transition: all .2s; }
+        .feature-card:hover { border-color: #ffaa00; background: rgba(255,170,0,0.04); }
+        .tier-card { border: 2px solid rgba(255,255,255,0.15); }
+        .tier-card.featured { border-color: #ffaa00; box-shadow: 0 0 20px rgba(255,170,0,0.15); }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-4">
-    <header class="text-center mb-12">
-        <h1 class="text-4xl font-bold mb-4">Hexa_Card_v1.0</h1>
-        <p class="opacity-60 text-sm">相手のスマホを「冒険の書」に変える名刺。</p>
+<body class="min-h-screen">
+
+    <!-- Hero -->
+    <header class="text-center px-6 pt-20 pb-16 max-w-3xl mx-auto">
+        <p class="text-[10px] tracking-[0.3em] text-amber-400 mb-4">NFC DIGITAL BUSINESS CARD</p>
+        <h1 class="text-3xl md:text-5xl font-bold mb-6 leading-relaxed">HEXA CARD</h1>
+        <p class="text-sm md:text-base leading-loose mb-2">スマホをタップするだけで、名刺交換が終わる。</p>
+        <p class="text-[11px] opacity-50 leading-loose">専用アプリ不要。ブラウザが起動し、あなたのデジタルプロフィールが一瞬で展開されます。</p>
+        <div class="mt-10">
+            <a href="https://virtual-business-card.hexa-relation.com/purchase" class="pixel-btn primary">▶ カードを見てみる</a>
+        </div>
     </header>
 
-    <main class="w-full max-w-sm">
-        <div class="card-frame mb-8">
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-xs">LV. 99</span>
-                <span class="text-xs">TYPE: CREATOR</span>
+    <!-- Features -->
+    <section class="max-w-4xl mx-auto px-6 py-16">
+        <h2 class="text-center text-sm tracking-[0.3em] text-amber-400 mb-12">FEATURES // できること</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="feature-card p-6">
+                <p class="text-xs text-amber-400 mb-2">NFC TAP TRANSFER</p>
+                <h3 class="text-base mb-3">タップ一つで名刺交換</h3>
+                <p class="text-[11px] leading-loose opacity-70">専用アプリ不要。カードを相手のスマホにかざすだけで、ブラウザからあなたのプロフィールが瞬時に展開されます。</p>
             </div>
-            <div class="text-center mb-8">
-                <div class="w-24 h-24 bg-white/10 rounded-full mx-auto mb-4 border-2 border-white flex items-center justify-center">
-                    <span class="text-2xl">👤</span>
-                </div>
-                <h2 class="text-2xl mb-2">NOX CLANDLE</h2>
-                <p class="text-xs opacity-60">HEXA RELATION FOUNDER</p>
+            <div class="feature-card p-6">
+                <p class="text-xs text-amber-400 mb-2">VISUAL & AUDIO CUSTOMIZATION</p>
+                <h3 class="text-base mb-3">見た目・音まで自由に演出</h3>
+                <p class="text-[11px] leading-loose opacity-70">ビジュアルテーマ、アニメーションフレーム、BGMまで自由にカスタマイズ。相手の記憶に強く残ります。</p>
             </div>
-            <div class="space-y-4 mb-8">
-                <div>
-                    <div class="flex justify-between text-[10px] mb-1"><span>HP (Hospitality)</span><span>85/100</span></div>
-                    <div class="stat-bar"><div class="stat-fill"></div></div>
-                </div>
-                <div>
-                    <div class="flex justify-between text-[10px] mb-1"><span>MP (Making Power)</span><span>99/100</span></div>
-                    <div class="stat-bar"><div class="stat-fill" style="width: 99%"></div></div>
-                </div>
+            <div class="feature-card p-6">
+                <p class="text-xs text-amber-400 mb-2">AI-OCR CARD SCANNER</p>
+                <h3 class="text-base mb-3">紙の名刺もAIで即デジタル化</h3>
+                <p class="text-[11px] leading-loose opacity-70">受け取った紙の名刺をカメラで撮影するだけで、AIが解析し、あなたのライブラリに自動保存します。</p>
             </div>
-            <div class="grid grid-cols-2 gap-2 text-center text-xs">
-                <div class="border border-white/20 p-2">▶ TALK</div>
-                <div class="border border-white/20 p-2">▶ SHARE</div>
+            <div class="feature-card p-6">
+                <p class="text-xs text-amber-400 mb-2">ONE-CLICK CONTACT SAVE</p>
+                <h3 class="text-base mb-3">ワンタップで連絡先に保存</h3>
+                <p class="text-[11px] leading-loose opacity-70">相手が「連絡先を保存」を押すだけで、電話番号・SNS・写真までスマホのアドレス帳に直接保存されます。</p>
+            </div>
+            <div class="feature-card p-6">
+                <p class="text-xs text-amber-400 mb-2">DUAL ALTER IDENTITY</p>
+                <h3 class="text-base mb-3">本名を明かさない別名プロフィール</h3>
+                <p class="text-[11px] leading-loose opacity-70">クリエイター名やハンドルネームでカードを構築可能。プライバシーを守りながらリアルとバーチャルを繋ぎます。</p>
+            </div>
+            <div class="feature-card p-6">
+                <p class="text-xs text-amber-400 mb-2">NO PRINTING & INSTANT UPDATES</p>
+                <h3 class="text-base mb-3">印刷し直し不要、即時更新</h3>
+                <p class="text-[11px] leading-loose opacity-70">連絡先が変わっても再印刷は不要。管理画面から書き換えるだけで、配布済みのカードも最新状態に更新されます。</p>
             </div>
         </div>
+    </section>
 
-        <div class="text-center space-y-6">
-            <p class="text-sm">「はじめまして」を「衝撃」に変えろ。</p>
-            <a href="https://virtual-business-card.hexa-relation.com/purchase" class="pixel-btn w-full text-center">このカードを装備する</a>
+    <!-- Pricing -->
+    <section class="max-w-4xl mx-auto px-6 py-16">
+        <h2 class="text-center text-sm tracking-[0.3em] text-amber-400 mb-4">PRICING // 料金プラン</h2>
+        <p class="text-center text-[11px] opacity-50 mb-12">月額費用は一切なし。買い切りモデルで、一生涯無料でシステムをご利用いただけます。</p>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="tier-card p-6 text-center">
+                <p class="text-[10px] opacity-50 mb-2">STANDARD</p>
+                <p class="text-xl mb-4">¥3,000</p>
+                <p class="text-[10px] opacity-60 leading-loose">オリジナルデザイン<br>初期 3,000 RT 付与</p>
+            </div>
+            <div class="tier-card p-6 text-center">
+                <p class="text-[10px] opacity-50 mb-2">EXECUTIVE</p>
+                <p class="text-xl mb-4">¥20,000</p>
+                <p class="text-[10px] opacity-60 leading-loose">プレミアム金属仕上げ<br>初期 3,000 RT 付与</p>
+            </div>
+            <div class="tier-card featured p-6 text-center">
+                <p class="text-[10px] text-amber-400 mb-2">APEX（限定）</p>
+                <p class="text-xl mb-4">¥1,000,000</p>
+                <p class="text-[10px] opacity-60 leading-loose">世界10枠限定の特注ブラック<br>限定称号・コンシェルジュ付き</p>
+            </div>
+            <div class="tier-card p-6 text-center">
+                <p class="text-[10px] opacity-50 mb-2">CORPORATE</p>
+                <p class="text-xl mb-4">¥5,800<span class="text-xs opacity-50">/枚</span></p>
+                <p class="text-[10px] opacity-60 leading-loose">法人・チーム向け一括発注</p>
+            </div>
         </div>
-    </main>
+    </section>
 
-    <footer class="mt-20 opacity-20 text-[9px]">© 2026 HEXA RELATION / EQUIPMENT_DEPT.</footer>
+    <!-- CTA -->
+    <section class="text-center px-6 py-20">
+        <p class="text-sm mb-8">「はじめまして」を、衝撃に変える。</p>
+        <a href="https://virtual-business-card.hexa-relation.com/purchase" class="pixel-btn primary">▶ このカードを装備する</a>
+    </section>
+
+    <footer class="text-center pb-12 opacity-20 text-[9px]">
+        <a href="../../" class="opacity-100 hover:opacity-60">▲ TOPへ戻る</a>
+        <p class="mt-4">&copy; 2026 HEXA RELATION</p>
+    </footer>
 </body>
 </html>
