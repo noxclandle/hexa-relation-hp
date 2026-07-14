@@ -33,15 +33,16 @@
     <style>
         * { box-sizing: border-box; }
         html, body {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden;
+            margin: 0; padding: 0; width: 100%; min-height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
             font-family: 'Press Start 2P', monospace;
             background: #5c94fc;
         }
 
         #game {
             position: relative;
-            width: 100%; height: 100%;
+            width: 100%; height: 100vh;
             overflow: hidden;
         }
 
@@ -172,7 +173,7 @@
 
         <div class="hud">
             <h1>HEXA RELATION</h1>
-            <p>← → / A D で うごく　・　決定キー（Enter / Space / Z）で えらぶ</p>
+            <p>← → / A D で うごく　・　↑ / W / Space で ジャンプ　・　クリック / Enter / Z で えらぶ</p>
         </div>
 
         <div class="ground"></div>
@@ -204,7 +205,10 @@
                 <div class="touch-btn" id="btn-left">◀</div>
                 <div class="touch-btn" id="btn-right">▶</div>
             </div>
-            <div class="touch-btn" id="touch-action">●</div>
+            <div style="display:flex; gap:12px;">
+                <div class="touch-btn" id="touch-jump">▲</div>
+                <div class="touch-btn" id="touch-action">●</div>
+            </div>
         </div>
     </div>
 
@@ -245,20 +249,35 @@
         const prompt = document.getElementById('prompt');
 
         const objects = Array.from(document.querySelectorAll('.obj'));
-        let playerX = 4; // percent
+        const pipeObj = document.getElementById('obj-pipe');
+        const pipeLeft = parseFloat(pipeObj.style.left);
+        const PIPE_HALF_WIDTH = 3.2; // percent, approximate solid collision half-width
+        const JUMP_CLEARANCE = 11; // percent (of game height); clear the pipe once airborne past this
+
+        let playerX = 4; // percent, horizontal position
+        let playerY = 0; // percent, vertical offset above ground (0 = grounded)
+        let velocityY = 0;
+        const GRAVITY = -0.9;
+        const JUMP_FORCE = 10.5;
+        let isJumping = false;
+
         const SPEED = 0.6;
         const RANGE = 6; // percent distance to trigger "near object"
         let facing = 1;
         let nearestObj = null;
+        let moveTarget = null; // click-to-move destination (percent), null = no click-move active
         const keys = {};
-
-        function gameWidthPercentPerPixel() {
-            return 100 / game.getBoundingClientRect().width;
-        }
 
         function updatePlayerPosition() {
             playerX = Math.max(2, Math.min(94, playerX));
             player.style.left = playerX + '%';
+            player.style.bottom = (18 + playerY) + '%';
+        }
+
+        function isBlockedByPipe(targetX) {
+            // Solid only while roughly grounded; jumping high enough clears the pipe
+            if (playerY >= JUMP_CLEARANCE) return false;
+            return Math.abs(targetX - pipeLeft) < PIPE_HALF_WIDTH;
         }
 
         function findNearestObject() {
@@ -297,18 +316,59 @@
             }
         }
 
+        function tryMove(delta) {
+            const target = playerX + delta;
+            if (isBlockedByPipe(target)) return; // solid wall unless jumping over
+            playerX = target;
+        }
+
+        function jump() {
+            if (!isJumping) {
+                velocityY = JUMP_FORCE;
+                isJumping = true;
+            }
+        }
+
         function loop() {
             let moving = false;
+
             if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
-                playerX -= SPEED;
+                tryMove(-SPEED);
                 facing = -1;
                 moving = true;
+                moveTarget = null; // manual input cancels click-to-move
             }
             if (keys['ArrowRight'] || keys['d'] || keys['D']) {
-                playerX += SPEED;
+                tryMove(SPEED);
                 facing = 1;
                 moving = true;
+                moveTarget = null;
             }
+
+            // Click-to-move: walk toward the target until reached or blocked
+            if (moveTarget !== null && !moving) {
+                const diff = moveTarget - playerX;
+                if (Math.abs(diff) < 1) {
+                    moveTarget = null;
+                } else {
+                    const dir = diff > 0 ? 1 : -1;
+                    tryMove(dir * SPEED);
+                    facing = dir;
+                    moving = true;
+                }
+            }
+
+            // Gravity / jump arc
+            if (isJumping || playerY > 0) {
+                velocityY += GRAVITY;
+                playerY += velocityY;
+                if (playerY <= 0) {
+                    playerY = 0;
+                    velocityY = 0;
+                    isJumping = false;
+                }
+            }
+
             updatePlayerPosition();
             player.classList.toggle('face-left', facing === -1);
             playerSprite.classList.toggle('walk', moving);
@@ -322,8 +382,11 @@
         window.addEventListener('keydown', (e) => {
             keys[e.key] = true;
 
-            if (e.key === 'Enter' || e.key === ' ' || e.key === 'z' || e.key === 'Z') {
+            if (e.key === 'Enter' || e.key === 'z' || e.key === 'Z') {
                 triggerObject(nearestObj);
+            }
+            if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.key === ' ') {
+                jump();
             }
 
             const k = e.key.toLowerCase();
@@ -344,13 +407,23 @@
             if (document.hidden) { for (const k in keys) keys[k] = false; }
         });
 
+        // Click / tap anywhere on the scene: walk toward the click, and confirm if already near an object
+        game.addEventListener('click', (e) => {
+            if (e.target.closest('#touch-controls')) return;
+            const rect = game.getBoundingClientRect();
+            const clickXPercent = ((e.clientX - rect.left) / rect.width) * 100;
+            moveTarget = clickXPercent;
+            if (nearestObj) triggerObject(nearestObj);
+        });
+
         // Touch controls
         const btnLeft = document.getElementById('btn-left');
         const btnRight = document.getElementById('btn-right');
+        const btnJump = document.getElementById('touch-jump');
         const btnAction = document.getElementById('touch-action');
 
         function bindHold(el, key) {
-            const start = (e) => { e.preventDefault(); keys[key] = true; };
+            const start = (e) => { e.preventDefault(); keys[key] = true; moveTarget = null; };
             const end = (e) => { e.preventDefault(); keys[key] = false; };
             el.addEventListener('touchstart', start);
             el.addEventListener('touchend', end);
@@ -360,7 +433,9 @@
         }
         bindHold(btnLeft, 'ArrowLeft');
         bindHold(btnRight, 'ArrowRight');
-        btnAction.addEventListener('click', () => {
+        btnJump.addEventListener('click', (e) => { e.stopPropagation(); jump(); });
+        btnAction.addEventListener('click', (e) => {
+            e.stopPropagation();
             triggerObject(nearestObj);
         });
 
