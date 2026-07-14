@@ -379,7 +379,13 @@
         let aceStep = 0;
         const aceSeq = ['a', 'c', 'e'];
 
+        const GAME_KEYS = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' ', 'a', 'A', 'd', 'D', 'w', 'W'];
+
         window.addEventListener('keydown', (e) => {
+            // Prevent the browser's default behavior (Space/ArrowUp/Down scroll the page,
+            // which otherwise fires at the same time as jump now that the page can scroll)
+            if (GAME_KEYS.includes(e.key)) e.preventDefault();
+
             keys[e.key] = true;
 
             if (e.key === 'Enter' || e.key === 'z' || e.key === 'Z') {
