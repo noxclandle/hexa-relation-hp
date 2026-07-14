@@ -3,203 +3,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hexa Relation | ゲームの世界を現実に。没入型LP・ポートフォリオ制作</title>
-    <meta name="description" content="Hexa Relation (ヘキサ・リレーション) - ゲームの世界に住む、あなた専用のセーブデータ型ポートフォリオを制作。MOTHER2、FF、DBD、ロマサガ風など、多彩な世界観をオーダーメイドで構築。Webデザインに革命と没入感を。">
-    <meta name="keywords" content="ポートフォリオ 制作, ゲーム風 サイト, LP制作 依頼, VTuber LP, 自己紹介 ページ, Webデザイン ゲーム, オーダーメイド Web制作">
-    
+    <title>Hexa Relation | ゲームの世界を、現実の武器に。</title>
+    <meta name="description" content="Hexa Relation（ヘキサ・リレーション）は、次世代デジタル名刺「Hexa Card」と、没入型ゲーム風ポートフォリオ・LP制作という2つの事業を展開する制作スタジオです。">
+    <meta name="keywords" content="Hexa Card, 電子名刺, デジタル名刺, ポートフォリオ 制作, ゲーム風 サイト, LP制作 依頼, VTuber LP, オーダーメイド Web制作">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hexa-relation.com/">
-    <meta property="og:title" content="Hexa Relation | 最高のセーブデータを、Webに刻む。">
-    <meta property="og:description" content="あなたの活動を「ゲームの世界観」で凝縮。操作し、体験する。忘れられないポートフォリオを構築。">
+    <meta property="og:title" content="Hexa Relation | ゲームの世界を、現実の武器に。">
+    <meta property="og:description" content="次世代デジタル名刺「Hexa Card」と、没入型ゲーム風ポートフォリオ・LP制作。2つの事業で、あなたの存在を強く印象づけます。">
     <meta property="og:image" content="https://hexa-relation.com/enhanced_E3FD57_1_102_o.png">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "Hexa Relation Game-Style Web Production",
-      "description": "ゲームの世界観をWebサイトで再現する、没入型ポートフォリオ制作サービス。",
-      "provider": {
-        "@type": "Organization",
-        "name": "Hexa Relation"
-      },
-      "offers": {
-        "@type": "Offer",
-        "priceCurrency": "JPY",
-        "price": "30000"      }
+      "@type": "Organization",
+      "name": "Hexa Relation",
+      "url": "https://hexa-relation.com/",
+      "description": "次世代デジタル名刺「Hexa Card」と、没入型ゲーム風ポートフォリオ・LP制作を展開する制作スタジオ。",
+      "makesOffer": [
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Hexa Card" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Game-Style Portfolio / LP Production" } }
+      ]
     }
     </script>
 
-    <!-- Google Fonts: Cinzel, Noto Sans JP -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-dark: #030305;
-            --accent-white: #ffffff;
-            --text-muted: #888888;
-            --glass-bg: rgba(255, 255, 255, 0.02);
-            --glass-border: rgba(255, 255, 255, 0.08);
+        * { box-sizing: border-box; }
+        html, body {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: 'Press Start 2P', monospace;
+            background: #5c94fc;
         }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--accent-white);
-            font-family: 'Noto Sans JP', sans-serif;
-            margin: 0; padding: 0;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+        #game {
+            position: relative;
+            width: 100%; height: 100%;
+            overflow: hidden;
         }
 
-        .cinzel { font-family: 'Cinzel', serif; }
-
-        h1, p {
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95), 0 1px 3px rgba(0, 0, 0, 0.9);
+        /* Sky */
+        .sky {
+            position: absolute; inset: 0;
+            background: linear-gradient(#5c94fc 0%, #78b8fc 70%, #a8d8fc 100%);
+        }
+        .cloud {
+            position: absolute; background: #fff; border-radius: 40%;
+            opacity: 0.9;
+        }
+        .cloud::before, .cloud::after {
+            content: ''; position: absolute; background: #fff; border-radius: 50%;
         }
 
-        /* Cinematic Background */
-        .hero-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('enhanced_E3FD57_1_102_o.png');
-            background-size: cover; background-position: center;
-            opacity: 0.9; filter: grayscale(5%) brightness(95%);
-            z-index: -1;
-        }
-        .vignette {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.6) 100%);
-            z-index: -1;
+        /* Ground */
+        .ground {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 18%;
+            background: repeating-linear-gradient(90deg, #c84c0c 0, #c84c0c 40px, #a83c08 40px, #a83c08 42px);
+            border-top: 6px solid #6b3400;
+            box-shadow: inset 0 8px 0 rgba(255,255,255,0.15);
         }
 
-        /* Glassmorphism Classes */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 4px;
-            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        /* Title */
+        .hud {
+            position: absolute; top: 3%; left: 0; right: 0; text-align: center; z-index: 20;
+            color: #fff; text-shadow: 3px 3px 0 #000;
         }
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px);
+        .hud h1 { font-size: clamp(1rem, 3vw, 1.8rem); margin: 0 0 6px; letter-spacing: 0.1em; }
+        .hud p { font-size: clamp(0.5rem, 1.3vw, 0.7rem); margin: 0; opacity: 0.9; }
+
+        /* World objects (positioned along ground, in % of #game width) */
+        .obj {
+            position: absolute; bottom: 18%; cursor: default;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .obj-label {
+            font-size: 0.5rem; color: #fff; text-shadow: 2px 2px 0 #000;
+            margin-bottom: 8px; white-space: nowrap; text-align: center; line-height: 1.6;
         }
 
-        /* Navigation links */
-        .nav-link {
-            font-family: 'Cinzel', serif;
-            letter-spacing: 0.2em;
-            padding: 1.2rem;
-            border: 1px solid var(--glass-border);
-            background: rgba(3, 3, 5, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transition: all 0.4s;
-            text-align: center;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+        /* Pipe */
+        .pipe {
+            width: 90px; height: 100px; background: #00a800;
+            border: 4px solid #000;
+            box-shadow: inset -6px 0 0 rgba(0,0,0,0.25);
+            position: relative;
         }
-        .nav-link:hover {
-            background: #fff; color: #000;
-            box-shadow: 0 0 30px rgba(255,255,255,0.25);
-            text-shadow: none;
+        .pipe::before {
+            content: ''; position: absolute; top: -16px; left: -8px; right: -8px; height: 26px;
+            background: #00d800; border: 4px solid #000;
         }
 
-        /* Animations */
-        .reveal { opacity: 0; transform: translateY(40px); transition: 1.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        .section-divider {
-            height: 1px; width: 100%;
-            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-            margin: 6rem 0;
+        /* Door */
+        .door {
+            width: 60px; height: 90px; background: #8b4513;
+            border: 4px solid #000; border-radius: 30px 30px 4px 4px;
+            position: relative;
+        }
+        .door::after {
+            content: ''; position: absolute; right: 8px; top: 50%; width: 8px; height: 8px;
+            background: #fdb700; border-radius: 50%;
         }
 
-        .heading-decoration {
-            font-size: 0.6rem; letter-spacing: 1em; color: var(--text-muted);
-            text-transform: uppercase; margin-bottom: 1rem; display: block;
+        /* Flagpole */
+        .flagpole { width: 8px; height: 220px; background: #ccc; border: 2px solid #000; }
+        .flagpole::before {
+            content: ''; position: absolute; top: 0; left: 8px; width: 0; height: 0;
+            border-top: 20px solid transparent; border-bottom: 20px solid transparent;
+            border-left: 30px solid #ff2222;
+        }
+        .flagpole::after {
+            content: ''; position: absolute; top: -14px; left: -6px; width: 20px; height: 20px;
+            background: #fdb700; border-radius: 50%; border: 3px solid #000;
+        }
+
+        /* Player */
+        #player {
+            position: absolute; bottom: 18%; width: 52px; height: 64px;
+            z-index: 15;
+        }
+        #player.face-left { transform: scaleX(-1); }
+        #player-canvas {
+            width: 100%; height: 100%; display: block;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(2px 3px 0 rgba(0,0,0,0.35));
+        }
+        #player-canvas.walk { animation: walk-bounce 0.3s infinite; }
+        @keyframes walk-bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+        /* Prompt */
+        #prompt {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            bottom: 24%; background: #000; color: #fff; padding: 8px 14px;
+            border: 2px solid #fff; font-size: 0.55rem; white-space: nowrap;
+            display: none; z-index: 25;
+        }
+        #prompt.show { display: block; }
+
+        /* Touch controls */
+        #touch-controls {
+            position: absolute; bottom: 3%; left: 0; right: 0; z-index: 30;
+            display: flex; justify-content: space-between; padding: 0 20px;
+            pointer-events: none;
+        }
+        .touch-btn {
+            pointer-events: auto; width: 56px; height: 56px; border-radius: 50%;
+            background: rgba(255,255,255,0.25); border: 3px solid #fff; color: #fff;
+            font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+            user-select: none; -webkit-user-select: none;
+        }
+        .touch-btn:active { background: rgba(255,255,255,0.5); }
+        #touch-dir { display: flex; gap: 12px; }
+        #touch-action { background: rgba(255,60,60,0.35); border-color: #ff6666; }
+
+        @media (min-width: 900px) {
+            #touch-controls { display: none; }
         }
     </style>
 </head>
 <body>
+    <div id="game">
+        <div class="sky"></div>
+        <div class="cloud" style="top:8%; left:6%; width:70px; height:26px;"></div>
+        <div class="cloud" style="top:14%; left:38%; width:90px; height:30px;"></div>
+        <div class="cloud" style="top:6%; left:70%; width:60px; height:22px;"></div>
 
-    <div class="hero-bg"></div>
-    <div class="vignette"></div>
+        <div class="hud">
+            <h1>HEXA RELATION</h1>
+            <p>← → / A D で うごく　・　決定キー（Enter / Space / Z）で えらぶ</p>
+        </div>
 
-    <!-- 1. Hero Gateway -->
-    <section class="min-h-screen flex flex-col justify-center items-center p-6 text-center">
-        <header class="mb-12">
-            <img src="背景.png" alt="Hexa Relation Emblem" class="w-20 mx-auto mb-6 opacity-60">
-            <h1 class="cinzel text-5xl md:text-7xl font-bold tracking-[0.3em] mb-4">Hexa Relation</h1>
-            <p id="philosophy-text" class="text-[10px] md:text-xs tracking-[0.4em] text-muted max-w-3xl mx-auto leading-loose uppercase">
-                Blind justice ensures fairness, but it is the courage<br>to take another's hand that ignites the real passion in your life.
-            </p>
-            <p class="text-[10px] md:text-xs tracking-[0.15em] opacity-75 mt-4 max-w-2xl mx-auto leading-loose">
-                厳格な正義は公平さをもたらす。<br>
-                しかし、人生に真の情熱の火を灯すのは、誰かの手を取る勇気である。
-            </p>
-        </header>
+        <div class="ground"></div>
 
-        <nav class="flex flex-col gap-6 w-full max-w-sm">
-            <a href="save/nox/" class="nav-link">DEVELOPER // 開発者</a>
-            <a href="https://virtual-business-card.hexa-relation.com/" class="nav-link">HEXA CARD // 電子名刺</a>
-        </nav>
+        <!-- World objects: positions are left(%) along the ground -->
+        <div class="obj" style="left: 24%;" data-target="link" data-href="intro/card/" id="obj-pipe">
+            <span class="obj-label">HEXA CARD<br>電子名刺</span>
+            <div class="pipe"></div>
+        </div>
+
+        <div class="obj" style="left: 54%;" data-target="link" data-href="#save-data" id="obj-door">
+            <span class="obj-label">SAVE DATA<br>せいさく じっせき</span>
+            <div class="door"></div>
+        </div>
+
+        <div class="obj" style="left: 86%;" data-target="link" data-href="save/nox/" id="obj-flag">
+            <span class="obj-label">DEVELOPER<br>せいさくしゃ</span>
+            <div class="flagpole"></div>
+        </div>
+
+        <div id="player">
+            <canvas id="player-canvas" width="32" height="40" class="walk"></canvas>
+        </div>
+
+        <div id="prompt"></div>
+
+        <div id="touch-controls">
+            <div id="touch-dir">
+                <div class="touch-btn" id="btn-left">◀</div>
+                <div class="touch-btn" id="btn-right">▶</div>
+            </div>
+            <div class="touch-btn" id="touch-action">●</div>
+        </div>
+    </div>
+
+    <!-- Save Data reveal (anchor target for the door) -->
+    <section id="save-data" style="background:#000; color:#fff; padding: 60px 20px; font-family:'Press Start 2P',monospace;">
+        <h2 style="text-align:center; color:#fdb700; font-size:1rem; margin-bottom: 40px;">▼ SAVE DATA ▼</h2>
+        <div style="max-width:900px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px;">
+            <a href="save/7ch/" style="border:2px dashed #555; padding:20px; text-align:center; color:#fff; text-decoration:none; font-size:0.6rem;">
+                <div style="opacity:.5; margin-bottom:10px;">クロノトリガー風</div><div>7CH</div>
+            </a>
+            <a href="save/choco/" style="border:2px dashed #555; padding:20px; text-align:center; color:#fff; text-decoration:none; font-size:0.6rem;">
+                <div style="opacity:.5; margin-bottom:10px;">ロマサガ風</div><div>CHOCO</div>
+            </a>
+            <a href="save/sabanomiso/" style="border:2px dashed #555; padding:20px; text-align:center; color:#fff; text-decoration:none; font-size:0.6rem;">
+                <div style="opacity:.5; margin-bottom:10px;">DBD風</div><div>SABANOMISO</div>
+            </a>
+            <a href="save/ten/" style="border:2px dashed #555; padding:20px; text-align:center; color:#fff; text-decoration:none; font-size:0.6rem;">
+                <div style="opacity:.5; margin-bottom:10px;">FF風</div><div>TEN</div>
+            </a>
+        </div>
+        <p style="text-align:center; margin-top:30px;">
+            <a href="intro/archive/" style="color:#888; font-size:0.55rem;">▶ もっと見る（アーカイブ）</a>
+        </p>
+        <p style="text-align:center; margin-top:20px;">
+            <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;" style="color:#888; font-size:0.55rem;">▲ TOPへ戻る</a>
+        </p>
     </section>
 
-    <footer class="py-20 text-center opacity-20 text-[9px] cinzel tracking-[0.5em] uppercase border-t border-white/5">
-        &copy; 2026 Hexa Relation // Engineering Envy.
+    <footer style="background:#000; color:#333; text-align:center; padding: 20px; font-family:'Press Start 2P',monospace; font-size:0.5rem;">
+        <a href="order/index.html?from=lp" style="color:#555; text-decoration:none;">LP制作のご相談はこちら</a>
+        <p style="margin-top:14px;">&copy; 2026 Hexa Relation</p>
     </footer>
 
     <script>
+        const game = document.getElementById('game');
+        const player = document.getElementById('player');
+        const playerCanvas = document.getElementById('player-canvas');
+        const prompt = document.getElementById('prompt');
 
-        // Interaction Sound
-        function playClickSound() {
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-                oscillator.type = 'square';
-                oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime); 
-                oscillator.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.05);
-                gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-                oscillator.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.05);
-            } catch (e) {}
+        // Draw the character sprite pixelated (downscale onto a small canvas)
+        (function drawPixelSprite() {
+            const ctx = playerCanvas.getContext('2d');
+            const img = new Image();
+            img.onload = () => {
+                ctx.imageSmoothingEnabled = true;
+                ctx.clearRect(0, 0, playerCanvas.width, playerCanvas.height);
+                // Fit the image into the canvas while preserving aspect ratio
+                const scale = Math.min(playerCanvas.width / img.width, playerCanvas.height / img.height);
+                const w = img.width * scale;
+                const h = img.height * scale;
+                ctx.drawImage(img, (playerCanvas.width - w) / 2, playerCanvas.height - h, w, h);
+            };
+            img.src = 'assets/player-character.png';
+        })();
+
+        const objects = Array.from(document.querySelectorAll('.obj'));
+        let playerX = 4; // percent
+        const SPEED = 0.6;
+        const RANGE = 6; // percent distance to trigger "near object"
+        let facing = 1;
+        let nearestObj = null;
+        const keys = {};
+
+        function gameWidthPercentPerPixel() {
+            return 100 / game.getBoundingClientRect().width;
         }
 
-        document.addEventListener('mousedown', (e) => {
-            if (e.target.closest('a')) playClickSound();
-        });
+        function updatePlayerPosition() {
+            playerX = Math.max(2, Math.min(94, playerX));
+            player.style.left = playerX + '%';
+        }
 
-        // Secret Admin Access (Sequential Click: A -> C -> E)
-        const philText = document.getElementById('philosophy-text');
-        const originalContent = philText.innerHTML;
-        let aceStep = 0;
-
-        function checkAce(char) {
-            const sequence = ['A', 'C', 'E'];
-            if (char === sequence[aceStep]) {
-                aceStep++;
-                if (aceStep === sequence.length) {
-                    window.location.href = 'admin/';
-                    aceStep = 0;
+        function findNearestObject() {
+            let closest = null;
+            let closestDist = Infinity;
+            for (const obj of objects) {
+                const objLeft = parseFloat(obj.style.left);
+                const dist = Math.abs(objLeft - playerX);
+                if (dist < RANGE && dist < closestDist) {
+                    closest = obj;
+                    closestDist = dist;
                 }
-            } else if (char !== ' ' && char !== '\n') {
-                aceStep = 0;
+            }
+            return closest;
+        }
+
+        function updatePrompt() {
+            nearestObj = findNearestObject();
+            if (nearestObj) {
+                prompt.textContent = '▶ 決定キーで えらぶ';
+                prompt.classList.add('show');
+            } else {
+                prompt.classList.remove('show');
             }
         }
 
-        // Wrap each character to enable clicking (ignoring HTML tags)
-        philText.innerHTML = originalContent.split('').map(char => {
-            if (char === '<' || char === '>' || char === 'b' || char === 'r' || char === '/') return char;
-            return `<span onclick="checkAce('${char.toUpperCase()}')" style="cursor:default;">${char}</span>`;
-        }).join('');
+        function triggerObject(obj) {
+            if (!obj) return;
+            if (obj.dataset.target === 'link') {
+                const href = obj.dataset.href;
+                if (href.startsWith('#')) {
+                    document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    window.location.href = href;
+                }
+            }
+        }
+
+        function loop() {
+            let moving = false;
+            if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
+                playerX -= SPEED;
+                facing = -1;
+                moving = true;
+            }
+            if (keys['ArrowRight'] || keys['d'] || keys['D']) {
+                playerX += SPEED;
+                facing = 1;
+                moving = true;
+            }
+            updatePlayerPosition();
+            player.classList.toggle('face-left', facing === -1);
+            playerCanvas.classList.toggle('walk', moving);
+            updatePrompt();
+        }
+
+        // Secret admin sequence via keyboard: A -> C -> E (only counted when NOT used for movement in the same frame burst)
+        let aceStep = 0;
+        const aceSeq = ['a', 'c', 'e'];
+
+        window.addEventListener('keydown', (e) => {
+            keys[e.key] = true;
+
+            if (e.key === 'Enter' || e.key === ' ' || e.key === 'z' || e.key === 'Z') {
+                triggerObject(nearestObj);
+            }
+
+            const k = e.key.toLowerCase();
+            if (k === aceSeq[aceStep]) {
+                aceStep++;
+                if (aceStep === aceSeq.length) {
+                    window.location.href = 'admin/';
+                    aceStep = 0;
+                }
+            } else {
+                aceStep = 0;
+            }
+        });
+        window.addEventListener('keyup', (e) => { keys[e.key] = false; });
+        // Prevent movement from getting "stuck" if the tab/window loses focus mid-keypress
+        window.addEventListener('blur', () => { for (const k in keys) keys[k] = false; });
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) { for (const k in keys) keys[k] = false; }
+        });
+
+        // Touch controls
+        const btnLeft = document.getElementById('btn-left');
+        const btnRight = document.getElementById('btn-right');
+        const btnAction = document.getElementById('touch-action');
+
+        function bindHold(el, key) {
+            const start = (e) => { e.preventDefault(); keys[key] = true; };
+            const end = (e) => { e.preventDefault(); keys[key] = false; };
+            el.addEventListener('touchstart', start);
+            el.addEventListener('touchend', end);
+            el.addEventListener('mousedown', start);
+            el.addEventListener('mouseup', end);
+            el.addEventListener('mouseleave', end);
+        }
+        bindHold(btnLeft, 'ArrowLeft');
+        bindHold(btnRight, 'ArrowRight');
+        btnAction.addEventListener('click', () => {
+            triggerObject(nearestObj);
+        });
+
+        updatePlayerPosition();
+        setInterval(loop, 16);
     </script>
 </body>
 </html>
