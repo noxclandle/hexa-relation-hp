@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>7CH - Portfolio (クロノトリガー風)</title>
-    <meta name="description" content="7chanのポートフォリオ。クロノトリガー風の世界観で構成された、時を駆ける雀士の記録。麻雀の確率を支配する論理を体験せよ。">
-    
+    <meta name="description" content="7chanのポートフォリオ。クロノトリガー風の世界観で構成された、時を駆ける雀士の記録。天鳳七段の論理を、実際の何切るクイズで体験せよ。">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
@@ -33,7 +33,6 @@
             letter-spacing: 1px;
         }
 
-        /* CT Window Style - Enhanced */
         .ct-window {
             background: linear-gradient(180deg, var(--ct-blue-start) 0%, var(--ct-blue-end) 100%);
             border: 3px solid var(--ct-border);
@@ -42,7 +41,6 @@
             padding: 1.5rem;
             position: relative;
         }
-
         .ct-window::after {
             content: '';
             position: absolute;
@@ -50,7 +48,6 @@
             border: 1px solid var(--ct-border-inner);
             pointer-events: none;
         }
-
         .ct-header {
             border-bottom: 2px solid var(--ct-border);
             margin-bottom: 1rem;
@@ -59,36 +56,18 @@
             text-shadow: 2px 2px #000;
         }
 
-        /* ATB Gauge */
-        .atb-container {
-            width: 100px;
-            height: 8px;
-            background: #111;
-            border: 1px solid #777;
-            overflow: hidden;
-        }
-        .atb-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #44ccff, #ffffff);
-            width: 0%;
-        }
+        .atb-container { width: 100px; height: 8px; background: #111; border: 1px solid #777; overflow: hidden; }
+        .atb-fill { height: 100%; background: linear-gradient(90deg, #44ccff, #ffffff); width: 0%; }
 
-        /* Animations */
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         .cursor-blink { animation: blink 0.8s infinite; }
 
         #time-warp {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle, transparent 0%, black 100%);
-            z-index: 9999;
-            pointer-events: none;
-            display: none;
+            z-index: 9999; pointer-events: none; display: none;
         }
-        .warp-active {
-            display: block !important;
-            animation: warp-effect 1.5s ease-in-out forwards;
-        }
+        .warp-active { display: block !important; animation: warp-effect 1.5s ease-in-out forwards; }
         @keyframes warp-effect {
             0% { transform: scale(1) rotate(0deg); opacity: 0; }
             50% { transform: scale(3) rotate(360deg); opacity: 1; background: #0000ff; }
@@ -98,64 +77,39 @@
         .pixel-text { text-shadow: 2px 2px #000; }
 
         .tile-btn {
-            background: #fdfdfd;
-            color: #000;
-            width: 36px;
-            height: 48px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-            border-bottom: 4px solid #ccc;
-            border-right: 2px solid #ddd;
-            cursor: pointer;
-            transition: transform 0.1s, background 0.1s;
+            background: #fdfdfd; color: #000; width: 34px; height: 46px;
+            border-radius: 4px; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.1rem;
+            border-bottom: 4px solid #ccc; border-right: 2px solid #ddd;
+            cursor: pointer; transition: transform 0.1s, background 0.1s;
         }
-        .tile-btn:active {
-            transform: translateY(2px);
-            border-bottom-width: 2px;
-        }
-        .tile-btn.selected {
-            background: #ffeb3b;
-            transform: translateY(-5px);
-        }
+        .tile-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
+        .tile-btn.selected { background: #ffeb3b; transform: translateY(-5px); }
+        .tile-btn.locked { pointer-events: none; opacity: 0.5; }
 
-        /* Dialogue Box */
-        .dialogue-box {
-            min-height: 100px;
-            cursor: pointer;
-        }
+        .dialogue-box { min-height: 100px; cursor: pointer; }
 
         #epoch-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            background: var(--ct-gold);
-            border: 2px solid #000;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-            transition: transform 0.3s;
+            position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
+            background: var(--ct-gold); border: 2px solid #000; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; cursor: pointer;
+            z-index: 100; box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); transition: transform 0.3s;
         }
         #epoch-btn:hover { transform: scale(1.1) rotate(15deg); }
 
-        .hidden-section { display: none; }
+        .timeline-item { border-left: 2px solid rgba(255,215,0,0.4); padding-left: 12px; position: relative; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -5px; top: 4px; width: 8px; height: 8px;
+            background: var(--ct-gold); border-radius: 50%;
+        }
     </style>
 </head>
 <body class="p-4 safe-area-inset">
     <div id="time-warp"></div>
 
     <div class="max-w-md mx-auto space-y-8 pb-32">
-        
-        <!-- FIRST VIEW (FV) -->
+
+        <!-- FIRST VIEW -->
         <section id="fv" class="ct-window">
             <div class="flex justify-between items-start">
                 <div>
@@ -168,103 +122,45 @@
                         <span class="text-[10px]">LV</span>
                         <span class="text-lg">77</span>
                     </div>
-                    <div class="atb-container">
-                        <div id="main-atb" class="atb-fill" style="width: 85%;"></div>
-                    </div>
+                    <div class="atb-container"><div id="main-atb" class="atb-fill" style="width: 85%;"></div></div>
                 </div>
             </div>
-            
+
             <div class="mt-6 border-l-4 border-yellow-500 pl-4 py-2">
                 <p class="text-lg leading-tight pixel-text">
-                    「その一打で、<br>
-                    未来は変わるのか？」
+                    「その一打で、<br>未来は変わるのか？」
                 </p>
             </div>
 
             <div class="mt-6 space-y-4">
                 <p class="text-xs leading-relaxed opacity-90">
-                    麻雀という盤上の小宇宙に魅了された旅人。<br>
-                    天鳳七段、安定段位8.2の論理（タクティクス）が、<br>
-                    あなたの「運命」を書き換える。
+                    麻雀という盤上の小宇宙に魅了された旅人。雀荘に身を置き、<br>
+                    天鳳七段・安定段位R8.2の論理（タクティクス）を積み上げてきた。<br>
+                    その一打一打が、あなたの「未来」を書き換える。
                 </p>
-                <button onclick="scrollToSection('problem')" class="w-full py-3 bg-red-900/60 border-2 border-red-500 text-sm hover:bg-red-800 transition">
-                    ▶ 未来を書き換える (SCROLL)
+                <button onclick="scrollToSection('profile')" class="w-full py-3 bg-red-900/60 border-2 border-red-500 text-sm hover:bg-red-800 transition">
+                    ▶ 旅人の記録を見る (SCROLL)
                 </button>
             </div>
         </section>
 
-        <!-- PROBLEM (PASONA: P) -->
-        <section id="problem" class="ct-window">
-            <h2 class="ct-header">⚠️ WARNING: LOST LOGIC</h2>
+        <!-- PROFILE / PERSONALITY -->
+        <section id="profile" class="ct-window">
+            <h2 class="ct-header">🀄 TRAVELER'S RECORD</h2>
             <div class="space-y-4">
-                <p class="text-sm font-bold text-red-400">「麻雀は運ゲーだ」と、諦めていないか？</p>
                 <p class="text-xs leading-relaxed">
-                    ・なぜか自分だけ勝てない<br>
-                    ・何を切ればいいか、最後は勘で決めている<br>
-                    ・「ツキ」がないから負けたと言い訳をする
+                    普段は雀荘に立ち、卓の内側から数えきれない局面を見てきた。<br>
+                    盤外でも発信を絶やさず、これまでの投稿は8,800を超える——<br>
+                    麻雀のことも、そうでないことも、思ったことをまっすぐ言葉にするタイプ。
                 </p>
-                <p class="text-xs bg-black/40 p-3 italic">
-                    その思考が、数巡後の敗北を「確定」させている。
-                </p>
-            </div>
-        </section>
-
-        <!-- AGITATION & SOLUTION (PASONA: A & S) -->
-        <section id="solution" class="ct-window">
-            <h2 class="ct-header">💎 CHRONO TACTICS</h2>
-            <div class="space-y-4">
-                <p class="text-sm">
-                    90%の「不幸」は、過去の選択で回避できる。
-                </p>
-                <div class="grid grid-cols-2 gap-2 text-[10px]">
-                    <div class="p-2 border border-blue-500/50 bg-blue-900/20">
-                        <p class="text-blue-300 mb-1">【時空解析】</p>
-                        河から相手の手牌を1秒で推測。
-                    </div>
-                    <div class="p-2 border border-blue-500/50 bg-blue-900/20">
-                        <p class="text-blue-300 mb-1">【確率固定】</p>
-                        放銃率を極限まで抑える絶対防御。
-                    </div>
-                </div>
-                <p class="text-xs leading-relaxed">
-                    7chが提供するのは、単なる打ち方ではない。<br>
-                    <span class="text-yellow-200">「勝利という未来」を逆算して引き寄せる論理だ。</span>
+                <p class="text-[10px] bg-black/40 p-3 border border-white/10 leading-relaxed opacity-80">
+                    ※ このセクションはX（@n71969926）の公開プロフィールから分かる範囲で構成しています。<br>
+                    より深いエピソードや具体的な人柄を反映したい場合は、追加情報をいただければ差し替えます。
                 </p>
             </div>
         </section>
 
-        /* NANI-KIRU GIMMICK (INTERACTIVE) */
-        section id="quiz" class="ct-window">
-            <h2 class="ct-header">⚔️ TRAINING: WHAT TO DISCARD?</h2>
-            <div id="quiz-container">
-                <p id="quiz-q" class="text-[10px] mb-4 text-cyan-200">南1局 平場 5巡目 ドラ: 三 <br>指針: 効率的なテンパイを目指せ</p>
-                
-                <!-- 14 Tiles Display -->
-                <div class="flex flex-wrap justify-center gap-1 mb-6">
-                    <!-- 13 in hand + 1 drawn -->
-                    <div class="tile-btn text-red-600">三</div>
-                    <div class="tile-btn text-red-600">四</div>
-                    <div class="tile-btn text-red-600">五</div>
-                    <div class="tile-btn text-blue-600">四</div>
-                    <div class="tile-btn text-blue-600">五</div>
-                    <div class="tile-btn text-blue-600">六</div>
-                    <div class="tile-btn text-green-700">二</div>
-                    <div class="tile-btn text-green-700" onclick="checkAnswer(0, this)">二</div>
-                    <div class="tile-btn text-green-700" onclick="checkAnswer(1, this)">三</div>
-                    <div class="tile-btn text-green-700" onclick="checkAnswer(0, this)">四</div>
-                    <div class="tile-btn text-green-700" onclick="checkAnswer(0, this)">五</div>
-                    <div class="tile-btn text-green-700" onclick="checkAnswer(2, this)">六</div>
-                    <div class="tile-btn text-green-700" onclick="checkAnswer(0, this)">七</div>
-                    <div class="ml-2 tile-btn text-green-700 border-yellow-400" onclick="checkAnswer(0, this)">八</div>
-                </div>
-
-                <div id="quiz-feedback" class="min-h-[60px] text-center text-xs flex flex-col justify-center items-center bg-black/40 p-2 border border-white/10">
-                    <p id="feedback-text" class="text-yellow-300">捨てる牌を選択せよ（14枚目：ツモ牌）</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- PROOF (PASONA: N) -->
+        <!-- STATUS / RECORDS -->
         <section id="proof" class="ct-window">
             <h2 class="ct-header">📊 STATUS / RECORDS</h2>
             <div class="space-y-3">
@@ -289,7 +185,52 @@
             </div>
         </section>
 
-        <!-- ACTION (PASONA: A) -->
+        <!-- ACTIVITY LOG -->
+        <section id="log" class="ct-window">
+            <h2 class="ct-header">⏱ ACTIVITY LOG</h2>
+            <div class="space-y-4">
+                <div class="timeline-item">
+                    <p class="text-[10px] text-blue-300">EPOCH: 修行時代</p>
+                    <p class="text-xs">雀荘の卓に立ち、無数の局面を実地で学ぶ。</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="text-[10px] text-blue-300">EPOCH: 天鳳七段 到達</p>
+                    <p class="text-xs">オンライン対局の頂点、上位0.5%の段位へ。</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="text-[10px] text-blue-300">EPOCH: 雀魂 雀聖到達</p>
+                    <p class="text-xs">安定段位R8.2という数字が、論理の再現性を証明する。</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="text-[10px] text-blue-300">EPOCH: NOW</p>
+                    <p class="text-xs">日々の対局と発信を続けながら、次の一打を探している。</p>
+                </div>
+                <p class="text-[10px] bg-black/40 p-3 border border-white/10 leading-relaxed opacity-80">
+                    ※ 具体的な日付・大会実績・エピソードがあれば、実データに差し替え可能です。
+                </p>
+            </div>
+        </section>
+
+        <!-- NANI-KIRU: 3-ROUND QUIZ -->
+        <section id="quiz" class="ct-window">
+            <h2 class="ct-header">⚔️ TRAINING: 何切る？</h2>
+            <div class="flex justify-between items-center mb-3 text-[10px]">
+                <span id="quiz-round-label">ROUND 1 / 3</span>
+                <span id="quiz-score">SCORE: 0</span>
+            </div>
+            <div id="quiz-container">
+                <p id="quiz-q" class="text-[10px] mb-4 text-cyan-200"></p>
+                <div id="quiz-tiles" class="flex flex-wrap justify-center gap-1 mb-6"></div>
+                <div id="quiz-feedback" class="min-h-[70px] text-center text-xs flex flex-col justify-center items-center bg-black/40 p-2 border border-white/10">
+                    <p id="feedback-text" class="text-yellow-300">捨てる牌を選択せよ</p>
+                </div>
+                <button id="quiz-next-btn" onclick="nextRound()" class="hidden mt-4 w-full py-2 bg-blue-900/60 border-2 border-blue-400 text-xs hover:bg-blue-800 transition">
+                    ▶ 次の局へ
+                </button>
+            </div>
+        </section>
+
+        <!-- ACTION -->
         <section id="action" class="ct-window">
             <h2 class="ct-header">⏳ TIME GATE</h2>
             <div class="space-y-4">
@@ -309,9 +250,7 @@
         <!-- DIALOGUE GIMMICK -->
         <div class="ct-window dialogue-box" onclick="nextDialogue()">
             <div class="flex items-start space-x-3">
-                <div class="w-12 h-12 bg-blue-900 border border-white/50 flex items-center justify-center text-2xl">
-                    👤
-                </div>
+                <div class="w-12 h-12 bg-blue-900 border border-white/50 flex items-center justify-center text-2xl">👤</div>
                 <div class="flex-1">
                     <p id="dialogue-text" class="text-xs leading-relaxed">
                         ...おや、迷い子か？ ここは「時の最果て」。<br>
@@ -324,7 +263,6 @@
 
     </div>
 
-    <!-- EPOCH (SCROLL TO TOP) -->
     <div id="epoch-btn" onclick="warpToTop()">
         <span class="text-[10px] font-bold text-black">シルバード</span>
     </div>
@@ -333,7 +271,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // Firebase Config (Keep existing)
         const firebaseConfig = { apiKey: "AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI", authDomain: "hexa-relation.firebaseapp.com", projectId: "hexa-relation", storageBucket: "hexa-relation.firebasestorage.app", messagingSenderId: "318065017750", appId: "1:318065017750:web:94acf3c9c43632b3ff93b7", measurementId: "G-15NM9TWFE2" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
@@ -359,31 +296,153 @@
             document.getElementById('dialogue-text').innerText = dialogues[dIndex];
         }
 
-        // Quiz Logic
-        function checkAnswer(isCorrect, el) {
-            const feedback = document.getElementById('feedback-text');
-            document.querySelectorAll('.tile-btn').forEach(b => b.classList.remove('selected'));
-            el.classList.add('selected');
-
-            if (isCorrect === 1) {
-                feedback.innerHTML = "<span class='text-green-400 font-bold'>【正解：打 三索】</span><br>三-六-九索の三面張を維持しつつ、タンヤオ・平和への渡りも見える最適解だ。";
-            } else if (isCorrect === 2) {
-                feedback.innerHTML = "<span class='text-blue-300 font-bold'>【妥協：打 六索】</span><br>悪くはないが、受け入れ枚数で三索に劣る。未来の和了率が数％低下するぞ。";
-            } else {
-                feedback.innerHTML = "<span class='text-red-400 font-bold'>【不正解：悪手】</span><br>その一打でテンパイが遠のいた。麻雀の神様（確率）は嘘をつかないぞ。";
+        // ---- NANI-KIRU: 3-round quiz ----
+        const ROUNDS = [
+            {
+                situation: "南1局 平場 5巡目　ドラ: 三　指針: 効率的なテンパイを目指せ",
+                tiles: [
+                    { label: "三", color: "text-red-600" },
+                    { label: "四", color: "text-red-600" },
+                    { label: "五", color: "text-red-600" },
+                    { label: "四", color: "text-blue-600" },
+                    { label: "五", color: "text-blue-600" },
+                    { label: "六", color: "text-blue-600" },
+                    { label: "二", color: "text-green-700" },
+                    { label: "二", color: "text-green-700", result: 0 },
+                    { label: "三", color: "text-green-700", result: 1 },
+                    { label: "四", color: "text-green-700", result: 0 },
+                    { label: "五", color: "text-green-700", result: 0 },
+                    { label: "六", color: "text-green-700", result: 2 },
+                    { label: "七", color: "text-green-700", result: 0 },
+                    { label: "八", color: "text-green-700", result: 0, drawn: true }
+                ],
+                feedback: {
+                    1: "【正解：打 三索】三-六-九索の三面張を維持しつつ、タンヤオ・平和への渡りも見える最適解だ。",
+                    2: "【妥協：打 六索】悪くはないが、受け入れ枚数で三索に劣る。未来の和了率が数％低下するぞ。",
+                    0: "【不正解：悪手】その一打でテンパイが遠のいた。麻雀の神様（確率）は嘘をつかないぞ。"
+                }
+            },
+            {
+                situation: "東3局 親番 3巡目　ドラ: 發　指針: 打点と速度、どちらを取るか",
+                tiles: [
+                    { label: "一", color: "text-red-600" },
+                    { label: "二", color: "text-red-600" },
+                    { label: "三", color: "text-red-600" },
+                    { label: "發", color: "text-green-700" },
+                    { label: "發", color: "text-green-700" },
+                    { label: "中", color: "text-red-600" },
+                    { label: "中", color: "text-red-600" },
+                    { label: "七", color: "text-blue-600", result: 0 },
+                    { label: "八", color: "text-blue-600", result: 1 },
+                    { label: "九", color: "text-blue-600", result: 0 },
+                    { label: "北", color: "text-gray-300", result: 0 },
+                    { label: "北", color: "text-gray-300", result: 2 },
+                    { label: "9m", color: "text-blue-600", result: 0 },
+                    { label: "南", color: "text-gray-300", result: 0, drawn: true }
+                ],
+                feedback: {
+                    1: "【正解：打 九筒】孤立牌から先に切り、發・中の2つの役牌ペアを活かす高打点ルートを残す最適解だ。",
+                    2: "【妥協：打 北】安全だが、打点のポテンシャルをやや損なう。攻めるならもう一歩踏み込みたい。",
+                    0: "【不正解：悪手】まだ使える牌を先に切ってしまった。手の可能性を自ら狭めてしまったぞ。"
+                }
+            },
+            {
+                situation: "南4局 ラス目 8巡目　ドラ: 五　指針: 局面を見て「降り」も選択肢に入れよ",
+                tiles: [
+                    { label: "二", color: "text-blue-600" },
+                    { label: "三", color: "text-blue-600" },
+                    { label: "四", color: "text-blue-600" },
+                    { label: "六", color: "text-red-600" },
+                    { label: "七", color: "text-red-600" },
+                    { label: "白", color: "text-gray-300" },
+                    { label: "白", color: "text-gray-300" },
+                    { label: "東", color: "text-gray-300", result: 2 },
+                    { label: "西", color: "text-gray-300", result: 1 },
+                    { label: "九", color: "text-red-600", result: 0 },
+                    { label: "3p", color: "text-green-700", result: 0 },
+                    { label: "8s", color: "text-blue-600", result: 0 },
+                    { label: "1m", color: "text-red-600", result: 0 },
+                    { label: "南", color: "text-gray-300", result: 0, drawn: true }
+                ],
+                feedback: {
+                    1: "【正解：打 西】現物ではないが通りやすい字牌から切り、手を進めつつ危険を最小化する最適解だ。",
+                    2: "【妥協：打 東】守り寄りの一打。局面によっては十分あり得るが、まだ攻める余地は残っていた。",
+                    0: "【不正解：悪手】この巡目でその牌を切るのはリスクが高い。放銃の未来が見えるぞ。"
+                }
             }
+        ];
+
+        let currentRound = 0;
+        let score = 0;
+        let answered = false;
+
+        function renderRound() {
+            const round = ROUNDS[currentRound];
+            document.getElementById('quiz-round-label').textContent = `ROUND ${currentRound + 1} / ${ROUNDS.length}`;
+            document.getElementById('quiz-score').textContent = `SCORE: ${score}`;
+            document.getElementById('quiz-q').textContent = round.situation;
+            document.getElementById('feedback-text').innerHTML = '捨てる牌を選択せよ（14枚目：ツモ牌）';
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+            answered = false;
+
+            const tilesEl = document.getElementById('quiz-tiles');
+            tilesEl.innerHTML = '';
+            round.tiles.forEach((tile, i) => {
+                const div = document.createElement('div');
+                div.className = `tile-btn ${tile.color}` + (tile.drawn ? ' ml-2 border-yellow-400' : '');
+                div.textContent = tile.label;
+                if (tile.result !== undefined) {
+                    div.onclick = () => checkAnswer(tile.result, div);
+                }
+                tilesEl.appendChild(div);
+            });
+        }
+
+        function checkAnswer(result, el) {
+            if (answered) return;
+            answered = true;
+            const round = ROUNDS[currentRound];
+            const feedback = document.getElementById('feedback-text');
+            document.querySelectorAll('#quiz-tiles .tile-btn').forEach(b => { b.classList.remove('selected'); b.classList.add('locked'); });
+            el.classList.add('selected');
+            el.classList.remove('locked');
+
+            if (result === 1) {
+                score += 3;
+                feedback.innerHTML = `<span class="text-green-400 font-bold">${round.feedback[1]}</span>`;
+            } else if (result === 2) {
+                score += 1;
+                feedback.innerHTML = `<span class="text-blue-300 font-bold">${round.feedback[2]}</span>`;
+            } else {
+                feedback.innerHTML = `<span class="text-red-400 font-bold">${round.feedback[0]}</span>`;
+            }
+            document.getElementById('quiz-score').textContent = `SCORE: ${score}`;
+
+            const nextBtn = document.getElementById('quiz-next-btn');
+            if (currentRound < ROUNDS.length - 1) {
+                nextBtn.textContent = '▶ 次の局へ';
+            } else {
+                nextBtn.textContent = '▶ 最初からもう一度';
+            }
+            nextBtn.classList.remove('hidden');
+        }
+
+        function nextRound() {
+            if (currentRound < ROUNDS.length - 1) {
+                currentRound++;
+            } else {
+                currentRound = 0;
+                score = 0;
+            }
+            renderRound();
         }
 
         // Warp Logic
         function warpToTop() {
             const warp = document.getElementById('time-warp');
             warp.classList.add('warp-active');
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-            }, 750);
-            setTimeout(() => {
-                warp.classList.remove('warp-active');
-            }, 1500);
+            setTimeout(() => { window.scrollTo(0, 0); }, 750);
+            setTimeout(() => { warp.classList.remove('warp-active'); }, 1500);
         }
 
         function scrollToSection(id) {
@@ -403,6 +462,8 @@
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 userAgent: navigator.userAgent
             });
+
+            renderRound();
         }
         window.addEventListener('load', initApp);
     </script>
