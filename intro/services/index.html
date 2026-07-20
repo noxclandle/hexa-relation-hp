@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>できること | Hexa Relation</title>
+    <meta name="description" content="Hexa Relation / Noxが受注できる依頼の一覧。HP・LP・オリジナルツール開発から、マジック・探偵業・配信コラボまで。">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        html, body {
+            margin: 0; padding: 0; background: #000; color: #fff;
+            font-family: 'DotGothic16', sans-serif;
+            overflow-x: hidden;
+        }
+        .px { font-family: 'Press Start 2P', 'DotGothic16', sans-serif; }
+        a { color: inherit; }
+
+        .back-link {
+            position: fixed; top: 4%; left: 4%; z-index: 20;
+            color: rgba(255,255,255,0.65); font-size: 0.55rem;
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 10px; text-decoration: none;
+        }
+        .back-link:hover { color: #ffcc4d; border-color: #ffcc4d; }
+
+        header.hero {
+            text-align: center; padding: 96px 24px 48px; max-width: 720px; margin: 0 auto;
+            background: radial-gradient(ellipse at 50% 0%, rgba(255,170,0,0.10), transparent 60%);
+        }
+        .eyebrow { font-size: 0.6rem; letter-spacing: 0.3em; color: #ffcc4d; margin-bottom: 18px; }
+        h1.title { font-size: clamp(1.4rem, 5.5vw, 2.2rem); margin: 0 0 20px; letter-spacing: 0.06em; text-shadow: 3px 3px 0 #b8281f; }
+        .lead { font-size: 0.85rem; line-height: 2; opacity: 0.7; }
+
+        section { max-width: 820px; margin: 0 auto; padding: 24px; }
+        .section-title { text-align: center; font-size: 0.65rem; letter-spacing: 0.25em; color: #ffcc4d; margin: 44px 0 24px; }
+
+        /* Main quest card: the core web/tool development offer */
+        .main-quest {
+            background: #0a0a0a; border: 2px solid #ffcc4d; box-shadow: 0 0 24px rgba(255,204,77,0.16);
+            padding: 28px 24px; position: relative;
+        }
+        .main-quest::before {
+            content: '★ MAIN QUEST'; position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+            background: #000; color: #ffcc4d; font-size: 0.45rem; padding: 2px 8px; letter-spacing: 0.1em;
+        }
+        .main-quest h2 { font-size: 1rem; margin: 0 0 14px; text-align: center; }
+        .main-quest p { font-size: 0.78rem; line-height: 2; opacity: 0.85; text-align: center; margin: 0; }
+        .main-quest .examples { margin-top: 16px; font-size: 0.68rem; opacity: 0.55; text-align: center; line-height: 1.9; }
+
+        /* Sub quest cards: magic, investigation, streaming collab */
+        .quest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+        .quest-card { background: #0a0a0a; border: 2px solid #333; padding: 20px; transition: border-color .2s, background .2s; }
+        .quest-card:hover { border-color: #ff3b3b; background: #120606; }
+        .quest-tag { font-size: 0.55rem; color: #ffcc4d; letter-spacing: 0.1em; margin-bottom: 10px; }
+        .quest-name { font-size: 0.82rem; margin: 0 0 12px; }
+        .quest-desc { font-size: 0.68rem; line-height: 1.9; opacity: 0.65; }
+
+        .note-box {
+            max-width: 820px; margin: 40px auto; padding: 20px 24px;
+            border-top: 3px solid #ff3b3b; box-shadow: inset 0 0 0 2px #fff; background: #0a0a0a;
+            text-align: center;
+        }
+        .note-box p { font-size: 0.72rem; line-height: 2; opacity: 0.8; margin: 0; }
+        .note-box .note-title { color: #ffcc4d; font-size: 0.55rem; letter-spacing: 0.1em; margin-bottom: 10px; }
+
+        .cta-block { text-align: center; padding: 56px 24px 90px; }
+        .pixel-btn {
+            font-family: 'Press Start 2P', monospace; font-size: 0.72rem;
+            display: inline-block; text-decoration: none;
+            color: #000; background: #ffcc4d; border: 4px solid #fff;
+            box-shadow: 4px 4px 0 #b8281f; padding: 16px 30px; letter-spacing: 0.08em;
+        }
+        .pixel-btn:active { box-shadow: 1px 1px 0 #b8281f; transform: translate(3px, 3px); }
+
+        footer {
+            text-align: center; padding: 30px; opacity: 0.35; font-size: 0.55rem;
+            border-top: 1px solid #222;
+        }
+        footer a:hover { color: #ffcc4d; }
+    </style>
+</head>
+<body>
+    <a href="../../" class="back-link">◀ もどる</a>
+
+    <header class="hero">
+        <p class="eyebrow px">AVAILABLE QUESTS</p>
+        <h1 class="title px">できること</h1>
+        <p class="lead">Web制作を中心に、ちょっと変わった特技まで。<br>気になるものがあれば、まずは気軽にご相談ください。</p>
+    </header>
+
+    <section>
+        <h2 class="section-title px">MAIN // メインの受注内容</h2>
+        <div class="main-quest">
+            <h2>HP・LP・オリジナルツール開発</h2>
+            <p>ホームページ、ランディングページから、あなただけのオリジナルツール・ウェブツール開発まで。<br>「こんなの作れる？」の相談、なんでも受け付けます。</p>
+            <p class="examples">実績例: 日報アプリ、建築是正アプリ、本サイトのようなゲーム風ポートフォリオ・LP 等</p>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title px">SUB // そのほかの受注内容</h2>
+        <div class="quest-grid">
+            <div class="quest-card">
+                <p class="quest-tag px">MAGIC</p>
+                <h3 class="quest-name">マジックショー出張</h3>
+                <p class="quest-desc">創業記念パーティ、結婚式、誕生日のホームパーティなど。最大1000人規模の会場までマジックショーを披露します。</p>
+            </div>
+            <div class="quest-card">
+                <p class="quest-tag px">INVESTIGATION</p>
+                <h3 class="quest-name">調査業</h3>
+                <p class="quest-desc">行動調査（浮気・不倫調査、素行調査）、所在調査・人探し（家出、失踪、恩師・旧友の捜索）、信用調査、その他特殊調査に対応します。</p>
+            </div>
+            <div class="quest-card">
+                <p class="quest-tag px">STREAMING</p>
+                <h3 class="quest-name">配信タイアップ・コラボ</h3>
+                <p class="quest-desc">Cyber Hunter 元トッププロ／コーチング、Dead by Daylight Mobile 公認配信者・公式キャスター・コーチング等、企業案件・コラボ実績多数。</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="note-box">
+        <p class="note-title px">▼ ほうしゅう・きげんについて</p>
+        <p>料金や納期などの詳細は、内容をお伺いした上でご相談・決定いたします。<br>まずはお気軽にお問い合わせください。</p>
+    </div>
+
+    <div class="cta-block">
+        <a href="../../order/index.html?from=services" class="pixel-btn">▶ 相談・依頼する</a>
+    </div>
+
+    <footer>
+        <a href="../../">▲ TOPへ戻る</a>
+        <p style="margin-top:14px;">&copy; 2026 HEXA RELATION</p>
+    </footer>
+</body>
+</html>
