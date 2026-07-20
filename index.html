@@ -37,182 +37,243 @@
             overflow-x: hidden;
             overflow-y: auto;
             font-family: 'Press Start 2P', monospace;
-            background: #5c94fc;
+            background: #000;
         }
 
-        #game {
+        .screen {
+            display: none;
             position: relative;
-            width: 100%; height: 100vh;
+            width: 100%; height: 100vh; min-height: 480px;
             overflow: hidden;
         }
+        .screen.active { display: flex; }
 
-        /* Sky */
-        .sky {
-            position: absolute; inset: 0;
-            background: linear-gradient(#5c94fc 0%, #78b8fc 70%, #a8d8fc 100%);
+        /* ===== Screen 1: Title / Ready ===== */
+        #screen-title {
+            flex-direction: column; align-items: center; justify-content: center;
+            background: #000; text-align: center; padding: 24px;
+            gap: clamp(14px, 3vh, 26px);
         }
-        .cloud {
-            position: absolute; background: #fff; border-radius: 40%;
-            opacity: 0.9;
+        .game-title {
+            color: #fff; font-size: clamp(1.1rem, 5vw, 2rem); margin: 0;
+            letter-spacing: 0.08em; text-shadow: 3px 3px 0 #b8281f;
         }
-        .cloud::before, .cloud::after {
-            content: ''; position: absolute; background: #fff; border-radius: 50%;
+        .game-sub { color: #ffcc4d; font-size: clamp(0.5rem, 2vw, 0.65rem); margin: 0; }
+
+        .status-row {
+            display: flex; gap: clamp(16px, 5vw, 40px); align-items: center; justify-content: center;
+            color: #fff; font-size: clamp(0.55rem, 2vw, 0.75rem);
+        }
+        .status-item { display: flex; flex-direction: column; align-items: center; gap: 6px; line-height: 1.8; }
+        .mini-avatar {
+            width: 34px; height: 34px; object-fit: cover; object-position: top center;
+            border: 2px solid #fff; image-rendering: pixelated; background: #000;
         }
 
-        /* Ground */
-        .ground {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 18%;
-            background: repeating-linear-gradient(90deg, #c84c0c 0, #c84c0c 40px, #a83c08 40px, #a83c08 42px);
-            border-top: 6px solid #6b3400;
-            box-shadow: inset 0 8px 0 rgba(255,255,255,0.15);
+        .start-btn {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.7rem, 2.4vw, 0.9rem);
+            color: #000; background: #ffcc4d;
+            border: 4px solid #fff; box-shadow: 4px 4px 0 #b8281f;
+            padding: 14px 38px; cursor: pointer; letter-spacing: 0.1em;
         }
+        .start-btn:active { box-shadow: 1px 1px 0 #b8281f; transform: translate(3px, 3px); }
+        .press-hint { color: #888; font-size: clamp(0.45rem, 1.6vw, 0.55rem); margin: 0; animation: blink 1.1s step-start infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
 
-        /* Title */
-        .hud {
-            position: absolute; top: 3%; left: 0; right: 0; text-align: center; z-index: 20;
-            color: #fff; text-shadow: 3px 3px 0 #000;
+        /* ===== Screen 2: Dungeon Menu ===== */
+        #screen-dungeon { flex-direction: column; }
+
+        .dungeon-bg {
+            position: relative; flex: 1; min-height: 0;
+            background:
+                radial-gradient(ellipse at 50% 40%, rgba(90,60,30,0.28), transparent 65%),
+                repeating-linear-gradient(0deg, #2c221b 0 40px, #241c17 40px 42px),
+                repeating-linear-gradient(90deg, #2c221b 0 40px, #241c17 40px 42px);
+            border: 10px solid #000;
+            box-shadow: inset 0 0 0 6px #4a3524, inset 0 0 60px rgba(0,0,0,0.65);
         }
-        .hud h1 { font-size: clamp(1rem, 3vw, 1.8rem); margin: 0 0 6px; letter-spacing: 0.1em; }
-        .hud p { font-size: clamp(0.5rem, 1.3vw, 0.7rem); margin: 0; opacity: 0.9; }
+        .torch {
+            position: absolute; top: 5%; width: 14px; height: 26px;
+            background: #3a2a1a; border: 2px solid #000; z-index: 4;
+        }
+        .torch::after {
+            content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            width: 16px; height: 20px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            background: radial-gradient(circle, #ffdd66 0%, #ff8c1a 55%, transparent 75%);
+            filter: blur(1px);
+            animation: flicker 0.9s ease-in-out infinite alternate;
+        }
+        .torch::before {
+            content: ''; position: absolute; top: -70px; left: 50%; transform: translateX(-50%);
+            width: 110px; height: 110px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,180,60,0.22), transparent 70%);
+            animation: flicker 0.9s ease-in-out infinite alternate-reverse;
+        }
+        @keyframes flicker { from { opacity: 0.75; transform: translateX(-50%) scale(0.94); } to { opacity: 1; transform: translateX(-50%) scale(1.05); } }
 
-        /* World objects (positioned along ground, in % of #game width) */
-        .obj {
-            position: absolute; bottom: 18%; cursor: default;
+        /* Dungeon menu objects (chest / monster), placed anywhere on the 2D floor */
+        .d-obj {
+            position: absolute; z-index: 10;
             display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; transform: translate(-50%, -100%);
         }
-        .obj-label {
-            font-size: 0.5rem; color: #fff; text-shadow: 2px 2px 0 #000;
-            margin-bottom: 8px; white-space: nowrap; text-align: center; line-height: 1.6;
+        .d-obj-label {
+            color: #fff; font-size: 0.5rem; text-shadow: 2px 2px 0 #000;
+            margin-bottom: 8px; text-align: center; line-height: 1.7; white-space: nowrap;
+        }
+        .d-obj-label small { display: block; color: #ffcc4d; font-size: 0.85em; }
+        .d-obj:hover .d-obj-label, .d-obj.near .d-obj-label { color: #ffcc4d; }
+        .d-icon { position: relative; animation: bob 1.6s ease-in-out infinite; }
+        @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+        /* Treasure chest */
+        .chest-icon { width: 54px; height: 46px; }
+        .chest-icon .body {
+            position: absolute; bottom: 0; width: 100%; height: 28px;
+            background: #8b5a2b; border: 3px solid #000;
+        }
+        .chest-icon .lid {
+            position: absolute; top: 0; width: 100%; height: 20px;
+            background: #c98a3f; border: 3px solid #000; border-radius: 10px 10px 0 0;
+        }
+        .chest-icon .lock {
+            position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
+            width: 10px; height: 10px; background: #ffdd55; border: 2px solid #000; z-index: 2;
+        }
+        .d-obj.chest-big .chest-icon { transform: scale(1.3); transform-origin: bottom center; }
+
+        /* Monster: slime */
+        .monster-icon { width: 58px; height: 42px; }
+        .monster-icon .body {
+            position: absolute; bottom: 0; width: 100%; height: 100%;
+            background: #3fbf5f; border: 3px solid #000;
+            border-radius: 50% 50% 16% 16% / 65% 65% 20% 20%;
+        }
+        .monster-icon .eye {
+            position: absolute; top: 15px; width: 6px; height: 6px;
+            background: #000; border-radius: 50%; z-index: 2;
+        }
+        .monster-icon .eye.left { left: 16px; }
+        .monster-icon .eye.right { right: 16px; }
+
+        /* Monster: boss (developer guardian) */
+        .monster-icon.boss { width: 76px; height: 60px; }
+        .monster-icon.boss .body { background: #7a2fbf; }
+        .monster-icon.boss .eye { background: #ff3b3b; top: 20px; }
+        .monster-icon.boss .horn {
+            position: absolute; top: -14px; width: 0; height: 0;
+            border-left: 8px solid transparent; border-right: 8px solid transparent;
+            border-bottom: 16px solid #7a2fbf;
+        }
+        .monster-icon.boss .horn::after {
+            content: ''; position: absolute; top: 2px; left: -8px;
+            width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent;
+            border-bottom: 14px solid #000; z-index: -1;
+        }
+        .monster-icon.boss .horn.left { left: 8px; transform: rotate(-15deg); }
+        .monster-icon.boss .horn.right { right: 8px; transform: rotate(15deg); }
+
+        /* Player sprite that walks across the dungeon floor */
+        #dungeon-player {
+            position: absolute; width: 66px; height: 82px; z-index: 15;
+            transform: translate(-50%, -100%);
+        }
+        #dungeon-player.face-left { transform: translate(-50%, -100%) scaleX(-1); }
+        #dungeon-player-sprite {
+            width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated;
+            filter: drop-shadow(2px 3px 0 rgba(0,0,0,0.5));
+        }
+        #dungeon-player-sprite.walk { animation: walk-bounce 0.3s infinite; }
+        @keyframes walk-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+        .hint-bar {
+            background: #000; border-top: 4px solid #ff3b3b; box-shadow: inset 0 0 0 2px #fff;
+            padding: 12px; text-align: center; color: #ffcc4d;
+            font-size: clamp(0.45rem, 1.7vw, 0.6rem);
         }
 
-        /* Pipe */
-        .pipe {
-            width: 90px; height: 100px; background: #00a800;
-            border: 4px solid #000;
-            box-shadow: inset -6px 0 0 rgba(0,0,0,0.25);
-            position: relative;
-        }
-        .pipe::before {
-            content: ''; position: absolute; top: -16px; left: -8px; right: -8px; height: 26px;
-            background: #00d800; border: 4px solid #000;
-        }
-
-        /* Door */
-        .door {
-            width: 60px; height: 90px; background: #8b4513;
-            border: 4px solid #000; border-radius: 30px 30px 4px 4px;
-            position: relative;
-        }
-        .door::after {
-            content: ''; position: absolute; right: 8px; top: 50%; width: 8px; height: 8px;
-            background: #fdb700; border-radius: 50%;
-        }
-
-        /* Flagpole */
-        .flagpole { width: 8px; height: 220px; background: #ccc; border: 2px solid #000; }
-        .flagpole::before {
-            content: ''; position: absolute; top: 0; left: 8px; width: 0; height: 0;
-            border-top: 20px solid transparent; border-bottom: 20px solid transparent;
-            border-left: 30px solid #ff2222;
-        }
-        .flagpole::after {
-            content: ''; position: absolute; top: -14px; left: -6px; width: 20px; height: 20px;
-            background: #fdb700; border-radius: 50%; border: 3px solid #000;
-        }
-
-        /* Player */
-        #player {
-            position: absolute; bottom: 18%; width: 64px; height: 78px;
-            z-index: 15;
-        }
-        #player.face-left { transform: scaleX(-1); }
-        #player-sprite {
-            width: 100%; height: 100%; display: block;
-            object-fit: contain;
-            filter: drop-shadow(2px 3px 0 rgba(0,0,0,0.35));
-        }
-        #player-sprite.walk { animation: walk-bounce 0.3s infinite; }
-        @keyframes walk-bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-
-        /* Prompt */
-        #prompt {
-            position: absolute; left: 50%; transform: translateX(-50%);
-            bottom: 24%; background: #000; color: #fff; padding: 8px 14px;
-            border: 2px solid #fff; font-size: 0.55rem; white-space: nowrap;
-            display: none; z-index: 25;
-        }
-        #prompt.show { display: block; }
-
-        /* Touch controls */
-        #touch-controls {
-            position: absolute; bottom: 3%; left: 0; right: 0; z-index: 30;
-            display: flex; justify-content: space-between; padding: 0 20px;
-            pointer-events: none;
-        }
-        .touch-btn {
-            pointer-events: auto; width: 56px; height: 56px; border-radius: 50%;
-            background: rgba(255,255,255,0.25); border: 3px solid #fff; color: #fff;
-            font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
-            user-select: none; -webkit-user-select: none;
-        }
-        .touch-btn:active { background: rgba(255,255,255,0.5); }
-        #touch-dir { display: flex; gap: 12px; }
-        #touch-action { background: rgba(255,60,60,0.35); border-color: #ff6666; }
-
-        @media (min-width: 900px) {
-            #touch-controls { display: none; }
+        .back-hint {
+            position: absolute; top: 4%; left: 4%; z-index: 5;
+            color: rgba(255,255,255,0.65); font-size: clamp(0.45rem, 1.6vw, 0.55rem);
+            background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 10px; cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div id="game">
-        <div class="sky"></div>
-        <div class="cloud" style="top:8%; left:6%; width:70px; height:26px;"></div>
-        <div class="cloud" style="top:14%; left:38%; width:90px; height:30px;"></div>
-        <div class="cloud" style="top:6%; left:70%; width:60px; height:22px;"></div>
 
-        <div class="hud">
-            <h1>HEXA RELATION</h1>
-            <p>← → / A D で うごく　・　↑ / W / Space で ジャンプ　・　クリック / Enter / Z で えらぶ</p>
-        </div>
+    <!-- Screen 1: Title / Ready screen -->
+    <section id="screen-title" class="screen active">
+        <h1 class="game-title">HEXA RELATION</h1>
+        <p class="game-sub">ゲームの世界を、現実の武器に。</p>
 
-        <div class="ground"></div>
-
-        <!-- World objects: positions are left(%) along the ground -->
-        <div class="obj" style="left: 24%;" data-target="link" data-href="intro/card/" id="obj-pipe">
-            <span class="obj-label">HEXA CARD<br>電子名刺</span>
-            <div class="pipe"></div>
-        </div>
-
-        <div class="obj" style="left: 54%;" data-target="link" data-href="#save-data" id="obj-door">
-            <span class="obj-label">SAVE DATA<br>せいさく じっせき</span>
-            <div class="door"></div>
-        </div>
-
-        <div class="obj" style="left: 86%;" data-target="link" data-href="save/nox/" id="obj-flag">
-            <span class="obj-label">DEVELOPER<br>せいさくしゃ</span>
-            <div class="flagpole"></div>
-        </div>
-
-        <div id="player">
-            <img id="player-sprite" src="assets/player-character.png" class="walk" alt="">
-        </div>
-
-        <div id="prompt"></div>
-
-        <div id="touch-controls">
-            <div id="touch-dir">
-                <div class="touch-btn" id="btn-left">◀</div>
-                <div class="touch-btn" id="btn-right">▶</div>
+        <div class="status-row">
+            <div class="status-item">
+                <img src="assets/player-character.png" class="mini-avatar" alt="">
+                <span>× 3</span>
             </div>
-            <div style="display:flex; gap:12px;">
-                <div class="touch-btn" id="touch-jump">▲</div>
-                <div class="touch-btn" id="touch-action">●</div>
+            <div class="status-item">SCORE<br><span>000000</span></div>
+            <div class="status-item">TIME<br><span>300</span></div>
+        </div>
+
+        <button id="btn-start" class="start-btn" type="button">START</button>
+        <p class="press-hint">PRESS ENTER / TAP START</p>
+    </section>
+
+    <!-- Screen 2: Dungeon menu -->
+    <section id="screen-dungeon" class="screen">
+        <div class="back-hint" id="btn-back">◀ もどる</div>
+        <div class="dungeon-bg" id="dungeon-bg">
+            <div class="torch" style="left:4%;"></div>
+            <div class="torch" style="right:4%;"></div>
+
+            <div class="d-obj chest" style="left:22%; top:30%;" data-href="intro/card/">
+                <span class="d-obj-label">HEXA CARD<small>電子名刺</small></span>
+                <div class="d-icon chest-icon">
+                    <div class="lid"></div>
+                    <div class="body"></div>
+                    <div class="lock"></div>
+                </div>
+            </div>
+
+            <div class="d-obj chest chest-big" style="left:76%; top:28%;" data-href="#save-data">
+                <span class="d-obj-label">SAVE DATA<small>せいさく じっせき</small></span>
+                <div class="d-icon chest-icon">
+                    <div class="lid"></div>
+                    <div class="body"></div>
+                    <div class="lock"></div>
+                </div>
+            </div>
+
+            <div class="d-obj monster" style="left:26%; top:72%;" data-href="order/index.html?from=lp">
+                <span class="d-obj-label">ご依頼・お見積り<small>REQUEST</small></span>
+                <div class="d-icon monster-icon slime">
+                    <div class="body"></div>
+                    <div class="eye left"></div>
+                    <div class="eye right"></div>
+                </div>
+            </div>
+
+            <div class="d-obj monster" style="left:74%; top:74%;" data-href="save/nox/">
+                <span class="d-obj-label">DEVELOPER<small>せいさくしゃ</small></span>
+                <div class="d-icon monster-icon boss">
+                    <div class="horn left"></div>
+                    <div class="horn right"></div>
+                    <div class="body"></div>
+                    <div class="eye left"></div>
+                    <div class="eye right"></div>
+                </div>
+            </div>
+
+            <div id="dungeon-player">
+                <img id="dungeon-player-sprite" src="assets/player-character.png" alt="">
             </div>
         </div>
-    </div>
+        <p class="hint-bar">気になる ものを クリック / タップ、または 矢印キーで うごこう</p>
+    </section>
 
-    <!-- Save Data reveal (anchor target for the door) -->
+    <!-- Save Data reveal (anchor target for the dungeon menu) -->
     <section id="save-data" style="background:#000; color:#fff; padding: 60px 20px; font-family:'Press Start 2P',monospace;">
         <h2 style="text-align:center; color:#fdb700; font-size:1rem; margin-bottom: 40px;">▼ SAVE DATA ▼</h2>
         <div style="max-width:900px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px;">
@@ -243,156 +304,151 @@
     </footer>
 
     <script>
-        const game = document.getElementById('game');
-        const player = document.getElementById('player');
-        const playerSprite = document.getElementById('player-sprite');
-        const prompt = document.getElementById('prompt');
+        const screenTitle = document.getElementById('screen-title');
+        const screenDungeon = document.getElementById('screen-dungeon');
+        const btnStart = document.getElementById('btn-start');
+        const btnBack = document.getElementById('btn-back');
 
-        const objects = Array.from(document.querySelectorAll('.obj'));
-        const pipeObj = document.getElementById('obj-pipe');
-        const pipeLeft = parseFloat(pipeObj.style.left);
-        const PIPE_HALF_WIDTH = 3.2; // percent, approximate solid collision half-width
-        const JUMP_CLEARANCE = 11; // percent (of game height); clear the pipe once airborne past this
+        function goTo(href) {
+            if (href.startsWith('#')) {
+                const target = document.querySelector(href);
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                window.location.href = href;
+            }
+        }
 
-        let playerX = 4; // percent, horizontal position
-        let playerY = 0; // percent, vertical offset above ground (0 = grounded)
-        let velocityY = 0;
-        const GRAVITY = -0.9;
-        const JUMP_FORCE = 10.5;
-        let isJumping = false;
+        function startGame() {
+            screenTitle.classList.remove('active');
+            screenDungeon.classList.add('active');
+        }
 
-        const SPEED = 0.6;
-        const RANGE = 6; // percent distance to trigger "near object"
-        let facing = 1;
-        let nearestObj = null;
-        let moveTarget = null; // click-to-move destination (percent), null = no click-move active
+        function backToTitle() {
+            screenDungeon.classList.remove('active');
+            screenTitle.classList.add('active');
+        }
+
+        btnStart.addEventListener('click', startGame);
+        btnBack.addEventListener('click', backToTitle);
+
+        // ===== Dungeon: top-down room, player walks in 4 directions to the clicked chest/monster =====
+        const dungeonBg = document.getElementById('dungeon-bg');
+        const dPlayer = document.getElementById('dungeon-player');
+        const dSprite = document.getElementById('dungeon-player-sprite');
+        const dObjs = Array.from(document.querySelectorAll('.d-obj'));
+
+        let dPlayerX = 50; // percent, left offset
+        let dPlayerY = 50; // percent, top offset
+        const X_MIN = 4, X_MAX = 96, Y_MIN = 12, Y_MAX = 92;
+        let dMoveTarget = null; // { x, y } click-to-move destination, or null
+        let dPendingHref = null;
+        const D_SPEED = 0.55; // percent per frame
+        const D_ARRIVE_OFFSET = 9; // stand this many percent below the object
+        const D_RANGE = 9; // proximity radius (percent) for keyboard "nearest object"
         const keys = {};
+        let facing = 1;
 
-        function updatePlayerPosition() {
-            playerX = Math.max(2, Math.min(94, playerX));
-            player.style.left = playerX + '%';
-            player.style.bottom = (18 + playerY) + '%';
+        function updateDungeonPlayer() {
+            dPlayer.style.left = dPlayerX + '%';
+            dPlayer.style.top = dPlayerY + '%';
         }
 
-        function isBlockedByPipe(targetX) {
-            // Solid only while roughly grounded; jumping high enough clears the pipe
-            if (playerY >= JUMP_CLEARANCE) return false;
-            return Math.abs(targetX - pipeLeft) < PIPE_HALF_WIDTH;
+        function walkTo(objLeft, objTop, href) {
+            const x = Math.max(X_MIN, Math.min(X_MAX, objLeft));
+            const y = Math.max(Y_MIN, Math.min(Y_MAX, objTop + D_ARRIVE_OFFSET));
+            dMoveTarget = { x, y };
+            dPendingHref = href;
         }
 
-        function findNearestObject() {
-            let closest = null;
-            let closestDist = Infinity;
-            for (const obj of objects) {
-                const objLeft = parseFloat(obj.style.left);
-                const dist = Math.abs(objLeft - playerX);
-                if (dist < RANGE && dist < closestDist) {
-                    closest = obj;
-                    closestDist = dist;
-                }
+        dObjs.forEach((obj) => {
+            obj.addEventListener('click', () => {
+                walkTo(parseFloat(obj.style.left), parseFloat(obj.style.top), obj.dataset.href);
+            });
+        });
+
+        function findNearestObj() {
+            let closest = null, closestDist = Infinity;
+            for (const obj of dObjs) {
+                const dx = parseFloat(obj.style.left) - dPlayerX;
+                const dy = parseFloat(obj.style.top) - dPlayerY;
+                const dist = Math.hypot(dx, dy);
+                if (dist < D_RANGE && dist < closestDist) { closest = obj; closestDist = dist; }
             }
             return closest;
         }
 
-        function updatePrompt() {
-            nearestObj = findNearestObject();
-            if (nearestObj) {
-                prompt.textContent = '▶ 決定キーで えらぶ';
-                prompt.classList.add('show');
-            } else {
-                prompt.classList.remove('show');
-            }
-        }
-
-        function triggerObject(obj) {
-            if (!obj) return;
-            if (obj.dataset.target === 'link') {
-                const href = obj.dataset.href;
-                if (href.startsWith('#')) {
-                    document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    window.location.href = href;
-                }
-            }
-        }
-
-        function tryMove(delta) {
-            const target = playerX + delta;
-            if (isBlockedByPipe(target)) return; // solid wall unless jumping over
-            playerX = target;
-        }
-
-        function jump() {
-            if (!isJumping) {
-                velocityY = JUMP_FORCE;
-                isJumping = true;
-            }
-        }
-
-        function loop() {
+        function dungeonLoop() {
             let moving = false;
 
-            if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
-                tryMove(-SPEED);
-                facing = -1;
-                moving = true;
-                moveTarget = null; // manual input cancels click-to-move
-            }
-            if (keys['ArrowRight'] || keys['d'] || keys['D']) {
-                tryMove(SPEED);
-                facing = 1;
-                moving = true;
-                moveTarget = null;
-            }
+            // Free 4-direction movement via keyboard cancels any click-to-move target
+            let mvx = 0, mvy = 0;
+            if (keys['ArrowLeft'] || keys['a'] || keys['A']) mvx -= 1;
+            if (keys['ArrowRight'] || keys['d'] || keys['D']) mvx += 1;
+            if (keys['ArrowUp'] || keys['w'] || keys['W']) mvy -= 1;
+            if (keys['ArrowDown'] || keys['s'] || keys['S']) mvy += 1;
 
-            // Click-to-move: walk toward the target until reached or blocked
-            if (moveTarget !== null && !moving) {
-                const diff = moveTarget - playerX;
-                if (Math.abs(diff) < 1) {
-                    moveTarget = null;
+            if (mvx !== 0 || mvy !== 0) {
+                dMoveTarget = null;
+                const len = Math.hypot(mvx, mvy) || 1;
+                dPlayerX = Math.max(X_MIN, Math.min(X_MAX, dPlayerX + (mvx / len) * D_SPEED));
+                dPlayerY = Math.max(Y_MIN, Math.min(Y_MAX, dPlayerY + (mvy / len) * D_SPEED));
+                if (mvx !== 0) facing = mvx;
+                moving = true;
+            } else if (dMoveTarget !== null) {
+                const dx = dMoveTarget.x - dPlayerX;
+                const dy = dMoveTarget.y - dPlayerY;
+                const dist = Math.hypot(dx, dy);
+                if (dist < 1) {
+                    dPlayerX = dMoveTarget.x;
+                    dPlayerY = dMoveTarget.y;
+                    dMoveTarget = null;
+                    if (dPendingHref) {
+                        const href = dPendingHref;
+                        dPendingHref = null;
+                        setTimeout(() => goTo(href), 200);
+                    }
                 } else {
-                    const dir = diff > 0 ? 1 : -1;
-                    tryMove(dir * SPEED);
-                    facing = dir;
+                    dPlayerX += (dx / dist) * D_SPEED;
+                    dPlayerY += (dy / dist) * D_SPEED;
+                    if (Math.abs(dx) > 0.3) facing = dx > 0 ? 1 : -1;
                     moving = true;
                 }
             }
 
-            // Gravity / jump arc
-            if (isJumping || playerY > 0) {
-                velocityY += GRAVITY;
-                playerY += velocityY;
-                if (playerY <= 0) {
-                    playerY = 0;
-                    velocityY = 0;
-                    isJumping = false;
-                }
-            }
-
-            updatePlayerPosition();
-            player.classList.toggle('face-left', facing === 1);
-            playerSprite.classList.toggle('walk', moving);
-            updatePrompt();
+            dPlayer.classList.toggle('face-left', facing === -1);
+            dSprite.classList.toggle('walk', moving);
+            updateDungeonPlayer();
         }
+        updateDungeonPlayer();
+        setInterval(dungeonLoop, 16);
 
-        // Secret admin sequence via keyboard: A -> C -> E (only counted when NOT used for movement in the same frame burst)
+        window.addEventListener('keydown', (e) => {
+            if (!screenDungeon.classList.contains('active')) return;
+            const gameKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+            if (gameKeys.includes(e.key)) e.preventDefault();
+            keys[e.key] = true;
+            if (e.key === 'Enter' || e.key === 'z' || e.key === 'Z') {
+                const near = findNearestObj();
+                if (near) { dMoveTarget = null; goTo(near.dataset.href); }
+            }
+        });
+        window.addEventListener('keyup', (e) => { keys[e.key] = false; });
+        window.addEventListener('blur', () => { for (const k in keys) keys[k] = false; });
+
+        // Secret admin sequence via keyboard: A -> C -> E
         let aceStep = 0;
         const aceSeq = ['a', 'c', 'e'];
 
-        const GAME_KEYS = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' ', 'a', 'A', 'd', 'D', 'w', 'W'];
-
         window.addEventListener('keydown', (e) => {
-            // Prevent the browser's default behavior (Space/ArrowUp/Down scroll the page,
-            // which otherwise fires at the same time as jump now that the page can scroll)
-            if (GAME_KEYS.includes(e.key)) e.preventDefault();
-
-            keys[e.key] = true;
-
-            if (e.key === 'Enter' || e.key === 'z' || e.key === 'Z') {
-                triggerObject(nearestObj);
-            }
-            if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.key === ' ') {
-                jump();
+            if (screenTitle.classList.contains('active')) {
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'z' || e.key === 'Z') {
+                    e.preventDefault();
+                    startGame();
+                }
+            } else if (screenDungeon.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    backToTitle();
+                }
             }
 
             const k = e.key.toLowerCase();
@@ -406,47 +462,6 @@
                 aceStep = 0;
             }
         });
-        window.addEventListener('keyup', (e) => { keys[e.key] = false; });
-        // Prevent movement from getting "stuck" if the tab/window loses focus mid-keypress
-        window.addEventListener('blur', () => { for (const k in keys) keys[k] = false; });
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) { for (const k in keys) keys[k] = false; }
-        });
-
-        // Click / tap anywhere on the scene: walk toward the click, and confirm if already near an object
-        game.addEventListener('click', (e) => {
-            if (e.target.closest('#touch-controls')) return;
-            const rect = game.getBoundingClientRect();
-            const clickXPercent = ((e.clientX - rect.left) / rect.width) * 100;
-            moveTarget = clickXPercent;
-            if (nearestObj) triggerObject(nearestObj);
-        });
-
-        // Touch controls
-        const btnLeft = document.getElementById('btn-left');
-        const btnRight = document.getElementById('btn-right');
-        const btnJump = document.getElementById('touch-jump');
-        const btnAction = document.getElementById('touch-action');
-
-        function bindHold(el, key) {
-            const start = (e) => { e.preventDefault(); keys[key] = true; moveTarget = null; };
-            const end = (e) => { e.preventDefault(); keys[key] = false; };
-            el.addEventListener('touchstart', start);
-            el.addEventListener('touchend', end);
-            el.addEventListener('mousedown', start);
-            el.addEventListener('mouseup', end);
-            el.addEventListener('mouseleave', end);
-        }
-        bindHold(btnLeft, 'ArrowLeft');
-        bindHold(btnRight, 'ArrowRight');
-        btnJump.addEventListener('click', (e) => { e.stopPropagation(); jump(); });
-        btnAction.addEventListener('click', (e) => {
-            e.stopPropagation();
-            triggerObject(nearestObj);
-        });
-
-        updatePlayerPosition();
-        setInterval(loop, 16);
     </script>
 </body>
 </html>

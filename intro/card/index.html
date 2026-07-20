@@ -5,108 +5,179 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hexa Card | 次世代NFCデジタル名刺 - 月額無料の買い切りモデル | Hexa Relation</title>
     <meta name="description" content="Hexa Cardは、スマホをタップするだけで名刺交換が完了する次世代NFCデジタル名刺。AI-OCR紙名刺スキャン、二重アイデンティティ、月額無料の買い切りモデルなど、紙の名刺を超える機能を搭載。">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&display=swap" rel="stylesheet">
     <style>
-        body { background: #000; color: #fff; font-family: 'DotGothic16', sans-serif; overflow-x: hidden; }
-        .frame { border: 4px solid #fff; box-shadow: 0 0 0 4px #000, 0 0 0 8px #fff; border-radius: 8px; }
-        .pixel-btn { border: 2px solid #fff; padding: 14px 24px; transition: all 0.2s; cursor: pointer; display: inline-block; }
-        .pixel-btn:hover { background: #fff; color: #000; }
-        .pixel-btn.primary { background: #fff; color: #000; }
-        .pixel-btn.primary:hover { background: #ffaa00; border-color: #ffaa00; }
-        .feature-card { border: 2px solid rgba(255,255,255,0.15); transition: all .2s; }
-        .feature-card:hover { border-color: #ffaa00; background: rgba(255,170,0,0.04); }
-        .tier-card { border: 2px solid rgba(255,255,255,0.15); }
-        .tier-card.featured { border-color: #ffaa00; box-shadow: 0 0 20px rgba(255,170,0,0.15); }
+        * { box-sizing: border-box; }
+        html, body {
+            margin: 0; padding: 0; background: #000; color: #fff;
+            font-family: 'DotGothic16', sans-serif;
+            overflow-x: hidden;
+        }
+        .px { font-family: 'Press Start 2P', 'DotGothic16', sans-serif; }
+        a { color: inherit; }
+
+        .back-link {
+            position: fixed; top: 4%; left: 4%; z-index: 20;
+            color: rgba(255,255,255,0.65); font-size: 0.55rem;
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 10px; text-decoration: none;
+        }
+        .back-link:hover { color: #ffcc4d; border-color: #ffcc4d; }
+
+        /* Hero */
+        header.hero {
+            text-align: center; padding: 96px 24px 64px; max-width: 720px; margin: 0 auto;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(255,170,0,0.10), transparent 60%);
+        }
+        .eyebrow { font-size: 0.6rem; letter-spacing: 0.3em; color: #ffcc4d; margin-bottom: 18px; }
+        h1.title { font-size: clamp(1.6rem, 6vw, 2.6rem); margin: 0 0 22px; letter-spacing: 0.08em; text-shadow: 3px 3px 0 #b8281f; }
+        .lead { font-size: 0.95rem; line-height: 2; margin: 0 0 8px; }
+        .sub { font-size: 0.7rem; line-height: 2; opacity: 0.55; }
+
+        .pixel-btn {
+            font-family: 'Press Start 2P', monospace; font-size: 0.7rem;
+            display: inline-block; margin-top: 34px; text-decoration: none;
+            color: #000; background: #ffcc4d; border: 4px solid #fff;
+            box-shadow: 4px 4px 0 #b8281f; padding: 16px 30px; letter-spacing: 0.08em;
+        }
+        .pixel-btn:active { box-shadow: 1px 1px 0 #b8281f; transform: translate(3px, 3px); }
+
+        /* Section frame: same red-top / white-inset box used across the site */
+        section { max-width: 900px; margin: 0 auto; padding: 24px; }
+        .section-title {
+            text-align: center; font-size: 0.7rem; letter-spacing: 0.25em; color: #ffcc4d;
+            margin: 40px 0 28px;
+        }
+        .section-note { text-align: center; font-size: 0.65rem; opacity: 0.5; margin: -16px 0 28px; line-height: 1.8; }
+
+        /* Features grid: item-slot cards */
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+        .item-card {
+            background: #0a0a0a; border: 2px solid #333; padding: 20px;
+            transition: border-color .2s, background .2s;
+        }
+        .item-card:hover { border-color: #ff3b3b; background: #120606; }
+        .item-tag { font-size: 0.55rem; color: #ffcc4d; letter-spacing: 0.1em; margin-bottom: 10px; }
+        .item-name { font-size: 0.85rem; margin: 0 0 12px; }
+        .item-desc { font-size: 0.7rem; line-height: 1.9; opacity: 0.65; }
+
+        /* Pricing: treasure-grade cards */
+        .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+        .tier-card {
+            text-align: center; padding: 22px 14px; background: #0a0a0a;
+            border: 2px solid #333;
+        }
+        .tier-card.featured {
+            border: 2px solid #ffcc4d; box-shadow: 0 0 24px rgba(255,204,77,0.18);
+            position: relative;
+        }
+        .tier-card.featured::before {
+            content: '★ LIMITED'; position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+            background: #000; color: #ffcc4d; font-size: 0.45rem; padding: 2px 8px; letter-spacing: 0.1em;
+        }
+        .tier-label { font-size: 0.55rem; opacity: 0.5; margin-bottom: 10px; letter-spacing: 0.08em; }
+        .tier-card.featured .tier-label { color: #ffcc4d; opacity: 1; }
+        .tier-price { font-family: 'Press Start 2P', monospace; font-size: 1.1rem; margin-bottom: 14px; }
+        .tier-desc { font-size: 0.62rem; line-height: 1.9; opacity: 0.6; }
+
+        .cta-block { text-align: center; padding: 80px 24px; }
+        .cta-block p { font-size: 0.8rem; margin-bottom: 28px; }
+
+        footer {
+            text-align: center; padding: 30px; opacity: 0.35; font-size: 0.55rem;
+            border-top: 1px solid #222; margin-top: 20px;
+        }
+        footer a { opacity: 1; }
+        footer a:hover { color: #ffcc4d; }
     </style>
 </head>
-<body class="min-h-screen">
+<body>
+    <a href="../../" class="back-link">◀ もどる</a>
 
     <!-- Hero -->
-    <header class="text-center px-6 pt-20 pb-16 max-w-3xl mx-auto">
-        <p class="text-[10px] tracking-[0.3em] text-amber-400 mb-4">NFC DIGITAL BUSINESS CARD</p>
-        <h1 class="text-3xl md:text-5xl font-bold mb-6 leading-relaxed">HEXA CARD</h1>
-        <p class="text-sm md:text-base leading-loose mb-2">スマホをタップするだけで、名刺交換が終わる。</p>
-        <p class="text-[11px] opacity-50 leading-loose">専用アプリ不要。ブラウザが起動し、あなたのデジタルプロフィールが一瞬で展開されます。</p>
-        <div class="mt-10">
-            <a href="https://virtual-business-card.hexa-relation.com/purchase" class="pixel-btn primary">▶ カードを見てみる</a>
-        </div>
+    <header class="hero">
+        <p class="eyebrow px">NFC DIGITAL BUSINESS CARD</p>
+        <h1 class="title px">HEXA CARD</h1>
+        <p class="lead">スマホをタップするだけで、名刺交換が終わる。</p>
+        <p class="sub">専用アプリ不要。ブラウザが起動し、あなたのデジタルプロフィールが一瞬で展開されます。</p>
+        <a href="https://virtual-business-card.hexa-relation.com/purchase" class="pixel-btn">▶ カードを見てみる</a>
     </header>
 
     <!-- Features -->
-    <section class="max-w-4xl mx-auto px-6 py-16">
-        <h2 class="text-center text-sm tracking-[0.3em] text-amber-400 mb-12">FEATURES // できること</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="feature-card p-6">
-                <p class="text-xs text-amber-400 mb-2">NFC TAP TRANSFER</p>
-                <h3 class="text-base mb-3">タップ一つで名刺交換</h3>
-                <p class="text-[11px] leading-loose opacity-70">専用アプリ不要。カードを相手のスマホにかざすだけで、ブラウザからあなたのプロフィールが瞬時に展開されます。</p>
+    <section>
+        <h2 class="section-title px">FEATURES // できること</h2>
+        <div class="feature-grid">
+            <div class="item-card">
+                <p class="item-tag px">NFC TAP TRANSFER</p>
+                <h3 class="item-name">タップ一つで名刺交換</h3>
+                <p class="item-desc">専用アプリ不要。カードを相手のスマホにかざすだけで、ブラウザからあなたのプロフィールが瞬時に展開されます。</p>
             </div>
-            <div class="feature-card p-6">
-                <p class="text-xs text-amber-400 mb-2">VISUAL & AUDIO CUSTOMIZATION</p>
-                <h3 class="text-base mb-3">見た目・音まで自由に演出</h3>
-                <p class="text-[11px] leading-loose opacity-70">ビジュアルテーマ、アニメーションフレーム、BGMまで自由にカスタマイズ。相手の記憶に強く残ります。</p>
+            <div class="item-card">
+                <p class="item-tag px">VISUAL & AUDIO CUSTOMIZATION</p>
+                <h3 class="item-name">見た目・音まで自由に演出</h3>
+                <p class="item-desc">ビジュアルテーマ、アニメーションフレーム、BGMまで自由にカスタマイズ。相手の記憶に強く残ります。</p>
             </div>
-            <div class="feature-card p-6">
-                <p class="text-xs text-amber-400 mb-2">AI-OCR CARD SCANNER</p>
-                <h3 class="text-base mb-3">紙の名刺もAIで即デジタル化</h3>
-                <p class="text-[11px] leading-loose opacity-70">受け取った紙の名刺をカメラで撮影するだけで、AIが解析し、あなたのライブラリに自動保存します。</p>
+            <div class="item-card">
+                <p class="item-tag px">AI-OCR CARD SCANNER</p>
+                <h3 class="item-name">紙の名刺もAIで即デジタル化</h3>
+                <p class="item-desc">受け取った紙の名刺をカメラで撮影するだけで、AIが解析し、あなたのライブラリに自動保存します。</p>
             </div>
-            <div class="feature-card p-6">
-                <p class="text-xs text-amber-400 mb-2">ONE-CLICK CONTACT SAVE</p>
-                <h3 class="text-base mb-3">ワンタップで連絡先に保存</h3>
-                <p class="text-[11px] leading-loose opacity-70">相手が「連絡先を保存」を押すだけで、電話番号・SNS・写真までスマホのアドレス帳に直接保存されます。</p>
+            <div class="item-card">
+                <p class="item-tag px">ONE-CLICK CONTACT SAVE</p>
+                <h3 class="item-name">ワンタップで連絡先に保存</h3>
+                <p class="item-desc">相手が「連絡先を保存」を押すだけで、電話番号・SNS・写真までスマホのアドレス帳に直接保存されます。</p>
             </div>
-            <div class="feature-card p-6">
-                <p class="text-xs text-amber-400 mb-2">DUAL ALTER IDENTITY</p>
-                <h3 class="text-base mb-3">本名を明かさない別名プロフィール</h3>
-                <p class="text-[11px] leading-loose opacity-70">クリエイター名やハンドルネームでカードを構築可能。プライバシーを守りながらリアルとバーチャルを繋ぎます。</p>
+            <div class="item-card">
+                <p class="item-tag px">DUAL ALTER IDENTITY</p>
+                <h3 class="item-name">本名を明かさない別名プロフィール</h3>
+                <p class="item-desc">クリエイター名やハンドルネームでカードを構築可能。プライバシーを守りながらリアルとバーチャルを繋ぎます。</p>
             </div>
-            <div class="feature-card p-6">
-                <p class="text-xs text-amber-400 mb-2">NO PRINTING & INSTANT UPDATES</p>
-                <h3 class="text-base mb-3">印刷し直し不要、即時更新</h3>
-                <p class="text-[11px] leading-loose opacity-70">連絡先が変わっても再印刷は不要。管理画面から書き換えるだけで、配布済みのカードも最新状態に更新されます。</p>
+            <div class="item-card">
+                <p class="item-tag px">NO PRINTING & INSTANT UPDATES</p>
+                <h3 class="item-name">印刷し直し不要、即時更新</h3>
+                <p class="item-desc">連絡先が変わっても再印刷は不要。管理画面から書き換えるだけで、配布済みのカードも最新状態に更新されます。</p>
             </div>
         </div>
     </section>
 
     <!-- Pricing -->
-    <section class="max-w-4xl mx-auto px-6 py-16">
-        <h2 class="text-center text-sm tracking-[0.3em] text-amber-400 mb-4">PRICING // 料金プラン</h2>
-        <p class="text-center text-[11px] opacity-50 mb-12">月額費用は一切なし。買い切りモデルで、一生涯無料でシステムをご利用いただけます。</p>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="tier-card p-6 text-center">
-                <p class="text-[10px] opacity-50 mb-2">STANDARD</p>
-                <p class="text-xl mb-4">¥3,000</p>
-                <p class="text-[10px] opacity-60 leading-loose">オリジナルデザイン<br>初期 3,000 RT 付与</p>
+    <section>
+        <h2 class="section-title px">PRICING // 料金プラン</h2>
+        <p class="section-note">月額費用は一切なし。買い切りモデルで、一生涯無料でシステムをご利用いただけます。</p>
+        <div class="price-grid">
+            <div class="tier-card">
+                <p class="tier-label px">STANDARD</p>
+                <p class="tier-price px">¥3,000</p>
+                <p class="tier-desc">オリジナルデザイン<br>初期 3,000 RT 付与</p>
             </div>
-            <div class="tier-card p-6 text-center">
-                <p class="text-[10px] opacity-50 mb-2">EXECUTIVE</p>
-                <p class="text-xl mb-4">¥20,000</p>
-                <p class="text-[10px] opacity-60 leading-loose">プレミアム金属仕上げ<br>初期 3,000 RT 付与</p>
+            <div class="tier-card">
+                <p class="tier-label px">EXECUTIVE</p>
+                <p class="tier-price px">¥20,000</p>
+                <p class="tier-desc">プレミアム金属仕上げ<br>初期 3,000 RT 付与</p>
             </div>
-            <div class="tier-card featured p-6 text-center">
-                <p class="text-[10px] text-amber-400 mb-2">APEX（限定）</p>
-                <p class="text-xl mb-4">¥1,000,000</p>
-                <p class="text-[10px] opacity-60 leading-loose">世界10枠限定の特注ブラック<br>限定称号・コンシェルジュ付き</p>
+            <div class="tier-card featured">
+                <p class="tier-label px">APEX（限定）</p>
+                <p class="tier-price px">¥1,000,000</p>
+                <p class="tier-desc">世界10枠限定の特注ブラック<br>限定称号・コンシェルジュ付き</p>
             </div>
-            <div class="tier-card p-6 text-center">
-                <p class="text-[10px] opacity-50 mb-2">CORPORATE</p>
-                <p class="text-xl mb-4">¥5,800<span class="text-xs opacity-50">/枚</span></p>
-                <p class="text-[10px] opacity-60 leading-loose">法人・チーム向け一括発注</p>
+            <div class="tier-card">
+                <p class="tier-label px">CORPORATE</p>
+                <p class="tier-price px">¥5,800<span style="font-size:0.55rem;opacity:.6;">/枚</span></p>
+                <p class="tier-desc">法人・チーム向け一括発注</p>
             </div>
         </div>
     </section>
 
     <!-- CTA -->
-    <section class="text-center px-6 py-20">
-        <p class="text-sm mb-8">「はじめまして」を、衝撃に変える。</p>
-        <a href="https://virtual-business-card.hexa-relation.com/purchase" class="pixel-btn primary">▶ このカードを装備する</a>
-    </section>
+    <div class="cta-block">
+        <p>「はじめまして」を、衝撃に変える。</p>
+        <a href="https://virtual-business-card.hexa-relation.com/purchase" class="pixel-btn">▶ このカードを装備する</a>
+    </div>
 
-    <footer class="text-center pb-12 opacity-20 text-[9px]">
-        <a href="../../" class="opacity-100 hover:opacity-60">▲ TOPへ戻る</a>
-        <p class="mt-4">&copy; 2026 HEXA RELATION</p>
+    <footer>
+        <a href="../../">▲ TOPへ戻る</a>
+        <p style="margin-top:14px;">&copy; 2026 HEXA RELATION</p>
     </footer>
 </body>
 </html>
