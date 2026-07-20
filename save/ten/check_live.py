@@ -27,7 +27,7 @@ def check_youtube_live():
         
     is_live = ('"isLive":true' in html) or ('"isLiveContent":true' in html)
     video_id = None
-    
+
     if is_live:
         # videoId を抽出
         match = re.search(r'"videoId":"([^"]+)"', html)
@@ -38,32 +38,50 @@ def check_youtube_live():
             print("Live detected, but Video ID could not be extracted.")
     else:
         print("Not live.")
-        
-    return is_live, video_id
+
+    # チャンネル登録者数を抽出 (例: "content":"チャンネル登録者数 1990人")
+    subscriber_count = None
+    sub_match = re.search(r'"content":"\s*チャンネル登録者数\s*([\d,]+)人"', html)
+    if sub_match:
+        subscriber_count = int(sub_match.group(1).replace(',', ''))
+        print(f"Subscriber count: {subscriber_count}")
+    else:
+        print("Subscriber count could not be extracted.")
+
+    return is_live, video_id, subscriber_count
 
 def main():
-    is_live, video_id = check_youtube_live()
+    is_live, video_id, subscriber_count = check_youtube_live()
     if is_live is None:
         return # 取得失敗時は何もしない
-        
+
     # 現在のステータスをロード
     if os.path.exists(JSON_PATH):
         try:
             with open(JSON_PATH, 'r', encoding='utf-8') as f:
                 current_data = json.load(f)
         except Exception:
-            current_data = {"isLive": False, "videoId": None}
+            current_data = {"isLive": False, "videoId": None, "subscriberCount": None}
     else:
-        current_data = {"isLive": False, "videoId": None}
-        
+        current_data = {"isLive": False, "videoId": None, "subscriberCount": None}
+
+    # 登録者数が取得できなかった場合は前回の値を維持する
+    if subscriber_count is None:
+        subscriber_count = current_data.get("subscriberCount")
+
     # 変化があるかチェック
-    state_changed = (current_data.get("isLive") != is_live) or (current_data.get("videoId") != video_id)
-    
+    state_changed = (
+        (current_data.get("isLive") != is_live)
+        or (current_data.get("videoId") != video_id)
+        or (current_data.get("subscriberCount") != subscriber_count)
+    )
+
     if state_changed:
         print("Live status state changed! Updating JSON and pushing to repository...")
         new_data = {
             "isLive": is_live,
             "videoId": video_id,
+            "subscriberCount": subscriber_count,
             "lastChecked": datetime.now().isoformat()
         }
         

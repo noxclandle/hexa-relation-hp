@@ -247,6 +247,91 @@
         .quest-mark { display: inline-block; width: 18px; height: 18px; background: url('https://img.icons8.com/color/48/exclamation-mark.png') no-repeat center; background-size: contain; animation: bounce 1s infinite alternate; vertical-align: middle; margin-right: 10px; }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-4px); } }
 
+        /* ===== チャンネル登録者数ゴールウィジェット (キャラクター上部) ===== */
+        #sub-goal-widget {
+            position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+            z-index: 15; background: rgba(15, 23, 42, 0.72); backdrop-filter: blur(6px);
+            border: 1px solid rgba(250, 204, 21, 0.5); border-radius: 10px;
+            padding: 7px 18px; min-width: 200px; text-align: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+            transition: box-shadow 0.4s, border-color 0.4s;
+        }
+        #sub-goal-widget .sub-goal-label {
+            font-size: 9.5px; color: #facc15; font-weight: bold; letter-spacing: 0.08em;
+            text-transform: uppercase; margin-bottom: 3px; white-space: nowrap;
+        }
+        #sub-goal-widget .sub-goal-count {
+            font-family: 'Oswald', sans-serif; font-size: 17px; color: #fff; font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+        #sub-goal-widget .sub-goal-count .current { color: #38bdf8; }
+        #sub-goal-widget .sub-goal-bar-bg {
+            width: 100%; height: 5px; background: rgba(255,255,255,0.18); border-radius: 3px;
+            margin-top: 5px; overflow: hidden;
+        }
+        #sub-goal-widget .sub-goal-bar-fill {
+            height: 100%; width: 0%; background: linear-gradient(90deg, #38bdf8, #facc15);
+            box-shadow: 0 0 8px rgba(250,204,21,0.7);
+            transition: width 1.2s ease-out;
+        }
+        #sub-goal-widget.achieved {
+            border-color: #facc15;
+            animation: sub-goal-glow 2s ease-in-out infinite;
+        }
+        @keyframes sub-goal-glow {
+            0%, 100% { box-shadow: 0 4px 16px rgba(0,0,0,0.35), 0 0 10px rgba(250,204,21,0.3); }
+            50% { box-shadow: 0 4px 16px rgba(0,0,0,0.35), 0 0 26px rgba(250,204,21,0.85); }
+        }
+        body.ff7-mode #sub-goal-widget { display: none; }
+        @media (max-width: 480px) {
+            #sub-goal-widget { min-width: 170px; padding: 6px 14px; }
+            #sub-goal-widget .sub-goal-count { font-size: 14px; }
+        }
+
+        /* ===== 2000人突破 演出 ===== */
+        #sub-milestone-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(8,8,26,0.93);
+            z-index: 16000; justify-content: center; align-items: center; flex-direction: column;
+            cursor: pointer; overflow: hidden; text-align: center; padding: 20px;
+        }
+        #sub-milestone-overlay.active { display: flex; }
+        #firework-field { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+        .firework-particle {
+            position: absolute; width: 5px; height: 5px; border-radius: 50%;
+            pointer-events: none; animation: firework-fly ease-out forwards;
+            box-shadow: 0 0 6px 2px currentColor;
+        }
+        @keyframes firework-fly {
+            0% { transform: translate(0,0) scale(1); opacity: 1; }
+            75% { opacity: 1; }
+            100% { transform: translate(var(--fx), var(--fy)) scale(0.3); opacity: 0; }
+        }
+        .milestone-corner { position: absolute; width: 60px; height: 60px; border-color: #facc15; border-style: solid; border-width: 0; }
+        .milestone-corner.tl { top: 20px; left: 20px; border-top-width: 4px; border-left-width: 4px; animation: corner-expand 0.5s ease-out forwards; }
+        .milestone-corner.tr { top: 20px; right: 20px; border-top-width: 4px; border-right-width: 4px; animation: corner-expand 0.5s ease-out 0.1s forwards; }
+        .milestone-corner.bl { bottom: 20px; left: 20px; border-bottom-width: 4px; border-left-width: 4px; animation: corner-expand 0.5s ease-out 0.2s forwards; }
+        .milestone-corner.br { bottom: 20px; right: 20px; border-bottom-width: 4px; border-right-width: 4px; animation: corner-expand 0.5s ease-out 0.3s forwards; }
+        #sub-milestone-title {
+            font-family: 'Oswald', sans-serif; font-size: clamp(30px, 7vw, 60px); font-weight: 900;
+            color: #facc15; letter-spacing: 0.04em; line-height: 1.4;
+            text-shadow: 0 0 20px rgba(250,204,21,0.9), 0 0 50px rgba(250,204,21,0.5), 3px 3px 0 #000;
+            animation: sub-milestone-pop 0.6s cubic-bezier(0.17,0.89,0.32,1.28) forwards;
+            position: relative; z-index: 2;
+        }
+        @keyframes sub-milestone-pop {
+            0% { opacity: 0; transform: scale(2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        #sub-milestone-sub {
+            font-family: 'Noto Sans JP', sans-serif; font-size: clamp(13px, 3vw, 18px); color: #fff;
+            margin-top: 14px; opacity: 0; animation: fade-up-in 0.5s ease-out 0.4s forwards;
+            position: relative; z-index: 2;
+        }
+        #sub-milestone-skip {
+            position: absolute; bottom: 30px; font-size: 13px; color: rgba(255,255,255,0.4);
+            letter-spacing: 0.2em; opacity: 0; animation: fade-up-in 0.5s ease-out 1s forwards;
+        }
+
         /* YouTube LIVEバッジ (最前面に固定) */
         #live-badge {
             display: none; align-items: center; gap: 8px;
@@ -726,6 +811,18 @@
         <div id="live-intrusion-skip">── 画面をタップして閉じる ──</div>
     </div>
 
+    <!-- チャンネル登録者 2,000人突破 演出 -->
+    <div id="sub-milestone-overlay" onclick="dismissSubMilestone()">
+        <div class="milestone-corner tl"></div>
+        <div class="milestone-corner tr"></div>
+        <div class="milestone-corner bl"></div>
+        <div class="milestone-corner br"></div>
+        <div id="firework-field"></div>
+        <div id="sub-milestone-title">🎉 チャンネル登録者<br>2,000人突破！ 🎉</div>
+        <div id="sub-milestone-sub">🐈 いつも応援ありがとう！ 🐈</div>
+        <div id="sub-milestone-skip">── 画面をタップして閉じる ──</div>
+    </div>
+
     <!-- YouTube Live Modal -->
     <div id="live-modal" onclick="closeLiveModal()">
         <div class="live-modal-window" onclick="event.stopPropagation()">
@@ -773,6 +870,11 @@
 
     <div class="main-container">
         <div class="interaction-box">
+            <div id="sub-goal-widget">
+                <div class="sub-goal-label">🎯 チャンネル登録者 目標</div>
+                <div class="sub-goal-count"><span class="current" id="sub-current">---</span> / <span id="sub-target">2,000</span> 人</div>
+                <div class="sub-goal-bar-bg"><div class="sub-goal-bar-fill" id="sub-goal-bar"></div></div>
+            </div>
             <div class="npc-stage">
                 <img src="greeting_transparent.png" alt="TEN" class="npc-portrait" id="npc-img" loading="lazy">
             </div>
@@ -1137,6 +1239,104 @@
             }
         }
 
+        const SUB_GOAL = 2000;
+        const SUB_CELEBRATED_KEY = 'ten_sub_2000_celebrated';
+
+        function setSubscriberCount(count) {
+            if (typeof count !== 'number' || isNaN(count)) return;
+            const widget = document.getElementById('sub-goal-widget');
+            const currentEl = document.getElementById('sub-current');
+            const barEl = document.getElementById('sub-goal-bar');
+            if (!widget || !currentEl || !barEl) return;
+
+            currentEl.innerText = count.toLocaleString();
+            const pct = Math.min(100, (count / SUB_GOAL) * 100);
+            barEl.style.width = pct + '%';
+
+            if (count >= SUB_GOAL) {
+                widget.classList.add('achieved');
+                widget.querySelector('.sub-goal-label').innerText = '🏆 目標達成！';
+                if (localStorage.getItem(SUB_CELEBRATED_KEY) !== 'true') {
+                    localStorage.setItem(SUB_CELEBRATED_KEY, 'true');
+                    setTimeout(() => triggerSubMilestone(), 1500);
+                }
+            }
+        }
+
+        function spawnFireworkBurst(cx, cy) {
+            const field = document.getElementById('firework-field');
+            if (!field) return;
+            const colors = ['#facc15', '#fb923c', '#ff4444', '#38bdf8', '#4ade80', '#e879f9', '#ffffff'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const count = 26;
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'firework-particle';
+                const angle = (360 / count) * i + Math.random() * 10;
+                const dist = 60 + Math.random() * 90;
+                const fx = Math.cos(angle * Math.PI / 180) * dist + 'px';
+                const fy = Math.sin(angle * Math.PI / 180) * dist + 'px';
+                p.style.left = cx + '%';
+                p.style.top = cy + '%';
+                p.style.color = color;
+                p.style.background = color;
+                p.style.setProperty('--fx', fx);
+                p.style.setProperty('--fy', fy);
+                p.style.animationDuration = (0.9 + Math.random() * 0.6) + 's';
+                field.appendChild(p);
+                setTimeout(() => p.remove(), 1600);
+            }
+        }
+
+        function playFireworkSound() {
+            if (isMuted) return;
+            try {
+                const ac = new (window.AudioContext || window.webkitAudioContext)();
+                const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+                notes.forEach((f, i) => {
+                    const o = ac.createOscillator();
+                    const g = ac.createGain();
+                    o.connect(g); g.connect(ac.destination);
+                    o.type = 'triangle';
+                    o.frequency.value = f;
+                    const t = ac.currentTime + i * 0.12;
+                    g.gain.setValueAtTime(0.001, t);
+                    g.gain.linearRampToValueAtTime(0.06, t + 0.02);
+                    g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+                    o.start(t); o.stop(t + 0.5);
+                });
+            } catch (e) { /* AudioContext unavailable */ }
+        }
+
+        function triggerSubMilestone() {
+            const overlay = document.getElementById('sub-milestone-overlay');
+            if (!overlay) return;
+            overlay.classList.add('active');
+            playFireworkSound();
+            let bursts = 0;
+            const burstTimer = setInterval(() => {
+                spawnFireworkBurst(20 + Math.random() * 60, 20 + Math.random() * 45);
+                bursts++;
+                if (bursts % 2 === 0) playFireworkSound();
+                if (bursts >= 8) clearInterval(burstTimer);
+            }, 450);
+            triggerAchievement('2,000 Followers');
+        }
+
+        function dismissSubMilestone() {
+            const overlay = document.getElementById('sub-milestone-overlay');
+            if (!overlay) return;
+            overlay.style.transition = 'opacity 0.3s';
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                overlay.style.opacity = '';
+                overlay.style.transition = '';
+                const field = document.getElementById('firework-field');
+                if (field) field.innerHTML = '';
+            }, 300);
+        }
+
         async function checkYouTubeLive() {
             // 1. まずローカルの live_status.json (サーバー側判定 & デプロイ) を最優先で確認 (CORSプロキシ回避)
             try {
@@ -1144,6 +1344,7 @@
                 if (localRes.ok) {
                     const data = await localRes.json();
                     setLiveState(data.isLive, data.videoId);
+                    if (typeof data.subscriberCount === 'number') setSubscriberCount(data.subscriberCount);
                     return; // 成功したらプロキシ処理はスキップ
                 }
             } catch (localErr) {
