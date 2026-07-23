@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 各ポートフォリオLPの集計値 (hits, mip等)
+    // 各LP自身がヒットカウント表示・MIP数表示のため公開読み取りが必要。
+    // 訪問者による加算 (increment) も匿名で行われるため書き込みも公開のまま。
+    match /analytics/{pageId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // ミニゲームのランキング (sabanomiso, choco/isshun)
+    // スコア表示・投稿ともに匿名の一般訪問者が行うため公開のまま。
+    match /leaderboard/{entryId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /leaderboard_isshun/{entryId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // 訪問者ログ (User-Agent・リファラー等)。書き込み(記録)は公開のまま許可。
+    // 閲覧は個人の閲覧環境が特定できる情報を含むため、管理画面の認証済みセッションのみに限定。
+    match /visitor_logs/{logId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    // 各LPへの流入(リファラー)ログ
+    match /referrals/{pageId}/logs/{logId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    // 依頼フォーム(/order/)の送信内容。氏名・連絡先・依頼内容という個人情報を含むため、
+    // 送信(create)は公開のまま、閲覧は管理画面の認証済みセッションのみに限定。
+    match /orders/{orderId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    // 新規クライアント向けヒアリングフォームの回答。orders同様に個人情報を含む。
+    match /client_intake/{docId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    // 上記以外は全て非公開
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

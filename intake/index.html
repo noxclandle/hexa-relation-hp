@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexa Relation | 冒険者データ 登録フォーム</title>
+    <meta name="description" content="Hexa Relationへポートフォリオ制作をご依頼いただく方向けのヒアリングフォームです。">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        :root {
+            --accent: #ff3b3b;
+            --gold: #ffcc4d;
+            --bg-color: #000;
+            --window-bg: #0a0a0a;
+            --border-color: #333;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #fff;
+            font-family: 'DotGothic16', sans-serif;
+            margin: 0; padding: 20px;
+            display: flex; justify-content: center;
+            min-height: 100vh;
+        }
+
+        .px { font-family: 'Press Start 2P', 'DotGothic16', sans-serif; }
+
+        .back-link-fixed {
+            position: fixed; top: 4%; left: 4%; z-index: 20;
+            color: rgba(255,255,255,0.65); font-size: 0.55rem;
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 10px; text-decoration: none;
+        }
+        .back-link-fixed:hover { color: var(--gold); border-color: var(--gold); }
+
+        .mother-window {
+            background-color: var(--window-bg);
+            border-top: 4px solid var(--accent);
+            box-shadow: inset 0 0 0 2px #fff, 0 10px 30px rgba(0,0,0,0.6);
+            padding: 4px;
+            width: 100%;
+            max-width: 560px;
+            margin: 30px 0 60px;
+        }
+
+        .mother-window-inner { padding: 2.2rem 1.8rem; }
+
+        h1 {
+            font-size: 1rem; margin: 0 0 1rem; letter-spacing: 0.05em;
+            border-bottom: 2px solid var(--border-color); padding-bottom: 0.8rem;
+            text-align: center; color: var(--gold);
+        }
+
+        #guidance-text {
+            font-size: 0.72rem; line-height: 2; letter-spacing: 0.02em;
+            margin-bottom: 1.8rem; color: #aaa; text-align: center;
+        }
+        #guidance-text .highlight { color: var(--gold); }
+
+        .section-title {
+            font-size: 0.8rem; color: var(--gold); margin: 2.2rem 0 1.2rem;
+            padding-bottom: 0.5rem; border-bottom: 1px dashed var(--border-color);
+        }
+        .section-title:first-of-type { margin-top: 0; }
+
+        .input-group { margin-bottom: 1.4rem; }
+        label { display: block; margin-bottom: 0.6rem; font-size: 0.75rem; color: var(--gold); }
+        label .optional { color: #777; font-size: 0.65rem; margin-left: 4px; }
+        label .hint { display: block; color: #777; font-size: 0.65rem; margin-top: 4px; }
+
+        input, textarea {
+            width: 100%;
+            background: #000;
+            border: 2px solid var(--border-color);
+            padding: 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.85rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        input::placeholder, textarea::placeholder { color: #555; }
+        input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255,59,59,0.15); }
+
+        .submit-btn {
+            width: 100%;
+            font-family: 'Press Start 2P', monospace;
+            background: var(--gold);
+            border: 3px solid #fff;
+            box-shadow: 4px 4px 0 #b8281f;
+            color: #000;
+            padding: 14px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            margin-top: 1rem;
+            letter-spacing: 0.05em;
+        }
+        .submit-btn:active { box-shadow: 1px 1px 0 #b8281f; transform: translate(3px, 3px); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .back-link { display: block; text-align: center; margin-top: 1.6rem; color: #666; text-decoration: none; font-size: 0.75rem; }
+        .back-link:hover { color: var(--gold); }
+
+        #success-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92); z-index: 1000; justify-content: center; align-items: center; text-align: center;
+            padding: 20px;
+        }
+        #success-overlay .mother-window-inner p { color: #fff; font-size: 0.85rem; line-height: 2.2; }
+    </style>
+</head>
+<body>
+    <a href="../" class="back-link-fixed">◀ もどる</a>
+
+    <div class="mother-window">
+        <div class="mother-window-inner">
+            <h1 class="px">▼ 冒険者データ 登録フォーム</h1>
+            <p id="guidance-text">
+                ポートフォリオサイト制作のためのヒアリングシートです。<br>
+                <span class="highlight">情報が少なくても大丈夫です。</span>わかる範囲でご記入ください。空欄のままでも送信できます。
+            </p>
+
+            <form id="intake-form">
+                <div class="section-title px">▶ 基本情報</div>
+
+                <div class="input-group">
+                    <label>お名前・呼び名</label>
+                    <input type="text" id="name" placeholder="表示してほしいお名前" required>
+                </div>
+
+                <div class="input-group">
+                    <label>ご連絡先</label>
+                    <input type="text" id="contact" placeholder="メール / X ID / Discord など" required>
+                </div>
+
+                <div class="input-group">
+                    <label>活動内容<span class="optional">(任意)</span></label>
+                    <input type="text" id="activity" placeholder="例: VTuber / エンジニア / 学生 など">
+                </div>
+
+                <div class="section-title px">▶ 世界観・ビジュアル</div>
+
+                <div class="input-group">
+                    <label>モチーフにしたい作品・世界観<span class="optional">(任意)</span>
+                        <span class="hint">例: FF14風、MOTHER2風、特に希望なければ空欄でOK</span>
+                    </label>
+                    <input type="text" id="themeRef" placeholder="お気に入りのゲーム・作品があれば">
+                </div>
+
+                <div class="input-group">
+                    <label>SNS・外部リンク<span class="optional">(任意)</span></label>
+                    <input type="text" id="socialLinks" placeholder="X, YouTube, TikTok など、あるものだけでOK">
+                </div>
+
+                <div class="section-title px">▶ 人となり</div>
+
+                <div class="input-group">
+                    <label>キャッチコピー・特技<span class="optional">(任意)</span></label>
+                    <input type="text" id="catchphrase" placeholder="一言で自分を表すなら？">
+                </div>
+
+                <div class="input-group">
+                    <label>誕生日<span class="optional">(任意)</span></label>
+                    <input type="text" id="birthday" placeholder="例: 8月30日">
+                </div>
+
+                <div class="input-group">
+                    <label>好きなもの・趣味<span class="optional">(任意)</span></label>
+                    <textarea id="likes" rows="2" placeholder="食べ物、ペット、ゲームなど"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>ちょっとした秘密ネタ<span class="optional">(任意)</span>
+                        <span class="hint">深掘りしすぎない「気になる話題」があれば</span>
+                    </label>
+                    <input type="text" id="secretTopic" placeholder="なくてもOK">
+                </div>
+
+                <div class="section-title px">▶ 実績・目標</div>
+
+                <div class="input-group">
+                    <label>実績、または今後の目標<span class="optional">(任意)</span>
+                        <span class="hint">活動が浅い方・学生の方は「実績」ではなく「これからの目標」で構いません(例: 初配信をする、フォロワー100人 など)</span>
+                    </label>
+                    <textarea id="achievements" rows="3" placeholder="実績でも目標でも、書きやすい方でOK"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>登録者・フォロワーの目標人数<span class="optional">(任意)</span></label>
+                    <input type="text" id="subscriberGoal" placeholder="例: 2000人 (達成演出を入れたい場合)">
+                </div>
+
+                <div class="section-title px">▶ その他</div>
+
+                <div class="input-group">
+                    <label>BGMの希望<span class="optional">(任意)</span></label>
+                    <input type="text" id="bgmNote" placeholder="使いたい曲、なければ空欄でOK">
+                </div>
+
+                <div class="input-group">
+                    <label>ご予算<span class="optional">(任意)</span></label>
+                    <input type="text" id="budget" placeholder="目安で構いません">
+                </div>
+
+                <div class="input-group">
+                    <label>納期希望<span class="optional">(任意)</span></label>
+                    <input type="text" id="deadline" placeholder="例: 特になし / 〇月中希望">
+                </div>
+
+                <div class="input-group">
+                    <label>自由記述<span class="optional">(任意)</span></label>
+                    <textarea id="freeNote" rows="3" placeholder="その他伝えたいことがあれば"></textarea>
+                </div>
+
+                <input type="hidden" id="referrer">
+                <button type="submit" class="submit-btn" id="submit-btn">▶ データを おくる</button>
+            </form>
+
+            <a href="javascript:history.back()" class="back-link">▶ もどる</a>
+        </div>
+    </div>
+
+    <div id="success-overlay">
+        <div class="mother-window" style="max-width: 350px; margin: 0;">
+            <div class="mother-window-inner">
+                <p>データを 登録しました！<br><br>のちほど こちらから<br>ご連絡いたします。 おたのしみに！</p>
+                <button onclick="window.location.href='../'" class="submit-btn">▶ TOPへ もどる</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI",
+          authDomain: "hexa-relation.firebaseapp.com",
+          projectId: "hexa-relation",
+          storageBucket: "hexa-relation.firebasestorage.app",
+          messagingSenderId: "318065017750",
+          appId: "1:318065017750:web:94acf3c9c43632b3ff93b7",
+          measurementId: "G-15NM9TWFE2"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        document.getElementById('referrer').value = urlParams.get('ref') || urlParams.get('from') || 'ちょくせつ';
+
+        const form = document.getElementById('intake-form');
+        const submitBtn = document.getElementById('submit-btn');
+        let isSubmitting = false;
+
+        const FIELD_IDS = [
+            'name', 'contact', 'activity', 'themeRef', 'socialLinks', 'catchphrase',
+            'birthday', 'likes', 'secretTopic', 'achievements', 'subscriberGoal',
+            'bgmNote', 'budget', 'deadline', 'freeNote', 'referrer'
+        ];
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (isSubmitting) return;
+            isSubmitting = true;
+            submitBtn.disabled = true;
+            submitBtn.innerText = '▶ そうしんちゅう...';
+
+            const data = {};
+            FIELD_IDS.forEach(id => { data[id] = document.getElementById(id).value.trim(); });
+            data.timestamp = firebase.firestore.FieldValue.serverTimestamp();
+
+            try {
+                await db.collection('client_intake').add(data);
+                document.getElementById('success-overlay').style.display = 'flex';
+            } catch (err) {
+                console.error('Intake submit error:', err);
+                alert('送信中に エラーが おきました。時間をおいて お試しください。');
+                isSubmitting = false;
+                submitBtn.disabled = false;
+                submitBtn.innerText = '▶ データを おくる';
+            }
+        });
+    </script>
+</body>
+</html>

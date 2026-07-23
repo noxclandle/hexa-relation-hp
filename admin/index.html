@@ -87,6 +87,42 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: #000; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #004400; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #008800; }
+
+        /* テーブルが狭い画面ではみ出さないように横スクロール化 */
+        .table-scroll { overflow-x: auto; }
+        .table-scroll table { min-width: 480px; }
+
+        /* 見出し行が折り返さず縦割れするのを防ぐ */
+        .toolbar-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .toolbar-row h2 { margin-right: auto; }
+
+        .stat-card.clickable { cursor: pointer; transition: all 0.2s; }
+        .stat-card.clickable:hover { background: rgba(0, 80, 0, 0.5); border-color: var(--accent-color); }
+
+        #logout-btn {
+            font-size: 0.7rem; border: 1px solid var(--primary-color); padding: 4px 10px;
+            cursor: pointer; opacity: 0.7; white-space: nowrap;
+        }
+        #logout-btn:hover { opacity: 1; background: var(--primary-color); color: #000; }
+
+        .header-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+
+        .copy-link-box {
+            display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+            border: 1px dashed #006600; padding: 10px; background: rgba(0,40,0,0.3);
+        }
+        .copy-link-box input {
+            flex: 1; min-width: 180px; background: #000; border: 1px solid var(--primary-color);
+            color: var(--primary-color); padding: 6px 10px; font-family: 'DotGothic16', sans-serif; font-size: 0.75rem;
+        }
+        .copy-btn {
+            font-size: 0.7rem; border: 1px solid var(--primary-color); padding: 6px 12px; cursor: pointer;
+            white-space: nowrap;
+        }
+        .copy-btn:hover { background: var(--primary-color); color: #000; }
+
+        .detail-row { border-bottom: 1px dashed #004400; padding: 8px 0; font-size: 0.8rem; }
+        .detail-label { color: #888; font-size: 0.7rem; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -102,16 +138,25 @@
 
     <div id="admin-content" class="hidden">
         <div class="debug-window">
-            <h1>▼ Hexa Relation / アクセス・デバッグコンソール <span class="blink">_</span></h1>
-            
+            <div class="header-row mb-6">
+                <h1 class="!mb-0">▼ Hexa Relation / アクセス・デバッグコンソール <span class="blink">_</span></h1>
+                <button id="logout-btn" onclick="logoutAdmin()">⏻ ログアウト</button>
+            </div>
+
+            <div id="auth-warning" class="hidden mb-6 p-3 border border-yellow-500 bg-yellow-950/30 text-yellow-400 text-xs leading-relaxed">
+                ⚠ Firebase Authentication(匿名プロバイダ)が未設定のため、認証済みセッションとして動作していません。
+                Firebaseコンソール → Authentication → Sign-in method で「匿名」を有効にすると、
+                依頼一覧・ヒアリング回答・訪問ログの閲覧制限が正しく機能するようになります。
+            </div>
+
             <div class="stat-grid">
                 <div class="stat-card">
                     <div class="stat-label">トータルアクセス</div>
                     <div id="total-hits" class="stat-value">0</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">累計ごいらい</div>
-                    <div id="total-orders" class="stat-value">0</div>
+                <div class="stat-card clickable" onclick="showOrders()">
+                    <div class="stat-label">累計ごいらい <span class="text-[0.6rem] opacity-60">(クリックで詳細)</span></div>
+                    <div id="total-orders" class="stat-value">---</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">生存日数</div>
@@ -120,20 +165,20 @@
             </div>
 
             <div class="mb-8 p-4 border border-green-500 bg-green-950/20">
-                <div class="flex items-center gap-4">
-                    <span class="text-xs">絞り込みサーチ:</span>
-                    <input type="text" id="lp-search" oninput="filterLPs()" placeholder="キーワードを入力..." class="flex-1 bg-black border border-green-800 p-2 text-green-500 outline-none focus:border-green-400 text-sm">
+                <div class="flex flex-wrap items-center gap-4">
+                    <span class="text-xs whitespace-nowrap">絞り込みサーチ:</span>
+                    <input type="text" id="lp-search" oninput="filterLPs()" placeholder="キーワードを入力..." class="flex-1 min-w-[160px] bg-black border border-green-800 p-2 text-green-500 outline-none focus:border-green-400 text-sm">
                 </div>
             </div>
 
-            <div class="flex gap-4 mb-4 items-center">
-                <h2 class="mr-auto">▶ 各ページ解析データ <span class="text-xs opacity-50 ml-2">(/save/ 配下)</span></h2>
+            <div class="toolbar-row mb-4">
+                <h2>▶ 各ページ解析データ <span class="text-xs opacity-50 ml-2">(/save/ 配下)</span></h2>
                 <span class="text-xs opacity-60">並び替え:</span>
                 <button onclick="sortData('orders')" class="text-xs border border-green-800 px-2 py-1 hover:bg-green-900">依頼数</button>
                 <button onclick="sortData('hits')" class="text-xs border border-green-800 px-2 py-1 hover:bg-green-900">ヒット数</button>
                 <button onclick="sortData('visit')" class="text-xs border border-green-800 px-2 py-1 hover:bg-green-900">最新訪問</button>
             </div>
-            <div class="max-h-[300px] overflow-y-auto border border-green-800 mb-8 custom-scrollbar">
+            <div class="max-h-[300px] overflow-y-auto border border-green-800 mb-8 custom-scrollbar table-scroll">
                 <table id="analytics-table" class="text-xs">
                     <thead class="sticky top-0 bg-green-900 z-10">
                         <tr>
@@ -149,10 +194,37 @@
                 </table>
             </div>
 
+            <!-- 新規ヒアリングフォーム Section -->
+            <div class="mt-12 pt-8 border-t border-green-900">
+                <h2 class="mb-4">▶ 新規依頼ヒアリングフォーム</h2>
+                <div class="copy-link-box mb-4">
+                    <input type="text" id="intake-link" readonly value="https://hexa-relation.com/intake/">
+                    <button class="copy-btn" onclick="copyIntakeLink()">📋 リンクをコピー</button>
+                </div>
+                <div class="toolbar-row mb-4">
+                    <h2 class="text-sm">▶ 回答一覧 <span class="text-xs opacity-50 ml-2">(client_intake)</span></h2>
+                </div>
+                <div class="max-h-[300px] overflow-y-auto border border-green-800 mb-4 custom-scrollbar table-scroll">
+                    <table id="intake-table" class="text-xs">
+                        <thead class="sticky top-0 bg-green-900 z-10">
+                            <tr>
+                                <th>お名前</th>
+                                <th>活動内容</th>
+                                <th>連絡先</th>
+                                <th>送信日時（詳細）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- client_intake data injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Marketing LP Management Section (Dynamic) -->
             <div class="mt-12 pt-8 border-t border-green-900">
                 <h2 class="mb-4">▶ 集客用LP・マーケティング導線 <span class="text-xs opacity-50 ml-2">(/intro/ 配下)</span></h2>
-                <div class="max-h-[300px] overflow-y-auto border border-green-800 p-2 bg-black/40 custom-scrollbar">
+                <div class="max-h-[300px] overflow-y-auto border border-green-800 p-2 bg-black/40 custom-scrollbar table-scroll">
                     <table id="marketing-table" class="text-xs w-full">
                         <thead class="sticky top-0 bg-green-900 z-10">
                             <tr>
@@ -185,6 +257,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script>
         const firebaseConfig = {
           apiKey: "AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI",
@@ -197,6 +270,40 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+
+        // orders / visitor_logs / referrals はFirestoreルール側で認証済みセッションのみ閲覧可にしているため、
+        // パスワード認証の通過後に匿名サインインして読み取り権限を得る。
+        function ensureAdminAuth(callback) {
+            const unsub = firebase.auth().onAuthStateChanged((user) => {
+                unsub();
+                if (user) { callback(); return; }
+                firebase.auth().signInAnonymously().then(callback).catch(err => {
+                    // Firebase Authentication (匿名プロバイダ) が未設定のプロジェクトでは
+                    // ここに来る。設定完了までは道連れでダッシュボード自体を止めない。
+                    console.warn('Anonymous auth unavailable, continuing without it:', err.code);
+                    document.getElementById('auth-warning').classList.remove('hidden');
+                    callback();
+                });
+            });
+        }
+
+        function logoutAdmin() {
+            firebase.auth().signOut().finally(() => {
+                localStorage.removeItem('admin_auth');
+                location.reload();
+            });
+        }
+
+        function copyIntakeLink() {
+            const input = document.getElementById('intake-link');
+            input.select();
+            navigator.clipboard.writeText(input.value).then(() => {
+                const btn = event.target;
+                const original = btn.innerText;
+                btn.innerText = '✔ コピーしました';
+                setTimeout(() => btn.innerText = original, 1500);
+            }).catch(() => {});
+        }
 
         // AUTO_INJECT_START
         const ALL_PAGE_IDS = ['nox', 'choco', 'ten', 'sabanomiso', '7ch'];
@@ -220,7 +327,97 @@
                 renderTables();
                 document.getElementById('total-hits').innerText = totalHits.toLocaleString();
             });
-            document.getElementById('total-orders').innerText = "0";
+        }
+
+        let ordersCache = [];
+        function startOrders() {
+            db.collection('orders').orderBy('timestamp', 'desc').onSnapshot((querySnapshot) => {
+                ordersCache = [];
+                querySnapshot.forEach(doc => ordersCache.push({ id: doc.id, ...doc.data() }));
+                document.getElementById('total-orders').innerText = ordersCache.length.toLocaleString();
+            }, err => {
+                console.error('Orders fetch error:', err);
+                document.getElementById('total-orders').innerText = 'ERR';
+            });
+        }
+
+        function showOrders() {
+            const modal = document.getElementById('log-modal');
+            const content = document.getElementById('log-content');
+            document.getElementById('log-title').innerText = '▶ 依頼一覧 (orders)';
+            modal.style.display = 'flex';
+            if (ordersCache.length === 0) { content.innerHTML = '<p class="opacity-50 italic">依頼が まだ ありません</p>'; return; }
+            content.innerHTML = '';
+            ordersCache.forEach(o => {
+                const date = o.timestamp ? o.timestamp.toDate().toLocaleString() : '---';
+                const div = document.createElement('div');
+                div.className = 'log-item';
+                div.style.display = 'block';
+                div.innerHTML = `
+                    <div class="flex justify-between">
+                        <span class="log-ref">${(o.name || '').replace(/</g, '&lt;')}</span>
+                        <span class="log-date">${date}</span>
+                    </div>
+                    <div class="text-[0.7rem] opacity-70 mt-1">📱 ${(o.contact || '').replace(/</g, '&lt;')} ／ 🚩 ${(o.referrer || '').replace(/</g, '&lt;')}</div>
+                    <div class="text-[0.75rem] mt-1 opacity-90">${(o.message || '').replace(/</g, '&lt;')}</div>
+                `;
+                content.appendChild(div);
+            });
+        }
+
+        let intakeCache = [];
+        function startIntake() {
+            db.collection('client_intake').orderBy('timestamp', 'desc').onSnapshot((querySnapshot) => {
+                intakeCache = [];
+                querySnapshot.forEach(doc => intakeCache.push({ id: doc.id, ...doc.data() }));
+                renderIntakeTable();
+            }, err => {
+                console.error('Intake fetch error:', err);
+                const tbody = document.querySelector('#intake-table tbody');
+                if (tbody) tbody.innerHTML = '<tr><td colspan="4" class="opacity-50 italic p-2">読み込みエラー</td></tr>';
+            });
+        }
+
+        function renderIntakeTable() {
+            const tbody = document.querySelector('#intake-table tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            if (intakeCache.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="opacity-50 italic p-2">まだ回答がありません</td></tr>';
+                return;
+            }
+            intakeCache.forEach(entry => {
+                const date = entry.timestamp ? entry.timestamp.toDate().toLocaleString() : '---';
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${(entry.name || '---').replace(/</g, '&lt;')}</td>
+                    <td>${(entry.activity || '---').replace(/</g, '&lt;')}</td>
+                    <td>${(entry.contact || '---').replace(/</g, '&lt;')}</td>
+                    <td class="cursor-pointer hover:underline text-green-400" onclick="showIntakeDetail('${entry.id}')">${date}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function showIntakeDetail(id) {
+            const entry = intakeCache.find(e => e.id === id);
+            if (!entry) return;
+            const modal = document.getElementById('log-modal');
+            const content = document.getElementById('log-content');
+            document.getElementById('log-title').innerText = `▶ ${entry.name || '無記名'} さんの回答`;
+            modal.style.display = 'flex';
+
+            const fields = [
+                ['お名前', entry.name], ['活動内容', entry.activity], ['連絡先', entry.contact],
+                ['キャッチコピー・特技', entry.catchphrase], ['モチーフ・世界観の希望', entry.themeRef],
+                ['SNS/リンク', entry.socialLinks], ['誕生日', entry.birthday], ['好きなもの・趣味', entry.likes],
+                ['秘密・裏設定ネタ', entry.secretTopic], ['実績 or 今後の目標', entry.achievements],
+                ['BGMの希望', entry.bgmNote], ['登録者・フォロワー目標', entry.subscriberGoal],
+                ['ご予算', entry.budget], ['納期希望', entry.deadline], ['その他・自由記述', entry.freeNote],
+            ];
+            content.innerHTML = fields
+                .filter(([, v]) => v)
+                .map(([label, v]) => `<div class="detail-row"><div class="detail-label">${label}</div>${String(v).replace(/</g, '&lt;').replace(/\n/g, '<br>')}</div>`)
+                .join('') || '<p class="opacity-50 italic">内容がありません</p>';
         }
 
         function sortData(type) { currentSort = type; renderTables(); }
@@ -318,7 +515,12 @@
 
         function checkPass() {
             const pass = document.getElementById('admin-pass').value;
-            if (pass === '2213') { localStorage.setItem('admin_auth', 'true'); showAdminContent(); } else { alert('パスワードが ちがいます'); }
+            if (pass === '2213') {
+                localStorage.setItem('admin_auth', 'true');
+                ensureAdminAuth(showAdminContent);
+            } else {
+                alert('パスワードが ちがいます');
+            }
         }
 
         function showAdminContent() {
@@ -326,9 +528,11 @@
             document.getElementById('admin-content').classList.remove('hidden');
             renderMarketingTable();
             startAnalytics();
+            startOrders();
+            startIntake();
         }
 
-        if (localStorage.getItem('admin_auth') === 'true') { showAdminContent(); }
+        if (localStorage.getItem('admin_auth') === 'true') { ensureAdminAuth(showAdminContent); }
         document.getElementById('admin-pass').addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPass(); });
     </script>
 </body>
