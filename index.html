@@ -23,7 +23,20 @@
       "url": "https://hexa-relation.com/",
       "description": "次世代デジタル名刺「Hexa Card」と、没入型ゲーム風ポートフォリオ・LP制作を展開する制作スタジオ。",
       "makesOffer": [
-        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Hexa Card" } },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Product",
+            "name": "Hexa Card",
+            "offers": {
+              "@type": "Offer",
+              "price": "3000",
+              "priceCurrency": "JPY",
+              "availability": "https://schema.org/InStock",
+              "url": "https://virtual-business-card.hexa-relation.com/purchase"
+            }
+          }
+        },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Game-Style Portfolio / LP Production" } }
       ]
     }
