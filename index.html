@@ -67,8 +67,11 @@
             background: #000; text-align: center; padding: 24px;
             gap: clamp(14px, 3vh, 26px);
         }
+        .brand-row {
+            display: flex; align-items: center; justify-content: center; gap: 16px;
+        }
         .brand-logo {
-            width: clamp(48px, 10vw, 72px); height: auto;
+            width: clamp(40px, 8vw, 56px); height: auto;
             filter: drop-shadow(0 2px 8px rgba(122,47,191,0.35));
         }
         .game-title {
@@ -130,7 +133,7 @@
         @keyframes flicker { from { opacity: 0.75; transform: translateX(-50%) scale(0.94); } to { opacity: 1; transform: translateX(-50%) scale(1.05); } }
 
         .wall-crest {
-            position: absolute; top: 2%; left: 50%; transform: translateX(-50%);
+            position: absolute; top: 11%; left: 4%;
             width: clamp(30px, 5vw, 44px); height: auto;
             opacity: 0.75; z-index: 3;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
@@ -228,6 +231,16 @@
         #dungeon-player-sprite.walk { animation: walk-bounce 0.3s infinite; }
         @keyframes walk-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
+        #interact-prompt {
+            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            font-family: 'Press Start 2P', monospace; font-size: 1.1rem; color: #ffcc4d;
+            text-shadow: 2px 2px 0 #000; z-index: 16;
+            display: none;
+            animation: prompt-bob 0.6s ease-in-out infinite alternate;
+        }
+        #interact-prompt.show { display: block; }
+        @keyframes prompt-bob { from { transform: translateX(-50%) translateY(0); } to { transform: translateX(-50%) translateY(-5px); } }
+
         .hint-bar {
             background: #000; border-top: 4px solid #7a2fbf; box-shadow: inset 0 0 0 2px #fff;
             padding: 12px; text-align: center; color: #ffcc4d;
@@ -246,8 +259,10 @@
 
     <!-- Screen 1: Title / Ready screen -->
     <section id="screen-title" class="screen active">
-        <img src="assets/hexa-logo.png" class="brand-logo" alt="Hexa Relation">
-        <h1 class="game-title">HEXA RELATION</h1>
+        <div class="brand-row">
+            <img src="assets/hexa-logo.png" class="brand-logo" alt="Hexa Relation">
+            <h1 class="game-title">HEXA RELATION</h1>
+        </div>
         <p class="game-sub">ゲームの世界を、現実の武器に。</p>
 
         <div class="status-row">
@@ -319,6 +334,7 @@
 
             <div id="dungeon-player">
                 <img id="dungeon-player-sprite" src="assets/player-character.png" alt="">
+                <div id="interact-prompt">!</div>
             </div>
         </div>
         <p class="hint-bar">気になる ものを クリック / タップ、または 矢印キーで うごこう</p>
@@ -361,6 +377,7 @@
         const dungeonBg = document.getElementById('dungeon-bg');
         const dPlayer = document.getElementById('dungeon-player');
         const dSprite = document.getElementById('dungeon-player-sprite');
+        const interactPrompt = document.getElementById('interact-prompt');
         const dObjs = Array.from(document.querySelectorAll('.d-obj'));
 
         let dPlayerX = 50; // percent, left offset
@@ -370,7 +387,7 @@
         let dPendingHref = null;
         const D_SPEED = 0.55; // percent per frame
         const D_ARRIVE_OFFSET = 9; // stand this many percent below the object
-        const D_RANGE = 9; // proximity radius (percent) for keyboard "nearest object"
+        const D_RANGE = 13; // proximity radius (percent) for keyboard "nearest object"
         const keys = {};
         let facing = 1;
 
@@ -443,6 +460,7 @@
 
             dPlayer.classList.toggle('face-left', facing === -1);
             dSprite.classList.toggle('walk', moving);
+            interactPrompt.classList.toggle('show', !!findNearestObj());
             updateDungeonPlayer();
         }
         updateDungeonPlayer();
