@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok認証コード | Hexa Relation</title>
+<meta name="robots" content="noindex">
+<style>
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: #0a0a0a; color: #e8e8e8;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+  }
+  .card {
+    max-width: 560px; padding: 32px; border: 2px solid #2a2436; border-radius: 12px;
+    background: #141018; text-align: center;
+  }
+  h1 { color: #ffcc4d; font-size: 1.1rem; }
+  .code-box {
+    margin-top: 20px; padding: 16px; background: #000; border-radius: 8px;
+    word-break: break-all; font-family: monospace; font-size: 1rem; color: #7a2fbf;
+    border: 1px solid #2a2436; user-select: all;
+  }
+  .hint { color: #a8a8a8; font-size: 0.85rem; margin-top: 16px; }
+  .error { color: #ff6b6b; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>認証コードが発行されました</h1>
+  <div id="output" class="code-box">読み込み中...</div>
+  <p class="hint">このコードをコピーして、ターミナルに貼り付けてください。</p>
+</div>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  const error = params.get('error');
+  const output = document.getElementById('output');
+  if (code) {
+    output.textContent = code;
+  } else if (error) {
+    output.textContent = 'エラー: ' + error + ' / ' + (params.get('error_description') || '');
+    output.classList.add('error');
+  } else {
+    output.textContent = 'コードが見つかりませんでした。';
+    output.classList.add('error');
+  }
+</script>
+</body>
+</html>
