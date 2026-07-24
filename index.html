@@ -67,6 +67,10 @@
             background: #000; text-align: center; padding: 24px;
             gap: clamp(14px, 3vh, 26px);
         }
+        .brand-logo {
+            width: clamp(48px, 10vw, 72px); height: auto;
+            filter: drop-shadow(0 2px 8px rgba(122,47,191,0.35));
+        }
         .game-title {
             color: #fff; font-size: clamp(1.1rem, 5vw, 2rem); margin: 0;
             letter-spacing: 0.08em; text-shadow: 3px 3px 0 #3d1a63;
@@ -124,6 +128,13 @@
             animation: flicker 0.9s ease-in-out infinite alternate-reverse;
         }
         @keyframes flicker { from { opacity: 0.75; transform: translateX(-50%) scale(0.94); } to { opacity: 1; transform: translateX(-50%) scale(1.05); } }
+
+        .wall-crest {
+            position: absolute; top: 2%; left: 50%; transform: translateX(-50%);
+            width: clamp(30px, 5vw, 44px); height: auto;
+            opacity: 0.75; z-index: 3;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+        }
 
         /* Dungeon menu objects (chest / monster), placed anywhere on the 2D floor */
         .d-obj {
@@ -235,6 +246,7 @@
 
     <!-- Screen 1: Title / Ready screen -->
     <section id="screen-title" class="screen active">
+        <img src="assets/hexa-logo.png" class="brand-logo" alt="Hexa Relation">
         <h1 class="game-title">HEXA RELATION</h1>
         <p class="game-sub">ゲームの世界を、現実の武器に。</p>
 
@@ -257,6 +269,7 @@
         <div class="dungeon-bg" id="dungeon-bg">
             <div class="torch" style="left:4%;"></div>
             <div class="torch" style="right:4%;"></div>
+            <img src="assets/hexa-logo.png" class="wall-crest" alt="Hexa Relation">
 
             <div class="d-obj chest" style="left:22%; top:30%;" data-href="intro/card/">
                 <span class="d-obj-label">HEXA CARD<small>電子名刺</small></span>
@@ -296,7 +309,7 @@
                 </div>
             </div>
 
-            <div class="d-obj portal" style="left:50%; top:16%;" data-href="https://top3anime.hexarelation.workers.dev/">
+            <div class="d-obj portal" style="left:50%; top:27%;" data-href="https://top3anime.hexarelation.workers.dev/">
                 <span class="d-obj-label">TOP3ANIME<small>すきなアニメ3選</small></span>
                 <div class="d-icon portal-icon">
                     <div class="frame"></div>
