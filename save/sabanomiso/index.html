@@ -311,35 +311,35 @@ body::before {
         }
         #hex-totem:hover { opacity: 1; transform: scale(1.2) rotate(10deg); filter: drop-shadow(0 0 10px var(--blood-red)); }
 
-        /* Trial Progress HUD (脱出進行度) */
-        #trial-progress-bar {
-            position: fixed; top: 0; left: 0; height: 3px; width: 0%;
-            background: linear-gradient(90deg, var(--blood-red), var(--gold));
-            z-index: 10001; box-shadow: 0 0 10px var(--blood-red);
-            transition: width 0.1s linear;
+        /* Tab Navigation (トライアル選択メニュー) */
+        #tab-bar {
+            position: sticky; top: 0; z-index: 2500;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            padding: 14px 16px; background: rgba(3, 3, 5, 0.85); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(175, 0, 0, 0.3);
         }
-        #chapter-nav {
-            position: fixed; right: 22px; top: 50%; transform: translateY(-50%);
-            z-index: 2500; display: flex; flex-direction: column; gap: 22px; align-items: flex-end;
+        .tab-btn {
+            font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px;
+            color: rgba(255,255,255,0.5); background: transparent;
+            border: 1px solid rgba(255,255,255,0.15); padding: 8px 16px;
+            cursor: pointer; text-transform: uppercase; transition: 0.25s;
         }
-        .chapter-dot-row { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .chapter-dot {
-            width: 9px; height: 9px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.4);
-            background: transparent; transition: 0.3s;
+        .tab-btn:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
+        .tab-btn.active { color: var(--gold); border-color: var(--gold); box-shadow: 0 0 12px rgba(212,175,55,0.4); }
+        .tab-panel { display: none; opacity: 0; }
+        .tab-panel.active-tab { display: block; animation: tabFadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .chapter-label {
-            font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 2px;
-            color: rgba(255,255,255,0.4); opacity: 0; transform: translateX(10px);
-            transition: 0.3s; white-space: nowrap; text-transform: uppercase;
+        .tab-btn { position: relative; }
+        .tab-btn.active::after {
+            content: ''; position: absolute; left: 10%; right: 10%; bottom: -1px; height: 2px;
+            background: var(--gold); box-shadow: 0 0 8px var(--gold);
         }
-        .chapter-dot-row:hover .chapter-label { opacity: 1; transform: translateX(0); color: #fff; }
-        .chapter-dot-row:hover .chapter-dot { border-color: var(--blood-red); background: var(--blood-red); }
-        .chapter-dot-row.current .chapter-dot { border-color: var(--gold); background: var(--gold); box-shadow: 0 0 8px var(--gold); }
-        .chapter-dot-row.current .chapter-label { opacity: 1; color: var(--gold); }
         @media (max-width: 768px) {
-            #chapter-nav { right: 10px; gap: 14px; }
-            .chapter-label { display: none; }
-            .chapter-dot-row:hover .chapter-label { display: block; }
+            #tab-bar { gap: 4px; padding: 10px 8px; }
+            .tab-btn { font-size: 9px; padding: 7px 10px; }
         }
 
         @media (max-width: 768px) {
@@ -363,20 +363,6 @@ body::before {
     <div class="entity-vignette"></div>
     <div class="scratch-overlay"></div>
     <div id="notification"></div>
-
-    <!-- 生存の進行度 (スクロール進捗バー) -->
-    <div id="trial-progress-bar"></div>
-
-    <!-- チャプターナビゲーション -->
-    <nav id="chapter-nav">
-        <div class="chapter-dot-row" data-target="hero"><span class="chapter-label">AWAKENING</span><span class="chapter-dot"></span></div>
-        <div class="chapter-dot-row" data-target="mantra"><span class="chapter-label">MANTRA</span><span class="chapter-dot"></span></div>
-        <div class="chapter-dot-row" data-target="arsenal"><span class="chapter-label">ARSENAL</span><span class="chapter-dot"></span></div>
-        <div class="chapter-dot-row" data-target="chronicles"><span class="chapter-label">CHRONICLES</span><span class="chapter-dot"></span></div>
-        <div class="chapter-dot-row" data-target="mission"><span class="chapter-label">MISSION</span><span class="chapter-dot"></span></div>
-        <div class="chapter-dot-row" data-target="stream"><span class="chapter-label">BROADCAST</span><span class="chapter-dot"></span></div>
-        <div class="chapter-dot-row" data-target="contact"><span class="chapter-label">PACT</span><span class="chapter-dot"></span></div>
-    </nav>
 
     <!-- DBD HUD: SURVIVOR STATUS -->
     <div id="dbd-hud">
@@ -454,25 +440,25 @@ body::before {
 
     <div id="main-content" style="opacity: 1;">
         
-        <!-- 1. HERO -->
-        <section class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden" id="hero">
+        <!-- 1. HERO (常時表示ヘッダー) -->
+        <section class="px-6 pt-16 pb-10 md:pt-20 md:pb-12 relative overflow-hidden" id="hero">
             <div class="scratches top-20 left-10"></div>
             <div class="scratches bottom-40 right-20" style="transform: rotate(150deg);"></div>
-            
+
             <div class="symbol-bg top-0 left-0">BLOOD</div>
             <div class="symbol-bg bottom-0 right-0">ENTITY</div>
 
-            <div class="relative z-10 text-center reveal">
-                <span class="mono text-tech-cyan text-xs tracking-[1em] block mb-10 opacity-60">SURVIVOR_LEVEL_99</span>
-                <h1 class="horror-font text-8xl md:text-[15rem] leading-none text-white tracking-tighter mb-10 obsession-bracket horror-text-shadow">
+            <div class="relative z-10 text-center reveal active">
+                <span class="mono text-tech-cyan text-xs tracking-[1em] block mb-6 opacity-60">SURVIVOR_LEVEL_99</span>
+                <h1 class="horror-font text-6xl md:text-8xl leading-none text-white tracking-tighter mb-6 obsession-bracket horror-text-shadow">
                     SABANOMISO
                 </h1>
-                <p class="text-xl md:text-3xl mono text-blood-red tracking-[0.5em] uppercase font-bold glitch-text mb-6">Formwork Architect</p>
-                <p class="text-sm md:text-lg text-gray-300 typewriter italic max-w-2xl mx-auto opacity-70">
+                <p class="text-lg md:text-xl mono text-blood-red tracking-[0.5em] uppercase font-bold glitch-text mb-4">Formwork Architect</p>
+                <p class="text-sm md:text-base text-gray-300 typewriter italic max-w-2xl mx-auto opacity-70">
                     「達成できるかギリギリの目標を定め、それを踏破した瞬間に、私は成功を確信する。」
                 </p>
-                
-                <div class="mt-16 flex flex-col md:flex-row gap-6 justify-center items-center">
+
+                <div class="mt-8 flex flex-col md:flex-row gap-4 justify-center items-center">
                     <div class="glass-panel px-8 py-4 border-l-4 border-l-blood-red text-left min-w-[260px]">
                         <p class="mono text-[10px] text-gray-500 mb-1">REAL_IDENTITY</p>
                         <p class="text-lg font-bold tracking-widest text-white">Sabanomiso (31)</p>
@@ -483,14 +469,20 @@ body::before {
                     </div>
                 </div>
             </div>
-
-            <a href="#mantra" class="absolute bottom-10 left-1/2 -translate-x-1/2 mono text-[9px] tracking-[1.5em] opacity-30 hover:opacity-100 transition-opacity animate-pulse">
-                SCROLL_TO_EXTRACT_TRUE_FORM
-            </a>
         </section>
 
+        <!-- トライアル選択メニュー (タブ) -->
+        <nav id="tab-bar">
+            <button class="tab-btn active" data-tab="mantra">MANTRA</button>
+            <button class="tab-btn" data-tab="arsenal">ARSENAL</button>
+            <button class="tab-btn" data-tab="chronicles">CHRONICLES</button>
+            <button class="tab-btn" data-tab="mission">MISSION</button>
+            <button class="tab-btn" data-tab="stream">BROADCAST</button>
+            <button class="tab-btn" data-tab="contact">PACT</button>
+        </nav>
+
         <!-- 2. THE MANTRA -->
-        <section class="max-w-7xl mx-auto px-6 py-24 md:py-32 relative overflow-hidden" id="mantra">
+        <section class="tab-panel active-tab max-w-7xl mx-auto px-6 py-16 md:py-20 relative overflow-hidden" id="mantra">
             <div class="scratches top-40 right-10" style="transform: rotate(30deg);"></div>
             <div class="symbol-bg top-1/2 left-1/4">FAITH</div>
             <div class="max-w-4xl mb-14 reveal">
@@ -524,7 +516,7 @@ body::before {
         </section>
 
         <!-- 3. THE ARSENAL -->
-        <section class="py-24 md:py-32 bg-gradient-to-b from-transparent via-blood-red/5 to-transparent relative" id="arsenal">
+        <section class="tab-panel py-16 md:py-20 bg-gradient-to-b from-transparent via-blood-red/5 to-transparent relative" id="arsenal">
             <div class="scratches bottom-20 left-1/4" style="transform: rotate(20deg); opacity: 0.1;"></div>
             <div class="max-w-5xl mx-auto px-6 text-center">
                 <span class="text-tech-cyan mono text-xs tracking-widest block mb-10">ELITE_STATUS_DATA</span>
@@ -563,7 +555,7 @@ body::before {
         </section>
 
         <!-- 4. CHRONICLES -->
-        <section class="max-w-6xl mx-auto px-6 py-24 md:py-32 relative" id="chronicles">
+        <section class="tab-panel max-w-6xl mx-auto px-6 py-16 md:py-20 relative" id="chronicles">
             <span class="text-blood-red mono text-xs tracking-widest block mb-12">CHRONICLES_02 // SURVIVAL</span>
             <div class="space-y-16">
                 <div class="reveal">
@@ -600,7 +592,7 @@ body::before {
         </section>
 
         <!-- 5. MISSION -->
-        <section class="py-24 md:py-32 bg-white/5 relative overflow-hidden" id="mission">
+        <section class="tab-panel py-16 md:py-20 bg-white/5 relative overflow-hidden" id="mission">
             <div class="symbol-bg top-0 left-1/2 opacity-[0.02]">SAFEHOUSE</div>
             <div class="max-w-4xl mx-auto px-6 text-center reveal">
                 <span class="text-blood-red mono text-xs tracking-widest block mb-12">MISSION_03 // VISION</span>
@@ -613,7 +605,7 @@ body::before {
         </section>
 
         <!-- 6. THE STREAM -->
-        <section class="max-w-6xl mx-auto px-6 py-24 md:py-32" id="stream">
+        <section class="tab-panel max-w-6xl mx-auto px-6 py-16 md:py-20" id="stream">
             <div class="grid md:grid-cols-2 gap-20 items-center">
                 <div class="reveal">
                     <span class="text-blood-red mono text-xs tracking-widest block mb-10">CONNECT_04 // ENTERTAINMENT</span>
@@ -636,7 +628,7 @@ body::before {
         </section>
 
         <!-- 7. CONTACT -->
-        <section class="max-w-5xl mx-auto px-6 py-24 md:py-32" id="contact">
+        <section class="tab-panel max-w-5xl mx-auto px-6 py-16 md:py-20" id="contact">
             <div class="glass-panel p-8 md:p-16 relative border-2 border-blood-red/20 shadow-2xl">
                 <div class="absolute -top-10 -right-5 horror-font text-[10rem] md:text-[14rem] opacity-5 pointer-events-none">PACT</div>
                 <h3 class="horror-font text-6xl md:text-[10rem] text-white mb-12 section-title">SIGN THE PACT</h3>
@@ -751,33 +743,24 @@ body::before {
             const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); if (entry.target.tagName === 'SECTION') addBP(500, "BOLDNESS"); } }); }, { threshold: 0.1 });
             document.querySelectorAll('.reveal, section').forEach(el => observer.observe(el));
             initKonami(); initSkillCheck(); loadLeaderboard(); addBP(2000, "WELCOME"); checkYouTubeLive();
-            initTrialProgress();
+            initTabs();
         }
 
-        function initTrialProgress() {
-            const bar = document.getElementById('trial-progress-bar');
-            const rows = Array.from(document.querySelectorAll('.chapter-dot-row'));
-            const sections = rows.map(row => document.getElementById(row.dataset.target)).filter(Boolean);
+        function initTabs() {
+            const buttons = Array.from(document.querySelectorAll('.tab-btn'));
+            const panels = Array.from(document.querySelectorAll('.tab-panel'));
 
-            rows.forEach(row => {
-                row.addEventListener('click', () => {
-                    const target = document.getElementById(row.dataset.target);
-                    if (target) target.scrollIntoView({ behavior: 'smooth' });
-                });
-            });
-
-            function onScroll() {
-                const scrollTop = window.scrollY;
-                const docHeight = document.body.scrollHeight - window.innerHeight;
-                const pct = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0;
-                if (bar) bar.style.width = pct + '%';
-
-                let currentIndex = 0;
-                sections.forEach((sec, i) => { if (sec.getBoundingClientRect().top - window.innerHeight * 0.5 <= 0) currentIndex = i; });
-                rows.forEach((row, i) => row.classList.toggle('current', i === currentIndex));
+            function activateTab(tabId) {
+                panels.forEach(p => p.classList.toggle('active-tab', p.id === tabId));
+                buttons.forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
+                // 表示された瞬間に演出を出す (IntersectionObserverの発火待ちにしない)
+                const shown = document.getElementById(tabId);
+                if (shown) shown.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+                document.getElementById('tab-bar').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                playSound(700, 'sine', 0.08, 0.05);
             }
-            window.addEventListener('scroll', onScroll, { passive: true });
-            onScroll();
+
+            buttons.forEach(btn => btn.addEventListener('click', () => activateTab(btn.dataset.tab)));
         }
 
         async function loadLeaderboard() {
