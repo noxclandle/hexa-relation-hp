@@ -5,60 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>制作実績 | ゲーム風ポートフォリオ制作 - Hexa Relation</title>
     <meta name="description" content="Hexa Relationが制作したゲーム風ポートフォリオの実績集。クロノトリガー風、ロマンシングサガ風、Dead by Daylight風、ファイナルファンタジー風など、多彩な世界観の制作例をご覧いただけます。">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&display=swap" rel="stylesheet">
     <style>
-        body { background: #000; color: #fff; }
-        .archive-slot {
-            border: 1px solid #333; aspect-ratio: 16/10;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: #050505; transition: 0.3s; cursor: pointer; position: relative; overflow: hidden;
-            text-decoration: none; color: #fff;
+        * { box-sizing: border-box; }
+        html, body {
+            margin: 0; padding: 0; background: #000; color: #fff;
+            font-family: 'DotGothic16', sans-serif;
+            overflow-x: hidden;
         }
-        .archive-slot:hover { border-color: #fff; background: #0a0a0a; }
+        .px { font-family: 'Press Start 2P', 'DotGothic16', sans-serif; }
+        a { color: inherit; }
+
+        .back-link {
+            position: fixed; top: 4%; left: 4%; z-index: 20;
+            color: rgba(255,255,255,0.65); font-size: 0.55rem;
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 10px; text-decoration: none;
+        }
+        .back-link:hover { color: #ffcc4d; border-color: #ffcc4d; }
+
+        header.hero {
+            text-align: center; padding: 96px 24px 56px; max-width: 720px; margin: 0 auto;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(122,47,191,0.16), transparent 55%),
+                radial-gradient(ellipse at 50% 100%, rgba(139,94,60,0.14), transparent 60%);
+        }
+        .eyebrow { font-size: 0.6rem; letter-spacing: 0.3em; color: #ffcc4d; margin-bottom: 18px; }
+        h1.title { font-size: clamp(1.4rem, 5.5vw, 2.2rem); margin: 0 0 20px; letter-spacing: 0.06em; text-shadow: 3px 3px 0 #3d1a63; }
+        .lead { font-size: 0.8rem; line-height: 2; opacity: 0.6; }
+
+        .archive-grid {
+            max-width: 960px; margin: 0 auto; padding: 0 24px 20px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;
+        }
+        .archive-slot {
+            display: block; text-decoration: none; color: #fff;
+            background: #0a0a0a; border: 2px solid #333; padding: 24px 22px;
+            transition: border-color .2s, background .2s;
+        }
+        .archive-slot:hover { border-color: #7a2fbf; background: #0d0618; }
+        .archive-tag { font-size: 0.55rem; color: #ffcc4d; letter-spacing: 0.1em; margin-bottom: 10px; }
+        .archive-name { font-size: 1.1rem; margin: 0 0 12px; letter-spacing: 0.04em; }
+        .archive-desc { font-size: 0.68rem; line-height: 1.9; opacity: 0.65; }
+        .archive-slot.wide { grid-column: 1 / -1; }
+
+        .cta-block {
+            max-width: 640px; margin: 60px auto 0; padding: 0 24px 90px; text-align: center;
+        }
+        .cta-block h2 { font-size: 1rem; margin: 0 0 16px; }
+        .cta-block p { font-size: 0.7rem; line-height: 2; opacity: 0.6; margin: 0 0 30px; }
+        .pixel-btn {
+            font-family: 'Press Start 2P', monospace; font-size: 0.72rem;
+            display: inline-block; text-decoration: none;
+            color: #000; background: #ffcc4d; border: 4px solid #fff;
+            box-shadow: 4px 4px 0 #3d1a63; padding: 16px 30px; letter-spacing: 0.08em;
+        }
+        .pixel-btn:active { box-shadow: 1px 1px 0 #3d1a63; transform: translate(3px, 3px); }
+
+        footer {
+            text-align: center; padding: 30px; opacity: 0.35; font-size: 0.55rem;
+            border-top: 1px solid #222;
+        }
+        footer a:hover { color: #ffcc4d; }
     </style>
 </head>
-<body class="p-8 md:p-20">
-    <header class="mb-16">
-        <a href="../../" class="text-[10px] opacity-40 hover:opacity-100">▲ TOPへ戻る</a>
-        <h1 class="text-4xl md:text-5xl font-black italic mt-4">WORKS.</h1>
-        <p class="opacity-40 text-xs mt-2 uppercase tracking-widest">制作実績 — ゲーム風ポートフォリオ制作</p>
+<body>
+    <a href="../../" class="back-link">◀ もどる</a>
+
+    <header class="hero">
+        <p class="eyebrow px">PAST ADVENTURES</p>
+        <h1 class="title px">制作実績</h1>
+        <p class="lead">好きなゲームの世界観に、経歴・実績・人柄を落とし込む。<br>単なる自己紹介ではなく、相手が「操作して」「体験する」ポートフォリオへ。</p>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-20">
-        <a href="../../save/7ch/" class="archive-slot p-8">
-            <p class="text-[10px] opacity-40 mb-2">CHRONO TRIGGER 風</p>
-            <p class="text-2xl font-bold">7CH</p>
+    <div class="archive-grid">
+        <a href="../../save/7ch/" class="archive-slot">
+            <p class="archive-tag px">CHRONO TRIGGER 風</p>
+            <p class="archive-name px">7CH</p>
+            <p class="archive-desc">天鳳七段の雀士としての実績を、時を駆ける「何切る」クイズで体験できるポートフォリオ。</p>
         </a>
-        <a href="../../save/choco/" class="archive-slot p-8">
-            <p class="text-[10px] opacity-40 mb-2">ロマンシング サガ 風</p>
-            <p class="text-2xl font-bold">CHOCO</p>
+        <a href="../../save/choco/" class="archive-slot">
+            <p class="archive-tag px">ロマンシング サ・ガ 風</p>
+            <p class="archive-name px">CHOCO</p>
+            <p class="archive-desc">ロマンシング サ・ガ風の世界観で構築された、チョコたいちょーのキャラクターポートフォリオ。</p>
         </a>
-        <a href="../../save/sabanomiso/" class="archive-slot p-8">
-            <p class="text-[10px] opacity-40 mb-2">DEAD BY DAYLIGHT 風</p>
-            <p class="text-2xl font-bold">SABANOMISO</p>
+        <a href="../../save/sabanomiso/" class="archive-slot">
+            <p class="archive-tag px">DEAD BY DAYLIGHT 風</p>
+            <p class="archive-name px">SABANOMISO</p>
+            <p class="archive-desc">一級建築士としてのキャリアを、DBDのホラー世界観に落とし込んだ「生存の設計図」。</p>
         </a>
-        <a href="../../save/ten/" class="archive-slot p-8">
-            <p class="text-[10px] opacity-40 mb-2">FINAL FANTASY 風</p>
-            <p class="text-2xl font-bold">TEN</p>
+        <a href="../../save/ten/" class="archive-slot">
+            <p class="archive-tag px">FINAL FANTASY 風</p>
+            <p class="archive-name px">TEN</p>
+            <p class="archive-desc">FF風の「かわいいハウジング」世界観と、配信活動の記録をまとめたセーブデータ。</p>
         </a>
-        <a href="../../save/nox/" class="archive-slot p-8 md:col-span-2">
-            <p class="text-[10px] opacity-40 mb-2">MOTHER2 風</p>
-            <p class="text-2xl font-bold">NOX（制作者本人）</p>
-        </a>
-    </div>
-
-    <div class="max-w-xl">
-        <h2 class="text-2xl mb-6">あなたの物語も、ゲームの世界へ。</h2>
-        <p class="opacity-60 text-sm leading-loose mb-10">
-            好きなゲームの世界観に、あなたの経歴・実績・人柄を落とし込みます。単なる自己紹介ではなく、相手が「操作して」「体験する」ポートフォリオへ。
-        </p>
-        <a href="../../order/index.html?from=archive" class="inline-block border px-12 py-5 font-bold hover:bg-white hover:text-black transition-all">
-            制作を相談する
+        <a href="../../save/nox/" class="archive-slot wide">
+            <p class="archive-tag px">MOTHER2 風</p>
+            <p class="archive-name px">NOX（制作者本人）</p>
+            <p class="archive-desc">制作者Nox本人のポートフォリオハブ。「ゲームの世界に住む」人々のセーブデータが集まる場所。</p>
         </a>
     </div>
 
-    <footer class="mt-40 pt-10 border-t border-white/5 opacity-30 text-[9px] uppercase tracking-[0.3em]">
-        &copy; 2026 Hexa Relation
+    <div class="cta-block">
+        <h2 class="px">あなたの物語も、ゲームの世界へ。</h2>
+        <p>できることや料金の目安は「できること」ページにまとめています。</p>
+        <a href="../services/" class="pixel-btn">▶ できることを見る</a>
+    </div>
+
+    <footer>
+        <a href="../../">▲ TOPへ戻る</a>
+        <p style="margin-top:14px;">&copy; 2026 Hexa Relation</p>
     </footer>
 </body>
 </html>

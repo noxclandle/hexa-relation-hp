@@ -8,15 +8,21 @@
     <style>
         * { box-sizing: border-box; }
         :root {
-            --accent: #ff3b3b;
+            --accent: #7a2fbf;
+            --accent-deep: #3d1a63;
             --gold: #ffcc4d;
+            --blue: #1e40af;
+            --brown: #8b5e3c;
             --bg-color: #000;
             --window-bg: #0a0a0a;
-            --border-color: #333;
+            --border-color: #3d3226;
         }
 
         body {
             background-color: var(--bg-color);
+            background-image:
+                radial-gradient(ellipse at 50% 20%, rgba(122,47,191,0.20), transparent 55%),
+                radial-gradient(ellipse at 50% 100%, rgba(139,94,60,0.18), transparent 60%);
             color: #fff;
             font-family: 'DotGothic16', sans-serif;
             margin: 0; padding: 20px;
@@ -67,14 +73,14 @@
             transition: all 0.3s;
         }
         input::placeholder, textarea::placeholder { color: #555; }
-        input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255,59,59,0.15); }
+        input:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(30,64,175,0.25); }
 
         .submit-btn {
             width: 100%;
             font-family: 'Press Start 2P', monospace;
             background: var(--gold);
             border: 3px solid #fff;
-            box-shadow: 4px 4px 0 #b8281f;
+            box-shadow: 4px 4px 0 var(--accent-deep);
             color: #000;
             padding: 14px;
             font-size: 0.8rem;
@@ -83,7 +89,7 @@
             margin-top: 0.5rem;
             letter-spacing: 0.05em;
         }
-        .submit-btn:active { box-shadow: 1px 1px 0 #b8281f; transform: translate(3px, 3px); }
+        .submit-btn:active { box-shadow: 1px 1px 0 var(--accent-deep); transform: translate(3px, 3px); }
 
         .back-link { display: block; text-align: center; margin-top: 1.6rem; color: #666; text-decoration: none; font-size: 0.75rem; }
         .back-link:hover { color: var(--gold); }
