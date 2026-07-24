@@ -11,9 +11,24 @@
     <meta property="og:url" content="https://hexa-relation.com/save/sabanomiso/">
     <meta property="og:title" content="SABANOMISO - Portfolio (DBD風)">
     <meta property="og:description" content="脱型の瞬間に現れる真実。さばのみその生存の設計図。">
-    <meta property="og:image" content="https://hexa-relation.com/save/sabanomiso/entity_opt.png">
+    <meta property="og:image" content="https://hexa-relation.com/save/sabanomiso/gen_opt.jpg">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blood-red': '#af0000',
+                        'tech-cyan': '#00f2ff',
+                        'gold': '#d4af37',
+                        'dark-void': '#030305',
+                        'concrete': '#2c2c2e',
+                    }
+                }
+            }
+        };
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Noto+Sans+JP:wght@100;300;400;700&family=Special+Elite&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -54,7 +69,7 @@
     background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.95) 100%);
     animation: pulse-void 6s infinite alternate;
 }
-@keyframes pulse-void { from { opacity: 0.7; } to { opacity: 1; } }
+@keyframes pulse-void { from { opacity: 0.3; } to { opacity: 0.5; } }
 
 body::before {
     content: ''; position: fixed; inset: 0; z-index: -1;
@@ -84,7 +99,7 @@ body::before {
 
         /* Glassmorphism */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(25px);
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(14px);
             border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px;
             transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
         }
@@ -296,6 +311,37 @@ body::before {
         }
         #hex-totem:hover { opacity: 1; transform: scale(1.2) rotate(10deg); filter: drop-shadow(0 0 10px var(--blood-red)); }
 
+        /* Trial Progress HUD (脱出進行度) */
+        #trial-progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+            background: linear-gradient(90deg, var(--blood-red), var(--gold));
+            z-index: 10001; box-shadow: 0 0 10px var(--blood-red);
+            transition: width 0.1s linear;
+        }
+        #chapter-nav {
+            position: fixed; right: 22px; top: 50%; transform: translateY(-50%);
+            z-index: 2500; display: flex; flex-direction: column; gap: 22px; align-items: flex-end;
+        }
+        .chapter-dot-row { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .chapter-dot {
+            width: 9px; height: 9px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.4);
+            background: transparent; transition: 0.3s;
+        }
+        .chapter-label {
+            font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 2px;
+            color: rgba(255,255,255,0.4); opacity: 0; transform: translateX(10px);
+            transition: 0.3s; white-space: nowrap; text-transform: uppercase;
+        }
+        .chapter-dot-row:hover .chapter-label { opacity: 1; transform: translateX(0); color: #fff; }
+        .chapter-dot-row:hover .chapter-dot { border-color: var(--blood-red); background: var(--blood-red); }
+        .chapter-dot-row.current .chapter-dot { border-color: var(--gold); background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+        .chapter-dot-row.current .chapter-label { opacity: 1; color: var(--gold); }
+        @media (max-width: 768px) {
+            #chapter-nav { right: 10px; gap: 14px; }
+            .chapter-label { display: none; }
+            .chapter-dot-row:hover .chapter-label { display: block; }
+        }
+
         @media (max-width: 768px) {
             .horror-font { font-size: 4rem; }
             .section-title { font-size: 2.5rem !important; }
@@ -317,6 +363,20 @@ body::before {
     <div class="entity-vignette"></div>
     <div class="scratch-overlay"></div>
     <div id="notification"></div>
+
+    <!-- 生存の進行度 (スクロール進捗バー) -->
+    <div id="trial-progress-bar"></div>
+
+    <!-- チャプターナビゲーション -->
+    <nav id="chapter-nav">
+        <div class="chapter-dot-row" data-target="hero"><span class="chapter-label">AWAKENING</span><span class="chapter-dot"></span></div>
+        <div class="chapter-dot-row" data-target="mantra"><span class="chapter-label">MANTRA</span><span class="chapter-dot"></span></div>
+        <div class="chapter-dot-row" data-target="arsenal"><span class="chapter-label">ARSENAL</span><span class="chapter-dot"></span></div>
+        <div class="chapter-dot-row" data-target="chronicles"><span class="chapter-label">CHRONICLES</span><span class="chapter-dot"></span></div>
+        <div class="chapter-dot-row" data-target="mission"><span class="chapter-label">MISSION</span><span class="chapter-dot"></span></div>
+        <div class="chapter-dot-row" data-target="stream"><span class="chapter-label">BROADCAST</span><span class="chapter-dot"></span></div>
+        <div class="chapter-dot-row" data-target="contact"><span class="chapter-label">PACT</span><span class="chapter-dot"></span></div>
+    </nav>
 
     <!-- DBD HUD: SURVIVOR STATUS -->
     <div id="dbd-hud">
@@ -395,16 +455,13 @@ body::before {
     <div id="main-content" style="opacity: 1;">
         
         <!-- 1. HERO -->
-        <section class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden">
+        <section class="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden" id="hero">
             <div class="scratches top-20 left-10"></div>
             <div class="scratches bottom-40 right-20" style="transform: rotate(150deg);"></div>
             
             <div class="symbol-bg top-0 left-0">BLOOD</div>
             <div class="symbol-bg bottom-0 right-0">ENTITY</div>
-            <div class="absolute inset-0 opacity-20 pointer-events-none">
-                <img src="entity_opt.png" class="w-full h-full object-cover mix-blend-screen scale-150 rotate-6" style="filter: blur(15px) sepia(1) hue-rotate(-50deg);">
-            </div>
-            
+
             <div class="relative z-10 text-center reveal">
                 <span class="mono text-tech-cyan text-xs tracking-[1em] block mb-10 opacity-60">SURVIVOR_LEVEL_99</span>
                 <h1 class="horror-font text-8xl md:text-[15rem] leading-none text-white tracking-tighter mb-10 obsession-bracket horror-text-shadow">
@@ -433,10 +490,10 @@ body::before {
         </section>
 
         <!-- 2. THE MANTRA -->
-        <section class="max-w-7xl mx-auto px-6 py-60 relative overflow-hidden" id="mantra">
+        <section class="max-w-7xl mx-auto px-6 py-24 md:py-32 relative overflow-hidden" id="mantra">
             <div class="scratches top-40 right-10" style="transform: rotate(30deg);"></div>
             <div class="symbol-bg top-1/2 left-1/4">FAITH</div>
-            <div class="max-w-4xl mb-32 reveal">
+            <div class="max-w-4xl mb-14 reveal">
                 <span class="text-blood-red mono text-xs tracking-widest block mb-6">ARCHIVE_DATA // PHILOSOPHY</span>
                 <h2 class="text-5xl md:text-8xl font-bold mb-12 leading-tight section-title">「コツコツが<br><span class="text-blood-red glitch-text">勝つコツ</span>」</h2>
                 <div class="space-y-10 text-gray-300 leading-relaxed text-xl max-w-2xl">
@@ -467,11 +524,11 @@ body::before {
         </section>
 
         <!-- 3. THE ARSENAL -->
-        <section class="py-60 bg-gradient-to-b from-transparent via-blood-red/5 to-transparent relative">
+        <section class="py-24 md:py-32 bg-gradient-to-b from-transparent via-blood-red/5 to-transparent relative" id="arsenal">
             <div class="scratches bottom-20 left-1/4" style="transform: rotate(20deg); opacity: 0.1;"></div>
             <div class="max-w-5xl mx-auto px-6 text-center">
                 <span class="text-tech-cyan mono text-xs tracking-widest block mb-10">ELITE_STATUS_DATA</span>
-                <h3 class="horror-font text-6xl md:text-8xl text-white mb-32 opacity-30 reveal section-title">THE_ARSENAL</h3>
+                <h3 class="horror-font text-6xl md:text-8xl text-white mb-14 opacity-30 reveal section-title">THE_ARSENAL</h3>
                 <div class="flex flex-wrap justify-center gap-10 md:gap-20 reveal">
                     <div class="badge-slot group" onclick="showNotify('ULTRARARE: 1ST CLASS ARCHITECT')">
                         <div class="badge-content">
@@ -506,11 +563,11 @@ body::before {
         </section>
 
         <!-- 4. CHRONICLES -->
-        <section class="max-w-6xl mx-auto px-6 py-60 relative">
+        <section class="max-w-6xl mx-auto px-6 py-24 md:py-32 relative" id="chronicles">
             <span class="text-blood-red mono text-xs tracking-widest block mb-12">CHRONICLES_02 // SURVIVAL</span>
-            <div class="space-y-32">
+            <div class="space-y-16">
                 <div class="reveal">
-                    <div class="glass-panel p-10 md:p-24 border-l-8 border-l-blood-red relative overflow-hidden group">
+                    <div class="glass-panel p-8 md:p-16 border-l-8 border-l-blood-red relative overflow-hidden group">
                         <div class="absolute -top-10 -right-10 horror-font text-[10rem] md:text-[15rem] opacity-[0.02] pointer-events-none group-hover:opacity-[0.05] transition-opacity">2013</div>
                         <div class="grid md:grid-cols-3 gap-12">
                             <div class="col-span-1">
@@ -525,7 +582,7 @@ body::before {
                     </div>
                 </div>
                 <div class="reveal">
-                    <div class="glass-panel p-10 md:p-24 border-r-8 border-r-tech-cyan text-right group">
+                    <div class="glass-panel p-8 md:p-16 border-r-8 border-r-tech-cyan text-right group">
                         <div class="absolute -top-10 -left-10 horror-font text-[10rem] md:text-[15rem] opacity-[0.02] pointer-events-none group-hover:opacity-[0.05] transition-opacity">WORK</div>
                         <div class="grid md:grid-cols-3 gap-12">
                             <div class="col-span-2 text-gray-300 text-lg md:text-xl leading-relaxed order-2 md:order-1 text-left md:text-right">
@@ -543,7 +600,7 @@ body::before {
         </section>
 
         <!-- 5. MISSION -->
-        <section class="py-60 bg-white/5 relative overflow-hidden">
+        <section class="py-24 md:py-32 bg-white/5 relative overflow-hidden" id="mission">
             <div class="symbol-bg top-0 left-1/2 opacity-[0.02]">SAFEHOUSE</div>
             <div class="max-w-4xl mx-auto px-6 text-center reveal">
                 <span class="text-blood-red mono text-xs tracking-widest block mb-12">MISSION_03 // VISION</span>
@@ -556,7 +613,7 @@ body::before {
         </section>
 
         <!-- 6. THE STREAM -->
-        <section class="max-w-6xl mx-auto px-6 py-60">
+        <section class="max-w-6xl mx-auto px-6 py-24 md:py-32" id="stream">
             <div class="grid md:grid-cols-2 gap-20 items-center">
                 <div class="reveal">
                     <span class="text-blood-red mono text-xs tracking-widest block mb-10">CONNECT_04 // ENTERTAINMENT</span>
@@ -579,8 +636,8 @@ body::before {
         </section>
 
         <!-- 7. CONTACT -->
-        <section class="max-w-5xl mx-auto px-6 py-60" id="contact">
-            <div class="glass-panel p-8 md:p-32 relative border-2 border-blood-red/20 shadow-2xl">
+        <section class="max-w-5xl mx-auto px-6 py-24 md:py-32" id="contact">
+            <div class="glass-panel p-8 md:p-16 relative border-2 border-blood-red/20 shadow-2xl">
                 <div class="absolute -top-10 -right-5 horror-font text-[10rem] md:text-[14rem] opacity-5 pointer-events-none">PACT</div>
                 <h3 class="horror-font text-6xl md:text-[10rem] text-white mb-12 section-title">SIGN THE PACT</h3>
                 <div class="grid md:grid-cols-2 gap-16">
@@ -612,7 +669,7 @@ body::before {
         </section>
 
         <!-- 8. MARKETING -->
-        <section class="max-w-4xl mx-auto px-6 py-40 border-t border-white/5">
+        <section class="max-w-4xl mx-auto px-6 py-20 border-t border-white/5">
             <div class="glass-panel p-10 md:p-20 text-center border-tech-cyan/20 bg-tech-cyan/5 relative overflow-hidden group">
                 <div class="absolute -top-10 -right-10 horror-font text-[8rem] opacity-[0.03] pointer-events-none">OFFER</div>
                 <h3 class="text-2xl md:text-4xl font-bold mb-8 text-white tracking-widest">
@@ -694,6 +751,33 @@ body::before {
             const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); if (entry.target.tagName === 'SECTION') addBP(500, "BOLDNESS"); } }); }, { threshold: 0.1 });
             document.querySelectorAll('.reveal, section').forEach(el => observer.observe(el));
             initKonami(); initSkillCheck(); loadLeaderboard(); addBP(2000, "WELCOME"); checkYouTubeLive();
+            initTrialProgress();
+        }
+
+        function initTrialProgress() {
+            const bar = document.getElementById('trial-progress-bar');
+            const rows = Array.from(document.querySelectorAll('.chapter-dot-row'));
+            const sections = rows.map(row => document.getElementById(row.dataset.target)).filter(Boolean);
+
+            rows.forEach(row => {
+                row.addEventListener('click', () => {
+                    const target = document.getElementById(row.dataset.target);
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            function onScroll() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.body.scrollHeight - window.innerHeight;
+                const pct = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0;
+                if (bar) bar.style.width = pct + '%';
+
+                let currentIndex = 0;
+                sections.forEach((sec, i) => { if (sec.getBoundingClientRect().top - window.innerHeight * 0.5 <= 0) currentIndex = i; });
+                rows.forEach((row, i) => row.classList.toggle('current', i === currentIndex));
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
         }
 
         async function loadLeaderboard() {
