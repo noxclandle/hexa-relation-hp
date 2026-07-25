@@ -28,12 +28,53 @@
           "itemOffered": {
             "@type": "Product",
             "name": "Hexa Card",
+            "image": "https://virtual-business-card.hexa-relation.com/ogp_card.png",
+            "description": "次世代NFCデジタルアイデンティティ。物理カードとデジタル名刺帳が同期する、1万通り以上のカスタマイズが可能なプレミアムスマート名刺。",
+            "brand": {
+              "@type": "Brand",
+              "name": "Hexa Relation"
+            },
             "offers": {
               "@type": "Offer",
               "price": "3000",
               "priceCurrency": "JPY",
               "availability": "https://schema.org/InStock",
-              "url": "https://virtual-business-card.hexa-relation.com/purchase"
+              "url": "https://virtual-business-card.hexa-relation.com/purchase",
+              "shippingDetails": {
+                "@type": "OfferShippingDetails",
+                "shippingRate": {
+                  "@type": "MonetaryAmount",
+                  "value": 0,
+                  "currency": "JPY"
+                },
+                "shippingDestination": {
+                  "@type": "DefinedRegion",
+                  "addressCountry": "JP"
+                },
+                "deliveryTime": {
+                  "@type": "ShippingDeliveryTime",
+                  "handlingTime": {
+                    "@type": "QuantitativeValue",
+                    "minValue": 0,
+                    "maxValue": 1,
+                    "unitCode": "DAY"
+                  },
+                  "transitTime": {
+                    "@type": "QuantitativeValue",
+                    "minValue": 1,
+                    "maxValue": 3,
+                    "unitCode": "DAY"
+                  }
+                }
+              },
+              "hasMerchantReturnPolicy": {
+                "@type": "MerchantReturnPolicy",
+                "applicableCountry": "JP",
+                "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                "merchantReturnDays": 7,
+                "returnMethod": "https://schema.org/ReturnByMail",
+                "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility"
+              }
             }
           }
         },
