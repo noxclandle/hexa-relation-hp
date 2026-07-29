@@ -23,22 +23,22 @@
   - 実績データ（3周年、FF14暁月踏破、ホラゲリレー完走等）をモーダル形式で表示する機能を実装。
 - **Notes:** リサーチに基づき、LPに未掲載だった最新の実績や過去のクリア実績を統合。
 
-### 2026-05-31: Nox LP Talk Bubble Text Update
-- **Task:** Update the recruitment message in the Nox portrait speech bubble.
+### 2026-05-31: Matan LP Talk Bubble Text Update
+- **Task:** Update the recruitment message in the Matan portrait speech bubble.
 - **Changes:**
-  - Changed "プログラムはできなくても大丈夫だよ！" to "プログラムはできなくても大丈夫だよ！連絡くださいね♪" in `save/nox/index.html`.
+  - Changed "プログラムはできなくても大丈夫だよ！" to "プログラムはできなくても大丈夫だよ！連絡くださいね♪" in `save/matan/index.html`.
 - **Notes:** Minor wording adjustment as requested by the client.
 
-### 2026-05-30: Nox LP Gift Button & Wishlist Integration
-- **Task:** Add a "Give a gift" button to the Nox portrait and link it to an Amazon wishlist.
+### 2026-05-30: Matan LP Gift Button & Wishlist Integration
+- **Task:** Add a "Give a gift" button to the Matan portrait and link it to an Amazon wishlist.
 - **Changes:**
-  - Added `.gift-btn` to `save/nox/index.html` CSS and HTML.
+  - Added `.gift-btn` to `save/matan/index.html` CSS and HTML.
   - Implemented `openGiftMenu()` to scroll to the command menu and show the gift submenu.
   - Created `menu-gift` submenu with a link to the Amazon wishlist.
 - **Notes:** Improved monetization/gifting accessibility for the user.
 
-### 2026-05-30: Nox LP Interactive Speech Bubble Gimmick
-- **Task:** Add an interactive speech bubble to the Nox portrait that cycles through recruitment messages.
+### 2026-05-30: Matan LP Interactive Speech Bubble Gimmick
+- **Task:** Add an interactive speech bubble to the Matan portrait that cycles through recruitment messages.
 - **Changes:**
   - Added `.talk-bubble` and `.talk-bubble-inner` CSS with MOTHER2-style (red border, black background, white inner border).
   - Implemented `nextTalk()` JS function to cycle through messages: "...", "一緒にネットサービスを考えてくれる人を探しているよ！", and "プログラムはできなくても大丈夫だよ！".
@@ -80,7 +80,7 @@
 ### 2026-05-28: Request Fee Update (30,000 ~ 100,000)
 - **Task:** Update the production fee from ¥20,000 to ¥30,000 across the site and portfolio pages.
 - **Changes:**
-  - Updated `save/nox/index.html` (Main Portfolio Hub) pricing to ¥30,000 〜 ¥100,000.
+  - Updated `save/matan/index.html` (Main Portfolio Hub) pricing to ¥30,000 〜 ¥100,000.
   - Updated `intro/index.html` and `intro/vtuber/index.html` pricing to ¥30,000 ~.
   - Updated `save/choco/index.html` base pricing to ¥30,000 〜.
   - Executed `scripts/sync_portfolios.js` to synchronize indices.
@@ -147,7 +147,7 @@
 - **Task:** Create a dedicated LP for "choco" and replace the test save slot.
 - **Changes:**
   - Created `save/choco/index.html` with a Chocolate-themed MOTHER2 style.
-  - Replaced "SAMPLE HERO" (no. 001) with "CHOCO" in the "Save Data List" within `save/nox/index.html`.
+  - Replaced "SAMPLE HERO" (no. 001) with "CHOCO" in the "Save Data List" within `save/matan/index.html`.
   - Implemented character walking animation for Choco using three-frame sprite cycling.
   - Adjusted Choco's stats (HP: 120, LP: 16) and location ("きりの森").
 - **Notes:** The new LP is now accessible via the main portfolio's save list.
@@ -155,7 +155,7 @@
 ### 2026-05-22: Fix Status Popup Alignment on Mobile
 - **Task:** Fix the misalignment of the "つよさをみる" (Check Status) popup on mobile devices.
 - **Changes:**
-  - Added missing CSS for `#details-popup` and `.details-inner` in `save/nox/index.html`.
+  - Added missing CSS for `#details-popup` and `.details-inner` in `save/matan/index.html`.
   - Implemented absolute positioning with centering (`left: 50%; transform: translateX(-50%);`) to ensure the popup is centered regardless of the parent's width.
   - Styled the popup as a MOTHER2-style speech bubble with a red border and a triangle pointer to match the theme.
 - **Notes:** The popup is now centered and visually consistent with the rest of the UI.

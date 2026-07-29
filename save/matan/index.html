@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nox - Portfolio (MOTHER2風)</title>
-    <meta name="description" content="Noxのポートフォリオハブ。Hexa Relationが手がけた「ゲームの世界に住む」人々。MOTHER2風の世界観で構成されたセーブデータ・リスト。">
-    
+    <title>Matan - Portfolio (MOTHER2風)</title>
+    <meta name="description" content="Matanのポートフォリオハブ。Hexa Relationが手がけた「ゲームの世界に住む」人々。MOTHER2風の世界観で構成されたセーブデータ・リスト。">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://hexa-relation.com/save/nox/">
-    <meta property="og:title" content="Nox - Portfolio (MOTHER2風)">
-    <meta property="og:description" content="Noxの冒険の記録。これまでに構築した多彩なポートフォリオがここに集結。">
+    <meta property="og:url" content="https://hexa-relation.com/save/matan/">
+    <meta property="og:title" content="Matan - Portfolio (MOTHER2風)">
+    <meta property="og:description" content="Matanの冒険の記録。これまでに構築した多彩なポートフォリオがここに集結。">
     <meta property="og:image" content="https://hexa-relation.com/Gemini_Generated_Image_ezkos8ezkos8ezko-removebg-preview.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary">
-    <meta property="twitter:title" content="Nox - Portfolio (MOTHER2風)">
-    <meta property="twitter:description" content="Noxの冒険の記録。これまでに構築した多彩なポートフォリオがここに集結。">
+    <meta property="twitter:title" content="Matan - Portfolio (MOTHER2風)">
+    <meta property="twitter:description" content="Matanの冒険の記録。これまでに構築した多彩なポートフォリオがここに集結。">
 
     <!-- Google Fonts: DotGothic16 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -331,7 +331,7 @@
                 <h2 class="text-xl mb-6 border-b border-white pb-2">▼ ステータス</h2>
                 <div class="status-container">
                     <div class="status-info grid grid-cols-1 gap-4 text-lg">
-                        <div><span class="status-label">なまえ:</span><span id="status-name">Nox (ノクス)</span> <span id="status-level" class="ml-2 text-sm text-yellow-400 font-mono">Lv. 4</span></div>
+                        <div><span class="status-label">なまえ:</span><span id="status-name">Matan (マタン)</span> <span id="status-level" class="ml-2 text-sm text-yellow-400 font-mono">Lv. 4</span></div>
                         <div><span class="status-label">しょくぎょう:</span><span>フリーランス (元・探偵 / 元・マジシャン / IT専門卒)</span></div>
                         <div><span class="status-label">しょぞく:</span><span>MENSA</span></div>
                         <div class="relative">
@@ -451,7 +451,7 @@
                 <div id="menu-service-order" class="hidden flex flex-col gap-3">
                     <p class="text-xl mb-2">内容に 同意して<br>ごいらい ページへ<br>いどう しますか？</p>
                     <div class="flex flex-col gap-2">
-                        <a href="../../order/index.html?from=nox" class="command-item text-2xl" onclick="resetMenu(); trackEvent('order_click')"><span class="command-cursor">▶︎</span>はい</a>
+                        <a href="../../order/index.html?from=matan" class="command-item text-2xl" onclick="resetMenu(); trackEvent('order_click')"><span class="command-cursor">▶︎</span>はい</a>
                         <div class="command-item text-2xl" onclick="showSubMenu('menu-main')"><span class="command-cursor">▶︎</span>いいえ</div>
                     </div>
                 </div>
@@ -609,7 +609,7 @@
         const db = firebase.firestore();
 
         // アクセスカウントとデバイス情報の更新
-        const pageId = 'nox';
+        const pageId = 'matan';
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         
         db.collection('analytics').doc(pageId).set({
@@ -1090,7 +1090,7 @@
             // ステータス表示の変更
             const nameEl = document.getElementById('status-name');
             const iqEl = document.getElementById('status-iq');
-            if (nameEl) nameEl.innerText = "Nox (PSIマスター)";
+            if (nameEl) nameEl.innerText = "Matan (PSIマスター)";
             if (iqEl) iqEl.innerText = "999";
 
             // ステータスを閉じる

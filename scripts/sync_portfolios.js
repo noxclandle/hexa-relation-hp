@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const SAVE_DIR = path.join(__dirname, '../save');
-const NOX_INDEX = path.join(SAVE_DIR, 'nox/index.html');
+const MATAN_INDEX = path.join(SAVE_DIR, 'matan/index.html');
 const ADMIN_INDEX = path.join(__dirname, '../admin/index.html');
 
 // 隠しページリスト（URLは有効だがインデックスには表示されない）
@@ -13,7 +13,7 @@ function sync() {
 
     // 1. Scan save directory and sort by creation time
     const portfolios = fs.readdirSync(SAVE_DIR)
-        .filter(dir => dir !== 'nox' && fs.statSync(path.join(SAVE_DIR, dir)).isDirectory())
+        .filter(dir => dir !== 'matan' && fs.statSync(path.join(SAVE_DIR, dir)).isDirectory())
         .sort((a, b) => {
             return fs.statSync(path.join(SAVE_DIR, a)).birthtimeMs - fs.statSync(path.join(SAVE_DIR, b)).birthtimeMs;
         })
@@ -52,7 +52,7 @@ function sync() {
         let adminContent = fs.readFileSync(ADMIN_INDEX, 'utf-8');
         
         // Portfolios (Save Data)
-        const allIds = ['nox', ...portfolios.map(p => p.id)];
+        const allIds = ['matan', ...portfolios.map(p => p.id)];
         const idList = allIds.map(id => `'${id}'`).join(', ');
         
         // Marketing LPs (Intro)
@@ -88,9 +88,9 @@ function sync() {
         console.log('Updated admin/index.html with both Portfolio and Marketing IDs');
     }
 
-    // 3. Update save/nox/index.html (Only visible portfolios)
-    if (fs.existsSync(NOX_INDEX)) {
-        let noxContent = fs.readFileSync(NOX_INDEX, 'utf-8');
+    // 3. Update save/matan/index.html (Only visible portfolios)
+    if (fs.existsSync(MATAN_INDEX)) {
+        let matanContent = fs.readFileSync(MATAN_INDEX, 'utf-8');
         const listStart = '<!-- 実績が増えたらここに追加 -->';
         const listEnd = '<div id="list-end-marker"';
         
@@ -105,9 +105,9 @@ function sync() {
         });
 
         const regex = new RegExp(`${listStart}[\\s\\S]*?${listEnd}`, 'm');
-        noxContent = noxContent.replace(regex, newHtml + '                        ' + listEnd);
-        fs.writeFileSync(NOX_INDEX, noxContent);
-        console.log('Updated save/nox/index.html (Pagination support preserved)');
+        matanContent = matanContent.replace(regex, newHtml + '                        ' + listEnd);
+        fs.writeFileSync(MATAN_INDEX, matanContent);
+        console.log('Updated save/matan/index.html (Pagination support preserved)');
     }
 
     console.log('Sync complete.');
@@ -130,7 +130,7 @@ function generateSitemap(visiblePortfolios) {
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>${baseUrl}/save/nox/</loc>
+        <loc>${baseUrl}/save/matan/</loc>
         <lastmod>${today}</lastmod>
         <priority>0.8</priority>
     </url>
