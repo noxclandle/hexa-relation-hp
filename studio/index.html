@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ショート動画の自動制作・配信スタジオ | Hexa Relation Studio</title>
+<meta name="description" content="Hexa Relation Studioは、日本語のショート動画を毎日自動で企画・制作し、YouTube・Instagramで配信しているスタジオです。">
+<link rel="stylesheet" href="/studio/_style.css"></head>
+<body><nav class="nav"><div class="in">
+<a class="logo" href="/studio/">Hexa Relation Studio</a>
+<a class="item" href="/studio/series/">配信シリーズ</a>
+<a class="item" href="/studio/how-it-works/">制作の仕組み</a>
+<a class="item" href="/studio/works/">配信実績</a>
+<a class="item" href="/studio/about/">運営について</a>
+</div></nav>
+<main><h1>毎日12本の日本語ショート動画を、<br>企画から配信まで自動で制作しています</h1>
+<p class="lead">Hexa Relation Studio は、教育・雑学・エンターテインメントを軸にした日本語のショート動画を、
+独自開発した制作パイプラインで毎日自動生成し、各動画プラットフォームへ配信している制作スタジオです。
+台本の執筆、音声ナレーションの合成、字幕の焼き込み、映像の書き出し、サムネイルの生成、
+各プラットフォームへの投稿までを、人手を介さず一貫して行っています。</p>
+
+<div class="stats">
+<div class="stat"><b>155</b><span>公開済みの動画本数</span></div>
+<div class="stat"><b>39,482</b><span>累計再生回数</span></div>
+<div class="stat"><b>11</b><span>常設シリーズ数</span></div>
+<div class="stat"><b>12</b><span>1日あたりの投稿数</span></div>
+</div>
+<p style="font-size:.82rem">※ 2026年8月4日時点。YouTube Data API より取得した実数値です。</p>
+
+<h2>私たちが作っているもの</h2>
+<p>ひとつの動画を作るために、私たちは「その日にしか作れない内容」を毎日組み立てています。
+たとえば難読漢字クイズであれば、その日に出題する4問を難易度順に選び、
+読み方と由来を確認し、考える時間を挟んだ構成に組み直します。
+歴史の回であれば、Wikipedia日本語版からその日の出来事を取得し、
+事実関係を保ったまま、聞いて分かる長さの文章に整えます。</p>
+<p>すべての台本はオリジナルです。他者の投稿や記事の本文をそのまま転載することはありません。
+著作権の切れた古典作品を扱う場合は、原典を動画の概要欄に明記しています。</p>
+
+<h2>配信しているシリーズ</h2>
+<div class="grid">
+<div class="card"><div class="meta">毎日 13:00</div><h4>難読漢字クイズ</h4>
+<p>漢検3級から1級までの難読漢字を、難易度順に4問出題します。考える時間を挟み、読み方と由来を解説します。</p></div>
+<div class="card"><div class="meta">毎日 13:30</div><h4>IQテスト</h4>
+<p>論理パズル・数列・図形問題をIQ100から145までの3段階で出題する、思考力を試す形式です。</p></div>
+<div class="card"><div class="meta">毎日 19:00</div><h4>都市伝説・洒落怖</h4>
+<p>すべて書き下ろしのオリジナル短編ホラーです。冒頭に最も不気味な場面を置き、そこから語り直す構成をとっています。</p></div>
+<div class="card"><div class="meta">毎日 19:30</div><h4>ホラー怪談</h4>
+<p>小泉八雲『怪談』、エドガー・アラン・ポー、泉鏡花など、著作権保護期間の満了した古典作品を短編として再構成しています。</p></div>
+<div class="card"><div class="meta">毎日 18:30</div><h4>1分で笑える話</h4>
+<p>2人の会話だけで構成する、オチのある短い物語です。チャット風の画面でテンポよく進みます。</p></div>
+<div class="card"><div class="meta">毎日 17:30</div><h4>マタンの物語劇場</h4>
+<p>世界各国の実話・伝承・童話を10分以上かけて語る長尺シリーズです。就寝前や作業中の聞き流しを想定しています。</p></div>
+</div>
+<p><a href="/studio/series/">全シリーズの詳細を見る →</a></p>
+
+<h2>制作の流れ</h2>
+<ol class="steps">
+<li><b>題材の選定</b>その日に扱う題材を、シリーズごとの規則に従って決定します。日付・周期・過去の出題履歴を参照し、重複を避けます。</li>
+<li><b>台本の生成</b>視聴者が最後まで聞ける長さと構成に整えます。1つの場面が長くなりすぎないよう、5秒前後で切り替わるよう分割します。</li>
+<li><b>音声合成</b>VOICEVOXによる音声合成でナレーションを生成します。シリーズごとに話者を固定し、声で判別できるようにしています。</li>
+<li><b>映像の生成</b>音声の長さに合わせて字幕を同期させ、フレーム単位で映像を描画します。資料写真は緩やかに動かし、静止画のままにしません。</li>
+<li><b>音楽の合成</b>ライセンスを確認した楽曲のみを使用し、必要なクレジットを概要欄に自動で記載します。</li>
+<li><b>配信</b>YouTubeとInstagramへ自動投稿します。タイトル・説明文・タグ・サムネイルはシリーズごとの規則で生成されます。</li>
+</ol>
+<p><a href="/studio/how-it-works/">制作の仕組みを詳しく見る →</a></p>
+
+<h2>配信先</h2>
+<p>現在はYouTubeチャンネル「Hexa Relation」を中心に配信しており、
+一部のシリーズはInstagramリールへも自動投稿しています。
+TikTokへの配信も準備を進めています。</p>
+<div class="note">本サイトに掲載している数値は、各プラットフォームのAPIから取得した実測値です。
+配信中の動画は<a href="/studio/works/">配信実績</a>のページから実際にご覧いただけます。</div></main><footer>
+<a href="/studio/">トップ</a><a href="/studio/series/">配信シリーズ</a>
+<a href="/studio/how-it-works/">制作の仕組み</a><a href="/studio/works/">配信実績</a>
+<a href="/studio/about/">運営について</a><a href="/privacy.html">プライバシーポリシー</a>
+<a href="/terms.html">利用規約</a>
+<p style="margin-top:16px;font-size:.8rem;color:#6a6676">&copy; 2026 Hexa Relation</p>
+</footer></body></html>
