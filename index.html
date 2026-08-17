@@ -187,6 +187,26 @@
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
         }
 
+        /* エリア分け：3つの用途(プロフィール／サービス／問い合わせ)で床の色味を帯状に変え、
+           何も言わなくても「ここは違うグループ」と伝わるようにする */
+        .zone-band {
+            position: absolute; left: 0; width: 100%; z-index: 1; pointer-events: none;
+        }
+        .zone-band.zone-profile { top: 12%; height: 25%; background: linear-gradient(rgba(122,47,191,0.16), transparent); }
+        .zone-band.zone-products { top: 40%; height: 25%; background: linear-gradient(rgba(255,204,77,0.10), rgba(255,204,77,0.10)); }
+        .zone-band.zone-contact { top: 68%; height: 24%; background: linear-gradient(rgba(90,200,160,0.14), transparent); }
+
+        .zone-sign {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            font-family: 'Press Start 2P', monospace; font-size: 0.55rem; letter-spacing: 0.05em;
+            padding: 5px 14px; border: 2px solid rgba(255,255,255,0.25); border-radius: 3px;
+            background: rgba(0,0,0,0.35); white-space: nowrap; z-index: 2; pointer-events: none;
+        }
+        .zone-sign small { display: block; font-size: 0.75em; opacity: 0.7; margin-top: 3px; }
+        .zone-sign.zone-profile { top: 13%; color: #c9a3ff; border-color: rgba(201,163,255,0.4); }
+        .zone-sign.zone-products { top: 41%; color: #ffcc4d; border-color: rgba(255,204,77,0.4); }
+        .zone-sign.zone-contact { top: 69%; color: #7fe0c0; border-color: rgba(127,224,192,0.4); }
+
         /* Dungeon menu objects (chest / monster), placed anywhere on the 2D floor */
         .d-obj {
             position: absolute; z-index: 10;
@@ -354,16 +374,16 @@
             <div class="torch" style="right:4%;"></div>
             <img src="assets/hexa-logo.png" class="wall-crest" alt="Hexa Relation">
 
-            <div class="d-obj chest" style="left:22%; top:30%;" data-href="intro/card/">
-                <span class="d-obj-label">HEXA CARD<small>電子名刺</small></span>
-                <div class="d-icon chest-icon">
-                    <div class="lid"></div>
-                    <div class="body"></div>
-                    <div class="lock"></div>
-                </div>
-            </div>
+            <div class="zone-band zone-profile"></div>
+            <div class="zone-band zone-products"></div>
+            <div class="zone-band zone-contact"></div>
 
-            <div class="d-obj chest chest-big" style="left:76%; top:28%;" data-href="intro/archive/">
+            <div class="zone-sign zone-profile">PROFILE<small>プロフィール・実績</small></div>
+            <div class="zone-sign zone-products">PRODUCTS<small>使えるサービス</small></div>
+            <div class="zone-sign zone-contact">CONTACT<small>ご依頼・お問い合わせ</small></div>
+
+            <!-- ゾーン1: プロフィール・実績 -->
+            <div class="d-obj chest chest-big" style="left:28%; top:34%;" data-href="intro/archive/">
                 <span class="d-obj-label">SAVE DATA<small>せいさく じっせき</small></span>
                 <div class="d-icon chest-icon">
                     <div class="lid"></div>
@@ -372,16 +392,7 @@
                 </div>
             </div>
 
-            <div class="d-obj monster" style="left:26%; top:72%;" data-href="intro/services/">
-                <span class="d-obj-label">ご依頼・お見積り<small>REQUEST</small></span>
-                <div class="d-icon monster-icon slime">
-                    <div class="body"></div>
-                    <div class="eye left"></div>
-                    <div class="eye right"></div>
-                </div>
-            </div>
-
-            <div class="d-obj monster" style="left:74%; top:74%;" data-href="save/matan/">
+            <div class="d-obj monster" style="left:72%; top:34%;" data-href="save/matan/">
                 <span class="d-obj-label">DEVELOPER<small>せいさくしゃ</small></span>
                 <div class="d-icon monster-icon boss">
                     <div class="horn left"></div>
@@ -392,7 +403,17 @@
                 </div>
             </div>
 
-            <div class="d-obj portal" style="left:50%; top:27%;" data-href="https://top3anime.hexarelation.workers.dev/">
+            <!-- ゾーン2: 使えるサービス(成果物) -->
+            <div class="d-obj chest" style="left:12%; top:64%;" data-href="intro/card/">
+                <span class="d-obj-label">HEXA CARD<small>電子名刺</small></span>
+                <div class="d-icon chest-icon">
+                    <div class="lid"></div>
+                    <div class="body"></div>
+                    <div class="lock"></div>
+                </div>
+            </div>
+
+            <div class="d-obj portal" style="left:38%; top:64%;" data-href="https://top3anime.hexarelation.workers.dev/">
                 <span class="d-obj-label">TOP3ANIME<small>すきなアニメ3選</small></span>
                 <div class="d-icon portal-icon">
                     <div class="frame"></div>
@@ -400,7 +421,7 @@
                 </div>
             </div>
 
-            <div class="d-obj locked" style="left:15%; top:52%;">
+            <div class="d-obj locked" style="left:62%; top:64%;">
                 <span class="d-obj-label">カイロス<small>鋭意製作中</small></span>
                 <div class="d-icon lockmark-icon">
                     <div class="shackle"></div>
@@ -409,12 +430,22 @@
                 </div>
             </div>
 
-            <div class="d-obj locked" style="left:85%; top:52%;">
+            <div class="d-obj locked" style="left:88%; top:64%;">
                 <span class="d-obj-label">SPI<small>鋭意製作中</small></span>
                 <div class="d-icon lockmark-icon">
                     <div class="shackle"></div>
                     <div class="body"></div>
                     <div class="keyhole"></div>
+                </div>
+            </div>
+
+            <!-- ゾーン3: ご依頼・お問い合わせ -->
+            <div class="d-obj monster" style="left:50%; top:88%;" data-href="intro/services/">
+                <span class="d-obj-label">ご依頼・お見積り<small>REQUEST</small></span>
+                <div class="d-icon monster-icon slime">
+                    <div class="body"></div>
+                    <div class="eye left"></div>
+                    <div class="eye right"></div>
                 </div>
             </div>
 
