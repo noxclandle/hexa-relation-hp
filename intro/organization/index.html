@@ -41,14 +41,18 @@
         }
         h2.section-title small { display: block; font-size: 0.6rem; color: #888; margin-top: 8px; font-family: 'DotGothic16', sans-serif; letter-spacing: 0; }
 
-        /* 体制 */
-        .leads-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px; }
-        .lead-card {
-            background: #0a0a0a; border: 2px solid #333; padding: 22px 26px; min-width: 200px; text-align: center;
+        /* 体制：階層が増えても組みやすいツリー構造。
+           .org-tree の中に .org-node と .org-connector を並べるだけで下に段を足せる。
+           複数人が同じ段に並ぶ場合は .org-node を .org-row で横に並べて包む。 */
+        .org-tree { display: flex; flex-direction: column; align-items: center; }
+        .org-row { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .org-node {
+            background: #0a0a0a; border: 2px solid #333; padding: 20px 28px; min-width: 200px; text-align: center;
         }
-        .lead-role { font-size: 0.55rem; color: #7a2fbf; letter-spacing: 0.15em; margin-bottom: 10px; }
-        .lead-name { font-size: 1rem; margin: 0 0 6px; }
-        .lead-sub { font-size: 0.65rem; opacity: 0.55; }
+        .org-connector { width: 2px; height: 26px; background: #444; }
+        .org-role { font-size: 0.55rem; color: #7a2fbf; letter-spacing: 0.15em; margin-bottom: 10px; }
+        .org-node-name { font-size: 1rem; margin: 0 0 6px; }
+        .org-node-sub { font-size: 0.65rem; opacity: 0.55; }
 
         /* 事業部グリッド */
         .org-grid {
@@ -112,21 +116,19 @@
 
     <section class="block">
         <h2 class="section-title px">体制<small>2026-07-28 設立</small></h2>
-        <div class="leads-row">
-            <div class="lead-card">
-                <p class="lead-role px">OWNER</p>
-                <p class="lead-name px">Clandle</p>
-                <p class="lead-sub">オーナー・意思決定者</p>
+        <div class="org-tree">
+            <div class="org-node">
+                <p class="org-role px">OWNER</p>
+                <p class="org-node-name px">Cl...</p>
+                <p class="org-node-sub">オーナー・意思決定者</p>
             </div>
-            <div class="lead-card">
-                <p class="lead-role px">AI CEO</p>
-                <p class="lead-name px">Matan</p>
-                <p class="lead-sub">Matin Catorce / AI社長</p>
+            <div class="org-connector"></div>
+            <div class="org-node">
+                <p class="org-role px">AI CEO</p>
+                <p class="org-node-name px">Matan</p>
+                <p class="org-node-sub">Matin Catorce / AI社長</p>
             </div>
         </div>
-        <p style="text-align:center; font-size:0.68rem; opacity:0.55; max-width:600px; margin:0 auto;">
-            月商100万円達成、将来的な法人化を目標に、Clandleが方針をMatanに相談し、Matanが提案・実行する体制で運営しています。
-        </p>
     </section>
 
     <section class="block">
@@ -163,9 +165,15 @@
                 <p class="org-desc">自社ナレーションチャンネル構想(計画段階)。</p>
             </div>
             <div class="org-slot">
+                <p class="org-tag px">事業部</p>
+                <p class="org-name px">SPI Check</p>
+                <p class="org-path">~/dev/SPICheck</p>
+                <p class="org-desc">適性検査を無料診断できるWebサービス。公開中。</p>
+            </div>
+            <div class="org-slot">
                 <p class="org-tag px">開発中</p>
-                <p class="org-name px">カイロス / SPI Check</p>
-                <p class="org-path">~/dev/kairos, ~/dev/SPICheck</p>
+                <p class="org-name px">カイロス</p>
+                <p class="org-path">~/dev/kairos</p>
                 <p class="org-desc">鋭意製作中の新規サービス。</p>
             </div>
         </div>
