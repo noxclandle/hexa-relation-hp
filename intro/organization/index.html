@@ -73,10 +73,9 @@
 
         /* 座右の銘 */
         .motto-block {
-            max-width: 820px; margin: 0 auto; padding: 30px 24px 10px;
-            display: flex; align-items: center; justify-content: center; gap: 6px;
+            position: relative; max-width: 520px; margin: 0 auto; padding: 30px 24px 10px;
+            text-align: center;
         }
-        .motto-text { text-align: center; flex: 1; min-width: 220px; }
         .motto-label { font-size: 0.55rem; letter-spacing: 0.3em; color: #ffcc4d; margin-bottom: 16px; }
         .motto-main {
             font-size: clamp(1.1rem, 4vw, 1.5rem); letter-spacing: 0.05em; margin: 0 0 18px;
@@ -84,11 +83,16 @@
         }
         .motto-quote { font-size: 0.7rem; line-height: 2; opacity: 0.7; margin: 0; }
         .motto-sign { display: block; margin-top: 10px; font-size: 0.62rem; color: #7a2fbf; }
-        .motto-char { width: 150px; flex-shrink: 0; margin-left: -14px; }
+        .motto-char {
+            position: absolute; top: 86%; left: 100%; transform: translate(-88%, -50%);
+            width: 260px; pointer-events: none;
+        }
         .motto-char img { width: 100%; display: block; }
-        @media (max-width: 620px) {
-            .motto-block { flex-direction: column-reverse; gap: 4px; }
-            .motto-char { width: 120px; margin-left: 0; }
+        @media (max-width: 700px) {
+            .motto-block { max-width: 340px; }
+            .motto-char {
+                position: static; transform: none; width: 160px; margin: 6px auto 0;
+            }
         }
 
         /* 原則リスト */
