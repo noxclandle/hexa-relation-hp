@@ -83,15 +83,16 @@
         }
         .motto-quote { font-size: 0.7rem; line-height: 2; opacity: 0.7; margin: 0; }
         .motto-sign { display: block; margin-top: 10px; font-size: 0.62rem; color: #7a2fbf; }
+        .motto-main-inner { position: relative; display: inline-block; }
         .motto-char {
-            position: absolute; top: 48%; left: 100%; transform: translate(-48%, -50%);
+            position: absolute; top: 50%; left: 100%; transform: translate(-14%, -15%);
             width: 210px; pointer-events: none;
         }
         .motto-char img { width: 100%; display: block; }
         @media (max-width: 700px) {
             .motto-block { max-width: 340px; }
             .motto-char {
-                position: static; transform: none; width: 160px; margin: 6px auto 0;
+                position: static; display: block; transform: none; width: 160px; margin: 6px auto 0;
             }
         }
 
@@ -141,10 +142,9 @@
     <div class="motto-block">
         <div class="motto-text">
             <p class="motto-label px">MOTTO</p>
-            <p class="motto-main px">イメージは実現する</p>
+            <p class="motto-main px"><span class="motto-main-inner">イメージは実現する<span class="motto-char"><img src="../../assets/fwふぇふぇ-removebg-preview.png" alt="マタン"></span></span></p>
             <p class="motto-quote">「これは願えば近づいていくってことだよ」とオーナーが言ってました<span class="motto-sign">by マタン</span></p>
         </div>
-        <div class="motto-char"><img src="../../assets/fwふぇふぇ-removebg-preview.png" alt="マタン"></div>
     </div>
 
     <section class="block">
