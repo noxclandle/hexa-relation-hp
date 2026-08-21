@@ -632,5 +632,52 @@
             }
         });
     </script>
+
+    <!-- 流入計測(時計屋 役割1「導線」)。
+         SNS投稿のリンクは utm.py で計測タグを付けて出しているため、
+         ここで受け取ってFirestoreに記録し、admin/ で「どの投稿から来たか」を見られるようにする。 -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>
+        (function () {
+            const firebaseConfig = {
+              apiKey: "AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI",
+              authDomain: "hexa-relation.firebaseapp.com",
+              projectId: "hexa-relation",
+              storageBucket: "hexa-relation.firebasestorage.app",
+              messagingSenderId: "318065017750",
+              appId: "1:318065017750:web:94acf3c9c43632b3ff93b7",
+              measurementId: "G-15NM9TWFE2"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            const pageId = 'top';
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+            db.collection('analytics').doc(pageId).set({
+                hits: firebase.firestore.FieldValue.increment(1),
+                lastVisit: firebase.firestore.FieldValue.serverTimestamp(),
+                mobileHits: firebase.firestore.FieldValue.increment(isMobile ? 1 : 0),
+                pcHits: firebase.firestore.FieldValue.increment(isMobile ? 0 : 1)
+            }, { merge: true });
+
+            // 流入元の記録。utm_* が付いていればそれを最優先で採用する。
+            const q = new URLSearchParams(window.location.search);
+            const source = q.get('utm_source');
+            const label = source
+                ? [source, q.get('utm_medium'), q.get('utm_campaign'), q.get('utm_content')]
+                    .filter(Boolean).join('/')
+                : (q.get('ref') || q.get('from') || document.referrer || 'direct');
+
+            db.collection('referrals').doc(pageId).collection('logs').add({
+                referrer: label,
+                utm_source: source || null,
+                utm_medium: q.get('utm_medium') || null,
+                utm_campaign: q.get('utm_campaign') || null,
+                utm_content: q.get('utm_content') || null,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        })();
+    </script>
 </body>
 </html>
