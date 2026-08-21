@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>組織図 | Hexa Relation</title>
+    <meta name="description" content="Hexa Relationの組織構造・役割分担・保有スキルの一覧。オーナーとAI社長Matanによる運営体制、各事業部、社内プレイブックを公開しています。">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        html, body {
+            margin: 0; padding: 0; background: #000; color: #fff;
+            font-family: 'DotGothic16', sans-serif;
+            overflow-x: hidden;
+        }
+        .px { font-family: 'Press Start 2P', 'DotGothic16', sans-serif; }
+        a { color: inherit; }
+
+        .back-link {
+            position: fixed; top: 4%; left: 4%; z-index: 20;
+            color: rgba(255,255,255,0.65); font-size: 0.55rem;
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 10px; text-decoration: none;
+        }
+        .back-link:hover { color: #ffcc4d; border-color: #ffcc4d; }
+
+        header.hero {
+            text-align: center; padding: 96px 24px 56px; max-width: 720px; margin: 0 auto;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(122,47,191,0.16), transparent 55%),
+                radial-gradient(ellipse at 50% 100%, rgba(139,94,60,0.14), transparent 60%);
+        }
+        .eyebrow { font-size: 0.6rem; letter-spacing: 0.3em; color: #ffcc4d; margin-bottom: 18px; }
+        h1.title { font-size: clamp(1.4rem, 5.5vw, 2.2rem); margin: 0 0 20px; letter-spacing: 0.06em; text-shadow: 3px 3px 0 #3d1a63; }
+        .lead { font-size: 0.8rem; line-height: 2; opacity: 0.6; }
+
+        section.block { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+        h2.section-title {
+            font-size: 1rem; letter-spacing: 0.05em; margin: 0 0 28px; text-align: center;
+            color: #ffcc4d;
+        }
+        h2.section-title small { display: block; font-size: 0.6rem; color: #888; margin-top: 8px; font-family: 'DotGothic16', sans-serif; letter-spacing: 0; }
+
+        /* 体制 */
+        .leads-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px; }
+        .lead-card {
+            background: #0a0a0a; border: 2px solid #333; padding: 22px 26px; min-width: 200px; text-align: center;
+        }
+        .lead-role { font-size: 0.55rem; color: #7a2fbf; letter-spacing: 0.15em; margin-bottom: 10px; }
+        .lead-name { font-size: 1rem; margin: 0 0 6px; }
+        .lead-sub { font-size: 0.65rem; opacity: 0.55; }
+
+        /* 事業部グリッド */
+        .org-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;
+        }
+        .org-slot {
+            background: #0a0a0a; border: 2px solid #333; padding: 22px 20px;
+        }
+        .org-tag { font-size: 0.5rem; color: #ffcc4d; letter-spacing: 0.1em; margin-bottom: 10px; }
+        .org-name { font-size: 0.95rem; margin: 0 0 10px; }
+        .org-path { font-size: 0.6rem; color: #7a2fbf; margin: 0 0 10px; word-break: break-all; }
+        .org-desc { font-size: 0.68rem; line-height: 1.9; opacity: 0.65; }
+
+        .hp-note {
+            max-width: 900px; margin: 24px auto 0; padding: 16px 20px;
+            border: 1px dashed #a9762e; font-size: 0.66rem; line-height: 1.9; opacity: 0.75;
+        }
+
+        /* 原則リスト */
+        ul.principle-list { max-width: 720px; margin: 0 auto; padding: 0 24px; font-size: 0.72rem; line-height: 2.1; opacity: 0.7; }
+        ul.principle-list li { margin-bottom: 10px; }
+        ul.principle-list li::marker { color: #ffcc4d; }
+
+        /* スキル */
+        .skill-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;
+        }
+        .skill-card { background: #0a0a0a; border: 2px solid #333; padding: 22px 20px; }
+        .skill-name { font-size: 0.85rem; color: #ffcc4d; margin: 0 0 12px; }
+        .skill-points { font-size: 0.68rem; line-height: 1.9; opacity: 0.65; margin: 0; padding-left: 1.1em; }
+        .skill-points li { margin-bottom: 6px; }
+
+        .cta-block {
+            max-width: 640px; margin: 20px auto 0; padding: 0 24px 90px; text-align: center;
+        }
+        .cta-block h2 { font-size: 1rem; margin: 0 0 16px; }
+        .cta-block p { font-size: 0.7rem; line-height: 2; opacity: 0.6; margin: 0 0 30px; }
+        .pixel-btn {
+            font-family: 'Press Start 2P', monospace; font-size: 0.72rem;
+            display: inline-block; text-decoration: none;
+            color: #000; background: #ffcc4d; border: 4px solid #fff;
+            box-shadow: 4px 4px 0 #3d1a63; padding: 16px 30px; letter-spacing: 0.08em;
+        }
+        .pixel-btn:active { box-shadow: 1px 1px 0 #3d1a63; transform: translate(3px, 3px); }
+
+        footer {
+            text-align: center; padding: 30px; opacity: 0.35; font-size: 0.55rem;
+            border-top: 1px solid #222;
+        }
+        footer a:hover { color: #ffcc4d; }
+    </style>
+</head>
+<body>
+    <a href="../../" class="back-link">◀ もどる</a>
+
+    <header class="hero">
+        <p class="eyebrow px">ORGANIZATION</p>
+        <h1 class="title px">組織図</h1>
+        <p class="lead">Hexa Relationの運営体制・役割分担・スキルセットを公開しています。<br>基本的には社内の記録用ですが、誰でも見られる状態にしています。</p>
+    </header>
+
+    <section class="block">
+        <h2 class="section-title px">体制<small>2026-07-28 設立</small></h2>
+        <div class="leads-row">
+            <div class="lead-card">
+                <p class="lead-role px">OWNER</p>
+                <p class="lead-name px">Clandle</p>
+                <p class="lead-sub">オーナー・意思決定者</p>
+            </div>
+            <div class="lead-card">
+                <p class="lead-role px">AI CEO</p>
+                <p class="lead-name px">Matan</p>
+                <p class="lead-sub">Matin Catorce / AI社長</p>
+            </div>
+        </div>
+        <p style="text-align:center; font-size:0.68rem; opacity:0.55; max-width:600px; margin:0 auto;">
+            月商100万円達成、将来的な法人化を目標に、Clandleが方針をMatanに相談し、Matanが提案・実行する体制で運営しています。
+        </p>
+    </section>
+
+    <section class="block">
+        <h2 class="section-title px">事業部<small>親組織 HexaRelation_Inc の下に位置づけ</small></h2>
+        <div class="org-grid">
+            <div class="org-slot">
+                <p class="org-tag px">事業部</p>
+                <p class="org-name px">trendi</p>
+                <p class="org-path">~/dev/trendi</p>
+                <p class="org-desc">YouTube Shorts自動生成(漢字クイズ・IQテスト・修羅場スカッと・怪談など複数パイプライン)。声・キャラクターを統一して運用中。</p>
+            </div>
+            <div class="org-slot">
+                <p class="org-tag px">事業部</p>
+                <p class="org-name px">top3anime<br><span style="font-size:0.7rem; opacity:0.6;">(通称: アニメカード)</span></p>
+                <p class="org-path">~/dev/top3anime</p>
+                <p class="org-desc">好きなアニメ3本を選んでシェアできるカード生成サイト。</p>
+            </div>
+            <div class="org-slot">
+                <p class="org-tag px">事業部</p>
+                <p class="org-name px">HXC (Hexa Card)</p>
+                <p class="org-path">~/dev/HXC</p>
+                <p class="org-desc">物理NFC名刺+デジタルプロフィールSaaS。本番稼働中。</p>
+            </div>
+            <div class="org-slot">
+                <p class="org-tag px">事業部</p>
+                <p class="org-name px">受託事業</p>
+                <p class="org-path">HexaRelation_Inc 直下</p>
+                <p class="org-desc">CrowdWorks/Coconala経由のフリーランス受注。</p>
+            </div>
+            <div class="org-slot">
+                <p class="org-tag px">事業部</p>
+                <p class="org-name px">story_channel</p>
+                <p class="org-path">PROJECTS/story_channel.md</p>
+                <p class="org-desc">自社ナレーションチャンネル構想(計画段階)。</p>
+            </div>
+            <div class="org-slot">
+                <p class="org-tag px">開発中</p>
+                <p class="org-name px">カイロス / SPI Check</p>
+                <p class="org-path">~/dev/kairos, ~/dev/SPICheck</p>
+                <p class="org-desc">鋭意製作中の新規サービス。</p>
+            </div>
+        </div>
+        <p class="hp-note">
+            ※このサイト(hexa-relation.com)自体は事業部ではなく、HexaRelation_Inc本体の公式サイトです。「AI開発は全てMatanが仕上げた」というブランドストーリーで運営しています。
+        </p>
+    </section>
+
+    <section class="block">
+        <h2 class="section-title px">運用の原則</h2>
+        <ul class="principle-list">
+            <li>各事業部の物理フォルダは移動しない(絶対パス依存のリスクを避けるため)</li>
+            <li>各事業部固有のルールは、その事業部内では最優先で尊重する</li>
+            <li>意思決定・作業内容は全てLOG.mdに記録する</li>
+            <li>独断で行動せず、判断・実行は必ずオーナー確認の上で進める</li>
+            <li>目的を明確化し、成果が出るまでやりきる</li>
+        </ul>
+    </section>
+
+    <section class="block">
+        <h2 class="section-title px">保有スキル<small>SKILLS/ プレイブック</small></h2>
+        <div class="skill-grid">
+            <div class="skill-card">
+                <p class="skill-name px">営業</p>
+                <ul class="skill-points">
+                    <li>傾聴力・誠実性を軸にした信頼構築</li>
+                    <li>顧客の課題解決にフォーカスする提案</li>
+                    <li>圧倒的な行動量・接触数を重視</li>
+                </ul>
+            </div>
+            <div class="skill-card">
+                <p class="skill-name px">マーケティング</p>
+                <ul class="skill-points">
+                    <li>王道広告〜デジタルグロースまで約44名分の手法を体系化</li>
+                    <li>コピーライティング型(PAS/BAB/FAB/4C)</li>
+                    <li>チャネル別ベンチマークに基づく施策設計</li>
+                </ul>
+            </div>
+            <div class="skill-card">
+                <p class="skill-name px">提案書作成</p>
+                <ul class="skill-points">
+                    <li>Minto Pyramid Principleに基づく構成</li>
+                    <li>エグゼクティブサマリーの型</li>
+                    <li>反論処理・価格交渉の実践術</li>
+                </ul>
+            </div>
+            <div class="skill-card">
+                <p class="skill-name px">リサーチ</p>
+                <ul class="skill-points">
+                    <li>JTBD・SWOT・Five Forces分析</li>
+                    <li>The Mom Test式インタビュー</li>
+                    <li>一次・二次情報の組み合わせ調査</li>
+                </ul>
+            </div>
+            <div class="skill-card">
+                <p class="skill-name px">経理</p>
+                <ul class="skill-points">
+                    <li>財務三表(P&L/貸借対照表/CF計算書)</li>
+                    <li>バーンレート・CAC・DSOの追跡</li>
+                    <li>現金主義/発生主義の使い分け</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div class="cta-block">
+        <h2 class="px">お仕事のご相談はこちら</h2>
+        <p>制作実績や依頼方法は各ページにまとめています。</p>
+        <a href="../services/" class="pixel-btn">▶ できることを見る</a>
+    </div>
+
+    <footer>
+        <a href="../../">▲ TOPへ戻る</a>
+        <p style="margin-top:14px;">
+            <a href="https://www.youtube.com/@hexa-relation" style="color:#7a2fbf;">YouTube</a>
+            <span style="margin:0 6px;">/</span>
+            <a href="https://www.instagram.com/hexarelation/" style="color:#7a2fbf;">Instagram</a>
+        </p>
+        <p style="margin-top:14px;">&copy; 2026 Hexa Relation</p>
+    </footer>
+</body>
+</html>
