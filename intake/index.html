@@ -502,7 +502,7 @@
            そのためDiscordへの通知を主たる届け先として扱う(/order/ と同じ方式)。
            添付画像もdata URLからBlobに戻して実ファイルとして送るので、
            Discord上でそのまま見られる。 */
-        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1507236311180771348/P-wdDn_xEgm7ig5w7s3WHuP3waVmARS1sNi9lkvsmzMuDnUm8S2lKrx6Dv7ieQmtTFO1';
+        const NOTIFY_ENDPOINT = '/api/notify';
 
         function buildEmbeds(data, name) {
             // 埋め込みは1つあたり最大25項目・1項目1024文字の制限があるため分割する
@@ -547,7 +547,7 @@
                 fd.append(`files[${i}]`, dataUrlToBlob(im.dataUrl), `${base}.jpg`);
             });
             // Content-Type はブラウザに設定させる(boundaryが必要なため)
-            const res = await fetch(DISCORD_WEBHOOK_URL, { method: 'POST', body: fd });
+            const res = await fetch(NOTIFY_ENDPOINT, { method: 'POST', body: fd });
             if (!res.ok) throw new Error(`Discord ${res.status}`);
         }
 

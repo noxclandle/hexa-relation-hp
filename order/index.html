@@ -187,7 +187,7 @@
         }
 
         const form = document.getElementById('order-form');
-        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1507236311180771348/P-wdDn_xEgm7ig5w7s3WHuP3waVmARS1sNi9lkvsmzMuDnUm8S2lKrx6Dv7ieQmtTFO1';
+        const NOTIFY_ENDPOINT = '/api/notify';
         let isSubmitting = false;
 
         form.addEventListener('submit', async (e) => {
@@ -227,7 +227,7 @@
             };
 
             try {
-                const response = await fetch(DISCORD_WEBHOOK_URL, {
+                const response = await fetch(NOTIFY_ENDPOINT, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(discordMessage)
