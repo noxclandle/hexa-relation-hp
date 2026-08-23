@@ -139,7 +139,8 @@
     </style>
 </head>
 <body>
-    <a href="../" class="back-link-fixed">◀ もどる</a>
+    <!-- このページはURLを直接送って開いてもらう前提のため、戻り先が存在しない。
+         そのため「もどる」導線は置いていない(2026-08-23 Clandle指示)。 -->
 
     <div class="mother-window">
         <div class="mother-window-inner">
@@ -434,7 +435,6 @@
                 <button type="submit" class="submit-btn" id="submit-btn">▶ データを おくる</button>
             </form>
 
-            <a href="javascript:history.back()" class="back-link">▶ もどる</a>
         </div>
     </div>
 
@@ -469,16 +469,87 @@
         const submitBtn = document.getElementById('submit-btn');
         let isSubmitting = false;
 
-        const FIELD_IDS = [
-            'name', 'contact', 'activity', 'jobTitle',
-            'sitePurpose', 'targetAudience', 'strength',
-            'themeRef', 'themeScreen', 'designStyle', 'colorPref', 'backgroundPref',
-            'snsX', 'snsYoutube', 'snsIgTiktok', 'snsOther', 'publicContact',
-            'catchphrase', 'bio', 'careerLength', 'birthday', 'likes', 'secretTopic',
-            'achievements', 'subscriberGoal', 'highlights', 'priceMenu', 'mustInclude',
-            'statusNumbers', 'skills', 'equipment', 'gimmick', 'characterArt',
-            'imageNote', 'bgmNote', 'budget', 'deadline', 'freeNote', 'referrer'
+        /* 項目の定義。ここが唯一の正。
+           Firestoreへの保存と、Discord通知の見出しの両方でこの並びを使う。 */
+        const FIELD_DEFS = [
+            ['name', '👤 お名前'], ['contact', '📱 ご連絡先'], ['activity', '活動内容'],
+            ['jobTitle', '肩書き'],
+            ['sitePurpose', '🎯 サイトの目的'], ['targetAudience', '見せたい相手'],
+            ['strength', '一番の強み'],
+            ['themeRef', '🎮 モチーフ・世界観'], ['themeScreen', '再現したい画面'],
+            ['designStyle', 'デザインの方向性'], ['colorPref', '使いたい色'],
+            ['backgroundPref', '背景の希望'],
+            ['snsX', '🔗 X (Twitter)'], ['snsYoutube', 'YouTube'],
+            ['snsIgTiktok', 'Instagram/TikTok'], ['snsOther', 'その他リンク'],
+            ['publicContact', '公開用の連絡先'],
+            ['catchphrase', 'キャッチコピー・特技'], ['bio', '自己紹介'],
+            ['careerLength', '活動歴'], ['birthday', '誕生日'],
+            ['likes', '好きなもの・趣味'], ['secretTopic', '秘密ネタ'],
+            ['achievements', '🏆 実績 or 目標'], ['subscriberGoal', 'フォロワー目標'],
+            ['highlights', '載せたい実績・受賞歴'], ['priceMenu', 'メニュー・料金表'],
+            ['mustInclude', '必ず載せたい情報'],
+            ['statusNumbers', '⚔️ ステータスにしたい数字'], ['skills', 'とくぎ・スキル'],
+            ['equipment', 'そうびアイテム'], ['gimmick', '入れたいしかけ'],
+            ['characterArt', '立ち絵について'], ['imageNote', '画像の説明'],
+            ['bgmNote', 'BGMの希望'], ['budget', '💰 ご予算'], ['deadline', '納期希望'],
+            ['freeNote', '自由記述'], ['referrer', '🚩 紹介元']
         ];
+        const FIELD_IDS = FIELD_DEFS.map(([id]) => id);
+
+        /* 回答の届け先。
+           Firestoreにも保存しているが、Firestoreルールが閲覧に認証を要求するのに対し
+           このプロジェクトでは匿名ログインが未設定のため、管理画面から読めない。
+           そのためDiscordへの通知を主たる届け先として扱う(/order/ と同じ方式)。
+           添付画像もdata URLからBlobに戻して実ファイルとして送るので、
+           Discord上でそのまま見られる。 */
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1507236311180771348/P-wdDn_xEgm7ig5w7s3WHuP3waVmARS1sNi9lkvsmzMuDnUm8S2lKrx6Dv7ieQmtTFO1';
+
+        function buildEmbeds(data, name) {
+            // 埋め込みは1つあたり最大25項目・1項目1024文字の制限があるため分割する
+            const filled = FIELD_DEFS
+                .filter(([id]) => data[id])
+                .map(([id, label]) => ({
+                    name: label,
+                    value: String(data[id]).slice(0, 1000),
+                    inline: String(data[id]).length <= 24
+                }));
+            const embeds = [];
+            for (let i = 0; i < filled.length; i += 25) {
+                embeds.push({
+                    title: i === 0 ? `📋 【冒険者データ】${name || '無記名'} さんの回答` : '(つづき)',
+                    color: 8203455, // 紫
+                    fields: filled.slice(i, i + 25),
+                    timestamp: new Date().toISOString()
+                });
+            }
+            return embeds;
+        }
+
+        function dataUrlToBlob(dataUrl) {
+            const [head, b64] = dataUrl.split(',');
+            const mime = (head.match(/:(.*?);/) || [])[1] || 'image/jpeg';
+            const bin = atob(b64);
+            const buf = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+            return new Blob([buf], { type: mime });
+        }
+
+        async function notifyDiscord(data) {
+            const payload = {
+                content: images.length ? `🖼️ 添付画像 ${images.length}枚` : undefined,
+                embeds: buildEmbeds(data, data.name)
+            };
+            const fd = new FormData();
+            fd.append('payload_json', JSON.stringify(payload));
+            images.forEach((im, i) => {
+                // 拡張子はJPEGに統一している(縮小時にJPEG化しているため)
+                const base = (im.name || `image${i + 1}`).replace(/\.[^.]+$/, '');
+                fd.append(`files[${i}]`, dataUrlToBlob(im.dataUrl), `${base}.jpg`);
+            });
+            // Content-Type はブラウザに設定させる(boundaryが必要なため)
+            const res = await fetch(DISCORD_WEBHOOK_URL, { method: 'POST', body: fd });
+            if (!res.ok) throw new Error(`Discord ${res.status}`);
+        }
 
         /* ===== 画像の添付 =====
            Firebase Storage が未設定のため、ブラウザ側で縮小して data URL にし、
@@ -590,11 +661,25 @@
             data.imageCount = images.length;
             data.timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
+            // Firestoreへの保存とDiscord通知の両方を試みる。
+            // どちらか一方でも通れば回答は失われないため、成功扱いにする。
+            let saved = false;
             try {
                 await db.collection('client_intake').add(data);
-                document.getElementById('success-overlay').style.display = 'flex';
+                saved = true;
             } catch (err) {
-                console.error('Intake submit error:', err);
+                console.error('Firestore保存に失敗:', err);
+            }
+            try {
+                await notifyDiscord(data);
+                saved = true;
+            } catch (err) {
+                console.error('Discord通知に失敗:', err);
+            }
+
+            if (saved) {
+                document.getElementById('success-overlay').style.display = 'flex';
+            } else {
                 alert('送信中に エラーが おきました。時間をおいて お試しください。');
                 isSubmitting = false;
                 submitBtn.disabled = false;
