@@ -110,6 +110,32 @@
             padding: 20px;
         }
         #success-overlay .mother-window-inner p { color: #fff; font-size: 0.85rem; line-height: 2.2; }
+
+        /* 画像添付 */
+        .file-btn {
+            display: inline-block; cursor: pointer;
+            background: #0a0a0a; color: var(--gold);
+            border: 2px solid var(--border-color); padding: 12px 20px;
+            font-size: 0.7rem; letter-spacing: 0.05em;
+        }
+        .file-btn:hover { border-color: var(--gold); }
+        #image-previews { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+        .thumb { position: relative; width: 84px; }
+        .thumb img {
+            width: 84px; height: 84px; object-fit: cover;
+            border: 2px solid var(--border-color); display: block; background: #111;
+        }
+        .thumb .remove {
+            position: absolute; top: -8px; right: -8px;
+            width: 22px; height: 22px; line-height: 20px; text-align: center;
+            background: var(--accent); color: #fff; border: 2px solid #fff;
+            cursor: pointer; font-size: 0.7rem; padding: 0;
+        }
+        .thumb .cap {
+            font-size: 0.55rem; color: #777; margin-top: 4px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        #image-status.over { color: var(--accent); }
     </style>
 </head>
 <body>
@@ -141,6 +167,36 @@
                     <input type="text" id="activity" placeholder="例: VTuber / エンジニア / 学生 など">
                 </div>
 
+                <div class="input-group">
+                    <label>肩書き<span class="optional">(任意)</span>
+                        <span class="hint">ゲーム風にアレンジもできます(例: フリーランス → 孤高の探索者)。希望があれば書いてください</span>
+                    </label>
+                    <input type="text" id="jobTitle" placeholder="そのままでも、ゲーム風でもOK">
+                </div>
+
+                <div class="section-title px">▶ このサイトの目的</div>
+
+                <div class="input-group">
+                    <label>何のために使いますか<span class="optional">(任意)</span>
+                        <span class="hint">例: 名刺代わりに見せたい / 仕事の依頼を増やしたい / ファンに楽しんでほしい</span>
+                    </label>
+                    <input type="text" id="sitePurpose" placeholder="一番の目的をひとつ">
+                </div>
+
+                <div class="input-group">
+                    <label>誰に見てほしいですか<span class="optional">(任意)</span>
+                        <span class="hint">例: 企業の採用担当 / VTuberのファン / 同業のクリエイター</span>
+                    </label>
+                    <input type="text" id="targetAudience" placeholder="見せたい相手">
+                </div>
+
+                <div class="input-group">
+                    <label>一番強調したい強み<span class="optional">(任意)</span>
+                        <span class="hint">ここが一番目立つ場所に入ります</span>
+                    </label>
+                    <input type="text" id="strength" placeholder="例: 技術力 / キャラクター性 / 実績の多さ">
+                </div>
+
                 <div class="section-title px">▶ 世界観・ビジュアル</div>
 
                 <div class="input-group">
@@ -151,8 +207,63 @@
                 </div>
 
                 <div class="input-group">
-                    <label>SNS・外部リンク<span class="optional">(任意)</span></label>
-                    <input type="text" id="socialLinks" placeholder="X, YouTube, TikTok など、あるものだけでOK">
+                    <label>特に再現したい「画面」<span class="optional">(任意)</span>
+                        <span class="hint">作品名より具体的だと精度が上がります(例: MOTHER2の戦闘画面、ドラクエVの結婚式、ペルソナ5のメニュー)</span>
+                    </label>
+                    <input type="text" id="themeScreen" placeholder="思い浮かぶ画面があれば">
+                </div>
+
+                <div class="input-group">
+                    <label>デザインの方向性<span class="optional">(任意)</span></label>
+                    <select id="designStyle">
+                        <option value="">おまかせ</option>
+                        <option value="完全レトロなドット絵">完全レトロなドット絵</option>
+                        <option value="現代的なHDリマスター風">現代的なHDリマスター風</option>
+                        <option value="スタイリッシュなUI">スタイリッシュなUI</option>
+                        <option value="かわいい・ポップ">かわいい・ポップ</option>
+                        <option value="ダーク・かっこいい">ダーク・かっこいい</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>使いたい色<span class="optional">(任意)</span></label>
+                    <input type="text" id="colorPref" placeholder="例: 赤と黒、パステル、推しカラーの水色 など">
+                </div>
+
+                <div class="input-group">
+                    <label>背景の希望<span class="optional">(任意)</span></label>
+                    <input type="text" id="backgroundPref" placeholder="例: 単色、星空、スクロールする模様、特定の景色">
+                </div>
+
+                <div class="section-title px">▶ SNS・リンク</div>
+
+                <div class="input-group">
+                    <label>X (Twitter)<span class="optional">(任意)</span></label>
+                    <input type="text" id="snsX" placeholder="@ID または URL">
+                </div>
+
+                <div class="input-group">
+                    <label>YouTube<span class="optional">(任意)</span></label>
+                    <input type="text" id="snsYoutube" placeholder="チャンネルURL">
+                </div>
+
+                <div class="input-group">
+                    <label>Instagram / TikTok<span class="optional">(任意)</span></label>
+                    <input type="text" id="snsIgTiktok" placeholder="あるものだけでOK">
+                </div>
+
+                <div class="input-group">
+                    <label>その他のリンク<span class="optional">(任意)</span>
+                        <span class="hint">Twitch, pixiv, BOOTH, ブログ, 通販ページなど。改行で複数どうぞ</span>
+                    </label>
+                    <textarea id="snsOther" rows="3" placeholder="載せたいリンクを自由に"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>お問い合わせ先<span class="optional">(任意)</span>
+                        <span class="hint">サイトに載せる連絡先。上のご連絡先と違う場合だけ書いてください</span>
+                    </label>
+                    <input type="text" id="publicContact" placeholder="公開してよい連絡先">
                 </div>
 
                 <div class="section-title px">▶ 人となり</div>
@@ -160,6 +271,20 @@
                 <div class="input-group">
                     <label>キャッチコピー・特技<span class="optional">(任意)</span></label>
                     <input type="text" id="catchphrase" placeholder="一言で自分を表すなら？">
+                </div>
+
+                <div class="input-group">
+                    <label>自己紹介<span class="optional">(任意)</span>
+                        <span class="hint">200文字くらいの概要。プロフィール欄にそのまま使います</span>
+                    </label>
+                    <textarea id="bio" rows="4" placeholder="どんな人で、何をしているか"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>活動歴<span class="optional">(任意)</span>
+                        <span class="hint">LVの設定に使います(例: 3年目、2023年から)</span>
+                    </label>
+                    <input type="text" id="careerLength" placeholder="いつから活動しているか">
                 </div>
 
                 <div class="input-group">
@@ -191,6 +316,27 @@
                 <div class="input-group">
                     <label>登録者・フォロワーの目標人数<span class="optional">(任意)</span></label>
                     <input type="text" id="subscriberGoal" placeholder="例: 2000人 (達成演出を入れたい場合)">
+                </div>
+
+                <div class="input-group">
+                    <label>ぜひ載せたい実績・受賞歴<span class="optional">(任意)</span>
+                        <span class="hint">出演、コラボ、大会成績、メディア掲載など。誇っていいものは全部書いてください</span>
+                    </label>
+                    <textarea id="highlights" rows="3" placeholder="1つずつ改行で"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>メニュー・料金表<span class="optional">(任意)</span>
+                        <span class="hint">依頼を受けている方向け。載せたい場合だけ</span>
+                    </label>
+                    <textarea id="priceMenu" rows="3" placeholder="例: イラスト1枚 ○○円"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>その他、絶対に載せたい情報<span class="optional">(任意)</span>
+                        <span class="hint">上のどこにも当てはまらないが、必ず入れてほしいもの</span>
+                    </label>
+                    <textarea id="mustInclude" rows="3" placeholder="何でもどうぞ"></textarea>
                 </div>
 
                 <!-- ここから下は「ゲーム化」に直結する項目。
@@ -229,10 +375,37 @@
                 </div>
 
                 <div class="input-group">
-                    <label>立ち絵・キャラクター画像<span class="optional">(任意)</span>
-                        <span class="hint">お持ちの場合は、この後の連絡時に送っていただければ大丈夫です。ここには有無だけ書いてください</span>
+                    <label>立ち絵について<span class="optional">(任意)</span>
+                        <span class="hint">ドット絵に変換してほしい等の希望があれば</span>
                     </label>
-                    <input type="text" id="characterArt" placeholder="例: 背景透過のPNGあり / なし / ドット絵にしてほしい">
+                    <input type="text" id="characterArt" placeholder="例: 背景透過のPNGあり / ドット絵にしてほしい / なし">
+                </div>
+
+                <!-- 画像の添付。
+                     Firebase Storage がこのプロジェクトでは未設定のため、ブラウザ側で
+                     縮小(最大1000px/JPEG)してから Firestore の同じドキュメントに
+                     data URL として埋め込んでいる。Firestoreの1ドキュメント上限が1MBのため、
+                     合計サイズを監視して超えそうなら送信を止める。
+                     ここで受け取るのは「どんな絵か」を把握するための確認用。
+                     制作に使う原寸データは、やり取りの中で別途もらう前提。 -->
+                <div class="section-title px">▶ 使いたい画像</div>
+
+                <div class="input-group">
+                    <label>画像を添付<span class="optional">(任意)</span>
+                        <span class="hint">立ち絵・ロゴ・背景・参考にしたい画面など、最大4枚まで。
+                        送信しやすいよう自動で縮小します。原寸のデータは、あとのやり取りで送っていただければ大丈夫です</span>
+                    </label>
+                    <label for="imageInput" class="file-btn px">＋ 画像をえらぶ</label>
+                    <input type="file" id="imageInput" accept="image/*" multiple hidden>
+                    <div id="image-previews"></div>
+                    <div id="image-status" class="hint"></div>
+                </div>
+
+                <div class="input-group">
+                    <label>画像の説明<span class="optional">(任意)</span>
+                        <span class="hint">どれが何の画像か書いておいていただけると助かります</span>
+                    </label>
+                    <textarea id="imageNote" rows="2" placeholder="例: 1枚目が立ち絵、2枚目がロゴ"></textarea>
                 </div>
 
                 <div class="section-title px">▶ その他</div>
@@ -297,11 +470,112 @@
         let isSubmitting = false;
 
         const FIELD_IDS = [
-            'name', 'contact', 'activity', 'themeRef', 'socialLinks', 'catchphrase',
-            'birthday', 'likes', 'secretTopic', 'achievements', 'subscriberGoal',
+            'name', 'contact', 'activity', 'jobTitle',
+            'sitePurpose', 'targetAudience', 'strength',
+            'themeRef', 'themeScreen', 'designStyle', 'colorPref', 'backgroundPref',
+            'snsX', 'snsYoutube', 'snsIgTiktok', 'snsOther', 'publicContact',
+            'catchphrase', 'bio', 'careerLength', 'birthday', 'likes', 'secretTopic',
+            'achievements', 'subscriberGoal', 'highlights', 'priceMenu', 'mustInclude',
             'statusNumbers', 'skills', 'equipment', 'gimmick', 'characterArt',
-            'bgmNote', 'budget', 'deadline', 'freeNote', 'referrer'
+            'imageNote', 'bgmNote', 'budget', 'deadline', 'freeNote', 'referrer'
         ];
+
+        /* ===== 画像の添付 =====
+           Firebase Storage が未設定のため、ブラウザ側で縮小して data URL にし、
+           Firestore の同じドキュメントへ埋め込む。1ドキュメント1MBの上限があるので、
+           合計サイズを常時監視して超える追加を受け付けない。 */
+        const MAX_IMAGES = 4;
+        const MAX_EDGE = 1000;          // 長辺の上限(px)
+        const JPEG_QUALITY = 0.75;
+        const TOTAL_BUDGET = 700 * 1024; // data URLの合計上限。1MB制限に対する安全域
+        const images = [];
+
+        const imageInput = document.getElementById('imageInput');
+        const previews = document.getElementById('image-previews');
+        const imageStatus = document.getElementById('image-status');
+
+        function shrink(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onerror = () => reject(new Error('読み込みに失敗しました'));
+                reader.onload = () => {
+                    const img = new Image();
+                    img.onerror = () => reject(new Error('画像として開けませんでした'));
+                    img.onload = () => {
+                        const scale = Math.min(1, MAX_EDGE / Math.max(img.width, img.height));
+                        const canvas = document.createElement('canvas');
+                        canvas.width = Math.round(img.width * scale);
+                        canvas.height = Math.round(img.height * scale);
+                        const ctx = canvas.getContext('2d');
+                        // 透過PNGをJPEGにすると背景が黒くなるため、白で埋めてから描く
+                        ctx.fillStyle = '#fff';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', JPEG_QUALITY));
+                    };
+                    img.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function totalBytes() {
+            return images.reduce((n, i) => n + i.dataUrl.length, 0);
+        }
+
+        function renderPreviews() {
+            previews.innerHTML = '';
+            images.forEach((item, idx) => {
+                const box = document.createElement('div');
+                box.className = 'thumb';
+                const img = document.createElement('img');
+                img.src = item.dataUrl;
+                img.alt = item.name;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'remove';
+                btn.textContent = '×';
+                btn.setAttribute('aria-label', `${item.name} を外す`);
+                btn.onclick = () => { images.splice(idx, 1); renderPreviews(); };
+                const cap = document.createElement('div');
+                cap.className = 'cap';
+                cap.textContent = item.name;
+                box.append(img, btn, cap);
+                previews.appendChild(box);
+            });
+            const kb = Math.round(totalBytes() / 1024);
+            imageStatus.textContent = images.length
+                ? `${images.length} / ${MAX_IMAGES}枚 (約${kb}KB)`
+                : '';
+            imageStatus.classList.remove('over');
+        }
+
+        imageInput.addEventListener('change', async () => {
+            const files = Array.from(imageInput.files || []);
+            imageInput.value = ''; // 同じファイルを選び直せるようにする
+            for (const file of files) {
+                if (images.length >= MAX_IMAGES) {
+                    imageStatus.textContent = `画像は ${MAX_IMAGES}枚までです。`;
+                    imageStatus.classList.add('over');
+                    break;
+                }
+                try {
+                    const dataUrl = await shrink(file);
+                    if (totalBytes() + dataUrl.length > TOTAL_BUDGET) {
+                        imageStatus.textContent =
+                            'これ以上は容量オーバーです。枚数を減らすか、残りはあとで送ってください。';
+                        imageStatus.classList.add('over');
+                        break;
+                    }
+                    images.push({ name: file.name, dataUrl });
+                    renderPreviews();
+                } catch (err) {
+                    console.error('画像の処理に失敗:', file.name, err);
+                    imageStatus.textContent = `「${file.name}」は読み込めませんでした。`;
+                    imageStatus.classList.add('over');
+                }
+            }
+        });
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -312,6 +586,8 @@
 
             const data = {};
             FIELD_IDS.forEach(id => { data[id] = document.getElementById(id).value.trim(); });
+            data.images = images;
+            data.imageCount = images.length;
             data.timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
             try {

@@ -406,23 +406,63 @@
             document.getElementById('log-title').innerText = `▶ ${entry.name || '無記名'} さんの回答`;
             modal.style.display = 'flex';
 
+            // 制作時に上から順に読めばそのまま作れる並び。
+            // 依頼者が答えた項目だけが表示される(空欄は下でフィルタされる)。
             const fields = [
-                ['お名前', entry.name], ['活動内容', entry.activity], ['連絡先', entry.contact],
-                ['キャッチコピー・特技', entry.catchphrase], ['モチーフ・世界観の希望', entry.themeRef],
-                ['SNS/リンク', entry.socialLinks], ['誕生日', entry.birthday], ['好きなもの・趣味', entry.likes],
-                ['秘密・裏設定ネタ', entry.secretTopic], ['実績 or 今後の目標', entry.achievements],
+                ['お名前', entry.name], ['活動内容', entry.activity], ['肩書き', entry.jobTitle],
+                ['連絡先', entry.contact], ['公開用の連絡先', entry.publicContact],
+
+                ['サイトの目的', entry.sitePurpose], ['見せたい相手', entry.targetAudience],
+                ['一番の強み', entry.strength],
+
+                ['モチーフ・世界観の希望', entry.themeRef], ['再現したい画面', entry.themeScreen],
+                ['デザインの方向性', entry.designStyle], ['使いたい色', entry.colorPref],
+                ['背景の希望', entry.backgroundPref],
+
+                ['X (Twitter)', entry.snsX], ['YouTube', entry.snsYoutube],
+                ['Instagram/TikTok', entry.snsIgTiktok], ['その他リンク', entry.snsOther],
+                ['SNS/リンク(旧項目)', entry.socialLinks],
+
+                ['キャッチコピー・特技', entry.catchphrase], ['自己紹介', entry.bio],
+                ['活動歴', entry.careerLength], ['誕生日', entry.birthday],
+                ['好きなもの・趣味', entry.likes], ['秘密・裏設定ネタ', entry.secretTopic],
+
+                ['実績 or 今後の目標', entry.achievements],
+                ['載せたい実績・受賞歴', entry.highlights],
+                ['メニュー・料金表', entry.priceMenu],
+                ['必ず載せたい情報', entry.mustInclude],
+                ['登録者・フォロワー目標', entry.subscriberGoal],
+
                 // ゲーム化の材料。ここが埋まっていれば、ステータス・スキルを
                 // こちらで考える工程が不要になり、そのまま制作に入れる。
                 ['ステータスにしたい数字', entry.statusNumbers], ['とくぎ・スキル', entry.skills],
                 ['そうびアイテム', entry.equipment], ['入れたいしかけ', entry.gimmick],
-                ['立ち絵・キャラ画像', entry.characterArt],
-                ['BGMの希望', entry.bgmNote], ['登録者・フォロワー目標', entry.subscriberGoal],
-                ['ご予算', entry.budget], ['納期希望', entry.deadline], ['その他・自由記述', entry.freeNote],
+                ['立ち絵について', entry.characterArt], ['画像の説明', entry.imageNote],
+
+                ['BGMの希望', entry.bgmNote], ['ご予算', entry.budget],
+                ['納期希望', entry.deadline], ['その他・自由記述', entry.freeNote],
             ];
-            content.innerHTML = fields
+            const rows = fields
                 .filter(([, v]) => v)
                 .map(([label, v]) => `<div class="detail-row"><div class="detail-label">${label}</div>${String(v).replace(/</g, '&lt;').replace(/\n/g, '<br>')}</div>`)
-                .join('') || '<p class="opacity-50 italic">内容がありません</p>';
+                .join('');
+
+            // 添付画像。フォーム側で縮小してdata URLとして保存しているのでそのまま出せる。
+            // クリックで別タブに開き、原寸(縮小後)で確認できるようにしている。
+            const imgs = Array.isArray(entry.images) ? entry.images : [];
+            const imageBlock = imgs.length ? `
+                <div class="detail-row">
+                    <div class="detail-label">添付画像 (${imgs.length}枚)</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">
+                        ${imgs.map(im => `
+                            <a href="${im.dataUrl}" target="_blank" rel="noopener" title="${String(im.name || '').replace(/"/g, '&quot;')}">
+                                <img src="${im.dataUrl}" alt="${String(im.name || '').replace(/"/g, '&quot;')}"
+                                     style="width:110px;height:110px;object-fit:cover;border:1px solid #16a34a;background:#000;">
+                            </a>`).join('')}
+                    </div>
+                </div>` : '';
+
+            content.innerHTML = (rows + imageBlock) || '<p class="opacity-50 italic">内容がありません</p>';
         }
 
         function sortData(type) { currentSort = type; renderTables(); }
