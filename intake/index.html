@@ -193,6 +193,48 @@
                     <input type="text" id="subscriberGoal" placeholder="例: 2000人 (達成演出を入れたい場合)">
                 </div>
 
+                <!-- ここから下は「ゲーム化」に直結する項目。
+                     HEARING_SHEET.md にある制作必須の設問のうち、依頼者が自分で答えられる
+                     ものだけをフォームに落としてある。ここが埋まっていると、こちらで
+                     ステータスやスキルを考える工程が丸ごと不要になり、制作が大幅に早くなる。
+                     全て任意にしてあるのは、空欄でもこちらで「翻訳」して提案できるため。 -->
+                <div class="section-title px">▶ ゲーム化の材料</div>
+
+                <div class="input-group">
+                    <label>ステータスにしたい数字<span class="optional">(任意)</span>
+                        <span class="hint">LV・HP・こうげき力などに変換します(例: 活動年数3年 → LV3、配信時間1200時間、制作本数50本 など)</span>
+                    </label>
+                    <textarea id="statusNumbers" rows="3" placeholder="数字にできるものがあれば何でも"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>とくぎ・スキル（最大5つ）<span class="optional">(任意)</span>
+                        <span class="hint">名前と、クリックしたときに出る説明文をセットでいただけると、そのまま使えます(例: 「早口ことば」→ 3分間で50個の早口を成功させる)</span>
+                    </label>
+                    <textarea id="skills" rows="4" placeholder="1つずつ改行で。説明はなくてもOK"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>そうびアイテム（最大4つ）<span class="optional">(任意)</span>
+                        <span class="hint">愛用の機材・小物など。「いつも使っているマイク」「相棒のペン」程度で構いません。説明文はこちらで書きます</span>
+                    </label>
+                    <textarea id="equipment" rows="3" placeholder="例: コンデンサーマイク、赤いヘッドホン"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>入れたい しかけ・隠しコマンド<span class="optional">(任意)</span>
+                        <span class="hint">「ロゴを5回押すとキャラが喋る」など。思いつかなければ空欄でOK、こちらから3〜10個提案します</span>
+                    </label>
+                    <textarea id="gimmick" rows="3" placeholder="やってみたい演出があれば"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>立ち絵・キャラクター画像<span class="optional">(任意)</span>
+                        <span class="hint">お持ちの場合は、この後の連絡時に送っていただければ大丈夫です。ここには有無だけ書いてください</span>
+                    </label>
+                    <input type="text" id="characterArt" placeholder="例: 背景透過のPNGあり / なし / ドット絵にしてほしい">
+                </div>
+
                 <div class="section-title px">▶ その他</div>
 
                 <div class="input-group">
@@ -257,6 +299,7 @@
         const FIELD_IDS = [
             'name', 'contact', 'activity', 'themeRef', 'socialLinks', 'catchphrase',
             'birthday', 'likes', 'secretTopic', 'achievements', 'subscriberGoal',
+            'statusNumbers', 'skills', 'equipment', 'gimmick', 'characterArt',
             'bgmNote', 'budget', 'deadline', 'freeNote', 'referrer'
         ];
 

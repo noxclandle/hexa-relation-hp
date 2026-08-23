@@ -101,6 +101,17 @@
             background: rgba(0,0,0,0.92); z-index: 1000; justify-content: center; align-items: center; text-align: center;
         }
         #success-overlay .mother-window-inner p { color: #fff; font-size: 0.85rem; line-height: 2.2; }
+        /* 依頼直後がヒアリングへの導線として一番反応が良いタイミングなので、
+           完了画面から「冒険者データ登録」(/intake)へ続けて案内する。 */
+        #success-overlay .next-step {
+            font-size: 0.72rem !important; color: #aaa !important;
+            border-top: 1px dashed #333; margin-top: 1.4rem; padding-top: 1.4rem;
+        }
+        #success-overlay .next-step .hl { color: #ffcc4d; }
+        #success-overlay .submit-btn.secondary {
+            background: transparent; color: #888; border: 1px solid #333;
+            box-shadow: none; margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -141,7 +152,9 @@
         <div class="mother-window" style="max-width: 350px;">
             <div class="mother-window-inner">
                 <p>きろくが 完了しました！<br><br>のちほど 伝書鳩（通知）が<br>とどきます。 おたのしみに！</p>
-                <button onclick="window.location.href='../'" class="submit-btn">▶ TOPへ もどる</button>
+                <p class="next-step">つづけて <span class="hl">冒険者データ</span> を<br>とうろく できます。<br><br>さきに 書いておくと<br>せいさくが はやく すすみます。<br>（5分ほど・あとからでもOK）</p>
+                <button onclick="window.location.href='../intake/'" class="submit-btn">▶ 冒険者データを とうろくする</button>
+                <button onclick="window.location.href='../'" class="submit-btn secondary">TOPへ もどる</button>
             </div>
         </div>
     </div>
