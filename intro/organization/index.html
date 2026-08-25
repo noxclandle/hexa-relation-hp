@@ -42,17 +42,52 @@
         h2.section-title small { display: block; font-size: 0.6rem; color: #888; margin-top: 8px; font-family: 'DotGothic16', sans-serif; letter-spacing: 0; }
 
         /* 体制：階層が増えても組みやすいツリー構造。
-           .org-tree の中に .org-node と .org-connector を並べるだけで下に段を足せる。
-           複数人が同じ段に並ぶ場合は .org-node を .org-row で横に並べて包む。 */
-        .org-tree { display: flex; flex-direction: column; align-items: center; }
+           .org-tree の中に .org-node と .org-connector を縦に並べるだけで下に段を足せる。
+           同じ段に2人並べる場合は .org-branch で包む(横棒と枝線が自動で引かれる)。
+           1人あたりの説明は .org-node-desc として同じ四角の中に入れる。 */
+        .org-tree {
+            display: flex; flex-direction: column; align-items: center;
+            width: 100%; max-width: 880px; margin: 0 auto; padding: 0 24px; box-sizing: border-box;
+        }
         .org-row { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
         .org-node {
-            background: #0a0a0a; border: 2px solid #333; padding: 20px 28px; min-width: 200px; text-align: center;
+            background: #0a0a0a; border: 2px solid #333; padding: 20px 24px;
+            width: 100%; max-width: 420px; text-align: center; box-sizing: border-box;
         }
-        .org-connector { width: 2px; height: 26px; background: #444; }
+        .org-connector { width: 2px; height: 26px; background: #5a5a5a; }
         .org-role { font-size: 0.55rem; color: #7a2fbf; letter-spacing: 0.15em; margin-bottom: 10px; }
         .org-node-name { font-size: 1rem; margin: 0 0 6px; }
         .org-node-sub { font-size: 0.65rem; opacity: 0.55; }
+        .org-node-since { font-size: 0.55rem; color: #7a2fbf; margin: 8px 0 0; letter-spacing: 0.05em; }
+        .org-node-desc {
+            font-size: 0.68rem; line-height: 1.95; opacity: 0.62; text-align: left;
+            margin: 14px 0 0; padding-top: 14px; border-top: 1px solid #262626;
+        }
+
+        /* 分岐：親から下りた線が横棒に変わり、子の中央へ枝分かれする */
+        .org-branch {
+            position: relative; display: flex; gap: 20px; justify-content: center;
+            width: 100%; padding-top: 28px;
+        }
+        /* 子2つが等幅(flex:1 1 0)なので、中央は「25% − gap/4」の位置に来る */
+        .org-branch::before {
+            content: ''; position: absolute; top: 0; height: 2px; background: #5a5a5a;
+            left: calc(25% - 5px); right: calc(25% - 5px);
+        }
+        /* max-width を外して必ず等幅に保つ(::before の 25%−gap/4 が中心と一致する条件) */
+        .org-branch > .org-node { position: relative; flex: 1 1 0; max-width: none; }
+        .org-branch > .org-node::before {
+            content: ''; position: absolute; top: -28px; left: 50%; margin-left: -1px;
+            width: 2px; height: 28px; background: #5a5a5a;
+        }
+        @media (max-width: 700px) {
+            /* 横に並べられないので縦の鎖に切り替える */
+            .org-branch { flex-direction: column; align-items: center; gap: 26px; padding-top: 0; }
+            .org-branch::before { display: none; }
+            .org-branch > .org-node { flex: none; max-width: 420px; }
+            .org-branch > .org-node::before { top: -26px; height: 26px; }
+            .org-branch > .org-node:first-child::before { display: none; }
+        }
 
         /* 事業部グリッド */
         .org-grid {
@@ -154,41 +189,53 @@
                 <p class="org-role px">OWNER</p>
                 <p class="org-node-name px">Cl...</p>
                 <p class="org-node-sub">オーナー・意思決定者</p>
+                <p class="org-node-desc">
+                    方針と最終判断を持つ。何を始めて何をやめるかを決め、金銭の支出・価格や納期の対外的な約束・
+                    契約に関わる連絡を承認する。実務はMatinとその部下に預け、自分は判断だけを引き受ける。
+                </p>
             </div>
             <div class="org-connector"></div>
             <div class="org-node">
                 <p class="org-role px">AI CEO</p>
                 <p class="org-node-name px">Matin</p>
                 <p class="org-node-sub">Matin Catorce / AI社長</p>
+                <p class="org-node-since">2026-07-28 設立</p>
+                <p class="org-node-desc">
+                    HexaRelation_Incの経営を担うAI社長。オーナーの方針を受けて事業を設計し、実行に落とすところまでを持つ。
+                    サイト・サービスの開発はMatinの担当領域で、「AI開発の全てはMatinが仕上げた」という座組で対外的に発信している。
+                    部下として時計屋とテレサを置き、<strong>決めるのはMatin、部下は回すことと材料を出すことに専念する</strong>という分担を取る。
+                </p>
             </div>
             <div class="org-connector"></div>
-            <div class="org-row">
+            <div class="org-branch">
                 <div class="org-node">
                     <p class="org-role px">OPERATIONS</p>
                     <p class="org-node-name px">時計屋</p>
                     <p class="org-node-sub">とけいや / 実務執行役</p>
+                    <p class="org-node-since">2026-08-23 設置</p>
+                    <p class="org-node-desc">
+                        事業部ではなく、事業部を横断して<strong>既にある仕組みを止めずに回し続ける</strong>役。
+                        導線(計測の仕込み)・配信(毎日の投稿監視と宣伝枠の配分)・検証(週次レポート)の3役割を持つ。
+                        事業を新しく作らず、噛み合っていない歯車を噛み合わせることだけを担当する。毎日10:00に自動で起動する。
+                    </p>
                 </div>
                 <div class="org-node">
                     <p class="org-role px">PSYCHOLOGY</p>
                     <p class="org-node-name px">テレサ</p>
                     <p class="org-node-sub">Teresa / 心理顧問</p>
+                    <p class="org-node-since">2026-08-26 設置</p>
+                    <p class="org-node-desc">
+                        動画・LP・営業・価格・組織運営まで、<strong>人が関わるすべての判断に行動科学の側から材料を出す</strong>役。
+                        20分野1000項目のナレッジベースを持ち、助言には必ず効果の確度(堅牢/条件付/要注意)を添える。
+                        テレサは判断しない。判断材料を出し、筋の悪い案には筋が悪いと言うところまでが仕事。
+                    </p>
                 </div>
             </div>
         </div>
-        <div class="org-grid" style="max-width:900px; margin:24px auto 0;">
-            <div class="org-slot">
-                <p class="org-tag px">Matinの部下</p>
-                <p class="org-name px">時計屋(とけいや)</p>
-                <p class="org-path">2026-08-23 設置</p>
-                <p class="org-desc">事業部ではなく、事業部を横断して既にある仕組みを止めずに回し続ける役。導線(計測の仕込み)・配信(毎日の投稿監視と宣伝枠の配分)・検証(週次レポート)の3役割を持つ。</p>
-            </div>
-            <div class="org-slot">
-                <p class="org-tag px">Matinの部下</p>
-                <p class="org-name px">テレサ</p>
-                <p class="org-path">2026-08-26 設置</p>
-                <p class="org-desc">心理顧問。動画・LP・営業・価格・組織運営まで、人が関わるすべての判断に行動科学の側から材料を出す役。20分野1000項目のナレッジベースを持つ。</p>
-            </div>
-        </div>
+        <p class="hp-note">
+            ※社員(エージェント)を新設・改廃したときは、この組織図に反映するまでが設置作業です(就業規則 第5条)。
+            反映されていない社員は「いないこと」として扱われ、呼ばれず、仕事が止まるためです。
+        </p>
     </section>
 
     <section class="block">
