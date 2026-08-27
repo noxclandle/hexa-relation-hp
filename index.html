@@ -90,14 +90,14 @@
     }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
         html, body {
             margin: 0; padding: 0; width: 100%; min-height: 100%;
             overflow-x: hidden;
             overflow-y: auto;
-            font-family: 'Press Start 2P', monospace;
+            font-family: 'Press Start 2P', 'DotGothic16', monospace;
             background: #000;
         }
 
@@ -139,7 +139,7 @@
         }
 
         .start-btn {
-            font-family: 'Press Start 2P', monospace;
+            font-family: 'Press Start 2P', 'DotGothic16', monospace;
             font-size: clamp(0.7rem, 2.4vw, 0.9rem);
             color: #000; background: #ffcc4d;
             border: 4px solid #fff; box-shadow: 4px 4px 0 #3d1a63;
@@ -148,198 +148,197 @@
         .start-btn:active { box-shadow: 1px 1px 0 #3d1a63; transform: translate(3px, 3px); }
         .press-hint { color: #888; font-size: clamp(0.45rem, 1.6vw, 0.55rem); margin: 0; animation: blink 1.1s step-start infinite; }
         @keyframes blink { 50% { opacity: 0; } }
+        /* ===== Screen 2: サービス一覧（セーブデータ選択） =====
+           旧ダンジョンは .d-obj を position:absolute + left:12%/38%/62%/88% の直書きで並べていた。
+           サービスが1つ増えるたびに座標を決め直す必要があり、6件を超えるとラベルが衝突していた。
+           ここでは縦リストにしているので、増えても行が伸びるだけで破綻しない。 */
+        #screen-list { flex-direction: column; }
 
-        /* ===== Screen 2: Dungeon Menu ===== */
-        #screen-dungeon { flex-direction: column; }
-
-        .dungeon-bg {
-            position: relative; flex: 1; min-height: 0;
-            background:
-                radial-gradient(ellipse at 50% 40%, rgba(90,60,30,0.28), transparent 65%),
-                repeating-linear-gradient(0deg, #2c221b 0 40px, #241c17 40px 42px),
-                repeating-linear-gradient(90deg, #2c221b 0 40px, #241c17 40px 42px);
-            border: 10px solid #000;
-            box-shadow: inset 0 0 0 6px #4a3524, inset 0 0 60px rgba(0,0,0,0.65);
+        /* 和文はドットフォント側を先に置く。Press Start 2P を先にすると
+           文中の数字だけラテンのピクセル字形になり、字形が揃わない
+           （SPI Check の OG画像で同じ問題を踏んでいる）。
+           ピクセル英字を使うのは英語のラベルと欧文のサービス名だけにする。 */
+        .side-role, .stat span, .side-links a, .side-cta,
+        .list-head-ja, .list-count, .group-ja,
+        .svc-lead, .svc-desc, .chips span,
+        .btn-sky, .btn-ghost, .badge, .hint-bar, .back-hint {
+            font-family: 'DotGothic16', sans-serif;
         }
-        .torch {
-            position: absolute; top: 5%; width: 14px; height: 26px;
-            background: #3a2a1a; border: 2px solid #000; z-index: 4;
-        }
-        .torch::after {
-            content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-            width: 16px; height: 20px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            background: radial-gradient(circle, #ffdd66 0%, #ff8c1a 55%, transparent 75%);
-            filter: blur(1px);
-            animation: flicker 0.9s ease-in-out infinite alternate;
-        }
-        .torch::before {
-            content: ''; position: absolute; top: -70px; left: 50%; transform: translateX(-50%);
-            width: 110px; height: 110px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,180,60,0.22), transparent 70%);
-            animation: flicker 0.9s ease-in-out infinite alternate-reverse;
-        }
-        @keyframes flicker { from { opacity: 0.75; transform: translateX(-50%) scale(0.94); } to { opacity: 1; transform: translateX(-50%) scale(1.05); } }
-
-        .wall-crest {
-            position: absolute; top: 11%; left: 4%;
-            width: clamp(30px, 5vw, 44px); height: auto;
-            opacity: 0.75; z-index: 3;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+        .list-shell {
+            flex: 1; min-height: 0; margin: 26px;
+            border: 5px solid #fff;
+            box-shadow: inset 0 0 0 4px #000, inset 0 0 0 9px #7a2fbf, 8px 8px 0 #3d1a63;
+            background: #0b0714;
+            /* 左列は上下2段（マタン／会社導線）、右列は一覧が縦にぶち抜く。
+               こうしておくと一覧が何件に伸びても、左下のCTAが押し出されない。 */
+            display: grid;
+            grid-template-columns: 372px minmax(0, 1fr);
+            grid-template-rows: 1fr auto;
+            overflow: hidden;
         }
 
-        /* エリア分け：3つの用途(プロフィール／サービス／問い合わせ)で床の色味を帯状に変え、
-           何も言わなくても「ここは違うグループ」と伝わるようにする */
-        .zone-band {
-            position: absolute; left: 0; width: 100%; z-index: 1; pointer-events: none;
+        /* --- 左：マタン --- */
+        .side-panel {
+            grid-column: 1; grid-row: 1;
+            border-right: 5px solid #7a2fbf;
+            padding: 26px 24px 10px;
+            display: flex; flex-direction: column; align-items: center; gap: 13px;
+            background: linear-gradient(180deg, rgba(122,47,191,0.18), transparent 55%);
+            min-height: 0;
         }
-        .zone-band.zone-profile { top: 12%; height: 25%; background: linear-gradient(rgba(122,47,191,0.16), transparent); }
-        .zone-band.zone-products { top: 40%; height: 25%; background: linear-gradient(rgba(255,204,77,0.10), rgba(255,204,77,0.10)); }
-        .zone-band.zone-contact { top: 68%; height: 24%; background: linear-gradient(rgba(90,200,160,0.14), transparent); }
+        .side-brand { display: flex; align-items: center; gap: 11px; align-self: stretch; }
+        .side-logo { width: 27px; height: 27px; }
+        .side-wordmark { font-size: 0.62rem; letter-spacing: 0.05em; color: #fff; text-shadow: 2px 2px 0 #3d1a63; }
+        .side-matan { width: min(186px, 46vw); height: auto; image-rendering: pixelated; filter: drop-shadow(0 8px 18px rgba(0,0,0,0.8)); }
+        .side-name { margin: 0; font-size: 0.85rem; letter-spacing: 0.06em; color: #fff; text-shadow: 3px 3px 0 #3d1a63; }
+        .side-role { margin: 0; font-size: 0.72rem; line-height: 1.85; color: #9a8bbf; text-align: center; }
+        .side-text { text-align: center; display: flex; flex-direction: column; gap: 13px; }
+        .side-stats { align-self: stretch; display: flex; gap: 8px; margin-top: 2px; }
+        .stat { flex: 1 1 0; border: 2px solid rgba(201,163,255,0.3); padding: 9px 4px; text-align: center; }
+        .stat b { display: block; font-size: 0.9rem; color: #ffcc4d; }
+        .stat b.wip { color: #c9a3ff; }
+        .stat b.small { font-size: 0.6rem; color: #fff; padding-top: 4px; }
+        .stat span { display: block; font-size: 0.68rem; color: #9a8bbf; margin-top: 5px; }
 
-        .zone-sign {
-            position: absolute; left: 50%; transform: translateX(-50%);
-            font-family: 'Press Start 2P', monospace; font-size: 0.55rem; letter-spacing: 0.05em;
-            padding: 5px 14px; border: 2px solid rgba(255,255,255,0.25); border-radius: 3px;
-            background: rgba(0,0,0,0.35); white-space: nowrap; z-index: 2; pointer-events: none;
+        /* --- 左下：会社導線とCTA。一覧とは別グリッド行なので押し出されない --- */
+        .side-foot {
+            grid-column: 1; grid-row: 2;
+            border-right: 5px solid #7a2fbf;
+            padding: 0 24px 24px;
+            display: flex; flex-direction: column; gap: 8px;
         }
-        .zone-sign small { display: block; font-size: 0.75em; opacity: 0.7; margin-top: 3px; }
-        .zone-sign.zone-profile { top: 13%; color: #c9a3ff; border-color: rgba(201,163,255,0.4); }
-        .zone-sign.zone-products { top: 41%; color: #ffcc4d; border-color: rgba(255,204,77,0.4); }
-        .zone-sign.zone-contact { top: 69%; color: #7fe0c0; border-color: rgba(127,224,192,0.4); }
+        .side-links { display: flex; gap: 8px; }
+        .side-links a {
+            flex: 1 1 0; border: 2px solid rgba(127,224,192,0.4); color: #7fe0c0;
+            padding: 11px 4px; text-align: center; font-size: 0.72rem; text-decoration: none;
+            min-height: 44px; display: flex; align-items: center; justify-content: center;
+        }
+        .side-links a:hover { border-color: #7fe0c0; background: rgba(127,224,192,0.1); }
+        .side-cta {
+            background: #ffcc4d; color: #000; border: 4px solid #fff; box-shadow: 4px 4px 0 #3d1a63;
+            padding: 15px; text-align: center; font-size: 0.75rem; text-decoration: none; min-height: 44px;
+        }
+        .side-cta:active { box-shadow: 1px 1px 0 #3d1a63; transform: translate(3px, 3px); }
 
-        /* Dungeon menu objects (chest / monster), placed anywhere on the 2D floor */
-        .d-obj {
-            position: absolute; z-index: 10;
-            display: flex; flex-direction: column; align-items: center;
-            cursor: pointer; transform: translate(-50%, -100%);
+        /* --- 右：一覧 --- */
+        .list-panel {
+            grid-column: 2; grid-row: 1 / -1;
+            display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden;
         }
-        .d-obj-label {
-            color: #fff; font-size: 0.5rem; text-shadow: 2px 2px 0 #000;
-            margin-bottom: 8px; text-align: center; line-height: 1.7; white-space: nowrap;
+        .list-head {
+            display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+            padding: 18px 26px; border-bottom: 4px solid #7a2fbf;
         }
-        .d-obj-label small { display: block; color: #ffcc4d; font-size: 0.85em; }
-        .d-obj:hover .d-obj-label, .d-obj.near .d-obj-label { color: #ffcc4d; }
-        .d-icon { position: relative; animation: bob 1.6s ease-in-out infinite; }
-        @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .list-head-en { font-size: 0.68rem; color: #ffcc4d; letter-spacing: 0.08em; }
+        .list-head-ja { font-size: 0.72rem; color: #7d7488; }
+        .list-count { margin-left: auto; font-size: 0.72rem; color: #7d7488; }
+        .list-body { flex: 1; min-height: 0; overflow-y: auto; padding: 15px 26px 20px; }
 
-        /* Treasure chest */
-        .chest-icon { width: 54px; height: 46px; }
-        .chest-icon .body {
-            position: absolute; bottom: 0; width: 100%; height: 28px;
-            background: #8b5a2b; border: 3px solid #000;
-        }
-        .chest-icon .lid {
-            position: absolute; top: 0; width: 100%; height: 20px;
-            background: #c98a3f; border: 3px solid #000; border-radius: 10px 10px 0 0;
-        }
-        .chest-icon .lock {
-            position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
-            width: 10px; height: 10px; background: #ffdd55; border: 2px solid #000; z-index: 2;
-        }
-        .d-obj.chest-big .chest-icon { transform: scale(1.3); transform-origin: bottom center; }
+        .group { display: flex; align-items: center; gap: 12px; margin: 14px 0 9px; }
+        .group:first-child { margin-top: 2px; }
+        .group-en { font-size: 0.55rem; color: #ffcc4d; letter-spacing: 0.06em; }
+        .group-ja { font-size: 0.68rem; color: #6b6259; }
+        .group i { flex: 1; height: 2px; background: rgba(255,204,77,0.22); }
+        .group.coming .group-en { color: #c9a3ff; }
+        .group.coming i { background: rgba(201,163,255,0.18); }
 
-        /* 製作中(未アクセス)オブジェクト：見えるが薄暗くし、クリックしても何も起きない */
-        .d-obj.locked { cursor: default; }
-        .d-obj.locked .d-icon { filter: grayscale(70%) brightness(0.75); }
-        .d-obj.locked .d-obj-label { opacity: 0.75; }
-        .d-obj.locked .d-obj-label small { color: #9a8bbf; }
-        .lockmark-icon { width: 44px; height: 50px; }
-        .lockmark-icon .shackle {
-            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-            width: 24px; height: 18px; border: 4px solid #b7b0c9; border-bottom: none;
-            border-radius: 12px 12px 0 0;
+        .svc { margin-bottom: 7px; }
+        /* summary の display は block のままにする。inline-flex 等に変えると
+           WebKit系で開閉そのものが効かなくなる（組織図で実際に踏んだ事故）。
+           見た目の横並びは中の .svc-inner 側で作る。 */
+        .svc-row {
+            display: block; list-style: none; cursor: pointer; user-select: none;
+            -webkit-tap-highlight-color: rgba(122,47,191,0.35);
+            border: 3px solid rgba(255,255,255,0.14); padding: 13px 16px; min-height: 44px;
         }
-        .lockmark-icon .body {
-            position: absolute; bottom: 0; width: 100%; height: 30px;
-            background: #4a4460; border: 3px solid #000; border-radius: 4px;
-        }
-        .lockmark-icon .keyhole {
-            position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-            width: 8px; height: 8px; background: #2a2638; border-radius: 50%;
-        }
+        .svc-row::-webkit-details-marker { display: none; }
+        .svc-row:hover { border-color: rgba(255,255,255,0.4); }
+        .svc[open] > .svc-row { border-color: #ffcc4d; background: rgba(255,204,77,0.10); }
+        .svc.wip[open] > .svc-row { border-color: #c9a3ff; background: rgba(201,163,255,0.08); }
+        .svc-inner { display: flex; align-items: center; gap: 16px; }
+        .svc-icon { flex-shrink: 0; display: flex; }
+        .svc-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+        .svc-name { font-size: 0.68rem; letter-spacing: 0.04em; color: #fff; }
+        .svc.wip .svc-name { color: #c9a3ff; }
+        .svc-lead { font-size: 0.72rem; color: #b9b0a6; line-height: 1.7; }
+        .svc.wip .svc-lead { color: #8f86a0; }
+        .svc-side { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 7px; flex-shrink: 0; }
+        .badge { font-size: 0.5rem; padding: 6px 9px; white-space: nowrap; }
+        .badge.live { color: #000; background: #ffcc4d; }
+        .badge.dev { color: #c9a3ff; border: 2px solid #7a2fbf; }
+        .svc-more { font-size: 0.68rem; color: #7d7488; white-space: nowrap; }
+        .svc-more::after { content: ' \25B6'; display: inline-block; font-size: 0.8em; transition: transform 0.18s; }
+        .svc[open] .svc-more::after { transform: rotate(90deg); }
 
-        /* Monster: slime */
-        .monster-icon { width: 58px; height: 42px; }
-        .monster-icon .body {
-            position: absolute; bottom: 0; width: 100%; height: 100%;
-            background: #3fbf5f; border: 3px solid #000;
-            border-radius: 50% 50% 16% 16% / 65% 65% 20% 20%;
+        /* 開いたときの説明。ページへ飛ぶ前に、ここで何のサービスかが分かる。
+           一覧本体（金＋紫）と役割を分けるため、ここだけ水色＋ピンクにしている。 */
+        .svc-detail {
+            border: 3px solid #7fd4f0; border-top: none;
+            background: linear-gradient(135deg, rgba(127,212,240,0.12), rgba(255,143,199,0.09));
+            padding: 16px 18px; display: flex; flex-direction: column; gap: 12px;
         }
-        .monster-icon .eye {
-            position: absolute; top: 15px; width: 6px; height: 6px;
-            background: #000; border-radius: 50%; z-index: 2;
+        .svc-detail p { margin: 0; }
+        .svc-desc { font-size: 0.75rem; line-height: 1.9; color: #e8f6fb; }
+        .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chips span { border: 2px solid #ff8fc7; color: #ff8fc7; font-size: 0.68rem; padding: 5px 10px; }
+        .svc-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-sky {
+            background: #7fd4f0; color: #06222c; border: 3px solid #fff; box-shadow: 3px 3px 0 #a3416e;
+            padding: 11px 18px; font-size: 0.72rem; text-decoration: none; min-height: 44px;
+            display: flex; align-items: center;
         }
-        .monster-icon .eye.left { left: 16px; }
-        .monster-icon .eye.right { right: 16px; }
-
-        /* Monster: boss (developer guardian) */
-        .monster-icon.boss { width: 76px; height: 60px; }
-        .monster-icon.boss .body { background: #7a2fbf; }
-        .monster-icon.boss .eye { background: #ffcc4d; top: 20px; }
-        .monster-icon.boss .horn {
-            position: absolute; top: -14px; width: 0; height: 0;
-            border-left: 8px solid transparent; border-right: 8px solid transparent;
-            border-bottom: 16px solid #7a2fbf;
+        .btn-sky:active { box-shadow: 1px 1px 0 #a3416e; transform: translate(2px, 2px); }
+        .btn-ghost {
+            border: 2px solid rgba(255,255,255,0.35); color: #fff; padding: 11px 16px;
+            font-size: 0.72rem; text-decoration: none; min-height: 44px; display: flex; align-items: center;
         }
-        .monster-icon.boss .horn::after {
-            content: ''; position: absolute; top: 2px; left: -8px;
-            width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent;
-            border-bottom: 14px solid #000; z-index: -1;
-        }
-        .monster-icon.boss .horn.left { left: 8px; transform: rotate(-15deg); }
-        .monster-icon.boss .horn.right { right: 8px; transform: rotate(15deg); }
-
-        /* Portal: swirling gate to an external world */
-        .portal-icon { width: 54px; height: 64px; position: relative; }
-        .portal-icon .frame {
-            position: absolute; inset: -4px; border: 4px solid #3a2a1a; border-radius: 50%;
-            box-shadow: inset 0 0 0 2px #000;
-        }
-        .portal-icon .swirl {
-            position: absolute; inset: 3px; border-radius: 50%; overflow: hidden;
-            background: conic-gradient(from 0deg, #7a2fbf, #1e40af, #ffcc4d, #8b5e3c, #7a2fbf);
-            animation: portal-spin 5s linear infinite;
-        }
-        .portal-icon .swirl::after {
-            content: ''; position: absolute; inset: 9px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(0,0,0,0.9), rgba(0,0,0,0.4) 70%, transparent 100%);
-        }
-        @keyframes portal-spin { to { transform: rotate(360deg); } }
-
-        /* Player sprite that walks across the dungeon floor */
-        #dungeon-player {
-            position: absolute; width: 66px; height: 82px; z-index: 15;
-            transform: translate(-50%, -100%);
-        }
-        #dungeon-player.face-left { transform: translate(-50%, -100%) scaleX(-1); }
-        #dungeon-player-sprite {
-            width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated;
-            filter: drop-shadow(2px 3px 0 rgba(0,0,0,0.5));
-        }
-        #dungeon-player-sprite.walk { animation: walk-bounce 0.3s infinite; }
-        @keyframes walk-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-
-        #interact-prompt {
-            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-            font-family: 'Press Start 2P', monospace; font-size: 1.1rem; color: #ffcc4d;
-            text-shadow: 2px 2px 0 #000; z-index: 16;
-            display: none;
-            animation: prompt-bob 0.6s ease-in-out infinite alternate;
-        }
-        #interact-prompt.show { display: block; }
-        @keyframes prompt-bob { from { transform: translateX(-50%) translateY(0); } to { transform: translateX(-50%) translateY(-5px); } }
+        .btn-ghost:hover { border-color: #7fd4f0; color: #7fd4f0; }
 
         .hint-bar {
-            background: #000; border-top: 4px solid #7a2fbf; box-shadow: inset 0 0 0 2px #fff;
-            padding: 12px; text-align: center; color: #ffcc4d;
-            font-size: clamp(0.45rem, 1.7vw, 0.6rem);
+            margin: 0; background: #000; border-top: 4px solid #7a2fbf; box-shadow: inset 0 0 0 2px #fff;
+            padding: 13px; text-align: center; color: #ffcc4d; font-size: 0.68rem;
         }
-
         .back-hint {
-            position: absolute; top: 4%; left: 4%; z-index: 5;
-            color: rgba(255,255,255,0.65); font-size: clamp(0.45rem, 1.6vw, 0.55rem);
-            background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.4);
-            padding: 6px 10px; cursor: pointer;
+            position: absolute; top: 4px; left: 8px; z-index: 6;
+            color: rgba(255,255,255,0.65); font-size: 0.5rem;
+            background: #000; border: 1px solid rgba(255,255,255,0.4);
+            padding: 8px 10px; cursor: pointer; min-height: 34px;
+        }
+        .back-hint:hover { color: #ffcc4d; border-color: #ffcc4d; }
+
+        /* スマホ。旧トップはメディアクエリが1つも無く、幅の考慮がゼロだった。 */
+        @media (max-width: 900px) {
+            #screen-list { height: auto; min-height: 100vh; overflow: visible; }
+            .list-shell {
+                margin: 14px; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr auto;
+                overflow: visible;
+            }
+            /* マタンは残すが、縦の場所は取らせない（横並びに畳む） */
+            .side-panel {
+                grid-column: 1; grid-row: 1;
+                border-right: none; border-bottom: 4px solid #7a2fbf;
+                flex-direction: row; flex-wrap: wrap; align-items: center; gap: 15px;
+                padding: 16px;
+            }
+            .side-brand { flex: 1 1 100%; }
+            .side-matan { width: 88px; flex-shrink: 0; }
+            .side-text { text-align: left; gap: 8px; }
+            /* min-width を付けると 390px 幅で横に溢れる。0 にして必ず縮むようにする */
+            .side-text { flex: 1 1 0; min-width: 0; }
+            .side-role { font-size: 0.68rem; }
+            .side-stats { flex: 0 0 100%; }
+            .stat { min-width: 0; }
+            .list-panel, .side-foot, .list-head, .list-body { min-width: 0; }
+            .list-panel { grid-column: 1; grid-row: 2; }
+            .list-body { overflow-y: visible; padding: 14px 16px 18px; }
+            .side-foot {
+                grid-column: 1; grid-row: 3;
+                border-right: none; border-top: 4px solid #7a2fbf;
+                padding: 12px 16px 14px; background: #050308;
+            }
+            .list-head { padding: 14px 16px; gap: 10px; }
+            .svc-inner { gap: 12px; }
+            .svc-side { gap: 6px; }
         }
     </style>
 </head>
@@ -366,94 +365,193 @@
         <p class="press-hint">PRESS ENTER / TAP START</p>
     </section>
 
-    <!-- Screen 2: Dungeon menu -->
-    <section id="screen-dungeon" class="screen">
-        <div class="back-hint" id="btn-back">◀ もどる</div>
-        <div class="dungeon-bg" id="dungeon-bg">
-            <div class="torch" style="left:4%;"></div>
-            <div class="torch" style="right:4%;"></div>
-            <img src="assets/hexa-logo.png" class="wall-crest" alt="Hexa Relation">
+    <!-- Screen 2: サービス一覧 -->
+    <section id="screen-list" class="screen">
+        <div class="back-hint" id="btn-back">&#9664; もどる</div>
+        <div class="list-shell">
 
-            <div class="zone-band zone-profile"></div>
-            <div class="zone-band zone-products"></div>
-            <div class="zone-band zone-contact"></div>
-
-            <div class="zone-sign zone-profile">PROFILE<small>プロフィール・実績</small></div>
-            <div class="zone-sign zone-products">PRODUCTS<small>使えるサービス</small></div>
-            <div class="zone-sign zone-contact">CONTACT<small>ご依頼・お問い合わせ</small></div>
-
-            <!-- ゾーン1: プロフィール・実績 -->
-            <div class="d-obj chest chest-big" style="left:28%; top:34%;" data-href="intro/archive/">
-                <span class="d-obj-label">SAVE DATA<small>せいさく じっせき</small></span>
-                <div class="d-icon chest-icon">
-                    <div class="lid"></div>
-                    <div class="body"></div>
-                    <div class="lock"></div>
+            <aside class="side-panel">
+                <div class="side-brand">
+                    <img src="assets/hexa-logo.png" class="side-logo" alt="">
+                    <span class="side-wordmark">HEXA RELATION</span>
                 </div>
+                <img src="assets/&#12387;gh&#12387;g-removebg-preview.png" class="side-matan" alt="マタン">
+                <div class="side-text">
+                    <p class="side-name">MATIN</p>
+                    <p class="side-role">Matin Catorce ／ AI社長<br>設計から実装まで、全部こいつが仕上げる</p>
+                </div>
+                <div class="side-stats">
+                    <div class="stat"><b>5</b><span>公開中</span></div>
+                    <div class="stat"><b class="wip">2</b><span>開発中</span></div>
+                    <div class="stat"><b class="small">2026.07</b><span>設立</span></div>
+                </div>
+            </aside>
+
+            <div class="side-foot">
+                <div class="side-links">
+                    <a href="intro/archive/">制作実績</a>
+                    <a href="save/matan/">制作者</a>
+                    <a href="intro/organization/">組織図</a>
+                </div>
+                <a href="intro/services/" class="side-cta">ご依頼・お見積り</a>
             </div>
 
-            <div class="d-obj monster" style="left:72%; top:34%;" data-href="save/matan/">
-                <span class="d-obj-label">DEVELOPER<small>せいさくしゃ</small></span>
-                <div class="d-icon monster-icon boss">
-                    <div class="horn left"></div>
-                    <div class="horn right"></div>
-                    <div class="body"></div>
-                    <div class="eye left"></div>
-                    <div class="eye right"></div>
-                </div>
-            </div>
+            <div class="list-panel">
+                <header class="list-head">
+                    <span class="list-head-en">SELECT DATA</span>
+                    <span class="list-head-ja">つかえるサービスと、つくっているもの</span>
+                    <span class="list-count">全7件</span>
+                </header>
 
-            <!-- ゾーン2: 使えるサービス(成果物) -->
-            <div class="d-obj chest" style="left:12%; top:64%;" data-href="intro/card/">
-                <span class="d-obj-label">HEXA CARD<small>電子名刺</small></span>
-                <div class="d-icon chest-icon">
-                    <div class="lid"></div>
-                    <div class="body"></div>
-                    <div class="lock"></div>
-                </div>
-            </div>
+                <div class="list-body">
+                    <p class="group"><span class="group-en">NOW PLAYING</span><span class="group-ja">いま使える</span><i></i></p>
+                <details class="svc">
+                    <summary class="svc-row">
+                        <span class="svc-inner">
+                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#ffcc4d" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14"/><path d="M2 10h20"/><path d="M6 15h5"/></svg></span>
+                            <span class="svc-text">
+                                <span class="svc-name">HEXA CARD</span>
+                                <span class="svc-lead">スマホをかざすだけで、連絡先も実績もまとめて渡せる名刺</span>
+                            </span>
+                            <span class="svc-side">
+                                <span class="badge live">公開中</span>
+                                <span class="svc-more">くわしく</span>
+                            </span>
+                        </span>
+                    </summary>
+                    <div class="svc-detail">
+                        <p class="svc-desc">カードを相手のスマホにかざすと、ブラウザが開いてあなたのプロフィールが出ます。専用アプリは要りません。見た目・BGM・アニメーションまで自分で変えられます。</p>
+                        <p class="chips"><span>アプリ不要</span><span>買い切り</span><span>1万通り以上のカスタマイズ</span></p>
+                        <p class="svc-actions"><a href="intro/card/" class="btn-sky">くわしいページを見る &#9654;</a><a href="https://virtual-business-card.hexa-relation.com/?utm_source=hp&utm_medium=top&utm_campaign=hexacard" class="btn-ghost">サービスを開く</a></p>
+                    </div>
+                </details>
+                <details class="svc">
+                    <summary class="svc-row">
+                        <span class="svc-inner">
+                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#ffcc4d" stroke-width="2" aria-hidden="true"><path d="M4 4h16v13H4z"/><path d="M8 21h8"/><path d="M8 9h4"/><path d="M8 13h8"/></svg></span>
+                            <span class="svc-text">
+                                <span class="svc-name">SPI CHECK</span>
+                                <span class="svc-lead">就活のSPI、いまの自分が何点取れるかが25分でわかる</span>
+                            </span>
+                            <span class="svc-side">
+                                <span class="badge live">公開中</span>
+                                <span class="svc-more">くわしく</span>
+                            </span>
+                        </span>
+                    </summary>
+                    <div class="svc-detail">
+                        <p class="svc-desc">SPI3形式の独自問題50問を25分で解きます。得意・苦手が12分野でわかり、「そもそも解けない」のか「解けるのに時間が足りない」のかまで切り分かります。</p>
+                        <p class="chips"><span>無料</span><span>登録不要</span><span>結果はその場で</span></p>
+                        <p class="svc-actions"><a href="intro/spi-check/" class="btn-sky">くわしいページを見る &#9654;</a><a href="https://spi-check.hexa-relation.com/?utm_source=hp&utm_medium=top&utm_campaign=spicheck" class="btn-ghost">サービスを開く</a></p>
+                    </div>
+                </details>
+                <details class="svc">
+                    <summary class="svc-row">
+                        <span class="svc-inner">
+                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#ffcc4d" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M3 12h18"/></svg></span>
+                            <span class="svc-text">
+                                <span class="svc-name">TOP3ANIME</span>
+                                <span class="svc-lead">好きなアニメ3本を選ぶと、シェアできる1枚のカードになる</span>
+                            </span>
+                            <span class="svc-side">
+                                <span class="badge live">公開中</span>
+                                <span class="svc-more">くわしく</span>
+                            </span>
+                        </span>
+                    </summary>
+                    <div class="svc-detail">
+                        <p class="svc-desc">3本えらぶだけでカードができます。URLになるので、そのまま人に渡せます。ほかの人のカードから、知らなかった作品にも出会えます。</p>
+                        <p class="chips"><span>入力なし</span><span>URLで共有</span><span>1950年代から収録</span></p>
+                        <p class="svc-actions"><a href="intro/top3anime/" class="btn-sky">くわしいページを見る &#9654;</a><a href="https://top3anime.hexarelation.workers.dev/?utm_source=hp&utm_medium=top&utm_campaign=top3anime" class="btn-ghost">サービスを開く</a></p>
+                    </div>
+                </details>
+                <details class="svc">
+                    <summary class="svc-row">
+                        <span class="svc-inner">
+                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#ffcc4d" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14"/><path d="M10 9l5 3-5 3z"/></svg></span>
+                            <span class="svc-text">
+                                <span class="svc-name">trendi</span>
+                                <span class="svc-lead">毎日のショート動画を、台本づくりから投稿まで自動で回す仕組み</span>
+                            </span>
+                            <span class="svc-side">
+                                <span class="badge live">運用中</span>
+                                <span class="svc-more">くわしく</span>
+                            </span>
+                        </span>
+                    </summary>
+                    <div class="svc-detail">
+                        <p class="svc-desc">漢字クイズ・IQテスト・怪談など複数のシリーズを、声とキャラクターを統一したまま毎日配信しています。自社で運用している仕組みで、外部への提供はしていません。</p>
+                        <p class="chips"><span>毎日配信</span><span>複数シリーズ</span><span>投稿まで自動</span></p>
+                        <p class="svc-actions"><a href="intro/trendi/" class="btn-sky">くわしいページを見る &#9654;</a><a href="https://www.youtube.com/@hexa-relation" class="btn-ghost">サービスを開く</a></p>
+                    </div>
+                </details>
+                <details class="svc">
+                    <summary class="svc-row">
+                        <span class="svc-inner">
+                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#ffcc4d" stroke-width="2" aria-hidden="true"><rect x="2" y="6" width="20" height="12"/><path d="M7 10h6"/><path d="M7 14h10"/></svg></span>
+                            <span class="svc-text">
+                                <span class="svc-name">物語劇場</span>
+                                <span class="svc-lead">世界に伝わる物語を、1本1話でじっくり語るナレーション番組</span>
+                            </span>
+                            <span class="svc-side">
+                                <span class="badge live">運用中</span>
+                                <span class="svc-more">くわしく</span>
+                            </span>
+                        </span>
+                    </summary>
+                    <div class="svc-detail">
+                        <p class="svc-desc">語り手はマタン。急がず、間と抑揚で聞かせるラジオドラマ風の長尺シリーズです。1日2本お届けしています。台本はこの番組だけ手で書いています。</p>
+                        <p class="chips"><span>1日2本</span><span>長尺・横画面</span><span>台本は手書き</span></p>
+                        <p class="svc-actions"><a href="intro/story-channel/" class="btn-sky">くわしいページを見る &#9654;</a><a href="https://www.youtube.com/@hexa-relation" class="btn-ghost">サービスを開く</a></p>
+                    </div>
+                </details>
 
-            <div class="d-obj portal" style="left:38%; top:64%;" data-href="https://top3anime.hexarelation.workers.dev/">
-                <span class="d-obj-label">TOP3ANIME<small>すきなアニメ3選</small></span>
-                <div class="d-icon portal-icon">
-                    <div class="frame"></div>
-                    <div class="swirl"></div>
+                    <p class="group coming"><span class="group-en">COMING</span><span class="group-ja">つくっているもの</span><i></i></p>
+                <details class="svc wip">
+                    <summary class="svc-row">
+                        <span class="svc-inner">
+                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9a8bbf" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+                            <span class="svc-text">
+                                <span class="svc-name">カイロス</span>
+                                <span class="svc-lead">動画を渡すだけで、AIが切って繋いで1本に仕上げる</span>
+                            </span>
+                            <span class="svc-side">
+                                <span class="badge dev">開発中</span>
+                                <span class="svc-more">くわしく</span>
+                            </span>
+                        </span>
+                    </summary>
+                    <div class="svc-detail">
+                        <p class="svc-desc">発話の「間」を残して切るところに一番手をかけています。設定を細かく詰めなくても成立することを前提に設計しています。まだお使いいただけません。</p>
+                        <p class="chips"><span>開発中</span></p>
+                        <p class="svc-actions"><a href="intro/kairos/" class="btn-sky">くわしいページを見る &#9654;</a></p>
+                    </div>
+                </details>
+                <details class="svc wip">
+                    <summary class="svc-row">
+                        <span class="svc-inner">
+                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9a8bbf" stroke-width="2" aria-hidden="true"><path d="M4 20V8l8-4 8 4v12"/><path d="M12 4v16"/><path d="M8 12h8"/></svg></span>
+                            <span class="svc-text">
+                                <span class="svc-name">聴き宮</span>
+                                <span class="svc-lead">人に言えない話を、匿名で神父に聞いてもらえる場所</span>
+                            </span>
+                            <span class="svc-side">
+                                <span class="badge dev">開発中</span>
+                                <span class="svc-more">くわしく</span>
+                            </span>
+                        </span>
+                    </summary>
+                    <div class="svc-detail">
+                        <p class="svc-desc">同時に対応できるのは1名のみ。話し終えたあと、任意の金額でお布施を送れます。カウンセリングでも医療でもありません。まだお使いいただけません。</p>
+                        <p class="chips"><span>開発中</span></p>
+                        <p class="svc-actions"><a href="intro/kikimiya/" class="btn-sky">くわしいページを見る &#9654;</a></p>
+                    </div>
+                </details>
                 </div>
-            </div>
 
-            <div class="d-obj locked" style="left:62%; top:64%;">
-                <span class="d-obj-label">カイロス<small>鋭意製作中</small></span>
-                <div class="d-icon lockmark-icon">
-                    <div class="shackle"></div>
-                    <div class="body"></div>
-                    <div class="keyhole"></div>
-                </div>
-            </div>
-
-            <div class="d-obj portal" style="left:88%; top:64%;" data-href="https://spi-check.hexa-relation.com/">
-                <span class="d-obj-label">SPI CHECK<small>適性検査を無料診断</small></span>
-                <div class="d-icon portal-icon">
-                    <div class="frame"></div>
-                    <div class="swirl"></div>
-                </div>
-            </div>
-
-            <!-- ゾーン3: ご依頼・お問い合わせ -->
-            <div class="d-obj monster" style="left:50%; top:88%;" data-href="intro/services/">
-                <span class="d-obj-label">ご依頼・お見積り<small>REQUEST</small></span>
-                <div class="d-icon monster-icon slime">
-                    <div class="body"></div>
-                    <div class="eye left"></div>
-                    <div class="eye right"></div>
-                </div>
-            </div>
-
-            <div id="dungeon-player">
-                <img id="dungeon-player-sprite" src="assets/っっj-removebg-preview.png" alt="">
-                <div id="interact-prompt">!</div>
+                <p class="hint-bar">きになる ものを クリック ／ タップ　—　ESC でもどる</p>
             </div>
         </div>
-        <p class="hint-bar">気になる ものを クリック / タップ、または 矢印キーで うごこう</p>
     </section>
 
     <footer style="background:#000; color:#333; text-align:center; padding: 20px; font-family:'Press Start 2P',monospace; font-size:0.5rem;">
@@ -472,139 +570,26 @@
 
     <script>
         const screenTitle = document.getElementById('screen-title');
-        const screenDungeon = document.getElementById('screen-dungeon');
+        const screenList = document.getElementById('screen-list');
         const btnStart = document.getElementById('btn-start');
         const btnBack = document.getElementById('btn-back');
 
-        function goTo(href) {
-            if (href.startsWith('#')) {
-                const target = document.querySelector(href);
-                if (target) target.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                window.location.href = href;
-            }
-        }
-
-        function startGame() {
+        function showList() {
             screenTitle.classList.remove('active');
-            screenDungeon.classList.add('active');
+            screenList.classList.add('active');
         }
-
         function backToTitle() {
-            screenDungeon.classList.remove('active');
+            screenList.classList.remove('active');
             screenTitle.classList.add('active');
+            window.scrollTo(0, 0);
         }
-
-        btnStart.addEventListener('click', startGame);
+        btnStart.addEventListener('click', showList);
         btnBack.addEventListener('click', backToTitle);
 
-        // ===== Dungeon: top-down room, player walks in 4 directions to the clicked chest/monster =====
-        const dungeonBg = document.getElementById('dungeon-bg');
-        const dPlayer = document.getElementById('dungeon-player');
-        const dSprite = document.getElementById('dungeon-player-sprite');
-        const interactPrompt = document.getElementById('interact-prompt');
-        const dObjs = Array.from(document.querySelectorAll('.d-obj'));
+        /* 一覧は details/summary で開くだけなので、遷移用のJSは持たない。
+           リンクはすべて素の <a>。JSが落ちてもサービスには辿り着ける。 */
 
-        let dPlayerX = 50; // percent, left offset
-        let dPlayerY = 50; // percent, top offset
-        const X_MIN = 4, X_MAX = 96, Y_MIN = 12, Y_MAX = 92;
-        let dMoveTarget = null; // { x, y } click-to-move destination, or null
-        let dPendingHref = null;
-        const D_SPEED = 0.55; // percent per frame
-        const D_ARRIVE_OFFSET = 9; // stand this many percent below the object
-        const D_RANGE = 13; // proximity radius (percent) for keyboard "nearest object"
-        const keys = {};
-        let facing = 1;
-
-        function updateDungeonPlayer() {
-            dPlayer.style.left = dPlayerX + '%';
-            dPlayer.style.top = dPlayerY + '%';
-        }
-
-        function walkTo(objLeft, objTop, href) {
-            const x = Math.max(X_MIN, Math.min(X_MAX, objLeft));
-            const y = Math.max(Y_MIN, Math.min(Y_MAX, objTop + D_ARRIVE_OFFSET));
-            dMoveTarget = { x, y };
-            dPendingHref = href;
-        }
-
-        dObjs.forEach((obj) => {
-            obj.addEventListener('click', () => {
-                walkTo(parseFloat(obj.style.left), parseFloat(obj.style.top), obj.dataset.href);
-            });
-        });
-
-        function findNearestObj() {
-            let closest = null, closestDist = Infinity;
-            for (const obj of dObjs) {
-                const dx = parseFloat(obj.style.left) - dPlayerX;
-                const dy = parseFloat(obj.style.top) - dPlayerY;
-                const dist = Math.hypot(dx, dy);
-                if (dist < D_RANGE && dist < closestDist) { closest = obj; closestDist = dist; }
-            }
-            return closest;
-        }
-
-        function dungeonLoop() {
-            let moving = false;
-
-            // Free 4-direction movement via keyboard cancels any click-to-move target
-            let mvx = 0, mvy = 0;
-            if (keys['ArrowLeft'] || keys['a'] || keys['A']) mvx -= 1;
-            if (keys['ArrowRight'] || keys['d'] || keys['D']) mvx += 1;
-            if (keys['ArrowUp'] || keys['w'] || keys['W']) mvy -= 1;
-            if (keys['ArrowDown'] || keys['s'] || keys['S']) mvy += 1;
-
-            if (mvx !== 0 || mvy !== 0) {
-                dMoveTarget = null;
-                const len = Math.hypot(mvx, mvy) || 1;
-                dPlayerX = Math.max(X_MIN, Math.min(X_MAX, dPlayerX + (mvx / len) * D_SPEED));
-                dPlayerY = Math.max(Y_MIN, Math.min(Y_MAX, dPlayerY + (mvy / len) * D_SPEED));
-                if (mvx !== 0) facing = mvx;
-                moving = true;
-            } else if (dMoveTarget !== null) {
-                const dx = dMoveTarget.x - dPlayerX;
-                const dy = dMoveTarget.y - dPlayerY;
-                const dist = Math.hypot(dx, dy);
-                if (dist < 1) {
-                    dPlayerX = dMoveTarget.x;
-                    dPlayerY = dMoveTarget.y;
-                    dMoveTarget = null;
-                    if (dPendingHref) {
-                        const href = dPendingHref;
-                        dPendingHref = null;
-                        setTimeout(() => goTo(href), 200);
-                    }
-                } else {
-                    dPlayerX += (dx / dist) * D_SPEED;
-                    dPlayerY += (dy / dist) * D_SPEED;
-                    if (Math.abs(dx) > 0.3) facing = dx > 0 ? 1 : -1;
-                    moving = true;
-                }
-            }
-
-            dPlayer.classList.toggle('face-left', facing === -1);
-            dSprite.classList.toggle('walk', moving);
-            interactPrompt.classList.toggle('show', !!findNearestObj());
-            updateDungeonPlayer();
-        }
-        updateDungeonPlayer();
-        setInterval(dungeonLoop, 16);
-
-        window.addEventListener('keydown', (e) => {
-            if (!screenDungeon.classList.contains('active')) return;
-            const gameKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
-            if (gameKeys.includes(e.key)) e.preventDefault();
-            keys[e.key] = true;
-            if (e.key === 'Enter' || e.key === 'z' || e.key === 'Z') {
-                const near = findNearestObj();
-                if (near) { dMoveTarget = null; goTo(near.dataset.href); }
-            }
-        });
-        window.addEventListener('keyup', (e) => { keys[e.key] = false; });
-        window.addEventListener('blur', () => { for (const k in keys) keys[k] = false; });
-
-        // Secret admin sequence via keyboard: A -> C -> E
+        // 管理画面への隠しコマンド: A -> C -> E
         let aceStep = 0;
         const aceSeq = ['a', 'c', 'e'];
 
@@ -612,12 +597,10 @@
             if (screenTitle.classList.contains('active')) {
                 if (e.key === 'Enter' || e.key === ' ' || e.key === 'z' || e.key === 'Z') {
                     e.preventDefault();
-                    startGame();
+                    showList();
                 }
-            } else if (screenDungeon.classList.contains('active')) {
-                if (e.key === 'Escape') {
-                    backToTitle();
-                }
+            } else if (screenList.classList.contains('active') && e.key === 'Escape') {
+                backToTitle();
             }
 
             const k = e.key.toLowerCase();
