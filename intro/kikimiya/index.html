@@ -3,61 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>聴き宮｜人に言えない話を匿名で聞いてもらえる場所（開発中） | Hexa Relation</title>
-    <meta name="description" content="匿名の来訪者が「神父」と一対一で話せるオンライン告解室。同時に対応できるのは1名のみ。カウンセリングでも医療でもありません。現在開発中です。">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/intro/service.css">
+    <title>聴き宮｜ただ、聴くだけの部屋 | Hexa Relation</title>
+    <meta name="description" content="名前も登録も要らない、ただ話を聴くだけの部屋。助言も評価もしません。話した内容と声は、部屋を出た時点で消えます。カウンセリングでも医療でもありません。">
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <style>
+        /*
+          ⚠ このページだけ、ほかの紹介ページと作りを変えている。
+
+          聴き宮は「ただ聴くだけの部屋」で、サービス自身の言葉づかいが静かなため、
+          サイト共通の8bit（ピクセルフォント・金色のCTA・ハードシャドウ）を当てると
+          場そのものと喧嘩する。ここでは明朝・低彩度・広い余白で作る。
+          assets/intro/service.css は意図的に読み込んでいない。
+        */
+        * { box-sizing: border-box; }
+        html, body {
+            margin: 0; padding: 0;
+            background: #0a0908; color: #e6e0d6;
+            font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
+            overflow-x: hidden;
+            /* 灯りをひとつだけ置く */
+            background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(212,163,115,0.13), transparent 70%);
+            background-repeat: no-repeat;
+        }
+        a { color: inherit; }
+        .wrap { max-width: 620px; margin: 0 auto; padding: 0 26px; }
+
+        .back { display: inline-block; margin: 30px 0 0; font-size: 0.78rem; color: #6f6a62; text-decoration: none; letter-spacing: 0.08em; }
+        .back:hover { color: #d4a373; }
+
+        header { padding: 84px 0 64px; text-align: center; }
+        .mark { font-size: 0.72rem; letter-spacing: 0.5em; color: #8a7f70; margin: 0 0 30px; padding-left: 0.5em; }
+        h1 { font-size: clamp(1.7rem, 6vw, 2.4rem); font-weight: 400; margin: 0 0 34px; letter-spacing: 0.14em; line-height: 1.9; }
+        .lead { font-size: clamp(0.95rem, 3vw, 1.05rem); line-height: 2.4; margin: 0; color: #cfc7ba; }
+
+        /* CTA はボタンにしない。押させるより、扉を示すだけにする */
+        .enter { display: inline-block; margin-top: 52px; padding: 17px 40px; border: 1px solid #6d5f4c;
+                 color: #e6d9c3; text-decoration: none; font-size: 0.95rem; letter-spacing: 0.22em;
+                 transition: border-color .3s, color .3s, background .3s; }
+        .enter:hover { border-color: #d4a373; color: #f2e6d2; background: rgba(212,163,115,0.07); }
+        .enter-note { margin: 20px 0 0; font-size: 0.75rem; color: #6f6a62; letter-spacing: 0.06em; }
+
+        .rule { width: 1px; height: 72px; background: linear-gradient(#3a352d, transparent); margin: 0 auto; }
+
+        section { padding: 26px 0 40px; }
+        .points { list-style: none; margin: 0; padding: 0; }
+        .points li { padding: 26px 0; border-bottom: 1px solid #211e1a; }
+        .points li:last-child { border-bottom: none; }
+        .points b { display: block; font-weight: 400; font-size: 1rem; letter-spacing: 0.1em; margin-bottom: 12px; color: #e6e0d6; }
+        .points span { font-size: 0.86rem; line-height: 2.2; color: #9a9287; }
+
+        /* 免責。静かな見た目のまま、読み飛ばされない濃さにする */
+        .notice { margin: 34px 0 0; padding: 26px 24px; border: 1px solid #4a3a2c; background: rgba(212,163,115,0.04); }
+        .notice p { margin: 0 0 14px; font-size: 0.84rem; line-height: 2.15; color: #b9ab99; }
+        .notice p:last-child { margin-bottom: 0; }
+        .notice strong { color: #d4a373; font-weight: 400; }
+        .notice a { color: #d4a373; }
+
+        footer { padding: 64px 0 56px; text-align: center; border-top: 1px solid #1b1815; margin-top: 56px; }
+        footer a { font-size: 0.78rem; color: #6f6a62; text-decoration: none; margin: 0 12px; letter-spacing: 0.06em; }
+        footer a:hover { color: #d4a373; }
+        footer .copy { margin: 26px 0 0; font-size: 0.7rem; color: #443f38; font-family: 'DotGothic16', sans-serif; letter-spacing: 0.1em; }
+    </style>
 </head>
 <body>
-    <a href="../../" class="back-link">◀ もどる</a>
-    <header class="hero">
-        <p class="eyebrow px">ONLINE CONFESSIONAL</p>
-        <p class="status wip px">開発中</p>
-        <h1 class="title px">聴き宮</h1>
-        <p class="lead">人に言えない話を、匿名で神父に聞いてもらえる場所。</p>
-        <p class="sub">同時に対応できるのは1名のみ。話し終えたあと、来訪者は任意の金額でお布施を送れます。現在つくっている最中です。</p>
-        <span class="pixel-btn pending">準備中</span>
-    </header>
+    <div class="wrap">
+        <a href="../../" class="back">◀ もどる</a>
 
-    <section>
-        <h2 class="section-title">つくっているもの<small class="px">WHAT</small></h2>
-        <div class="feature-grid">
-            <div class="item-card">
-                <p class="item-tag px">ANONYMOUS</p>
-                <h3 class="item-name">名前を出さずに話せる</h3>
-                <p class="item-desc">来訪者は匿名のまま入れます。誰が話したかは残りません。</p>
-            </div>
-            <div class="item-card">
-                <p class="item-tag px">ONE AT A TIME</p>
-                <h3 class="item-name">同時に入れるのは1人だけ</h3>
-                <p class="item-desc">同時に複数を捌かない設計です。話している間、その場はその人のものになります。</p>
-            </div>
-            <div class="item-card">
-                <p class="item-tag px">OFFERING</p>
-                <h3 class="item-name">お布施は任意</h3>
-                <p class="item-desc">話し終えたあとに、金額を自分で決めて送れます。先に払う必要はありません。</p>
-            </div>
-        </div>
-    </section>
+        <header>
+            <p class="mark">KIKIMIYA</p>
+            <h1>ただ、聴くだけの部屋</h1>
+            <p class="lead">名前も、登録も要りません。<br>話したいことを、話したいだけ。<br>助言も評価もしません。</p>
+            <a href="https://kikimiya.hexa-relation.com/?utm_source=hp&utm_medium=intro&utm_campaign=kikimiya" class="enter">部屋へ入る</a>
+            <p class="enter-note">同時に入れるのは、ひとりだけです。</p>
+        </header>
 
-    <div class="disclaimer strong">
-        <strong>これはカウンセリングでも医療でもありません。</strong><br>
-        人に言えないことを打ち明け、神父がそれに応える場所です。神父は資格を持った専門家ではなく、返ってくるのは診断や専門的な助言ではなく、ひとりの人間の言葉です。<br>
-        いのちに関わる緊急のご相談は、この場ではなく専門の相談窓口へお願いします。公開時に、窓口の一覧をサービス内からご案内します。
+        <div class="rule"></div>
+
+        <section>
+            <ul class="points">
+                <li>
+                    <b>名前を訊きません</b>
+                    <span>登録もログインもありません。あなたが誰かを、こちらが知ることはありません。</span>
+                </li>
+                <li>
+                    <b>話したことは、残りません</b>
+                    <span>話した内容と声は、部屋を出た時点で消えます。あとから読み返される場所ではありません。</span>
+                </li>
+                <li>
+                    <b>ひとりぶんの時間を、そのまま</b>
+                    <span>同時に対応できるのは1名のみです。神父が席を外しているときは、文章でお預かりして、読んだうえであとからお返事します。</span>
+                </li>
+                <li>
+                    <b>お布施は任意です</b>
+                    <span>納めても納めなくても、話す時間は変わりません。話し終えたあとに、金額はご自分で決められます。</span>
+                </li>
+            </ul>
+
+            <div class="notice">
+                <p><strong>ここはカウンセリングでも医療でもありません。</strong>ただ、聴くだけの場所です。神父は資格を持った専門家ではなく、返ってくるのは診断や専門的な助言ではなく、ひとりの人間の言葉です。</p>
+                <p>いのちに関わる緊急のご相談は、この場ではなく専門の窓口へお願いします。<a href="https://kikimiya.hexa-relation.com/help">相談窓口の一覧</a>／<a href="https://kikimiya.hexa-relation.com/terms">利用規約・免責</a></p>
+            </div>
+        </section>
+
+        <footer>
+            <a href="../../">▲ Hexa Relation へ戻る</a>
+            <a href="https://kikimiya.hexa-relation.com/?utm_source=hp&utm_medium=intro&utm_campaign=kikimiya&utm_content=footer">聴き宮を開く</a>
+            <p class="copy">&copy; 2026 HEXA RELATION</p>
+        </footer>
     </div>
-
-    <div class="cta-block">
-        <p>公開できる状態になったら、このページでお知らせします。</p>
-        <a href="../../" class="pixel-btn">▶ ほかのサービスを見る</a>
-    </div>
-    <footer>
-        <a href="../../">▲ TOPへ戻る</a>
-        <p style="margin-top:14px;">
-            <a href="https://www.youtube.com/@hexa-relation" class="footer-sns">YouTube</a>
-            <span style="margin:0 6px;">/</span>
-            <a href="https://www.instagram.com/hexarelation/" class="footer-sns">Instagram</a>
-        </p>
-        <p style="margin-top:14px;">&copy; 2026 HEXA RELATION</p>
-    </footer>
 </body>
 </html>

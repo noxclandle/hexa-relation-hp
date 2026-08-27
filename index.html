@@ -294,6 +294,23 @@
         }
         .btn-ghost:hover { border-color: #7fd4f0; color: #7fd4f0; }
 
+        /* 聴き宮だけ、行の色を落として静かに見せる。
+           「ただ聴くだけの部屋」なので、ほかと同じ金色で並ぶと場と合わない。
+           紹介ページ側（intro/kikimiya/）も同じ理由で明朝の別デザインにしてある。 */
+        .svc.quiet .svc-name { color: #e6d9c3; }
+        .svc.quiet .svc-lead { color: #9a9287; }
+        .badge.quiet { color: #0a0908; background: #d4a373; }
+        .svc.quiet[open] > .svc-row { border-color: #6d5f4c; background: rgba(212,163,115,0.07); }
+        .svc.quiet .svc-detail {
+            border-color: #6d5f4c;
+            background: linear-gradient(135deg, rgba(212,163,115,0.10), rgba(212,163,115,0.03));
+        }
+        .svc.quiet .svc-desc { color: #e2d8c8; }
+        .svc.quiet .chips span { border-color: #8a7256; color: #d4a373; }
+        .svc.quiet .btn-sky { background: transparent; color: #e6d9c3; border: 1px solid #6d5f4c; box-shadow: none; }
+        .svc.quiet .btn-sky:active { transform: none; box-shadow: none; }
+        .svc.quiet .btn-ghost:hover { border-color: #d4a373; color: #d4a373; }
+
         .hint-bar {
             margin: 0; background: #000; border-top: 4px solid #7a2fbf; box-shadow: inset 0 0 0 2px #fff;
             padding: 13px; text-align: center; color: #ffcc4d; font-size: 0.68rem;
@@ -381,8 +398,8 @@
                     <p class="side-role">Matin Catorce ／ AI社長<br>設計から実装まで、全部こいつが仕上げる</p>
                 </div>
                 <div class="side-stats">
-                    <div class="stat"><b>5</b><span>公開中</span></div>
-                    <div class="stat"><b class="wip">2</b><span>開発中</span></div>
+                    <div class="stat"><b>6</b><span>公開中</span></div>
+                    <div class="stat"><b class="wip">3</b><span>開発中</span></div>
                     <div class="stat"><b class="small">2026.07</b><span>設立</span></div>
                 </div>
             </aside>
@@ -400,7 +417,7 @@
                 <header class="list-head">
                     <span class="list-head-en">SELECT DATA</span>
                     <span class="list-head-ja">つかえるサービスと、つくっているもの</span>
-                    <span class="list-count">全7件</span>
+                    <span class="list-count">全9件</span>
                 </header>
 
                 <div class="list-body">
@@ -505,6 +522,26 @@
                         <p class="svc-actions"><a href="intro/story-channel/" class="btn-sky">くわしいページを見る &#9654;</a><a href="https://www.youtube.com/@hexa-relation" class="btn-ghost">サービスを開く</a></p>
                     </div>
                 </details>
+                <details class="svc quiet">
+                    <summary class="svc-row">
+                        <span class="svc-inner">
+                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#d4a373" stroke-width="2" aria-hidden="true"><path d="M4 20V8l8-4 8 4v12"/><path d="M12 4v16"/><path d="M8 12h8"/></svg></span>
+                            <span class="svc-text">
+                                <span class="svc-name">聴き宮</span>
+                                <span class="svc-lead">名前も登録も要らない、ただ聴くだけの部屋</span>
+                            </span>
+                            <span class="svc-side">
+                                <span class="badge quiet">公開中</span>
+                                <span class="svc-more">くわしく</span>
+                            </span>
+                        </span>
+                    </summary>
+                    <div class="svc-detail">
+                        <p class="svc-desc">助言も評価もしません。話した内容と声は、部屋を出た時点で消えます。同時に入れるのはひとりだけ。お布施は任意で、納めても納めなくても話す時間は変わりません。カウンセリングでも医療でもありません。</p>
+                        <p class="chips"><span>匿名</span><span>ひとりずつ</span><span>話は残らない</span></p>
+                        <p class="svc-actions"><a href="intro/kikimiya/" class="btn-sky">くわしいページを見る &#9654;</a><a href="https://kikimiya.hexa-relation.com/?utm_source=hp&amp;utm_medium=top&amp;utm_campaign=kikimiya" class="btn-ghost">部屋へ入る</a></p>
+                    </div>
+                </details>
 
                     <p class="group coming"><span class="group-en">COMING</span><span class="group-ja">つくっているもの</span><i></i></p>
                 <details class="svc wip">
@@ -530,10 +567,10 @@
                 <details class="svc wip">
                     <summary class="svc-row">
                         <span class="svc-inner">
-                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9a8bbf" stroke-width="2" aria-hidden="true"><path d="M4 20V8l8-4 8 4v12"/><path d="M12 4v16"/><path d="M8 12h8"/></svg></span>
+                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9a8bbf" stroke-width="2" aria-hidden="true"><path d="M9 4h6v3H9z"/><rect x="5" y="7" width="14" height="14"/><path d="M9 12h6"/><path d="M9 16h6"/></svg></span>
                             <span class="svc-text">
-                                <span class="svc-name">聴き宮</span>
-                                <span class="svc-lead">人に言えない話を、匿名で神父に聞いてもらえる場所</span>
+                                <span class="svc-name">GENBA</span>
+                                <span class="svc-lead">現場の入力は増やさずに、監査で説明できる記録が残る</span>
                             </span>
                             <span class="svc-side">
                                 <span class="badge dev">開発中</span>
@@ -542,9 +579,29 @@
                         </span>
                     </summary>
                     <div class="svc-detail">
-                        <p class="svc-desc">同時に対応できるのは1名のみ。話し終えたあと、任意の金額でお布施を送れます。カウンセリングでも医療でもありません。まだお使いいただけません。</p>
-                        <p class="chips"><span>開発中</span></p>
-                        <p class="svc-actions"><a href="intro/kikimiya/" class="btn-sky">くわしいページを見る &#9654;</a></p>
+                        <p class="svc-desc">現場の是正作業を進めるだけで、誰が・いつ・何を根拠にやったかが自動で残ります。主な流れは1画面で終わるように組んでいます。まだお使いいただけません。</p>
+                        <p class="chips"><span>1画面で完結</span><span>証跡は自動</span><span>監査に出せる形</span></p>
+                        <p class="svc-actions"><a href="intro/genba/" class="btn-sky">くわしいページを見る &#9654;</a></p>
+                    </div>
+                </details>
+                <details class="svc wip">
+                    <summary class="svc-row">
+                        <span class="svc-inner">
+                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9a8bbf" stroke-width="2" aria-hidden="true"><path d="M6 3h12v18H6z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h3"/></svg></span>
+                            <span class="svc-text">
+                                <span class="svc-name">日報アプリ</span>
+                                <span class="svc-lead">スマホで日報を書いて、そのままPDFにできる</span>
+                            </span>
+                            <span class="svc-side">
+                                <span class="badge dev">開発中</span>
+                                <span class="svc-more">くわしく</span>
+                            </span>
+                        </span>
+                    </summary>
+                    <div class="svc-detail">
+                        <p class="svc-desc">現場から戻ってPCを開き直さなくても、その場で書いて出せることを狙っています。走り書きを読める文章に整える機能も試しています。まだお使いいただけません。</p>
+                        <p class="chips"><span>スマホで書く</span><span>そのままPDF</span><span>走り書きを整える</span></p>
+                        <p class="svc-actions"><a href="intro/nippo/" class="btn-sky">くわしいページを見る &#9654;</a></p>
                     </div>
                 </details>
                 </div>
