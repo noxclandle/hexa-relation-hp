@@ -15,7 +15,12 @@ def check_youtube_live():
     print(f"[{datetime.now()}] Checking live status for {CHANNEL_HANDLE}...")
     req = urllib.request.Request(
         TARGET_URL,
-        headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
+        headers={
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            # GitHub Actions は海外IPのため、明示しないと英語表記のHTMLが返り登録者数を取り逃す
+            'Accept-Language': 'ja,en;q=0.8',
+            'Cookie': 'CONSENT=YES+cb; SOCS=CAI',
+        }
     )
     
     try:
@@ -39,16 +44,50 @@ def check_youtube_live():
     else:
         print("Not live.")
 
-    # チャンネル登録者数を抽出 (例: "content":"チャンネル登録者数 1990人")
-    subscriber_count = None
-    sub_match = re.search(r'"content":"\s*チャンネル登録者数\s*([\d,]+)人"', html)
-    if sub_match:
-        subscriber_count = int(sub_match.group(1).replace(',', ''))
+    subscriber_count = extract_subscriber_count(html)
+    if subscriber_count is not None:
         print(f"Subscriber count: {subscriber_count}")
     else:
         print("Subscriber count could not be extracted.")
 
     return is_live, video_id, subscriber_count
+
+
+def extract_subscriber_count(html):
+    """チャンネル登録者数を抽出する。
+
+    /live は「配信中なら watch ページ」「配信していなければチャンネルページ」と
+    別物のHTMLが返り、登録者数の埋まっている場所が違う。片方しか見ていないと
+    取得できずに前回値を維持し続けてしまうため、両方のパターンを順に試す。
+    """
+    # 1) watch ページ (配信中): subscriberCountText の近傍にある
+    for m in re.finditer(r'"subscriberCountText"', html):
+        seg = html[m.start():m.start() + 300]
+        hit = re.search(r'チャンネル登録者数\s*([\d,]+)人', seg)
+        if hit:
+            return int(hit.group(1).replace(',', ''))
+        hit = re.search(r'([\d,.]+)([KMB]?)\s*subscribers', seg)
+        if hit:
+            return _parse_en_count(hit.group(1), hit.group(2))
+
+    # 2) チャンネルページ (配信していないとき): メタ情報の content に入っている
+    hit = re.search(r'"content":"\s*チャンネル登録者数\s*([\d,]+)人"', html)
+    if hit:
+        return int(hit.group(1).replace(',', ''))
+    hit = re.search(r'"content":"\s*([\d,.]+)([KMB]?)\s*subscribers"', html)
+    if hit:
+        return _parse_en_count(hit.group(1), hit.group(2))
+
+    return None
+
+
+def _parse_en_count(num, unit):
+    """英語表記 (例: 2.02K subscribers) を数値に変換する"""
+    try:
+        value = float(num.replace(',', ''))
+    except ValueError:
+        return None
+    return int(value * {'': 1, 'K': 1000, 'M': 1000000, 'B': 1000000000}[unit])
 
 def main():
     is_live, video_id, subscriber_count = check_youtube_live()
@@ -99,6 +138,9 @@ def main():
                 subprocess.run(["git", "add", "live_status.json"], check=True)
                 commit_msg = f"auto-update: ten live status changed (isLive={is_live}, videoId={video_id})"
                 subprocess.run(["git", "commit", "-m", commit_msg], check=True)
+                # GitHub Actions 側も同じファイルを更新するため、pull しないと push が
+                # 拒否され続け、更新がサイトに反映されないまま溜まっていく
+                subprocess.run(["git", "pull", "--rebase", "--autostash"], check=True)
                 subprocess.run(["git", "push"], check=True)
                 print("Successfully updated and pushed new status to remote repository.")
             except Exception as git_err:
