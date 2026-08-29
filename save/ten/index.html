@@ -787,6 +787,195 @@
             border-radius: 10px; border: 1px solid #ccc; opacity: 0; transition: opacity 0.3s;
             white-space: nowrap; pointer-events: none;
         }
+
+        /* ===== 🎂 BIRTHDAY MODE (8/30) ===== */
+        body.birthday-mode .main-container { padding-top: 58px; }
+        body.birthday-mode.is-live .main-container { padding-top: 100px; }
+        body.birthday-mode #live-badge { top: 50px; }
+        body.birthday-mode #lb-container { top: 48px; }
+        body.birthday-mode #mute-btn { display: block; top: 48px; }
+        body.birthday-mode.ff7-mode #bd-banner,
+        body.birthday-mode.ff7-mode #bd-ambient { display: none !important; }
+        body.birthday-mode.ff7-mode .main-container { padding-top: 20px; }
+        body.birthday-mode.ff7-mode #mute-btn { top: 10px; }
+
+        /* 常時表示バナー */
+        #bd-banner {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; z-index: 10800;
+            background: linear-gradient(90deg, #7e22ce, #db2777 30%, #f59e0b 55%, #db2777 80%, #7e22ce);
+            background-size: 220% 100%; animation: bd-banner-flow 7s linear infinite;
+            color: #fff; text-align: center; font-weight: 700; font-size: 13px; letter-spacing: 0.06em;
+            padding: 10px 12px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.35);
+            text-shadow: 0 2px 6px rgba(0,0,0,0.55); box-shadow: 0 4px 20px rgba(219,39,119,0.45);
+        }
+        body.birthday-mode #bd-banner { display: block; }
+        #bd-banner:active { filter: brightness(1.15); }
+        @keyframes bd-banner-flow { to { background-position: 220% 0; } }
+
+        /* 背景に舞い続ける紙吹雪・風船 */
+        #bd-ambient { display: none; position: fixed; inset: 0; pointer-events: none; z-index: 9000; overflow: hidden; }
+        body.birthday-mode #bd-ambient { display: block; }
+        .bd-conf {
+            position: absolute; top: -30px; width: 9px; height: 15px; border-radius: 2px;
+            animation: bd-fall linear forwards;
+        }
+        @keyframes bd-fall {
+            0% { transform: translate3d(0,-30px,0) rotate(0deg); opacity: 0; }
+            8% { opacity: 1; }
+            100% { transform: translate3d(var(--bd-drift, 30px), 106vh, 0) rotate(760deg); opacity: 0.1; }
+        }
+        .bd-balloon {
+            position: absolute; bottom: -90px; font-size: 34px; opacity: 0;
+            animation: bd-rise linear forwards; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.35));
+        }
+        @keyframes bd-rise {
+            0% { transform: translate3d(0,0,0) rotate(-8deg); opacity: 0; }
+            12% { opacity: 0.9; }
+            100% { transform: translate3d(var(--bd-drift, 40px), -118vh, 0) rotate(8deg); opacity: 0; }
+        }
+
+        /* フルスクリーン演出 */
+        #bd-overlay {
+            display: none; position: fixed; inset: 0; z-index: 17000; overflow: hidden;
+            background: radial-gradient(circle at 50% 34%, #4c1d95 0%, #1e1b4b 45%, #05030f 100%);
+            justify-content: flex-start; align-items: center; flex-direction: column;
+            text-align: center; padding: 24px; cursor: pointer;
+            overflow-y: auto; -webkit-overflow-scrolling: touch;
+        }
+        #bd-gate, #bd-main { margin: auto 0; }
+        body.birthday-mode #achievement-popup { z-index: 17500; }
+        #bd-overlay.active { display: flex; }
+        #bd-fx { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+        #bd-rays {
+            position: fixed; width: 220vmax; height: 220vmax; left: 50%; top: 38%;
+            transform: translate(-50%,-50%); opacity: 0; transition: opacity 1.2s;
+            background: repeating-conic-gradient(from 0deg, rgba(255,255,255,0.06) 0deg 7deg, transparent 7deg 20deg);
+            animation: bd-spin 28s linear infinite;
+        }
+        #bd-overlay.opened #bd-rays { opacity: 1; }
+        @keyframes bd-spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+        .bd-spark {
+            position: absolute; width: 6px; height: 6px; border-radius: 50%;
+            pointer-events: none; box-shadow: 0 0 8px 2px currentColor;
+            animation: bd-spark-fly ease-out forwards;
+        }
+        @keyframes bd-spark-fly {
+            0% { transform: translate(0,0) scale(1.2); opacity: 1; }
+            70% { opacity: 1; }
+            100% { transform: translate(var(--fx), var(--fy)) scale(0.2); opacity: 0; }
+        }
+
+        /* ギフト開封ゲート */
+        #bd-gate { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+        #bd-overlay.opened #bd-gate { display: none; }
+        #bd-gate-box {
+            font-size: clamp(72px, 20vw, 140px); line-height: 1;
+            filter: drop-shadow(0 0 30px rgba(250,204,21,0.85));
+            animation: bd-shake-box 1.5s ease-in-out infinite;
+        }
+        @keyframes bd-shake-box {
+            0%, 100% { transform: rotate(-6deg) scale(1); }
+            25% { transform: rotate(7deg) scale(1.07); }
+            50% { transform: rotate(-5deg) scale(1); }
+            75% { transform: rotate(6deg) scale(1.05); }
+        }
+        #bd-gate-text {
+            font-family: 'Oswald', sans-serif; font-size: clamp(19px, 5vw, 32px); color: #facc15;
+            letter-spacing: 0.1em; text-shadow: 0 0 20px rgba(250,204,21,0.85), 2px 2px 0 #000;
+        }
+        #bd-gate-sub { font-size: 12px; color: rgba(255,255,255,0.65); letter-spacing: 0.22em; animation: bd-blink 1.4s infinite; }
+        @keyframes bd-blink { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+
+        /* メイン演出 */
+        #bd-main { display: none; position: relative; z-index: 3; width: 100%; max-width: 440px; flex-direction: column; align-items: center; }
+        #bd-overlay.opened #bd-main { display: flex; }
+        #bd-portrait {
+            width: 112px; height: 112px; border-radius: 50%; object-fit: cover; object-position: center top;
+            border: 3px solid #facc15; box-shadow: 0 0 34px rgba(250,204,21,0.75);
+            animation: bd-float 3.2s ease-in-out infinite, bd-pop 0.6s cubic-bezier(0.17,0.89,0.32,1.28) both;
+        }
+        @keyframes bd-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes bd-pop { 0% { opacity: 0; transform: scale(2.1); } 100% { opacity: 1; transform: scale(1); } }
+        #bd-title {
+            margin-top: 14px; font-family: 'Oswald', sans-serif; font-weight: 900; line-height: 1.02;
+            font-size: clamp(34px, 10vw, 64px); letter-spacing: 0.01em;
+            background: linear-gradient(100deg, #fde68a, #fb7185 25%, #c084fc 50%, #38bdf8 75%, #fde68a);
+            background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+            filter: drop-shadow(0 0 16px rgba(255,214,102,0.6));
+            animation: bd-shine 5s linear infinite, bd-pop 0.7s cubic-bezier(0.17,0.89,0.32,1.28) 0.1s both;
+        }
+        @keyframes bd-shine { to { background-position: 300% 0; } }
+        #bd-name {
+            margin-top: 6px; font-size: clamp(16px, 4.4vw, 22px); font-weight: 700; color: #fff;
+            text-shadow: 0 0 16px rgba(255,255,255,0.5); opacity: 0; animation: fade-up-in 0.5s ease-out 0.5s forwards;
+        }
+        #bd-date {
+            margin-top: 4px; font-family: 'Oswald', sans-serif; font-size: 13px; letter-spacing: 0.35em;
+            color: #facc15; opacity: 0; animation: fade-up-in 0.5s ease-out 0.65s forwards;
+        }
+        #bd-msg {
+            margin-top: 16px; font-size: 13.5px; line-height: 1.9; color: rgba(255,255,255,0.92);
+            opacity: 0; animation: fade-up-in 0.5s ease-out 0.8s forwards;
+        }
+        #bd-cake { font-size: 40px; margin-top: 10px; display: inline-block; animation: bd-cake-bob 1.8s ease-in-out infinite; }
+        @keyframes bd-cake-bob { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-8px) rotate(3deg); } }
+
+        #bd-cheer-btn {
+            margin-top: 18px; width: 100%; max-width: 320px; padding: 16px 20px; border: none; border-radius: 999px;
+            font-size: 16px; font-weight: 800; color: #3b0764; cursor: pointer; letter-spacing: 0.04em;
+            background: linear-gradient(135deg, #fde68a, #fbbf24 45%, #fb7185);
+            box-shadow: 0 8px 26px rgba(251,113,133,0.55), 0 0 0 0 rgba(250,204,21,0.6);
+            animation: bd-cta-pulse 1.8s ease-in-out infinite, fade-up-in 0.5s ease-out 0.9s both;
+            transition: transform 0.15s;
+        }
+        #bd-cheer-btn:active { transform: scale(0.96); }
+        #bd-cheer-btn.done { animation: none; background: linear-gradient(135deg, #a7f3d0, #34d399); color: #064e3b; }
+        @keyframes bd-cta-pulse {
+            0%, 100% { box-shadow: 0 8px 26px rgba(251,113,133,0.5), 0 0 0 0 rgba(250,204,21,0.55); }
+            50% { box-shadow: 0 8px 30px rgba(251,113,133,0.7), 0 0 0 14px rgba(250,204,21,0); }
+        }
+        #bd-live-btn {
+            display: none; margin-top: 12px; width: 100%; max-width: 320px; padding: 14px 18px;
+            border: 2px solid #fff; border-radius: 999px; font-size: 15px; font-weight: 800; color: #fff;
+            background: linear-gradient(135deg, #ef4444, #b91c1c); cursor: pointer; letter-spacing: 0.03em;
+            box-shadow: 0 0 24px rgba(239,68,68,0.7); animation: bd-live-pulse 1.3s ease-in-out infinite;
+        }
+        #bd-live-btn.on { display: block; }
+        #bd-live-btn:active { transform: scale(0.96); }
+        @keyframes bd-live-pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(239,68,68,0.55); }
+            50% { box-shadow: 0 0 34px rgba(239,68,68,0.95); }
+        }
+
+        #bd-counter {
+            margin-top: 12px; font-size: 12.5px; color: rgba(255,255,255,0.8); letter-spacing: 0.04em;
+            opacity: 0; animation: fade-up-in 0.5s ease-out 1s forwards;
+        }
+        #bd-counter .bd-num { font-family: 'Oswald', sans-serif; font-size: 20px; color: #facc15; margin: 0 4px; text-shadow: 0 0 12px rgba(250,204,21,0.8); }
+        .bd-links { display: flex; gap: 10px; margin-top: 16px; width: 100%; max-width: 320px; opacity: 0; animation: fade-up-in 0.5s ease-out 1.15s forwards; }
+        .bd-link {
+            flex: 1; padding: 11px 8px; border-radius: 8px; font-size: 12px; font-weight: 700; text-align: center;
+            color: #fff; text-decoration: none; border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.09); transition: all 0.2s;
+        }
+        .bd-link:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.6); }
+        #bd-sound {
+            position: fixed; top: 16px; right: 16px; z-index: 5; background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.4); color: #fff; border-radius: 999px;
+            padding: 7px 14px; font-size: 12px; cursor: pointer;
+        }
+        #bd-close {
+            margin-top: 22px; font-size: 12px; color: rgba(255,255,255,0.45);
+            letter-spacing: 0.2em; opacity: 0; animation: fade-up-in 0.5s ease-out 1.6s forwards;
+        }
+        #bd-overlay:not(.opened) #bd-close { display: none; }
+
+        .bd-choice { background: linear-gradient(90deg, rgba(250,204,21,0.28), rgba(219,39,119,0.28)) !important; border-color: rgba(250,204,21,0.7) !important; }
+
+        @media (prefers-reduced-motion: reduce) {
+            #bd-gate-box, #bd-cake, #bd-portrait, #bd-rays, #bd-cheer-btn, #bd-banner { animation: none !important; }
+        }
     </style>
 </head>
 <body onload="initApp()">
@@ -821,6 +1010,38 @@
         <div id="sub-milestone-title">🎉 チャンネル登録者<br>2,000人突破！ 🎉</div>
         <div id="sub-milestone-sub">🐈 いつも応援ありがとう！ 🐈</div>
         <div id="sub-milestone-skip">── 画面をタップして閉じる ──</div>
+    </div>
+
+    <!-- 🎂 誕生日モード (8/30) -->
+    <div id="bd-banner" onclick="bdOpenOverlay()">🎂 8.30 は TEN の誕生日！ タップしてお祝いに行く 🎉</div>
+    <div id="bd-ambient"></div>
+
+    <div id="bd-overlay" onclick="bdOverlayClick(event)">
+        <div id="bd-fx"><div id="bd-rays"></div></div>
+        <button id="bd-sound" onclick="event.stopPropagation(); bdToggleSound()">🔊 SOUND: ON</button>
+
+        <div id="bd-gate" onclick="event.stopPropagation(); bdOpenGift()">
+            <div id="bd-gate-box">🎁</div>
+            <div id="bd-gate-text">TAP TO OPEN</div>
+            <div id="bd-gate-sub">── 今日は特別な日 ──</div>
+        </div>
+
+        <div id="bd-main">
+            <img id="bd-portrait" src="smile_opt.jpg" alt="TEN">
+            <div id="bd-title">HAPPY<br>BIRTHDAY!</div>
+            <div id="bd-name">🐈 てん / TENPON 🐈</div>
+            <div id="bd-date">2026 . 08 . 30</div>
+            <div id="bd-cake">🎂</div>
+            <div id="bd-msg">今日はTENの誕生日！<br>来てくれた冒険者さんと一緒にお祝いしたい！</div>
+            <button id="bd-cheer-btn" onclick="event.stopPropagation(); bdSendCheer()">🎉 おめでとうを贈る！</button>
+            <button id="bd-live-btn" onclick="event.stopPropagation(); bdGoLive()">🔴 誕生日ライブを見に行く！</button>
+            <div id="bd-counter">今日 <span class="bd-num" id="bd-count">---</span> 人がお祝いしました</div>
+            <div class="bd-links">
+                <a class="bd-link" href="https://www.youtube.com/@TENpon_ch" target="_blank" rel="noopener" onclick="event.stopPropagation()">▶ YouTubeで<br>お祝いする</a>
+                <a class="bd-link" id="bd-x-link" href="https://x.com/intent/tweet" target="_blank" rel="noopener" onclick="event.stopPropagation()">𝕏 でおめでとう<br>を送る</a>
+            </div>
+            <div id="bd-close">── 画面をタップして閉じる ──</div>
+        </div>
     </div>
 
     <!-- YouTube Live Modal -->
@@ -1091,10 +1312,13 @@
             if (isMuted) {
                 bgm.pause();
                 btn.innerText = "SOUND: OFF";
+                if (typeof bdStopMusic === 'function') bdStopMusic();
             } else {
                 if (bgmStarted) bgm.play();
                 btn.innerText = "SOUND: ON";
+                if (typeof bdOpened !== 'undefined' && bdOpened) bdStartMusic();
             }
+            if (typeof bdSyncSoundBtn === 'function') bdSyncSoundBtn();
         }
 
         async function initApp() {
@@ -1124,6 +1348,7 @@
 
             checkYouTubeLive();
             spawnMinions();
+            initBirthday();
 
             // Charge LB on interactions
             document.addEventListener('click', () => {
@@ -1166,6 +1391,12 @@
         function triggerLiveIntrusion() {
             if (liveIntrusionShown) return;
             liveIntrusionShown = true;
+
+            // 誕生日モード中は全画面演出が二重になるため、お祝い画面のライブボタンに集約
+            if (typeof bdActive !== 'undefined' && bdActive) {
+                bdShowLiveCta();
+                return;
+            }
 
             const overlay = document.getElementById('live-intrusion-overlay');
             overlay.classList.add('active');
@@ -1215,6 +1446,7 @@
                     currentLiveVideoId = newVideoId;
                     
                     if (badge) badge.style.display = 'flex';
+                    document.body.classList.add('is-live');
                     addChatMsg("システム：🔴 TENが今ライブ配信中！！今すぐ視聴しよう！", true);
                     
                     // iframe セット
@@ -1234,6 +1466,7 @@
                 if (currentLiveVideoId !== null) {
                     currentLiveVideoId = null;
                     if (badge) badge.style.display = 'none';
+                    document.body.classList.remove('is-live');
                     if (iframe) iframe.src = "";
                 }
             }
@@ -1311,6 +1544,12 @@
         function triggerSubMilestone() {
             const overlay = document.getElementById('sub-milestone-overlay');
             if (!overlay) return;
+            // 誕生日演出の表示中は終わるまで待つ
+            const bdOv = document.getElementById('bd-overlay');
+            if (bdOv && bdOv.classList.contains('active')) {
+                setTimeout(triggerSubMilestone, 3000);
+                return;
+            }
             overlay.classList.add('active');
             playFireworkSound();
             let bursts = 0;
@@ -1511,6 +1750,7 @@
                 <div class="choice-item" onclick="updateDialogue('likes')">好きなものを聞く</div>
                 <div class="choice-item" onclick="updateDialogue('mystery')">恋人について聞く</div>
             `;
+            if (document.body.classList.contains('birthday-mode')) bdInjectChoice();
         }
 
         function handleMysteryClick() {
@@ -2045,6 +2285,346 @@
             harpButtons += '<div class="choice-item w-full mt-4 justify-center" onclick="resetDialogue()">演奏を終える</div>';
             
             choices.innerHTML = harpButtons;
+        }
+
+        /* ===================================================
+           🎂 BIRTHDAY MODE — 8月30日 TENの誕生日演出
+           =================================================== */
+        const BD_MONTH = 8;
+        const BD_DAY = 30;
+        const BD_SHOW_ONCE_PER_DAY = false; // true にすると同じ端末では1日1回だけ自動表示
+        const BD_REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        let bdActive = false;
+        let bdOpened = false;
+        let bdCheered = false;
+        let bdCtx = null;
+        let bdMusicTimer = null;
+        let bdAmbientTimer = null;
+        let bdBar = 0;
+
+        // 日付は日本時間 (JST) で判定
+        function bdNowJST() {
+            const d = new Date();
+            return new Date(d.getTime() + (d.getTimezoneOffset() + 540) * 60000);
+        }
+        function bdDateKey() {
+            const d = bdNowJST();
+            return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+        }
+        function isBirthdayToday() {
+            const p = new URLSearchParams(location.search);
+            if (p.get('bd') === '1') return true;  // ?bd=1 でいつでもプレビュー
+            if (p.get('bd') === '0') return false; // ?bd=0 で強制オフ
+            const d = bdNowJST();
+            return (d.getMonth() + 1) === BD_MONTH && d.getDate() === BD_DAY;
+        }
+
+        function initBirthday() {
+            if (!isBirthdayToday()) return;
+            bdActive = true;
+            document.body.classList.add('birthday-mode');
+
+            const y = bdNowJST().getFullYear();
+            const dateEl = document.getElementById('bd-date');
+            if (dateEl) dateEl.innerText = `${y} . 08 . 30`;
+            const xLink = document.getElementById('bd-x-link');
+            if (xLink) {
+                const txt = `@TENPON_ お誕生日おめでとう！🎂🎉 #TENぽん誕生祭`;
+                xLink.href = 'https://x.com/intent/tweet?text=' + encodeURIComponent(txt);
+            }
+
+            bdStartAmbient();
+            bdWatchCheers();
+            bdInjectChoice();
+            addChatMsg("システム：🎂 今日は8月30日 —— TENの誕生日です！", true);
+
+            const seenKey = 'ten_bd_seen_' + bdDateKey();
+            const skip = BD_SHOW_ONCE_PER_DAY && localStorage.getItem(seenKey) === 'true';
+            if (!skip) {
+                try { localStorage.setItem(seenKey, 'true'); } catch (e) { /* private mode */ }
+                setTimeout(() => bdOpenOverlay(), 700);
+            }
+        }
+
+        // ---- 演出パーツ -------------------------------------------------
+        const BD_COLORS = ['#facc15', '#fb7185', '#c084fc', '#38bdf8', '#4ade80', '#fb923c', '#ffffff'];
+
+        function bdSpawnConfetti(field, count) {
+            if (!field || BD_REDUCED) return;
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'bd-conf';
+                const c = BD_COLORS[Math.floor(Math.random() * BD_COLORS.length)];
+                const dur = 3.4 + Math.random() * 3.4;
+                p.style.left = Math.random() * 100 + '%';
+                p.style.background = c;
+                p.style.width = (6 + Math.random() * 6) + 'px';
+                p.style.height = (10 + Math.random() * 10) + 'px';
+                p.style.setProperty('--bd-drift', (Math.random() * 160 - 80) + 'px');
+                p.style.animationDuration = dur + 's';
+                p.style.animationDelay = (Math.random() * 0.6) + 's';
+                field.appendChild(p);
+                setTimeout(() => p.remove(), (dur + 1.2) * 1000);
+            }
+        }
+
+        function bdSpawnBalloon(field) {
+            if (!field || BD_REDUCED) return;
+            const b = document.createElement('div');
+            b.className = 'bd-balloon';
+            b.innerText = ['🎈', '🎈', '🎈', '🎉', '🎊', '🐈'][Math.floor(Math.random() * 6)];
+            const dur = 9 + Math.random() * 6;
+            b.style.left = (5 + Math.random() * 88) + '%';
+            b.style.fontSize = (26 + Math.random() * 22) + 'px';
+            b.style.setProperty('--bd-drift', (Math.random() * 120 - 60) + 'px');
+            b.style.animationDuration = dur + 's';
+            field.appendChild(b);
+            setTimeout(() => b.remove(), (dur + 1) * 1000);
+        }
+
+        function bdStartAmbient() {
+            const field = document.getElementById('bd-ambient');
+            if (!field || BD_REDUCED || bdAmbientTimer) return;
+            bdSpawnConfetti(field, 14);
+            let tick = 0;
+            bdAmbientTimer = setInterval(() => {
+                if (document.hidden) return;                 // 非表示タブでは止める
+                if (field.childNodes.length > 90) return;    // DOMが溜まりすぎないよう上限
+                bdSpawnConfetti(field, 2);
+                if (tick % 5 === 0) bdSpawnBalloon(field);
+                tick++;
+            }, 900);
+        }
+
+        function bdBurst(cx, cy, count) {
+            const fx = document.getElementById('bd-fx');
+            if (!fx || BD_REDUCED) return;
+            const color = BD_COLORS[Math.floor(Math.random() * BD_COLORS.length)];
+            const n = count || 28;
+            for (let i = 0; i < n; i++) {
+                const p = document.createElement('div');
+                p.className = 'bd-spark';
+                const angle = (360 / n) * i + Math.random() * 12;
+                const dist = 70 + Math.random() * 160;
+                p.style.left = cx + '%';
+                p.style.top = cy + '%';
+                p.style.color = color;
+                p.style.background = color;
+                p.style.setProperty('--fx', Math.cos(angle * Math.PI / 180) * dist + 'px');
+                p.style.setProperty('--fy', Math.sin(angle * Math.PI / 180) * dist + 'px');
+                p.style.animationDuration = (0.9 + Math.random() * 0.7) + 's';
+                fx.appendChild(p);
+                setTimeout(() => p.remove(), 1800);
+            }
+        }
+
+        function bdBoom(bursts) {
+            const overlay = document.getElementById('bd-overlay');
+            if (overlay && !BD_REDUCED) {
+                overlay.style.animation = 'shake 0.45s ease-out';
+                setTimeout(() => overlay.style.animation = '', 460);
+            }
+            bdSpawnConfetti(document.getElementById('bd-fx'), 46);
+            let n = 0;
+            const total = bursts || 7;
+            const timer = setInterval(() => {
+                bdBurst(18 + Math.random() * 64, 15 + Math.random() * 50);
+                if (++n >= total) clearInterval(timer);
+            }, 260);
+            bdBurst(50, 38, 36);
+        }
+
+        // ---- 音楽 (WebAudioで生成) --------------------------------------
+        const BD_BEAT = 0.44;
+        const BD_BASS  = [130.81, 196.00, 110.00, 174.61];                 // C3 G3 A2 F3
+        const BD_CHORD = [[261.63, 329.63, 392.00], [246.94, 293.66, 392.00],
+                          [261.63, 329.63, 440.00], [261.63, 349.23, 440.00]];
+        const BD_MEL = [
+            [[329.63, .5], [392.00, .5], [523.25, 1], [493.88, .5], [392.00, .5], [440.00, 1]],
+            [[293.66, .5], [392.00, .5], [493.88, 1], [440.00, .5], [392.00, .5], [587.33, 1]],
+            [[261.63, .5], [329.63, .5], [440.00, 1], [392.00, .5], [329.63, .5], [261.63, 1]],
+            [[349.23, .5], [440.00, .5], [523.25, 1], [440.00, 1], [392.00, 1]]
+        ];
+
+        function bdAudio() {
+            try {
+                if (!bdCtx) bdCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (bdCtx.state === 'suspended') bdCtx.resume();
+                return bdCtx;
+            } catch (e) { return null; }
+        }
+
+        function bdTone(ctx, freq, at, dur, type, vol) {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.type = type || 'triangle';
+            o.frequency.setValueAtTime(freq, at);
+            o.connect(g); g.connect(ctx.destination);
+            g.gain.setValueAtTime(0.0001, at);
+            g.gain.linearRampToValueAtTime(vol, at + 0.02);
+            g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+            o.start(at); o.stop(at + dur + 0.05);
+        }
+
+        function bdPlayFanfare() {
+            const ctx = bdAudio();
+            if (!ctx || isMuted) return;
+            const t0 = ctx.currentTime + 0.02;
+            [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+                bdTone(ctx, f, t0 + i * 0.09, 0.5, 'triangle', 0.07);
+                bdTone(ctx, f * 2, t0 + i * 0.09, 0.35, 'sine', 0.028);
+            });
+            [1046.50, 1318.51, 1567.98].forEach((f, i) => bdTone(ctx, f, t0 + 0.42 + i * 0.07, 1.1, 'triangle', 0.055));
+            bdTone(ctx, 130.81, t0, 1.4, 'sine', 0.08);
+        }
+
+        function bdStartMusic() {
+            const ctx = bdAudio();
+            if (!ctx || isMuted || bdMusicTimer) return;
+            const barLen = BD_BEAT * 4;
+            const playBar = () => {
+                if (isMuted) return;
+                const t0 = ctx.currentTime + 0.06;
+                const i = bdBar % 4;
+                bdTone(ctx, BD_BASS[i], t0, barLen * 0.85, 'sine', 0.075);
+                [0, 2].forEach(b => BD_CHORD[i].forEach(f =>
+                    bdTone(ctx, f, t0 + b * BD_BEAT, BD_BEAT * 1.7, 'triangle', 0.018)));
+                let t = t0;
+                BD_MEL[i].forEach(([f, d]) => {
+                    bdTone(ctx, f * 2, t, d * BD_BEAT * 0.95, 'triangle', 0.05);
+                    bdTone(ctx, f * 4, t, d * BD_BEAT * 0.4, 'sine', 0.012);
+                    t += d * BD_BEAT;
+                });
+                [0, 1, 2, 3].forEach(b => bdTone(ctx, 2093, t0 + b * BD_BEAT + BD_BEAT / 2, 0.05, 'sine', 0.010));
+                bdBar++;
+            };
+            playBar();
+            bdMusicTimer = setInterval(playBar, barLen * 1000);
+        }
+
+        function bdStopMusic() {
+            if (bdMusicTimer) { clearInterval(bdMusicTimer); bdMusicTimer = null; }
+        }
+
+        function bdToggleSound() {
+            toggleMute();
+            bdSyncSoundBtn();
+            if (!isMuted && bdOpened) bdStartMusic();
+        }
+
+        function bdSyncSoundBtn() {
+            const b = document.getElementById('bd-sound');
+            if (b) b.innerText = isMuted ? '🔇 SOUND: OFF' : '🔊 SOUND: ON';
+        }
+
+        // ---- オーバーレイ制御 --------------------------------------------
+        function bdOpenOverlay() {
+            const ov = document.getElementById('bd-overlay');
+            if (!ov) return;
+            ov.classList.add('active');
+            ov.style.opacity = '';
+            bdSyncSoundBtn();
+            if (bdOpened) {          // 2回目以降は開封済みの状態で表示
+                ov.classList.add('opened');
+                bdBoom(4);
+                bdStartMusic();
+            }
+        }
+
+        function bdOpenGift() {
+            if (bdOpened) return;
+            bdOpened = true;
+            const ov = document.getElementById('bd-overlay');
+            if (ov) ov.classList.add('opened');
+            bdPlayFanfare();
+            bdBoom(9);
+            setTimeout(() => bdStartMusic(), 1500);
+            addChatMsg("システム：🎉 HAPPY BIRTHDAY TEN！！", true);
+        }
+
+        function bdOverlayClick(e) {
+            if (!bdOpened) { bdOpenGift(); return; }   // 未開封ならどこを押しても開封
+            bdCloseOverlay();
+        }
+
+        function bdCloseOverlay() {
+            const ov = document.getElementById('bd-overlay');
+            if (!ov) return;
+            bdStopMusic();
+            ov.style.transition = 'opacity 0.35s';
+            ov.style.opacity = '0';
+            setTimeout(() => {
+                ov.classList.remove('active');
+                ov.style.opacity = '';
+                ov.style.transition = '';
+                const fx = document.getElementById('bd-fx');
+                if (fx) Array.from(fx.querySelectorAll('.bd-spark, .bd-conf')).forEach(n => n.remove());
+            }, 350);
+        }
+
+        // ---- お祝いカウンター (Firestore) --------------------------------
+        function bdCheerField() { return 'birthdayCheers' + bdNowJST().getFullYear(); }
+
+        function bdWatchCheers() {
+            db.collection('analytics').doc(PAGE_ID).onSnapshot(doc => {
+                const n = (doc.exists && doc.data()[bdCheerField()]) || 0;
+                const el = document.getElementById('bd-count');
+                if (el) el.innerText = n.toLocaleString();
+            }, err => console.error("Birthday cheer sync error:", err));
+        }
+
+        function bdSendCheer() {
+            bdPlayFanfare();
+            bdBoom(6);
+            if (bdCheered) return;   // 加算は1人1回、演出は何度でも
+            bdCheered = true;
+
+            const btn = document.getElementById('bd-cheer-btn');
+            if (btn) {
+                btn.classList.add('done');
+                btn.innerText = '🎂 おめでとうを届けたよ！ ありがとう！';
+            }
+            const msg = document.getElementById('bd-msg');
+            if (msg) msg.innerHTML = "TEN「わぁ、ありがとう…！<br>この一年も一緒に冒険しようね！」";
+
+            db.collection('analytics').doc(PAGE_ID).set({
+                [bdCheerField()]: firebase.firestore.FieldValue.increment(1)
+            }, { merge: true }).catch(err => console.error("Birthday cheer error:", err));
+
+            addChatMsg("システム：🎉 お祝いのメッセージを届けました！", true);
+            bdAchievement();
+        }
+
+        function bdShowLiveCta() {
+            const btn = document.getElementById('bd-live-btn');
+            if (btn) btn.classList.add('on');
+            addChatMsg("システム：🔴 誕生日ライブ配信中！ 今すぐお祝いに行こう！", true);
+        }
+
+        function bdGoLive() {
+            bdCloseOverlay();
+            setTimeout(() => openLiveModal(), 400);
+        }
+
+        function bdAchievement() {
+            const popup = document.getElementById('achievement-popup');
+            const nameEl = document.getElementById('achievement-name');
+            if (!popup || !nameEl) return;
+            nameEl.innerText = '🎂 HAPPY BIRTHDAY TEN!';
+            popup.classList.add('show');
+            setTimeout(() => popup.classList.remove('show'), 3500);
+        }
+
+        // ---- 会話に誕生日の選択肢を追加 ------------------------------------
+        function bdInjectChoice() {
+            const choices = document.getElementById('choices');
+            if (!choices || choices.querySelector('.bd-choice')) return;
+            const div = document.createElement('div');
+            div.className = 'choice-item bd-choice';
+            div.setAttribute('onclick', 'bdOpenOverlay()');
+            div.innerHTML = '🎂 誕生日をお祝いする！';
+            choices.insertBefore(div, choices.firstChild);
         }
     </script>
 </body>
