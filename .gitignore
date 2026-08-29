@@ -1,2 +1,6 @@
 .vercel
 .DS_Store
+
+# 自動チェックスクリプトが生成するもの
+save/ten/*.log
+__pycache__/
