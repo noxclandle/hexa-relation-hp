@@ -1,0 +1,14 @@
+{
+  "_readme": "weekly は毎週の定番枠(day: 0=日 .. 6=土)。upcoming はこれからの単発配信。てんの返事待ちの箇所は空のままにしてあります。",
+  "note": "",
+  "weekly": [
+    { "day": 0, "time": "", "label": "" },
+    { "day": 1, "time": "", "label": "" },
+    { "day": 2, "time": "", "label": "" },
+    { "day": 3, "time": "", "label": "" },
+    { "day": 4, "time": "", "label": "" },
+    { "day": 5, "time": "", "label": "" },
+    { "day": 6, "time": "", "label": "" }
+  ],
+  "upcoming": []
+}

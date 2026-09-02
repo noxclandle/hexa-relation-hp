@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>てんのページ｜更新</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* 表のページと同じ規則：書体1 / サイズ5 / 文字色4 / 角丸は主ボタンのみ */
+:root{
+  --i1:#FBE2EE; --i2:#E7DBF7; --i3:#D4E7F9; --i4:#D2F0E8; --i5:#FCF2D6;
+  --base:#FBFAF8; --ink:#463F4C; --sub:#8B8494; --accent:#A2809F; --faint:#CFC8D4;
+  --s1:12px; --s2:15px; --s3:17px; --s4:27px;
+  --x1:8px; --x2:16px; --x3:24px; --x4:40px; --x5:64px; --x6:96px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--base);color:var(--ink);
+  font-family:'Zen Old Mincho','Yu Mincho','Hiragino Mincho ProN',serif;
+  font-weight:400;font-size:var(--s3);line-height:2.1;letter-spacing:.08em;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+p{margin:0}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;
+  background-image:repeating-linear-gradient(90deg,rgba(120,105,130,.015) 0 1px,transparent 1px 7px)}
+.bubs{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.bub{position:absolute;border-radius:50%;
+  background:radial-gradient(circle at 30% 26%,rgba(255,255,255,.95) 0 6%,rgba(255,255,255,.4) 13%,rgba(255,255,255,0) 34%),
+    conic-gradient(from 210deg at 50% 50%,var(--i1),var(--i2),var(--i3),var(--i4),var(--i5),var(--i1));
+  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.9),inset 0 0 34px rgba(255,255,255,.7);
+  opacity:.6;animation:float linear infinite}
+.bub.mist{filter:blur(48px);box-shadow:none}
+@keyframes float{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(-10px,-40px) rotate(180deg)}100%{transform:translate(0,0) rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.bub{animation:none}}
+
+.wrap{max-width:620px;margin:0 auto;padding:var(--x5) var(--x3) 160px;position:relative;z-index:3}
+h1{font-size:var(--s4);font-weight:400;letter-spacing:.12em;margin:0 0 var(--x1)}
+.hint{font-size:var(--s2);color:var(--sub);margin:0 0 var(--x5)}
+h2{font-size:var(--s1);font-weight:400;letter-spacing:.3em;color:var(--sub);margin:0 0 var(--x3)}
+section{margin:0 0 var(--x6)}
+label{display:block;font-size:var(--s1);letter-spacing:.3em;color:var(--sub);margin:0 0 var(--x1)}
+
+/* タブ：囲まず、下線で示す */
+.tabs{display:flex;gap:var(--x4);margin:0 0 var(--x6);white-space:nowrap;
+  box-shadow:inset 0 -1px 0 rgba(139,132,148,.18)}
+.tab{border:0;background:transparent;padding:0 0 var(--x2);font-family:inherit;font-weight:400;
+  font-size:var(--s3);letter-spacing:.1em;color:var(--sub);cursor:pointer;white-space:nowrap;
+  box-shadow:inset 0 -1px 0 transparent;transition:color .4s,box-shadow .4s}
+.tab.on{color:var(--ink);box-shadow:inset 0 -1px 0 var(--accent)}
+.pane{display:none}.pane.on{display:block}
+
+input,textarea{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(139,132,148,.28);
+  padding:var(--x1) 0 var(--x2);font-family:inherit;font-weight:400;font-size:var(--s3);
+  letter-spacing:.08em;line-height:2.1;color:var(--ink);outline:none;transition:border-color .4s}
+textarea{resize:vertical;min-height:104px}
+input:focus,textarea:focus{border-bottom-color:var(--accent)}
+.row{display:grid;grid-template-columns:32px 96px 1fr;gap:var(--x2);align-items:baseline;margin-bottom:var(--x2)}
+.row .dn{font-size:var(--s2);color:var(--sub);text-align:center}
+.up{padding:var(--x3) 0;box-shadow:inset 0 1px 0 rgba(139,132,148,.16)}
+.up .g{display:grid;grid-template-columns:1fr 96px;gap:var(--x2)}
+
+/* 角丸の唯一の例外：主ボタン */
+.btn{border:0;border-radius:999px;background:var(--accent);color:#fff;
+  padding:var(--x2) var(--x4);font-family:inherit;font-size:var(--s2);letter-spacing:.2em;cursor:pointer;transition:opacity .4s}
+.btn:hover{opacity:.82}
+/* 副ボタンは文字＋下線 */
+.btn.ghost{background:transparent;border-radius:0;color:var(--sub);padding:0 0 2px;
+  box-shadow:inset 0 -1px 0 rgba(139,132,148,.3);font-size:var(--s2);letter-spacing:.1em}
+.btn.mini{font-size:var(--s1)}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(251,250,248,.92);
+  backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(139,132,148,.16);
+  padding:var(--x3);display:flex;gap:var(--x4);align-items:center;justify-content:center}
+.msg{font-size:var(--s2);color:var(--accent);min-height:26px;text-align:center;margin:var(--x3) 0 0}
+#gate{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:84vh;padding:0 var(--x3);position:relative;z-index:3}
+#gate input{max-width:210px;text-align:center;letter-spacing:.4em}
+#gate p{font-size:var(--s2);color:var(--sub);margin:0 0 var(--x3)}
+.hidden{display:none!important}
+.warn{font-size:var(--s2);color:var(--sub);margin:0 0 var(--x5);
+  box-shadow:inset 2px 0 0 var(--accent);padding-left:var(--x3)}
+
+.mailItem{padding:var(--x4) 0;box-shadow:inset 0 1px 0 rgba(139,132,148,.16)}
+.mailItem.read{opacity:.42}
+.mailHead{display:flex;justify-content:space-between;align-items:baseline;gap:var(--x2);margin-bottom:var(--x2)}
+.mailFrom{font-size:var(--s3)}
+.mailAt{font-size:var(--s1);letter-spacing:.2em;color:var(--sub);white-space:nowrap}
+.mailBody{font-size:var(--s2);color:var(--sub);white-space:pre-wrap;word-break:break-word;margin:0 0 var(--x3)}
+.mailAct{display:flex;gap:var(--x3)}
+.none{font-size:var(--s2);color:var(--sub)}
+
+@media(max-width:520px){
+  .tabs{gap:var(--x3)}
+  .tab{font-size:var(--s2);letter-spacing:.04em}
+  .row{grid-template-columns:28px 82px 1fr;gap:var(--x1)}
+}
+</style>
+</head>
+<body>
+<div class="bubs">
+  <span class="bub mist" style="width:44vw;height:44vw;left:-16vw;top:-8vw;animation-duration:46s"></span>
+  <span class="bub mist" style="width:34vw;height:34vw;right:-8vw;bottom:6vh;animation-duration:54s;animation-direction:reverse"></span>
+  <span class="bub" style="width:78px;height:78px;right:8vw;top:18vh;animation-duration:28s"></span>
+  <span class="bub" style="width:38px;height:38px;left:7vw;top:56vh;animation-duration:20s;animation-direction:reverse"></span>
+</div>
+
+<div id="gate">
+  <p class="min">あいことば</p>
+  <input type="password" id="pass" inputmode="numeric" autocomplete="off">
+  <p style="margin-top:20px"><button class="btn" onclick="checkPass()">はいる</button></p>
+</div>
+
+<div id="app" class="hidden"><div class="wrap">
+  <h1 class="min">てんのページ</h1>
+  <p class="hint">ここで書いたことが、ページに出ます。</p>
+  <div id="authWarn" class="warn hidden">いま保存できない状態です。あとでもう一度ためしてください。</div>
+
+  <div class="tabs">
+    <button class="tab on" data-p="p1" onclick="tab('p1',this)">おしらせ</button>
+    <button class="tab" data-p="p2" onclick="tab('p2',this)">スケジュール</button>
+    <button class="tab" data-p="p3" onclick="tab('p3',this)">おたより<span id="badge"></span></button>
+  </div>
+
+  <div class="pane on" id="p1">
+    <section>
+      <h2>きょうの ひとこと</h2>
+      <label>行事の日は、行事のほうが優先で出ます</label>
+      <textarea id="message" placeholder="今日はありがとうございました。"></textarea>
+      <p style="margin:12px 0 0"><button class="btn ghost mini" onclick="document.getElementById('message').value=''">消す</button></p>
+    </section>
+  </div>
+
+  <div class="pane" id="p2">
+    <section>
+      <h2>いつもの じかん</h2>
+      <label>やらない曜日は、空のままでOK</label>
+      <div id="weekly"></div>
+    </section>
+    <section>
+      <h2>これからの はいしん</h2>
+      <div id="upcoming"></div>
+      <button class="btn ghost mini" onclick="addUp()">＋ ふやす</button>
+    </section>
+    <section>
+      <h2>ひとこと そえるなら</h2>
+      <input id="note" placeholder="だいたいこの時間ですが、変わることもあります。">
+    </section>
+  </div>
+
+  <div class="pane" id="p3">
+    <section>
+      <h2>とどいた おたより</h2>
+      <div id="inbox"><p class="none">読みこんでいます…</p></div>
+    </section>
+  </div>
+
+  <p class="msg" id="msg"></p>
+</div></div>
+
+<div class="bar hidden" id="bar">
+  <button class="btn" onclick="save()">ほぞんする</button>
+  <button class="btn ghost" onclick="location.href='../'">ページを見る</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey:"AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI",
+  authDomain:"hexa-relation.firebaseapp.com",
+  projectId:"hexa-relation",
+  storageBucket:"hexa-relation.firebasestorage.app",
+  messagingSenderId:"318065017750",
+  appId:"1:318065017750:web:94acf3c9c43632b3ff93b7"
+});
+var db=firebase.firestore();
+var DOC=db.collection('ten_board').doc('current');
+var INBOX=db.collection('ten_inbox');
+var WDJ=['日','月','火','水','木','金','土'];
+
+function tab(id,el){
+  document.querySelectorAll('.pane').forEach(function(p){ p.classList.toggle('on', p.id===id); });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('on', t===el); });
+  document.getElementById('bar').style.display = (id==='p3') ? 'none' : '';
+}
+function checkPass(){
+  if (document.getElementById('pass').value==='2213'){ localStorage.setItem('ten_board_auth','1'); enter(); }
+  else alert('ちがうみたい');
+}
+function enter(){
+  document.getElementById('gate').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('bar').classList.remove('hidden');
+  buildWeekly();
+  firebase.auth().signInAnonymously().then(function(){ load(); loadInbox(); })
+    .catch(function(){ document.getElementById('authWarn').classList.remove('hidden'); load(); loadInbox(); });
+}
+function buildWeekly(){
+  var h='';
+  for (var d=0;d<7;d++) h+='<div class="row"><span class="dn">'+WDJ[d]+'</span>'
+    +'<input id="wt'+d+'" placeholder="21:00" inputmode="numeric">'
+    +'<input id="wl'+d+'" placeholder="なにをする？"></div>';
+  document.getElementById('weekly').innerHTML=h;
+}
+function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function upRow(v){
+  v=v||{};
+  var d=document.createElement('div'); d.className='up';
+  d.innerHTML='<div class="g"><input class="ud" type="date" value="'+esc(v.date)+'">'
+    +'<input class="ut" placeholder="21:00" value="'+esc(v.time)+'"></div>'
+    +'<input class="un" placeholder="なにをする？" value="'+esc(v.title)+'">'
+    +'<input class="uu" placeholder="リンク（なくてOK）" value="'+esc(v.url)+'">'
+    +'<button class="btn ghost mini" onclick="this.parentNode.remove()">けす</button>';
+  document.getElementById('upcoming').appendChild(d);
+}
+function addUp(){ upRow({}); }
+
+function load(){
+  DOC.get().then(function(s){
+    if (!s.exists){ addUp(); return; }
+    var d={}; try{ d=JSON.parse(s.data().data||'{}'); }catch(e){}
+    document.getElementById('message').value=(d.message&&d.message.text)||'';
+    document.getElementById('note').value=(d.schedule&&d.schedule.note)||'';
+    ((d.schedule&&d.schedule.weekly)||[]).forEach(function(w){
+      var t=document.getElementById('wt'+w.day), l=document.getElementById('wl'+w.day);
+      if(t) t.value=w.time||''; if(l) l.value=w.label||'';
+    });
+    var up=(d.schedule&&d.schedule.upcoming)||[];
+    if (up.length) up.forEach(upRow); else addUp();
+  }).catch(function(){ addUp(); });
+}
+
+function save(){
+  var weekly=[];
+  for (var d=0;d<7;d++) weekly.push({ day:d,
+    time:(document.getElementById('wt'+d).value||'').trim(),
+    label:(document.getElementById('wl'+d).value||'').trim() });
+  var upcoming=[];
+  Array.prototype.forEach.call(document.querySelectorAll('#upcoming .up'), function(el){
+    var date=el.querySelector('.ud').value, title=(el.querySelector('.un').value||'').trim();
+    if (!date && !title) return;
+    upcoming.push({ date:date, time:(el.querySelector('.ut').value||'').trim(), title:title, url:(el.querySelector('.uu').value||'').trim() });
+  });
+  var payload={
+    message:{ text:(document.getElementById('message').value||'').trim(), updated:new Date().toISOString() },
+    schedule:{ note:(document.getElementById('note').value||'').trim(), weekly:weekly, upcoming:upcoming }
+  };
+  var m=document.getElementById('msg'); m.textContent='ほぞん中…';
+  DOC.set({ data:JSON.stringify(payload), updated:new Date().toISOString() })
+    .then(function(){ m.textContent='ほぞんしました。ページに出ています。'; })
+    .catch(function(e){ m.textContent='ほぞんできませんでした（'+e.code+'）'; });
+}
+
+function loadInbox(){
+  INBOX.orderBy('createdAt','desc').limit(100).get().then(function(q){
+    var box=document.getElementById('inbox');
+    if (q.empty){ box.innerHTML='<p class="none">まだ おたよりは ありません。</p>'; document.getElementById('badge').textContent=''; return; }
+    var unread=0, h='';
+    q.forEach(function(doc){
+      var d=doc.data(); if(!d.read) unread++;
+      var at=''; try{ var t=new Date(d.createdAt); at=(t.getMonth()+1)+'/'+t.getDate()+' '+('0'+t.getHours()).slice(-2)+':'+('0'+t.getMinutes()).slice(-2); }catch(e){}
+      h+='<div class="mailItem'+(d.read?' read':'')+'" id="m_'+doc.id+'">'
+        +'<div class="mailHead"><span class="mailFrom">'+(esc(d.name)||'なまえなし')+'</span><span class="mailAt">'+at+'</span></div>'
+        +'<p class="mailBody">'+esc(d.body)+'</p>'
+        +'<div class="mailAct">'
+        +(d.read?'':'<button class="btn ghost mini" onclick="markRead(\''+doc.id+'\')">よんだ</button>')
+        +'<button class="btn ghost mini" onclick="delMail(\''+doc.id+'\')">けす</button>'
+        +'</div></div>';
+    });
+    box.innerHTML=h;
+    document.getElementById('badge').textContent = unread ? '（'+unread+'）' : '';
+  }).catch(function(e){
+    document.getElementById('inbox').innerHTML='<p class="none">読みこめませんでした（'+e.code+'）</p>';
+  });
+}
+function markRead(id){ INBOX.doc(id).update({read:true}).then(loadInbox).catch(function(){}); }
+function delMail(id){ if(!confirm('けしますか？')) return; INBOX.doc(id).delete().then(loadInbox).catch(function(){}); }
+
+document.getElementById('pass').addEventListener('keypress',function(e){ if(e.key==='Enter') checkPass(); });
+if (localStorage.getItem('ten_board_auth')==='1') enter();
+</script>
+</body>
+</html>

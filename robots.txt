@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /order/
+Disallow: /ten2/
 
 Sitemap: https://www.hexa-relation.com/sitemap.xml

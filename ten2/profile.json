@@ -1,0 +1,22 @@
+{
+  "_readme": "てん本人の言葉だけを入れる。ここが空の項目は、ページ側で節ごと非表示になる。こちらで文章を代筆しない。",
+  "name": "てん",
+  "nameEn": "ten",
+  "handle": "TENPON",
+
+  "greeting": "てんのお部屋へ、ようこそ",
+
+  "about": [],
+  "firstVideo": { "id": "", "title": "" },
+
+  "fanName": "",
+  "fanArtTag": "",
+  "imageColor": "",
+
+  "links": [
+    { "en": "YOUTUBE",    "jp": "配信を見る", "url": "https://www.youtube.com/@TENpon_ch" },
+    { "en": "X",          "jp": "日々のこと", "url": "https://x.com/TENPON_" },
+    { "en": "MEMBERSHIP", "jp": "応援する",   "url": "https://www.youtube.com/channel/UCh6DUGkgltL6gpJUcCdhG5Q/join" },
+    { "en": "SUZURI",     "jp": "グッズ",     "url": "https://suzuri.jp/TENpon" }
+  ]
+}
