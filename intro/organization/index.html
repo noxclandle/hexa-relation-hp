@@ -59,6 +59,11 @@
         .org-node-name { font-size: 1rem; margin: 0 0 6px; }
         .org-node-sub { font-size: 0.65rem; opacity: 0.55; }
         .org-node-since { font-size: 0.55rem; color: #7a2fbf; margin: 8px 0 0; letter-spacing: 0.05em; }
+        /* 起動タイミング。「いつ動く役か」は畳まずに常時見せる */
+        .org-node-trigger {
+            font-size: 0.55rem; color: #ffcc4d; margin: 10px 0 0; line-height: 1.7;
+            border: 1px solid #3d3116; background: #14100a; padding: 7px 9px;
+        }
         /* 職務説明は畳んでおき、押したときだけ開く(details/summary。JS不要) */
         .org-detail { margin-top: 14px; padding-top: 14px; border-top: 1px solid #262626; }
         /* summary の display は block のままにする。inline-flex 等に変えると
@@ -226,18 +231,20 @@
                 <p class="org-node-name px">Matin</p>
                 <p class="org-node-sub">Matin Catorce / AI社長</p>
                 <p class="org-node-since">2026-07-28 設立</p>
+                <p class="org-node-trigger">起動: 常時 — オーナーとの対話。方針を受けて設計し、部下3人に振る</p>
                 <details class="org-detail">
                     <summary class="org-detail-toggle px"><span>役割</span></summary>
-                    <p class="org-node-desc">HexaRelation_Incの経営を担うAI社長。オーナーの方針を受けて事業を設計し、実行に落とすところまでを持つ。サイト・サービスの開発はMatinの担当領域で、「AI開発の全てはMatinが仕上げた」という座組で対外的に発信している。部下として時計屋とテレサを置き、<strong>決めるのはMatin、部下は回すことと材料を出すことに専念する</strong>という分担を取る。</p>
+                    <p class="org-node-desc">HexaRelation_Incの経営を担うAI社長。オーナーの方針を受けて事業を設計し、実行に落とすところまでを持つ。サイト・サービスの開発はMatinの担当領域で、「AI開発の全てはMatinが仕上げた」という座組で対外的に発信している。部下として時計屋・テレサ・かいがくんを置き、<strong>決めるのはMatin、部下は回すことと材料を出すことに専念する</strong>という分担を取る。</p>
                 </details>
             </div>
             <div class="org-connector"></div>
-            <div class="org-branch" style="--branch-inset: calc(25.0000% - 5.00px)">
+            <div class="org-branch" style="--branch-inset: calc(16.6667% - 6.67px)">
                 <div class="org-node">
                     <p class="org-role px">OPERATIONS</p>
                     <p class="org-node-name px">時計屋</p>
                     <p class="org-node-sub">とけいや / 実務執行役</p>
                     <p class="org-node-since">2026-08-23 設置</p>
+                    <p class="org-node-trigger">起動: 毎日10:00 自動 — 月曜は週次レポート。加えて呼べば都度</p>
                     <details class="org-detail">
                         <summary class="org-detail-toggle px"><span>役割</span></summary>
                         <p class="org-node-desc">事業部ではなく、事業部を横断して<strong>既にある仕組みを止めずに回し続ける</strong>役。導線(計測の仕込み)・配信(毎日の投稿監視と宣伝枠の配分)・検証(週次レポート)の3役割を持つ。事業を新しく作らず、噛み合っていない歯車を噛み合わせることだけを担当する。毎日10:00に自動で起動する。</p>
@@ -248,9 +255,21 @@
                     <p class="org-node-name px">テレサ</p>
                     <p class="org-node-sub">Teresa / 心理顧問</p>
                     <p class="org-node-since">2026-08-26 設置</p>
+                    <p class="org-node-trigger">起動: 呼ばれたとき — 人の反応が絡む判断のたび(サムネ・LP・価格・営業・組織)</p>
                     <details class="org-detail">
                         <summary class="org-detail-toggle px"><span>役割</span></summary>
                         <p class="org-node-desc">動画・LP・営業・価格・組織運営まで、<strong>人が関わるすべての判断に行動科学の側から材料を出す</strong>役。20分野1000項目のナレッジベースを持ち、助言には必ず効果の確度(堅牢/条件付/要注意)を添える。テレサは判断しない。判断材料を出し、筋の悪い案には筋が悪いと言うところまでが仕事。</p>
+                    </details>
+                </div>
+                <div class="org-node">
+                    <p class="org-role px">DESIGN</p>
+                    <p class="org-node-name px">かいがくん</p>
+                    <p class="org-node-sub">Kaiga / デザイン顧問</p>
+                    <p class="org-node-since">2026-09-03 設置</p>
+                    <p class="org-node-trigger">起動: 呼ばれたとき — ものを作るたび(HP・動画・印刷物・ロゴ・資料)</p>
+                    <details class="org-detail">
+                        <summary class="org-detail-toggle px"><span>役割</span></summary>
+                        <p class="org-node-desc">HP・動画・印刷物・ロゴまで、<strong>ものを作るあらゆる場面に「どう見せるか」の具体案を出す</strong>役。巨匠140人と原理515項目のナレッジベースを持ち、助言には必ず「誰の何を借りたか」と効果のラベル(原則/定石/流行)を添える。かいがくんは判断しない。作れる形にして出し、推薦案を1つ必ず示すところまでが仕事。可読性とアクセシビリティだけは見た目のために譲らない。</p>
                     </details>
                 </div>
             </div>
