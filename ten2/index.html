@@ -13,214 +13,225 @@
 <meta property="og:image" content="https://www.hexa-relation.com/ten2/img/hero.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@300;500&family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;500&family=Nunito:wght@300;600&display=swap" rel="stylesheet">
 <style>
 /* ===================================================================
-   ten2 design system  ―  OPTICAL WHITE
-   書体2（和文/欧文・数字）/ サイズ5 / 文字色4 / 角丸0 / 余白は8の倍数
-   色は全て地色 #F6F7F9 に対するコントラスト比を実測して決めている。
-   --faint は罫線と非活性専用。情報を載せてはいけない（3.21:1）。
+   ten2 design system
+   書体2 / サイズ5 / 文字色4 / 角丸3段 / 余白は8の倍数
+   可読性の保証条件：面はすべて --floor より明るいこと。
+   文字のコントラストは --base ではなく --floor に対して測る。
+   これで「淡い面をいくら重ねても文字比は下の表を下回らない」が成立する。
+   --faint に情報を載せてはいけない（floor 3.34:1）。
+   角丸の規則：半径 ÷ 部品の短辺 ≤ 0.25。999px は使わない。
    =================================================================== */
 :root{
   /* 面 */
-  --base:#F6F7F9;   /* 立ち絵の主要白 #F0F0F0 に対し 1.06:1。地をわずかに明るくして輪郭を残す */
-  --panel:#EEF1F5;
-  --rule:#D6DBE2;
-  /* 文字色 ― この4つ以外は使わない */
-  --ink:#1E2430;    /* 14.51:1 */
-  --sub:#656D7A;    /*  4.87:1  本文・補助文 */
-  --accent:#1F4FA8; /*  7.14:1  白ヌキで 7.66:1。てんの瞳 #204888 由来 */
-  --faint:#828B9A;  /*  3.21:1  罫線・非活性のみ */
-  /* 回折の分光（明度を95〜97%に固定してあるので、回しても文字の可読性が動かない） */
-  --p1:oklch(96% .045 20); --p2:oklch(96% .040 60); --p3:oklch(97% .030 150);
-  --p4:oklch(96% .045 230); --p5:oklch(95% .050 285);
-  /* サイズ ― この5つ以外は使わない */
-  --s1:12px; --s2:15px; --s3:17px; --s4:30px; --sd:clamp(104px,15vw,200px);
-  /* 余白 ― 8の倍数以外は使わない */
-  --x1:8px; --x2:16px; --x3:24px; --x4:40px; --x5:64px; --x6:96px; --x7:160px; --x8:192px;
+  --base:#FDFAFB;
+  --floor:#EFE8F0;                 /* 面の最暗値。文字比の基準 */
+  --veil:rgba(255,255,255,.62);
+  --rule:#E9DFE8;
+  --v-rose:#FAE7F0; --v-sky:#E4EFFB; --v-cream:#FBEFDC; --v-lilac:#F0EAF9;
+  /* 文字色 ― この4つ以外は使わない（対 --floor） */
+  --ink:#342F3A;    /* 10.83:1 */
+  --sub:#6B6270;    /*  4.84:1 */
+  --accent:#A03F68; /*  5.13:1 / 白ヌキ 6.17:1 */
+  --faint:#867B8D;  /*  3.34:1  罫線・非活性のみ */
+  /* 装飾専用。文字色ではない。使う要素は必ず aria-hidden にし、
+     同じ情報を読める文字で別に置くこと */
+  --deco:#B57091;
+  /* サイズ */
+  --s1:13px; --s2:15px; --s3:18px; --s4:30px; --sd:clamp(88px,12vw,184px);
+  /* 余白 */
+  --x1:8px; --x2:16px; --x3:24px; --x4:40px; --x5:64px; --x6:96px; --x7:160px;
+  /* 角丸 */
+  --r1:6px; --r2:12px; --r3:28px;
 }
-:root[data-theme="birthday"] { --accent:#A3355F; --p1:oklch(96% .050 10);  --p2:oklch(96% .042 340); --p3:oklch(97% .030 300); --p4:oklch(96% .038 40);  --p5:oklch(96% .045 70); }
-:root[data-theme="sakura"]   { --accent:#A63A63; --p1:oklch(96% .048 355); --p2:oklch(97% .034 330); --p3:oklch(97% .028 120); --p4:oklch(96% .036 60);  --p5:oklch(96% .040 20); }
-:root[data-theme="summer"]   { --accent:#1F6F7A; --p1:oklch(96% .044 220); --p2:oklch(97% .038 180); --p3:oklch(97% .034 140); --p4:oklch(96% .040 90);  --p5:oklch(96% .036 260); }
-:root[data-theme="autumn"]   { --accent:#8A4A1B; --p1:oklch(96% .046 55);  --p2:oklch(96% .040 35);  --p3:oklch(97% .030 80);  --p4:oklch(96% .034 20);  --p5:oklch(96% .038 95); }
-:root[data-theme="halloween"]{ --accent:#6B3F8F; --p1:oklch(96% .046 60);  --p2:oklch(96% .042 300); --p3:oklch(97% .030 320); --p4:oklch(96% .038 40);  --p5:oklch(95% .046 285); }
-:root[data-theme="christmas"]{ --accent:#1F6B45; --p1:oklch(96% .040 150); --p2:oklch(96% .044 20);  --p3:oklch(97% .028 120); --p4:oklch(96% .036 5);   --p5:oklch(96% .034 165); }
-:root[data-theme="newyear"]  { --accent:#8A6420; --p1:oklch(97% .040 85);  --p2:oklch(96% .036 60);  --p3:oklch(96% .040 20);  --p4:oklch(97% .030 100); --p5:oklch(96% .034 45); }
-:root[data-theme="snow"]     { --accent:#3A5A80; --p1:oklch(97% .028 230); --p2:oklch(97% .022 260); --p3:oklch(97% .020 300); --p4:oklch(97% .026 200); --p5:oklch(97% .024 250); }
-:root[data-theme="rain"]     { --accent:#40566B; --p1:oklch(96% .026 240); --p2:oklch(97% .022 190); --p3:oklch(97% .024 280); --p4:oklch(96% .020 210); --p5:oklch(97% .022 260); }
-:root[data-theme="night"]    { --accent:#3F3F8C; --p1:oklch(96% .038 285); --p2:oklch(96% .034 300); --p3:oklch(96% .030 250); --p4:oklch(96% .036 330); --p5:oklch(96% .032 270); }
+:root[data-theme="birthday"] { --accent:#A83A63 }
+:root[data-theme="sakura"]   { --accent:#A8446E }
+:root[data-theme="summer"]   { --accent:#1F6F7A }
+:root[data-theme="autumn"]   { --accent:#8A4A1B }
+:root[data-theme="halloween"]{ --accent:#6B3F8F }
+:root[data-theme="christmas"]{ --accent:#1F6B45 }
+:root[data-theme="newyear"]  { --accent:#805D14 }
+:root[data-theme="snow"]     { --accent:#3A5A80 }
+:root[data-theme="rain"]     { --accent:#40566B }
+:root[data-theme="night"]    { --accent:#4B3F96 }
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
   margin:0; background:var(--base); color:var(--ink);
-  font-family:'M PLUS 2','Hiragino Sans','Noto Sans JP',sans-serif;
-  font-weight:300; font-size:var(--s3); line-height:2.05; letter-spacing:.04em;
+  font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Hiragino Sans',sans-serif;
+  font-weight:300; font-size:var(--s3); line-height:1.9; letter-spacing:.03em;
   -webkit-font-smoothing:antialiased; overflow-x:hidden;
 }
-/* 欧文と数字だけを別書体にする。これが「無機の器 / 有機の中身」の実装 */
-.mono{font-family:'Space Grotesk','Helvetica Neue',sans-serif;font-weight:300;font-variant-numeric:tabular-nums}
+/* Nunito の数字は既定で等幅。font-variant-numeric は不要 */
+.mono{font-family:'Nunito','Helvetica Neue',sans-serif;font-weight:300}
 a{color:inherit;text-decoration:none}
 ul{margin:0;padding:0;list-style:none}
 p{margin:0}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--r1)}
 
-/* ===== 回折 ― シャボン玉（薄膜干渉）の一つ先 ===== */
-@property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
-.optic{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.prism{
-  position:absolute;inset:-20%;
-  background:linear-gradient(var(--ang),
-    var(--p1) 0%, var(--p2) 22%, var(--p3) 45%, var(--p4) 68%, var(--p5) 88%, var(--p1) 100%);
-  filter:blur(64px); mix-blend-mode:multiply; opacity:.30;
-  animation:spin 180s linear infinite;
-}
-.ring{
-  position:absolute;aspect-ratio:1;
-  background:conic-gradient(from 200deg,var(--p1),var(--p2),var(--p3),var(--p4),var(--p5),var(--p1));
-  -webkit-mask:radial-gradient(circle at 50% 50%,transparent 0 46%,#000 47% 48.4%,transparent 49.6%);
-          mask:radial-gradient(circle at 50% 50%,transparent 0 46%,#000 47% 48.4%,transparent 49.6%);
-  filter:blur(.6px); opacity:.55; animation:spin 240s linear infinite;
-}
-.ring.o{-webkit-mask:radial-gradient(circle at 50% 50%,transparent 0 61%,#000 62% 63%,transparent 64%);
-                mask:radial-gradient(circle at 50% 50%,transparent 0 61%,#000 62% 63%,transparent 64%);opacity:.3}
-@keyframes spin{to{--ang:360deg;transform:rotate(360deg)}}
-@keyframes breathe{0%,100%{opacity:1}50%{opacity:.35}}
-@media (prefers-reduced-motion:reduce){ .prism,.ring{animation:none} }
+/* ===== にじみ ― ページ全体に1枚。セクションで切らないので段差が出ない ===== */
+.aura{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(56px);will-change:transform}
+.b1{width:78vw;height:78vw;left:-22vw;top:-18vw;
+    background:radial-gradient(closest-side,var(--v-rose),transparent 100%);
+    animation:d1 44s ease-in-out infinite alternate}
+.b2{width:64vw;height:64vw;right:-16vw;top:6vh;
+    background:radial-gradient(closest-side,var(--v-sky),transparent 100%);
+    animation:d2 52s ease-in-out infinite alternate}
+.b3{width:56vw;height:56vw;left:8vw;bottom:-14vw;
+    background:radial-gradient(closest-side,var(--v-cream),transparent 100%);
+    animation:d3 60s ease-in-out infinite alternate}
+.b4{width:46vw;height:46vw;right:4vw;bottom:-8vw;
+    background:radial-gradient(closest-side,var(--v-lilac),transparent 100%);
+    animation:d1 56s ease-in-out infinite alternate-reverse}
+@keyframes d1{to{transform:translate3d(6vw,4vh,0) scale(1.12)}}
+@keyframes d2{to{transform:translate3d(-5vw,6vh,0) scale(1.08)}}
+@keyframes d3{to{transform:translate3d(4vw,-5vh,0) scale(1.14)}}
+@keyframes breathe{0%,100%{opacity:1}50%{opacity:.4}}
+@media (prefers-reduced-motion:reduce){.blob{animation:none}}
 
-.wrap{max-width:1080px;margin:0 auto;padding:0 var(--x5);position:relative;z-index:3}
+/* width:100% が要。これが無いと flex の中で縮んでヒーローだけ列がずれる */
+.wrap{width:100%;max-width:1080px;margin:0 auto;padding:0 var(--x5);position:relative;z-index:3}
 section{position:relative}
-.sec{padding-bottom:var(--x8)}
-.hero + .sec{padding-top:var(--x8)}
-.label{font-size:var(--s1);letter-spacing:.28em;color:var(--sub);margin-bottom:var(--x4)}
+.sec{padding:var(--x6) 0}          /* 上下対称。中身が変わっても間隔が動かない */
+.label{font-size:var(--s1);font-weight:500;letter-spacing:.02em;color:var(--sub);margin-bottom:var(--x4)}
+.label .en{font-family:'Nunito',sans-serif;font-weight:600;letter-spacing:.22em;color:var(--accent);margin-right:var(--x2)}
 .rise{opacity:0;transform:translateY(12px);transition:opacity .6s cubic-bezier(.2,.7,.3,1),transform .6s cubic-bezier(.2,.7,.3,1)}
 .rise.in{opacity:1;transform:none}
 
 /* hero */
 .hero{min-height:100svh;display:flex;align-items:center;overflow:hidden}
-.fig{position:absolute;right:var(--x5);bottom:0;height:88svh;width:auto;z-index:2;pointer-events:none}
-.fig.framed{right:var(--x3);bottom:auto;top:50%;transform:translateY(-50%);height:auto;width:min(46vw,560px)}
-.mark{position:relative;display:inline-block}
-.sup{font-size:var(--s1);letter-spacing:.3em;color:var(--sub);margin-bottom:var(--x2)}
-/* 巨大数字・名前にだけ、極小の分散（プリズム収差）を乗せる。本文には絶対に使わない */
-.big{font-size:var(--sd);line-height:1;letter-spacing:.02em;display:block;
-  text-shadow:.6px 0 0 rgba(224,96,96,.22),-.6px 0 0 rgba(64,112,232,.22)}
-.greet{margin-top:var(--x3);font-size:var(--s3);letter-spacing:.1em;max-width:22em}
-.status{margin-top:var(--x5)}
+.fig{position:absolute;bottom:0;height:88svh;width:auto;z-index:2;pointer-events:none;
+  right:max(var(--x5),calc((100vw - 1080px)/2 + var(--x5)))}   /* 右端をコンテンツ枠に揃える */
+.fig.framed{bottom:auto;top:50%;transform:translateY(-50%);height:auto;width:min(44vw,520px)}
+.sup{font-size:var(--s1);letter-spacing:.22em;color:var(--sub);margin-bottom:var(--x2)}
+.big{font-size:var(--sd);line-height:1;letter-spacing:.01em;display:block;
+  text-shadow:0 3px 28px rgba(160,63,104,.14)}
+.greet{margin-top:var(--x3);font-size:var(--s3);letter-spacing:.03em;max-width:22em}
+/* 状態は面に載せる。立ち絵を薄くして可読性を作らない */
+.status{margin-top:var(--x5);display:inline-block;background:var(--veil);
+  border-radius:var(--r3);padding:var(--x3) var(--x4);backdrop-filter:blur(8px)}
 .stRow{display:flex;align-items:center;gap:var(--x2)}
-.dot{width:9px;height:9px;border-radius:50%;flex:none;background:var(--faint)}
-.status.on .dot{background:var(--accent);box-shadow:0 0 0 8px rgba(31,79,168,.12);animation:breathe 3.6s ease-in-out infinite}
-.stMain{font-size:var(--s3)}
-.stSub{margin-top:var(--x1);margin-left:var(--x3);font-size:var(--s2);color:var(--sub)}
+.dot{width:10px;height:10px;border-radius:50%;flex:none;background:var(--faint)}
+.status.on .dot{background:var(--accent);box-shadow:0 0 0 8px rgba(160,63,104,.13);animation:breathe 3.6s ease-in-out infinite}
+.stMain{font-size:var(--s3);font-weight:500}
+.stSub{margin-top:var(--x1);margin-left:26px;font-size:var(--s2);color:var(--sub)}
 .stSub b{font-weight:500;color:var(--ink)}
-/* 当たり判定を44pxまで広げる */
-.link{display:inline-block;padding:12px 0;font-size:var(--s2);color:var(--accent);
-  box-shadow:inset 0 -1px 0 rgba(31,79,168,.4)}
-.stGo{margin-left:var(--x3)}
-.scroll{position:absolute;right:var(--x5);bottom:var(--x4);z-index:4;font-size:var(--s1);letter-spacing:.3em;color:var(--sub)}
+.link{display:inline-block;min-height:44px;line-height:44px;font-size:var(--s2);font-weight:500;
+  color:var(--accent);box-shadow:inset 0 -2px 0 rgba(160,63,104,.28)}
+.stGo{margin-left:26px}
 
-/* today */
-.todayIn{display:grid;grid-template-columns:auto 1fr;gap:0 var(--x6);align-items:start}
-.bigdate{font-size:var(--sd);line-height:1;color:var(--accent);opacity:.34;
-  text-shadow:.6px 0 0 rgba(224,96,96,.18),-.6px 0 0 rgba(64,112,232,.18)}
-.bigdate small{display:block;font-size:var(--s1);letter-spacing:.3em;color:var(--sub);margin-top:var(--x3);opacity:1;text-shadow:none}
-.msg{font-size:var(--s4);line-height:1.85;letter-spacing:.04em}
+/* today ─ 巨大数字は装飾。読める日付を別に置く */
+.card{position:relative;background:var(--veil);border-radius:var(--r3);
+  padding:var(--x5);overflow:hidden}
+.bigdate{position:absolute;right:var(--x4);top:var(--x2);font-size:var(--sd);
+  line-height:1;color:var(--deco);opacity:.5;pointer-events:none;user-select:none}
+.dateline{font-size:var(--s1);letter-spacing:.14em;color:var(--sub);margin-bottom:var(--x2)}
+.msg{font-size:var(--s4);line-height:1.7;letter-spacing:.03em;max-width:20em}
 .tdBody{margin-top:var(--x3);font-size:var(--s2);color:var(--sub)}
 
-/* 時刻の尺 ― 飾りではなく情報。いまどこにいて、次の枠まであとどれだけか */
+/* 時刻の尺 ─ 予定が無い日は出さない */
 .scaleWrap{margin-bottom:var(--x5)}
-.scale{position:relative;height:56px;
-  background:
-    repeating-linear-gradient(90deg,var(--rule) 0 1px,transparent 1px calc(100%/24)),
-    repeating-linear-gradient(90deg,var(--faint) 0 1px,transparent 1px calc(100%/4));
-  background-size:100% 12px,100% 24px;background-position:0 bottom,0 bottom;background-repeat:no-repeat}
-.scale .band{position:absolute;bottom:0;height:24px;background:var(--accent);opacity:.22}
-.scale .now{position:absolute;top:0;bottom:0;width:1px;background:var(--accent);
-  transition:left .3s cubic-bezier(.2,.7,.3,1)}
-.scale .now::after{content:'';position:absolute;top:0;left:-2px;width:5px;height:5px;background:var(--accent)}
-.scaleTicks{display:flex;justify-content:space-between;margin-top:var(--x1);
-  font-size:var(--s1);letter-spacing:.2em;color:var(--sub)}
+.scale{position:relative;height:14px;border-radius:7px;background:var(--veil);
+  box-shadow:inset 0 0 0 1px var(--rule)}
+.scale .tick{position:absolute;top:50%;width:3px;height:3px;border-radius:50%;
+  background:var(--faint);transform:translate(-50%,-50%)}
+.scale .band{position:absolute;top:0;bottom:0;border-radius:7px;background:var(--accent);opacity:.24}
+.scale .thumb{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;
+  background:var(--accent);transform:translate(-50%,-50%);
+  box-shadow:0 0 0 6px rgba(160,63,104,.14);transition:left .3s cubic-bezier(.2,.7,.3,1)}
+.scaleTicks{position:relative;height:20px;margin-top:var(--x1);font-size:var(--s1);color:var(--sub)}
+.scaleTicks span{position:absolute;transform:translateX(-50%)}
 
 /* schedule */
-.week{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:var(--x6)}
-.day{padding:var(--x3) var(--x1);text-align:center}
-.day.has{background:linear-gradient(180deg,transparent,var(--panel) 22%,transparent 96%)}
-.day.today{box-shadow:inset 0 2px 0 var(--accent)}
-.dName{font-size:var(--s1);letter-spacing:.24em;color:var(--sub);margin-bottom:var(--x2)}
-.day.today .dName{color:var(--accent);font-weight:500}
-.dTime{font-size:var(--s3)}
-.dLabel{font-size:var(--s1);color:var(--sub);margin-top:var(--x1);line-height:1.8}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--x1);margin-bottom:var(--x5)}
+.day{padding:var(--x3) var(--x1);text-align:center;border-radius:var(--r2);background:var(--veil)}
+.day.today{background:var(--v-rose)}
+.dName{font-size:var(--s1);font-weight:500;color:var(--sub);margin-bottom:var(--x2)}
+.day.today .dName{color:var(--accent)}
+.dTime{font-size:var(--s3);font-weight:500}
+.dLabel{font-size:var(--s1);color:var(--sub);margin-top:var(--x1);line-height:1.7}
 .dNone{font-size:var(--s2);color:var(--sub)}
-.upList li{display:grid;grid-template-columns:224px 1fr;gap:0 var(--x4);padding:var(--x3) 0;align-items:baseline}
-.upList li + li{box-shadow:inset 0 1px 0 var(--rule)}
+.upList li{display:grid;grid-template-columns:200px 1fr;gap:0 var(--x4);align-items:baseline;
+  background:var(--veil);border-radius:var(--r2);padding:var(--x3) var(--x4);margin-bottom:var(--x1)}
 .upDate{font-size:var(--s2);color:var(--sub);white-space:nowrap}
-.upTitle{font-size:var(--s3)}
+.upTitle{font-size:var(--s3);font-weight:500}
 .upTitle a:hover{color:var(--accent)}
-.note{margin-top:var(--x4);font-size:var(--s2);color:var(--sub)}
+.note{margin-top:var(--x3);font-size:var(--s2);color:var(--sub)}
 .empty{font-size:var(--s2);color:var(--sub)}
 
 /* about */
-.firstGrid{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--x6)}
-.vid{aspect-ratio:16/9;position:relative;background:var(--panel)}
+.firstGrid{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--x5)}
+.vid{aspect-ratio:16/9;position:relative;background:var(--v-sky);border-radius:var(--r3);overflow:hidden}
 .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .firstTx p{font-size:var(--s2);color:var(--sub);max-width:22em}
 
 /* おたより */
 .form{max-width:600px}
-.form .hint{font-size:var(--s2);color:var(--sub);margin-bottom:var(--x5)}
-.form label{display:block;font-size:var(--s1);letter-spacing:.28em;color:var(--sub);margin-bottom:var(--x1)}
+.form .hint{font-size:var(--s2);color:var(--sub);margin-bottom:var(--x4)}
+.form label{display:block;font-size:var(--s1);font-weight:500;color:var(--sub);margin-bottom:var(--x1)}
 .form input,.form textarea{
-  width:100%;background:transparent;border:0;border-bottom:1px solid var(--faint);
-  padding:var(--x1) 0 var(--x2);margin-bottom:var(--x4);
-  font-family:inherit;font-weight:300;font-size:var(--s3);letter-spacing:.04em;line-height:2.05;color:var(--ink);
+  width:100%;min-height:48px;background:#fff;border:1px solid var(--rule);border-radius:var(--r2);
+  padding:14px var(--x3);margin-bottom:var(--x3);
+  font-family:inherit;font-weight:300;font-size:var(--s3);letter-spacing:.03em;line-height:1.9;color:var(--ink);
   outline:none;transition:border-color .3s}
-.form textarea{min-height:112px;resize:vertical}
-.form input:focus,.form textarea:focus{border-bottom-color:var(--accent)}
-.send{border:0;background:var(--accent);color:#fff;padding:var(--x2) var(--x4);
-  font-family:inherit;font-size:var(--s2);letter-spacing:.18em;cursor:pointer;transition:opacity .3s}
+.form textarea{min-height:120px;resize:vertical}
+.form input:focus,.form textarea:focus{border-color:var(--accent)}
+.send{min-height:48px;border:0;border-radius:var(--r2);background:var(--accent);color:#fff;
+  padding:0 var(--x4);font-family:inherit;font-weight:500;font-size:var(--s2);letter-spacing:.06em;
+  cursor:pointer;transition:opacity .3s}
 .send:hover{opacity:.86}
 .send:disabled{opacity:.4;cursor:default}
 .sent{margin-top:var(--x3);font-size:var(--s2);color:var(--accent);min-height:24px}
 
 /* links */
-.chibi{position:absolute;right:0;bottom:calc(var(--x3) * -1);width:160px;height:auto;opacity:.9;pointer-events:none}
-.ul{display:grid;grid-template-columns:repeat(4,minmax(0,152px));gap:var(--x4)}
-.ul .en{font-size:var(--s1);letter-spacing:.28em;color:var(--sub);display:block;margin-bottom:var(--x1)}
-.ul .jp{font-size:var(--s3)}
-.ul a{display:block;padding:var(--x1) 0}
-.ul a:hover .jp{color:var(--accent)}
-.foot{font-size:var(--s1);letter-spacing:.3em;color:var(--sub);padding-bottom:var(--x6)}
+.ul{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--x2)}
+.ul a{display:block;background:var(--veil);border-radius:var(--r2);padding:var(--x3) var(--x4);min-height:88px}
+.ul a:hover{background:var(--v-rose)}
+.ul .en{font-family:'Nunito',sans-serif;font-weight:600;font-size:var(--s1);letter-spacing:.16em;
+  color:var(--accent);display:block;margin-bottom:var(--x1)}
+.ul .jp{font-size:var(--s3);font-weight:500}
+
+/* footer ─ ちび絵はここで地面に足を着ける */
+footer .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--x4);
+  padding-top:var(--x5);padding-bottom:var(--x4)}
+.foot{font-size:var(--s1);letter-spacing:.22em;color:var(--sub)}
+.chibi{width:112px;height:auto;display:block}
 
 @media(max-width:820px){
-  :root{--sd:clamp(76px,21vw,132px)}
+  :root{--sd:clamp(72px,20vw,120px)}
   .wrap{padding:0 var(--x3)}
-  .sec{padding-bottom:var(--x6)}
-  .hero + .sec{padding-top:var(--x6)}
-  .fig{height:46svh;right:calc(var(--x5) * -1);opacity:.62;z-index:0}
-  .fig.framed{width:88vw;right:calc(var(--x5) * -1);top:34%;opacity:.5}
+  .sec{padding:var(--x5) 0}
+  .fig{height:44svh;right:calc(var(--x4) * -1);opacity:.9;z-index:0}
+  .fig.framed{width:86vw;right:calc(var(--x4) * -1);top:34%;opacity:.65}
   .hero{padding:var(--x5) 0;align-items:center}
-  .todayIn{grid-template-columns:1fr;gap:var(--x3)}
-  .scale{height:40px}
-  .day{padding:var(--x2) 0 var(--x3)}
-  .dName{letter-spacing:.08em;margin-bottom:var(--x1)}
-  .dTime{font-size:var(--s2)}
+  .card{padding:var(--x4) var(--x3)}
+  .bigdate{right:var(--x2);top:var(--x1);opacity:.36}
+  .msg{max-width:none}
+  .week{gap:4px}
+  .day{padding:var(--x2) 2px;border-radius:var(--r1)}
+  .dName{font-size:12px;margin-bottom:var(--x1)}
+  .dTime{font-size:var(--s1)}
   .dLabel{display:none}
-  .upList li{grid-template-columns:1fr;gap:var(--x1)}
+  .upList li{grid-template-columns:1fr;gap:var(--x1);padding:var(--x3)}
   .firstGrid{grid-template-columns:1fr;gap:var(--x4)}
-  .ul{grid-template-columns:repeat(2,1fr);gap:var(--x3)}
-  .chibi{width:104px;opacity:.5}
-  .scroll{display:none}
+  .ul{grid-template-columns:repeat(2,1fr)}
+  .ul a{min-height:76px;padding:var(--x3)}
+  .chibi{width:88px}
 }
 </style>
 </head>
 <body>
 
+<div class="aura" aria-hidden="true">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+
 <section class="hero">
-  <div class="optic">
-    <div class="prism"></div>
-    <div class="ring"   style="width:min(72vw,760px);right:-10vw;top:12vh"></div>
-    <div class="ring o" style="width:min(46vw,480px);left:-8vw;bottom:-6vw"></div>
-  </div>
   <img class="fig" src="img/hero.webp" alt="" id="fig" width="488" height="1300" fetchpriority="high" decoding="async">
   <div class="wrap">
     <div class="mark rise">
@@ -234,18 +245,14 @@ section{position:relative}
       </div>
     </div>
   </div>
-  <p class="scroll mono">SCROLL</p>
 </section>
 
 <section class="sec">
-  <div class="optic">
-    <div class="prism" style="animation-duration:210s"></div>
-    <div class="ring" style="width:min(40vw,420px);right:6vw;top:-8vw;opacity:.4"></div>
-  </div>
-  <div class="wrap todayIn rise">
-    <p class="bigdate mono" id="bigDay">–<small id="bigMon"></small></p>
-    <div>
-      <p class="label"><span class="mono">TODAY</span>　おしらせ</p>
+  <div class="wrap rise">
+    <div class="card">
+      <span class="bigdate mono" id="bigDay" aria-hidden="true"></span>
+      <p class="label"><span class="en">TODAY</span>おしらせ</p>
+      <p class="dateline mono" id="dateLine"></p>
       <p class="msg" id="tdMsg"></p>
       <p class="tdBody" id="tdBody" style="display:none"></p>
       <a class="link" id="tdLink" style="display:none" target="_blank" rel="noopener"></a>
@@ -255,13 +262,13 @@ section{position:relative}
 
 <section class="sec">
   <div class="wrap">
-    <p class="label rise"><span class="mono">SCHEDULE</span>　配信スケジュール</p>
-    <div class="scaleWrap rise">
-      <div class="scale" id="scale"><span class="now" id="nowmark" style="left:0"></span></div>
-      <div class="scaleTicks mono"><span>0</span><span>6</span><span>12</span><span>18</span><span>24</span></div>
+    <p class="label rise"><span class="en">SCHEDULE</span>配信スケジュール</p>
+    <div class="scaleWrap rise" id="scaleWrap" style="display:none">
+      <div class="scale" id="scale"><span class="thumb" id="nowmark" style="left:0"></span></div>
+      <div class="scaleTicks mono" id="scaleTicks"></div>
     </div>
     <div class="week rise" id="week"></div>
-    <p class="label rise"><span class="mono">UPCOMING</span>　これからの配信</p>
+    <p class="label rise"><span class="en">UPCOMING</span>これからの配信</p>
     <ul class="upList rise" id="upcoming"></ul>
     <p class="note rise" id="schedNote" style="display:none"></p>
   </div>
@@ -269,7 +276,7 @@ section{position:relative}
 
 <section class="sec" id="aboutSec" style="display:none">
   <div class="wrap">
-    <p class="label rise"><span class="mono">ABOUT</span>　てんについて</p>
+    <p class="label rise"><span class="en">ABOUT</span>てんについて</p>
     <div class="firstGrid rise">
       <div class="vid" id="vid" style="display:none"></div>
       <div class="firstTx"><p id="about"></p></div>
@@ -278,17 +285,13 @@ section{position:relative}
 </section>
 
 <section class="sec">
-  <div class="optic">
-    <div class="prism" style="animation-duration:240s"></div>
-    <div class="ring" style="width:min(34vw,360px);right:10vw;top:18%;opacity:.42"></div>
-  </div>
   <div class="wrap">
-    <p class="label rise"><span class="mono">MESSAGE</span>　おたより</p>
+    <p class="label rise"><span class="en">MESSAGE</span>おたより</p>
     <div class="form rise">
       <p class="hint">感想でも、質問でも。<br>返事は配信の中でするかもしれません。</p>
-      <label>なまえ（なくても大丈夫）</label>
+      <label for="mName">なまえ ／ なくても大丈夫</label>
       <input id="mName" maxlength="40" autocomplete="off">
-      <label>ないよう</label>
+      <label for="mBody">ないよう</label>
       <textarea id="mBody" maxlength="1000"></textarea>
       <button class="send" id="mSend">おくる</button>
       <p class="sent" id="mSent"></p>
@@ -297,14 +300,18 @@ section{position:relative}
 </section>
 
 <section class="sec">
-  <div class="wrap rise" style="position:relative">
-    <img class="chibi" src="img/chibi_frill.webp" alt="" width="379" height="760" loading="lazy" decoding="async">
-    <p class="label mono">LINKS</p>
+  <div class="wrap rise">
+    <p class="label"><span class="en">LINKS</span></p>
     <ul class="ul" id="links"></ul>
   </div>
 </section>
 
-<footer><div class="wrap"><p class="foot mono">TENPON</p></div></footer>
+<footer>
+  <div class="wrap">
+    <p class="foot mono">TENPON</p>
+    <img class="chibi" src="img/chibi_frill.webp" alt="" width="379" height="760" loading="lazy" decoding="async">
+  </div>
+</footer>
 
 <script>
 (function(){
@@ -321,8 +328,10 @@ section{position:relative}
   var WD  = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
   var WDJ = ['日','月','火','水','木','金','土'];
 
-  document.getElementById('bigDay').firstChild.nodeValue = String(now.getDate());
-  document.getElementById('bigMon').textContent = MON[now.getMonth()]+' '+now.getFullYear();
+  // 巨大数字は装飾（aria-hidden）。読める日付は別に置く
+  document.getElementById('bigDay').textContent = String(now.getDate());
+  document.getElementById('dateLine').textContent =
+    now.getFullYear()+'.'+MM+'.'+DD+'  '+WD[now.getDay()];
 
   function inRange(a,b){
     var t=MM+DD, s=a.slice(-5).replace('-',''), e=b.slice(-5).replace('-','');
@@ -399,7 +408,7 @@ section{position:relative}
       var on=!!(w&&w.time); if(on) hasWeekly=true;
       html += '<div class="day'+(on?' has':'')+(d===now.getDay()?' today':'')+'">'
            +  '<p class="dName">'+WDJ[d]+'</p>'
-           +  (on ? '<p class="dTime mono">'+w.time+'</p>'+(w.label?'<p class="dLabel">'+w.label+'</p>':'') : '<p class="dNone">なし</p>')
+           +  (on ? '<p class="dTime mono">'+w.time+'</p>'+(w.label?'<p class="dLabel">'+w.label+'</p>':'') : '<p class="dNone">—</p>')
            +  '</div>';
     }
     document.getElementById('week').innerHTML = html;
@@ -422,22 +431,37 @@ section{position:relative}
     }
     if (sc.note){ var n=document.getElementById('schedNote'); n.textContent=sc.note; n.style.display=''; }
 
-    // 時刻の尺（0〜24時）。いまどこにいて、次の枠まであとどれだけか
+    // 時刻の尺（0〜24時）。予定が1件も無い日は尺ごと出さない
     (function(){
+      var todayW=null;
+      for (var i=0;i<weekly.length;i++) if (weekly[i].day===now.getDay() && weekly[i].time) todayW=weekly[i];
+      var todayUp=(sc.upcoming||[]).filter(function(u){ return u.date===(now.getFullYear()+'-'+MM+'-'+DD) && u.time; });
+      if (!todayW && !todayUp.length) return;
+
+      document.getElementById('scaleWrap').style.display='';
+      var scale=document.getElementById('scale');
+      for (var t=0;t<=24;t+=3){                       // 3時間ごとに点
+        var d=document.createElement('span'); d.className='tick';
+        d.style.left=(t/24*100).toFixed(3)+'%'; scale.appendChild(d);
+      }
+      document.getElementById('scaleTicks').innerHTML =
+        [6,12,18].map(function(h){ return '<span style="left:'+(h/24*100)+'%">'+h+'</span>'; }).join('');
+
+      function band(time){
+        var hm=String(time).split(':'), a=(+hm[0]*60+(+hm[1]||0))/1440*100;
+        var b=document.createElement('span'); b.className='band';
+        b.style.left=a.toFixed(3)+'%'; b.style.width=(120/1440*100).toFixed(3)+'%';
+        scale.appendChild(b);
+      }
+      if (todayW) band(todayW.time);
+      todayUp.forEach(function(u){ band(u.time); });
+
       var mark=document.getElementById('nowmark');
       function place(){
         var n=new Date();
         mark.style.left=((n.getHours()*60+n.getMinutes())/1440*100).toFixed(3)+'%';
       }
       place(); setInterval(place,60000);
-      var todayW=null;
-      for (var i=0;i<weekly.length;i++) if (weekly[i].day===now.getDay() && weekly[i].time) todayW=weekly[i];
-      if (todayW){
-        var hm=todayW.time.split(':'), st0=(+hm[0]*60+(+hm[1]||0))/1440*100;
-        var b=document.createElement('span'); b.className='band';
-        b.style.left=st0.toFixed(3)+'%'; b.style.width=(120/1440*100).toFixed(3)+'%';
-        document.getElementById('scale').appendChild(b);
-      }
     })();
 
     var st=document.getElementById('status'), main=document.getElementById('stMain'),
