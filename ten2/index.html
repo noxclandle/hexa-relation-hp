@@ -429,7 +429,13 @@ footer .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap
     if (pick.link && pick.link.url){
       var a=document.getElementById('tdLink'); a.textContent=pick.link.label||'くわしく'; a.href=pick.link.url; a.style.display='';
     }
-    if (pick.art==='kimono'){ var f=document.getElementById('fig'); f.src='img/kimono.webp'; f.classList.add('framed'); }
+    // 立ち絵の差し替え。ヒーローには常に1体しか出ないので、
+    // 瞳の色が違う絵（box）もここからなら同じ画面に並ばない
+    var ART={ kimono:'img/kimono.webp', box:'img/box.webp' };
+    if (ART[pick.art]){
+      var f=document.getElementById('fig');
+      f.src=ART[pick.art]; f.classList.add('framed');
+    }
 
     var weekly=sc.weekly||[], hasWeekly=false, html='';
     for (var d=0; d<7; d++){

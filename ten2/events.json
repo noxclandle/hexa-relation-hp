@@ -1,22 +1,115 @@
 {
-  "_readme": "when は MM-DD(毎年繰り返し) / YYYY-MM-DD(その年だけ) / MM-DD..MM-DD(期間)。kind は notice=告知 / season=季節の便り。優先度は birthday > anniversary > notice > season。",
+  "_readme": "when は MM-DD(毎年繰り返し) / YYYY-MM-DD(その年だけ) / MM-DD..MM-DD(期間)。kind は notice=告知 / season=季節の便り。優先度は birthday > anniversary > notice > season。art は立ち絵の差し替え。kimono=着物(正月) / box=箱からのぞく絵。box は瞳の色が他と違うので、差し替え(=同じ画面に他の絵が並ばない)でしか使わない。_examples は使われない。出したくなったら events に移して日付を入れる。",
   "events": [
-    { "when": "08-30",          "kind": "notice",  "theme": "birthday",  "title": "今日は てん の誕生日です",       "body": "",                                   "link": { "label": "配信を見に行く", "url": "https://www.youtube.com/@TENpon_ch/live" } },
-    { "when": "08-23..08-29",   "kind": "notice",  "theme": "birthday",  "title": "もうすぐ てん の誕生日です",     "body": "",                                   "link": null },
-    { "when": "05-18",          "kind": "notice",  "theme": "sakura",    "title": "今日でチャンネル開設から{years}年になりました", "body": "いつも来てくれて、ありがとうございます。", "link": null },
-
-    { "when": "10-25..10-31",   "kind": "notice",  "theme": "halloween", "title": "ハロウィンです",                 "body": "",                                   "link": null },
-    { "when": "12-20..12-25",   "kind": "notice",  "theme": "christmas", "title": "メリークリスマス",               "body": "",                                   "link": null },
-    { "when": "12-31..01-03",   "kind": "notice",  "theme": "newyear",   "title": "あけましておめでとうございます", "body": "今年もよろしくお願いします。",       "link": null, "art": "kimono" },
-    { "when": "02-14",          "kind": "notice",  "theme": "sakura",    "title": "バレンタインです",               "body": "",                                   "link": null },
-
-    { "when": "01-10..02-20",   "kind": "season",  "theme": "snow",      "title": "さむい日がつづきます",           "body": "" },
-    { "when": "03-20..04-10",   "kind": "season",  "theme": "sakura",    "title": "桜の季節になりました",           "body": "" },
-    { "when": "06-05..06-30",   "kind": "season",  "theme": "rain",      "title": "雨の日がつづきます",             "body": "" },
-    { "when": "07-07",          "kind": "season",  "theme": "night",     "title": "七夕です",                       "body": "" },
-    { "when": "07-20..08-20",   "kind": "season",  "theme": "summer",    "title": "夏です",                         "body": "" },
-    { "when": "09-15..10-15",   "kind": "season",  "theme": "autumn",    "title": "すこし涼しくなってきました",     "body": "" },
-    { "when": "11-01..11-30",   "kind": "season",  "theme": "autumn",    "title": "紅葉の季節です",                 "body": "" }
+    {
+      "when": "08-30",
+      "kind": "notice",
+      "theme": "birthday",
+      "title": "今日は てん の誕生日です",
+      "body": "",
+      "link": {
+        "label": "配信を見に行く",
+        "url": "https://www.youtube.com/@TENpon_ch/live"
+      }
+    },
+    {
+      "when": "08-23..08-29",
+      "kind": "notice",
+      "theme": "birthday",
+      "title": "もうすぐ てん の誕生日です",
+      "body": "",
+      "link": null
+    },
+    {
+      "when": "05-18",
+      "kind": "notice",
+      "theme": "sakura",
+      "title": "今日でチャンネル開設から{years}年になりました",
+      "body": "いつも来てくれて、ありがとうございます。",
+      "link": null
+    },
+    {
+      "when": "10-25..10-31",
+      "kind": "notice",
+      "theme": "halloween",
+      "title": "ハロウィンです",
+      "body": "",
+      "link": null
+    },
+    {
+      "when": "12-20..12-25",
+      "kind": "notice",
+      "theme": "christmas",
+      "title": "メリークリスマス",
+      "body": "",
+      "link": null
+    },
+    {
+      "when": "12-31..01-03",
+      "kind": "notice",
+      "theme": "newyear",
+      "title": "あけましておめでとうございます",
+      "body": "今年もよろしくお願いします。",
+      "link": null,
+      "art": "kimono"
+    },
+    {
+      "when": "02-14",
+      "kind": "notice",
+      "theme": "sakura",
+      "title": "バレンタインです",
+      "body": "",
+      "link": null
+    },
+    {
+      "when": "01-10..02-20",
+      "kind": "season",
+      "theme": "snow",
+      "title": "さむい日がつづきます",
+      "body": ""
+    },
+    {
+      "when": "03-20..04-10",
+      "kind": "season",
+      "theme": "sakura",
+      "title": "桜の季節になりました",
+      "body": ""
+    },
+    {
+      "when": "06-05..06-30",
+      "kind": "season",
+      "theme": "rain",
+      "title": "雨の日がつづきます",
+      "body": ""
+    },
+    {
+      "when": "07-07",
+      "kind": "season",
+      "theme": "night",
+      "title": "七夕です",
+      "body": ""
+    },
+    {
+      "when": "07-20..08-20",
+      "kind": "season",
+      "theme": "summer",
+      "title": "夏です",
+      "body": ""
+    },
+    {
+      "when": "09-15..10-15",
+      "kind": "season",
+      "theme": "autumn",
+      "title": "すこし涼しくなってきました",
+      "body": ""
+    },
+    {
+      "when": "11-01..11-30",
+      "kind": "season",
+      "theme": "autumn",
+      "title": "紅葉の季節です",
+      "body": ""
+    }
   ],
   "message": {
     "text": "",
@@ -25,5 +118,16 @@
   "default": {
     "title": "今日も来てくれて、ありがとうございます",
     "body": ""
-  }
+  },
+  "_examples": [
+    {
+      "_note": "出来事があった日だけ出す枠。引っ越し・お披露目・長期休止明けの復帰など。年中行事にはしない（正月の着物と役割が被るため）。使うときは when に実際の日付を入れて events 側へ移す。",
+      "when": "YYYY-MM-DD..YYYY-MM-DD",
+      "kind": "notice",
+      "title": "サイトをあたらしくしました",
+      "body": "",
+      "link": null,
+      "art": "box"
+    }
+  ]
 }
