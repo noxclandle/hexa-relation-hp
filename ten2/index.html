@@ -26,7 +26,7 @@
 <meta name="theme-color" content="#FDFAFB">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;500&family=Nunito:wght@300;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* ===================================================================
    ten2 design system
@@ -43,19 +43,19 @@
    =================================================================== */
 :root{
   /* 面 */
-  --base:#FDFAFB;
-  --floor:#EFE8F0;                 /* 面の最暗値。文字比の基準 */
-  --veil:rgba(255,255,255,.62);
-  --rule:#E9DFE8;
-  --v-rose:#FAE7F0; --v-sky:#E4EFFB; --v-cream:#FBEFDC; --v-lilac:#F0EAF9;
+  --base:#FFEDF4;
+  --surf:#FFDEEC;
+  --band:#FFCEE4; --band2:#FFBEDB;                  /* 最暗面。文字比の基準 */
+  --rule:#F3C3D8;
+  --v-rose:#FFCEE4; --v-sky:#CFE6FB;
   /* 文字色 ― この4つ以外は使わない（対 --floor） */
-  --ink:#342F3A;    /* 10.83:1 */
-  --sub:#6B6270;    /*  4.84:1 */
-  --accent:#A03F68; /*  5.13:1 / 白ヌキ 6.17:1 */
-  --faint:#867B8D;  /*  3.34:1  罫線・非活性のみ */
+  --ink:#593C4A;    /* 7.00:1 対 --band */
+  --sub:#735965;    /* 4.54:1 */
+  --accent:#B81467; /* 4.56:1 / 白ヌキ 6.30:1 */
+  --faint:#8B7780;  /* 3.01:1 罫線・非活性のみ */
   /* 装飾専用。文字色ではない。使う要素は必ず aria-hidden にし、
      同じ情報を読める文字で別に置くこと */
-  --deco:#B57091;
+  --deco:#CB3C83;
   /* サイズ */
   --s1:13px; --s2:15px; --s3:18px; --s4:30px; --sd:clamp(88px,12vw,184px);
   /* 余白 */
@@ -63,27 +63,32 @@
   /* 角丸 */
   --r1:6px; --r2:12px; --r3:28px;
 }
-:root[data-theme="birthday"] { --accent:#A83A63 }
-:root[data-theme="sakura"]   { --accent:#A8446E }
-:root[data-theme="summer"]   { --accent:#1F6F7A }
-:root[data-theme="autumn"]   { --accent:#8A4A1B }
-:root[data-theme="halloween"]{ --accent:#6B3F8F }
-:root[data-theme="christmas"]{ --accent:#1F6B45 }
-:root[data-theme="newyear"]  { --accent:#805D14 }
-:root[data-theme="snow"]     { --accent:#3A5A80 }
-:root[data-theme="rain"]     { --accent:#40566B }
-:root[data-theme="night"]    { --accent:#4B3F96 }
+
+
+/* 季節テーマ：面(base/surf/band)ごと差し替える。文字比は各テーマの --band に対して実測済み
+   ink 7.00〜7.13 / sub 4.52〜4.60 / accent 4.50〜4.63(白ヌキ 5.93〜6.31)
+   faint 3.01〜3.06 / deco 3.30〜3.38（decoは24px以上または19px/700以上に限る） */
+:root[data-theme="birthday"] { --base:#FEEEF0; --surf:#FEE0E3; --band:#FED1D6; --band2:#FDC2C9; --rule:#F6BFC6; --ink:#5C3C41; --sub:#76595D; --accent:#BF0F39; --faint:#8D7779; --deco:#D63B5A; --v-rose:#FED1D6; --v-sky:#D8E6FA }
+:root[data-theme="sakura"]   { --base:#FEEDF6; --surf:#FEDEEF; --band:#FDCEE7; --band2:#FCBFDF; --rule:#F5BFDA; --ink:#573B4B; --sub:#725967; --accent:#B51771; --faint:#8A7781; --deco:#C93F8F; --v-rose:#FDCEE7; --v-sky:#DCE7FA }
+:root[data-theme="summer"]   { --base:#DEF8FB; --surf:#C7F2F7; --band:#AEEBF2; --band2:#95E4EE; --rule:#9FDDE6; --ink:#264D52; --sub:#48686C; --accent:#036E7F; --faint:#6C8487; --deco:#088594; --v-rose:#FBE0EC; --v-sky:#AEEBF2 }
+:root[data-theme="autumn"]   { --base:#FFEFE5; --surf:#FFE2D0; --band:#FED4B9; --band2:#FDC6A2; --rule:#F5C6AA; --ink:#583F2D; --sub:#735C4D; --accent:#905200; --faint:#8B796E; --deco:#B26101; --v-rose:#FED4B9; --v-sky:#E0E9F6 }
+:root[data-theme="halloween"]{ --base:#F4F0FE; --surf:#ECE3FF; --band:#E3D6FE; --band2:#D9C7FD; --rule:#D7C7F2; --ink:#49405A; --sub:#655D75; --accent:#8739BD; --faint:#807A8C; --deco:#9556D5; --v-rose:#F7DCC6; --v-sky:#E3D6FE }
+:root[data-theme="christmas"]{ --base:#E6F8E9; --surf:#D5F1D9; --band:#C2EAC9; --band2:#AFE3B8; --rule:#B2DCBA; --ink:#334C38; --sub:#536857; --accent:#057146; --faint:#738476; --deco:#058B4C; --v-rose:#FBDCDC; --v-sky:#C2EAC9 }
+:root[data-theme="newyear"]  { --base:#F8F3DE; --surf:#F1E9C8; --band:#EBDEB0; --band2:#E4D399; --rule:#DDD0A4; --ink:#4C4528; --sub:#686249; --accent:#6B6203; --faint:#827D6B; --deco:#877604; --v-rose:#F6DCD2; --v-sky:#EBDEB0 }
+:root[data-theme="snow"]     { --base:#E9F4FE; --surf:#D6ECFE; --band:#C2E2FF; --band2:#AED8FF; --rule:#B4D6F4; --ink:#30485C; --sub:#506476; --accent:#0063B7; --faint:#707F8D; --deco:#047BCE; --v-rose:#F2E2EE; --v-sky:#C2E2FF }
+:root[data-theme="rain"]     { --base:#ECF3FF; --surf:#DCE9FF; --band:#CCDFFF; --band2:#BCD4FF; --rule:#BDD3F6; --ink:#37465D; --sub:#556378; --accent:#3654D5; --faint:#747E8E; --deco:#3C6FE7; --v-rose:#EDE2F4; --v-sky:#CCDFFF }
+:root[data-theme="night"]    { --base:#F2F1FE; --surf:#E8E5FE; --band:#DDD9FF; --band2:#D2CDFF; --rule:#CFCAF2; --ink:#46425D; --sub:#615E76; --accent:#7940C8; --faint:#7D7B8D; --deco:#855DDF; --v-rose:#F0DEEE; --v-sky:#DDD9FF }
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
   margin:0; background:var(--base); color:var(--ink);
   font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Hiragino Sans',sans-serif;
-  font-weight:300; font-size:var(--s3); line-height:1.9; letter-spacing:.03em;
+  font-weight:400; font-size:var(--s3); line-height:1.8; letter-spacing:.02em;
   -webkit-font-smoothing:antialiased; overflow-x:hidden;
 }
 /* Nunito の数字は既定で等幅。font-variant-numeric は不要 */
-.mono{font-family:'Nunito','Helvetica Neue',sans-serif;font-weight:300}
+.mono{font-family:'Nunito','Helvetica Neue',sans-serif;font-weight:400}
 a{color:inherit;text-decoration:none}
 ul{margin:0;padding:0;list-style:none}
 p{margin:0}
@@ -91,7 +96,7 @@ p{margin:0}
 
 /* ===== にじみ ― ページ全体に1枚。セクションで切らないので段差が出ない ===== */
 .aura{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.blob{position:absolute;border-radius:50%;filter:blur(56px);will-change:transform}
+.blob{position:absolute;border-radius:50%;filter:blur(64px);opacity:.34;will-change:transform}
 .b1{width:78vw;height:78vw;left:-22vw;top:-18vw;
     background:radial-gradient(closest-side,var(--v-rose),transparent 100%);
     animation:d1 44s ease-in-out infinite alternate}
@@ -99,10 +104,10 @@ p{margin:0}
     background:radial-gradient(closest-side,var(--v-sky),transparent 100%);
     animation:d2 52s ease-in-out infinite alternate}
 .b3{width:56vw;height:56vw;left:8vw;bottom:-14vw;
-    background:radial-gradient(closest-side,var(--v-cream),transparent 100%);
+    background:radial-gradient(closest-side,var(--v-rose),transparent 100%);
     animation:d3 60s ease-in-out infinite alternate}
 .b4{width:46vw;height:46vw;right:4vw;bottom:-8vw;
-    background:radial-gradient(closest-side,var(--v-lilac),transparent 100%);
+    background:radial-gradient(closest-side,var(--v-sky),transparent 100%);
     animation:d1 56s ease-in-out infinite alternate-reverse}
 @keyframes d1{to{transform:translate3d(6vw,4vh,0) scale(1.12)}}
 @keyframes d2{to{transform:translate3d(-5vw,6vh,0) scale(1.08)}}
@@ -121,28 +126,31 @@ section{position:relative}
 
 /* hero */
 .hero{min-height:100svh;display:flex;align-items:center;overflow:hidden}
-.fig{position:absolute;bottom:0;height:88svh;width:auto;z-index:2;pointer-events:none;
+.figbed{position:absolute;bottom:0;z-index:1;pointer-events:none;
+  width:min(46vw,620px);height:74svh;border-radius:50% 50% 0 0/62% 62% 0 0;filter:blur(24px);
+  background:radial-gradient(60% 70% at 50% 62%,var(--band2),var(--band) 62%,transparent 100%);
+  right:max(var(--x5),calc((100vw - 1080px)/2 + var(--x5) - 60px))}
+.fig{position:absolute;bottom:0;height:88svh;width:auto;z-index:2;filter:drop-shadow(0 10px 26px rgba(89,60,74,.14));pointer-events:none;
   right:max(var(--x5),calc((100vw - 1080px)/2 + var(--x5)))}   /* 右端をコンテンツ枠に揃える */
 .fig.framed{bottom:auto;top:50%;transform:translateY(-50%);height:auto;width:min(44vw,520px)}
 .sup{font-size:var(--s1);letter-spacing:.22em;color:var(--sub);margin-bottom:var(--x2)}
-.big{font-size:var(--sd);line-height:1;letter-spacing:.01em;display:block;
-  text-shadow:0 3px 28px rgba(160,63,104,.14)}
+.big{font-size:var(--sd);line-height:1;letter-spacing:.01em;display:block;font-weight:500;
+  color:var(--deco);text-shadow:0 3px 28px rgba(203,60,131,.18)}
 .greet{margin-top:var(--x3);font-size:var(--s3);letter-spacing:.03em;max-width:22em}
 /* 状態は面に載せる。立ち絵を薄くして可読性を作らない */
-.status{margin-top:var(--x5);display:inline-block;background:var(--veil);
-  border-radius:var(--r3);padding:var(--x3) var(--x4);backdrop-filter:blur(8px)}
+.status{margin-top:var(--x5);display:inline-block;background:var(--band);border-radius:var(--r3);padding:var(--x3) var(--x4);backdrop-filter:blur(8px)}
 .stRow{display:flex;align-items:center;gap:var(--x2)}
 .dot{width:10px;height:10px;border-radius:50%;flex:none;background:var(--faint)}
-.status.on .dot{background:var(--accent);box-shadow:0 0 0 8px rgba(160,63,104,.13);animation:breathe 3.6s ease-in-out infinite}
+.status.on .dot{background:var(--accent);box-shadow:0 0 0 8px rgba(184,20,103,.16);animation:breathe 3.6s ease-in-out infinite}
 .stMain{font-size:var(--s3);font-weight:500}
 .stSub{margin-top:var(--x1);margin-left:26px;font-size:var(--s2);color:var(--sub)}
 .stSub b{font-weight:500;color:var(--ink)}
 .link{display:inline-block;min-height:44px;line-height:44px;font-size:var(--s2);font-weight:500;
-  color:var(--accent);box-shadow:inset 0 -2px 0 rgba(160,63,104,.28)}
+  color:var(--accent);box-shadow:inset 0 -2px 0 rgba(184,20,103,.34)}
 .stGo{margin-left:26px}
 
 /* today ─ 巨大数字は装飾。読める日付を別に置く */
-.card{position:relative;background:var(--veil);border-radius:var(--r3);
+.card{position:relative;background:var(--surf);box-shadow:inset 0 0 0 1px var(--rule);border-radius:var(--r3);
   padding:var(--x5);overflow:hidden}
 .bigdate{position:absolute;right:var(--x4);top:var(--x2);font-size:var(--sd);
   line-height:1;color:var(--deco);opacity:.5;pointer-events:none;user-select:none}
@@ -152,7 +160,7 @@ section{position:relative}
 
 /* 時刻の尺 ─ 予定が無い日は出さない */
 .scaleWrap{margin-bottom:var(--x5)}
-.scale{position:relative;height:14px;border-radius:7px;background:var(--veil);
+.scale{position:relative;height:14px;border-radius:7px;background:var(--surf);
   box-shadow:inset 0 0 0 1px var(--rule)}
 .scale .tick{position:absolute;top:50%;width:3px;height:3px;border-radius:50%;
   background:var(--faint);transform:translate(-50%,-50%)}
@@ -165,15 +173,15 @@ section{position:relative}
 
 /* schedule */
 .week{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--x1);margin-bottom:var(--x5)}
-.day{padding:var(--x3) var(--x1);text-align:center;border-radius:var(--r2);background:var(--veil)}
-.day.today{background:var(--v-rose)}
+.day{padding:var(--x3) var(--x1);text-align:center;border-radius:var(--r2);background:var(--surf);box-shadow:inset 0 0 0 1px var(--rule)}
+.day.today{background:var(--band)}
 .dName{font-size:var(--s1);font-weight:500;color:var(--sub);margin-bottom:var(--x2)}
 .day.today .dName{color:var(--accent)}
 .dTime{font-size:var(--s3);font-weight:500}
 .dLabel{font-size:var(--s1);color:var(--sub);margin-top:var(--x1);line-height:1.7}
 .dNone{font-size:var(--s2);color:var(--sub)}
 .upList li{display:grid;grid-template-columns:200px 1fr;gap:0 var(--x4);align-items:baseline;
-  background:var(--veil);border-radius:var(--r2);padding:var(--x3) var(--x4);margin-bottom:var(--x1)}
+  background:var(--surf);box-shadow:inset 0 0 0 1px var(--rule);border-radius:var(--r2);padding:var(--x3) var(--x4);margin-bottom:var(--x1)}
 .upDate{font-size:var(--s2);color:var(--sub);white-space:nowrap}
 .upTitle{font-size:var(--s3);font-weight:500}
 .upTitle a:hover{color:var(--accent)}
@@ -193,9 +201,9 @@ section{position:relative}
 .form .hint{font-size:var(--s2);color:var(--sub);margin-bottom:var(--x4)}
 .form label{display:block;font-size:var(--s1);font-weight:500;color:var(--sub);margin-bottom:var(--x1)}
 .form input,.form textarea{
-  width:100%;min-height:48px;background:#fff;border:1px solid var(--rule);border-radius:var(--r2);
+  width:100%;min-height:48px;background:#fff;border:1px solid var(--faint);border-radius:var(--r2);
   padding:14px var(--x3);margin-bottom:var(--x3);
-  font-family:inherit;font-weight:300;font-size:var(--s3);letter-spacing:.03em;line-height:1.9;color:var(--ink);
+  font-family:inherit;font-weight:400;font-size:var(--s3);letter-spacing:.03em;line-height:1.9;color:var(--ink);
   outline:none;transition:border-color .3s}
 .form textarea{min-height:120px;resize:vertical}
 .form input:focus,.form textarea:focus{border-color:var(--accent)}
@@ -208,7 +216,7 @@ section{position:relative}
 
 /* links */
 .ul{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--x2)}
-.ul a{display:block;background:var(--veil);border-radius:var(--r2);padding:var(--x3) var(--x4);min-height:88px}
+.ul a{display:block;background:var(--surf);box-shadow:inset 0 0 0 1px var(--rule);border-radius:var(--r2);padding:var(--x3) var(--x4);min-height:88px}
 .ul a:hover{background:var(--v-rose)}
 .ul .en{font-family:'Nunito',sans-serif;font-weight:600;font-size:var(--s1);letter-spacing:.16em;
   color:var(--accent);display:block;margin-bottom:var(--x1)}
@@ -258,6 +266,7 @@ footer .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap
 </div>
 
 <section class="hero">
+  <div class="figbed" aria-hidden="true"></div>
   <img class="fig" src="img/hero.webp" alt="" id="fig" width="488" height="1300" fetchpriority="high" decoding="async">
   <div class="wrap">
     <div class="mark rise">
