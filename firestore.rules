@@ -52,11 +52,10 @@ service cloud.firestore {
     // 書き込みは /save/ten2/admin/ の認証済みセッションのみ。
     match /ten_board/{docId} {
       allow read: if true;
-      // 匿名認証は request.auth != null を満たすため、それだけでは誰でも書き換えられる。
-      // 管理用アカウントのUIDに限定する。ADMIN_UID は Firebase Console で作成した
-      // アカウントのUIDに差し替えること。差し替えるまでは書き込めない（安全側）。
-      allow write: if request.auth != null
-                   && request.auth.uid == 'ADMIN_UID';
+      // 裏ページ(/ten2/admin/)はあいことば＋匿名認証で入る運用。
+      // 匿名認証は request.auth != null を満たすので、URLとあいことばを知っていれば
+      // 誰でも書き換えられる。使い心地を優先したオーナーの判断による。
+      allow write: if request.auth != null;
     }
 
     // てんへのおたより。ページの訪問者が匿名で送るため作成は公開。
@@ -70,10 +69,10 @@ service cloud.firestore {
                     && request.resource.data.name is string
                     && request.resource.data.name.size() <= 40
                     && request.resource.data.read == false;
-      // 閲覧は ten_board と同じ理由で管理用アカウントのUIDに限定する。
-      // 匿名認証で読めてしまうと「てんに届く」という表の文言が嘘になる。
-      allow read, update, delete: if request.auth != null
-                                  && request.auth.uid == 'ADMIN_UID';
+      // 閲覧も ten_board と同じ運用。匿名認証で読めるため、URLとあいことばを
+      // 知っている人は誰でも中身を読める。表の文言は「このページの管理者が預かります」
+      // としてあり、本人しか読まないとは約束していない。
+      allow read, update, delete: if request.auth != null;
     }
 
     // 上記以外は全て非公開
