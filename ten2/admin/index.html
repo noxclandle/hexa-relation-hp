@@ -7,91 +7,106 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;500&family=Nunito:wght@300;600&display=swap" rel="stylesheet">
 <style>
-/* 表のページと同じ規則：書体1 / サイズ5 / 文字色4 / 角丸は主ボタンのみ */
+/* 表のページと同じ設計言語。トークンは ten2/index.html からそのまま持ってきている。
+   ここは てん本人が毎日使う画面なので、可読性は表と同じ基準で守る。 */
 :root{
-  --i1:#FBE2EE; --i2:#E7DBF7; --i3:#D4E7F9; --i4:#D2F0E8; --i5:#FCF2D6;
-  --base:#FBFAF8; --ink:#463F4C; --sub:#8B8494; --accent:#A2809F; --faint:#CFC8D4;
-  --s1:12px; --s2:15px; --s3:17px; --s4:27px;
+  --base:#FDFAFB; --floor:#EFE8F0; --veil:rgba(255,255,255,.62); --rule:#E9DFE8;
+  --v-rose:#FAE7F0; --v-sky:#E4EFFB; --v-cream:#FBEFDC; --v-lilac:#F0EAF9;
+  --ink:#342F3A; --sub:#6B6270; --accent:#A03F68; --faint:#867B8D;
+  --s1:13px; --s2:15px; --s3:18px; --s4:30px;
   --x1:8px; --x2:16px; --x3:24px; --x4:40px; --x5:64px; --x6:96px;
+  --r1:6px; --r2:12px; --r3:28px;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--base);color:var(--ink);
-  font-family:'Zen Old Mincho','Yu Mincho','Hiragino Mincho ProN',serif;
-  font-weight:400;font-size:var(--s3);line-height:2.1;letter-spacing:.08em;
+  font-family:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Hiragino Sans',sans-serif;
+  font-weight:300;font-size:var(--s3);line-height:1.9;letter-spacing:.03em;
   -webkit-font-smoothing:antialiased;overflow-x:hidden}
 p{margin:0}
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;
-  background-image:repeating-linear-gradient(90deg,rgba(120,105,130,.015) 0 1px,transparent 1px 7px)}
-.bubs{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.bub{position:absolute;border-radius:50%;
-  background:radial-gradient(circle at 30% 26%,rgba(255,255,255,.95) 0 6%,rgba(255,255,255,.4) 13%,rgba(255,255,255,0) 34%),
-    conic-gradient(from 210deg at 50% 50%,var(--i1),var(--i2),var(--i3),var(--i4),var(--i5),var(--i1));
-  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.9),inset 0 0 34px rgba(255,255,255,.7);
-  opacity:.6;animation:float linear infinite}
-.bub.mist{filter:blur(48px);box-shadow:none}
-@keyframes float{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(-10px,-40px) rotate(180deg)}100%{transform:translate(0,0) rotate(360deg)}}
+.mono{font-family:'Nunito','Helvetica Neue',sans-serif;font-weight:300}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--r1)}
+
+/* 表と同じ「にじみ」 */
+.bubs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bub{position:absolute;border-radius:50%;filter:blur(56px);will-change:transform}
+.bub:nth-child(1){width:78vw;height:78vw;left:-22vw;top:-18vw;
+  background:radial-gradient(closest-side,var(--v-rose),transparent 100%);animation:d1 44s ease-in-out infinite alternate}
+.bub:nth-child(2){width:64vw;height:64vw;right:-16vw;top:6vh;
+  background:radial-gradient(closest-side,var(--v-sky),transparent 100%);animation:d2 52s ease-in-out infinite alternate}
+.bub:nth-child(3){width:56vw;height:56vw;left:8vw;bottom:-14vw;
+  background:radial-gradient(closest-side,var(--v-cream),transparent 100%);animation:d3 60s ease-in-out infinite alternate}
+.bub:nth-child(4){width:46vw;height:46vw;right:4vw;bottom:-8vw;
+  background:radial-gradient(closest-side,var(--v-lilac),transparent 100%);animation:d1 56s ease-in-out infinite alternate-reverse}
+@keyframes d1{to{transform:translate3d(6vw,4vh,0) scale(1.12)}}
+@keyframes d2{to{transform:translate3d(-5vw,6vh,0) scale(1.08)}}
+@keyframes d3{to{transform:translate3d(4vw,-5vh,0) scale(1.14)}}
 @media (prefers-reduced-motion:reduce){.bub{animation:none}}
 
 .wrap{max-width:620px;margin:0 auto;padding:var(--x5) var(--x3) 160px;position:relative;z-index:3}
-h1{font-size:var(--s4);font-weight:400;letter-spacing:.12em;margin:0 0 var(--x1)}
+h1{font-size:var(--s4);font-weight:500;letter-spacing:.02em;margin:0 0 var(--x1)}
 .hint{font-size:var(--s2);color:var(--sub);margin:0 0 var(--x5)}
-h2{font-size:var(--s1);font-weight:400;letter-spacing:.3em;color:var(--sub);margin:0 0 var(--x3)}
+h2{font-size:var(--s1);font-weight:500;letter-spacing:.02em;color:var(--sub);margin:0 0 var(--x3)}
 section{margin:0 0 var(--x6)}
-label{display:block;font-size:var(--s1);letter-spacing:.3em;color:var(--sub);margin:0 0 var(--x1)}
+label{display:block;font-size:var(--s1);font-weight:500;letter-spacing:.02em;color:var(--sub);margin:0 0 var(--x1)}
 
-/* タブ：囲まず、下線で示す */
+/* タブ：色だけに頼らず、太さと字の重みでも示す */
 .tabs{display:flex;gap:var(--x4);margin:0 0 var(--x6);white-space:nowrap;
-  box-shadow:inset 0 -1px 0 rgba(139,132,148,.18)}
-.tab{border:0;background:transparent;padding:0 0 var(--x2);font-family:inherit;font-weight:400;
-  font-size:var(--s3);letter-spacing:.1em;color:var(--sub);cursor:pointer;white-space:nowrap;
-  box-shadow:inset 0 -1px 0 transparent;transition:color .4s,box-shadow .4s}
-.tab.on{color:var(--ink);box-shadow:inset 0 -1px 0 var(--accent)}
+  box-shadow:inset 0 -1px 0 var(--rule)}
+.tab{border:0;background:transparent;min-height:48px;padding:0 0 var(--x2);
+  font-family:inherit;font-weight:300;font-size:var(--s3);letter-spacing:.03em;color:var(--sub);
+  cursor:pointer;white-space:nowrap;box-shadow:inset 0 -2px 0 transparent;transition:color .3s,box-shadow .3s}
+.tab.on{color:var(--ink);font-weight:500;box-shadow:inset 0 -2px 0 var(--accent)}
 .pane{display:none}.pane.on{display:block}
 
-input,textarea{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(139,132,148,.28);
-  padding:var(--x1) 0 var(--x2);font-family:inherit;font-weight:400;font-size:var(--s3);
-  letter-spacing:.08em;line-height:2.1;color:var(--ink);outline:none;transition:border-color .4s}
-textarea{resize:vertical;min-height:104px}
-input:focus,textarea:focus{border-bottom-color:var(--accent)}
-.row{display:grid;grid-template-columns:32px 96px 1fr;gap:var(--x2);align-items:baseline;margin-bottom:var(--x2)}
+input,textarea{width:100%;min-height:48px;background:#fff;border:1px solid var(--faint);
+  border-radius:var(--r2);padding:14px var(--x3);
+  font-family:inherit;font-weight:300;font-size:var(--s3);letter-spacing:.03em;line-height:1.9;
+  color:var(--ink);outline:none;transition:border-color .3s}
+textarea{resize:vertical;min-height:120px}
+input:focus,textarea:focus{border-color:var(--accent)}
+.row{display:grid;grid-template-columns:32px 104px 1fr;gap:var(--x2);align-items:center;margin-bottom:var(--x2)}
 .row .dn{font-size:var(--s2);color:var(--sub);text-align:center}
-.up{padding:var(--x3) 0;box-shadow:inset 0 1px 0 rgba(139,132,148,.16)}
-.up .g{display:grid;grid-template-columns:1fr 96px;gap:var(--x2)}
+.up{background:var(--veil);border-radius:var(--r2);padding:var(--x3);margin-bottom:var(--x2)}
+.up .g{display:grid;grid-template-columns:1fr 104px;gap:var(--x2);margin-bottom:var(--x2)}
+.up input{margin-bottom:var(--x2)}
 
-/* 角丸の唯一の例外：主ボタン */
-.btn{border:0;border-radius:999px;background:var(--accent);color:#fff;
-  padding:var(--x2) var(--x4);font-family:inherit;font-size:var(--s2);letter-spacing:.2em;cursor:pointer;transition:opacity .4s}
-.btn:hover{opacity:.82}
-/* 副ボタンは文字＋下線 */
-.btn.ghost{background:transparent;border-radius:0;color:var(--sub);padding:0 0 2px;
-  box-shadow:inset 0 -1px 0 rgba(139,132,148,.3);font-size:var(--s2);letter-spacing:.1em}
-.btn.mini{font-size:var(--s1)}
-.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(251,250,248,.92);
-  backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(139,132,148,.16);
-  padding:var(--x3);display:flex;gap:var(--x4);align-items:center;justify-content:center}
+.btn{min-height:48px;border:0;border-radius:var(--r2);background:var(--accent);color:#fff;
+  padding:0 var(--x4);font-family:inherit;font-weight:500;font-size:var(--s2);letter-spacing:.06em;
+  cursor:pointer;transition:opacity .3s}
+.btn:hover{opacity:.86}
+.btn.ghost{min-height:44px;background:transparent;color:var(--accent);padding:0 var(--x3);
+  border-radius:var(--r1);box-shadow:inset 0 0 0 1px var(--faint);font-size:var(--s2)}
+.btn.mini{min-height:44px;font-size:var(--s1);padding:0 var(--x3)}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(253,250,251,.92);
+  backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 var(--rule);
+  padding:var(--x3);display:flex;gap:var(--x3);align-items:center;justify-content:center}
 .msg{font-size:var(--s2);color:var(--accent);min-height:26px;text-align:center;margin:var(--x3) 0 0}
-#gate{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:84vh;padding:0 var(--x3);position:relative;z-index:3}
-#gate input{max-width:210px;text-align:center;letter-spacing:.4em}
+#gate{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:84vh;
+  padding:0 var(--x3);position:relative;z-index:3}
+#gate input{max-width:220px;text-align:center;letter-spacing:.3em}
 #gate p{font-size:var(--s2);color:var(--sub);margin:0 0 var(--x3)}
 .hidden{display:none!important}
-.warn{font-size:var(--s2);color:var(--sub);margin:0 0 var(--x5);
-  box-shadow:inset 2px 0 0 var(--accent);padding-left:var(--x3)}
+.warn{background:var(--v-rose);border-radius:var(--r2);padding:var(--x3);
+  font-size:var(--s2);color:var(--ink);margin:0 0 var(--x5)}
 
-.mailItem{padding:var(--x4) 0;box-shadow:inset 0 1px 0 rgba(139,132,148,.16)}
-.mailItem.read{opacity:.42}
+/* 受信箱：既読を opacity で薄くしない（1.34:1 になり読めなくなる） */
+.mailItem{background:var(--veil);border-radius:var(--r2);padding:var(--x3) var(--x4);margin-bottom:var(--x2);
+  box-shadow:inset 3px 0 0 var(--accent)}
+.mailItem.read{box-shadow:none}
+.mailItem.read .mailFrom{color:var(--sub);font-weight:300}
 .mailHead{display:flex;justify-content:space-between;align-items:baseline;gap:var(--x2);margin-bottom:var(--x2)}
-.mailFrom{font-size:var(--s3)}
-.mailAt{font-size:var(--s1);letter-spacing:.2em;color:var(--sub);white-space:nowrap}
+.mailFrom{font-size:var(--s3);font-weight:500}
+.mailAt{font-size:var(--s1);color:var(--sub);white-space:nowrap}
 .mailBody{font-size:var(--s2);color:var(--sub);white-space:pre-wrap;word-break:break-word;margin:0 0 var(--x3)}
-.mailAct{display:flex;gap:var(--x3)}
+.mailAct{display:flex;gap:var(--x2)}
 .none{font-size:var(--s2);color:var(--sub)}
 
 @media(max-width:520px){
   .tabs{gap:var(--x3)}
-  .tab{font-size:var(--s2);letter-spacing:.04em}
-  .row{grid-template-columns:28px 82px 1fr;gap:var(--x1)}
+  .tab{font-size:var(--s2)}
+  .row{grid-template-columns:28px 88px 1fr;gap:var(--x1)}
 }
 </style>
 </head>
@@ -125,7 +140,7 @@ input:focus,textarea:focus{border-bottom-color:var(--accent)}
       <h2>きょうの ひとこと</h2>
       <label>行事の日は、行事のほうが優先で出ます</label>
       <textarea id="message" placeholder="今日はありがとうございました。"></textarea>
-      <p style="margin:12px 0 0"><button class="btn ghost mini" onclick="document.getElementById('message').value=''">消す</button></p>
+      <p style="margin:12px 0 0"><button class="btn ghost mini" onclick="if(confirm('きょうのひとことを消しますか？'))document.getElementById('message').value=''">消す</button></p>
     </section>
   </div>
 

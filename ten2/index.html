@@ -10,7 +10,20 @@
 <meta property="og:url" content="https://www.hexa-relation.com/ten2/">
 <meta property="og:title" content="てん / TENPON">
 <meta property="og:description" content="配信スケジュールとお知らせ。">
-<meta property="og:image" content="https://www.hexa-relation.com/ten2/img/hero.png">
+<meta property="og:image" content="https://www.hexa-relation.com/ten2/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="てん（ten）。猫耳のニット帽をかぶった立ち絵と、配信スケジュールの案内。">
+<meta property="og:site_name" content="てん / TENPON">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="てん / TENPON">
+<meta name="twitter:description" content="いま配信しているか、次はいつか。">
+<meta name="twitter:image" content="https://www.hexa-relation.com/ten2/img/og.png">
+<link rel="icon" href="img/icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="img/icon-180.png" sizes="180x180" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="theme-color" content="#FDFAFB">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;500&family=Nunito:wght@300;600&display=swap" rel="stylesheet">
@@ -22,6 +35,10 @@
    文字のコントラストは --base ではなく --floor に対して測る。
    これで「淡い面をいくら重ねても文字比は下の表を下回らない」が成立する。
    --faint に情報を載せてはいけない（floor 3.34:1）。
+   キャラ画像は「面」ではない。--floor 基準の保証は絵の上では成立しないので、
+   文字の外接矩形とキャラ画像の外接矩形を重ねない。どうしても重ねるときは
+   文字の下に不透明度100%の面(#FFFFFF)を敷く。--veil は使わない。
+   キャラ側の opacity を下げて可読性を作らない。
    角丸の規則：半径 ÷ 部品の短辺 ≤ 0.25。999px は使わない。
    =================================================================== */
 :root{
@@ -169,7 +186,9 @@ section{position:relative}
 .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .firstTx p{font-size:var(--s2);color:var(--sub);max-width:22em}
 
-/* おたより */
+/* おたより ─ フォームの右に「従」を1体。足をフォームの下端に着ける */
+.msgRow{display:grid;grid-template-columns:600px 1fr;gap:0 var(--x5);align-items:end}
+.msgArt{width:224px;height:auto;display:block;justify-self:start;pointer-events:none}
 .form{max-width:600px}
 .form .hint{font-size:var(--s2);color:var(--sub);margin-bottom:var(--x4)}
 .form label{display:block;font-size:var(--s1);font-weight:500;color:var(--sub);margin-bottom:var(--x1)}
@@ -205,9 +224,16 @@ footer .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap
   :root{--sd:clamp(72px,20vw,120px)}
   .wrap{padding:0 var(--x3)}
   .sec{padding:var(--x5) 0}
-  .fig{height:44svh;right:calc(var(--x4) * -1);opacity:.9;z-index:0}
-  .fig.framed{width:86vw;right:calc(var(--x4) * -1);top:34%;opacity:.65}
-  .hero{padding:var(--x5) 0;align-items:center}
+  /* 立ち絵と文字を縦に分ける。文字は上、立ち絵は下端に立たせる */
+  .hero{align-items:flex-start;padding:var(--x6) 0 0}
+  .fig{height:min(58svh,490px);right:calc(var(--x2) * -1);opacity:1;z-index:1}
+  /* 正月テーマ：文字の背後に敷かない。下端に寄せる */
+  .fig.framed{width:min(72vw,300px);right:calc(var(--x2) * -1);
+    top:auto;bottom:0;transform:none;opacity:1;z-index:1}
+  /* 立ち絵と重なる唯一の面。ここだけ不透明にする（--veil は絵の上では計算できない） */
+  .status{background:#FFFFFF;box-shadow:0 2px 24px rgba(52,47,58,.06)}
+  .msgRow{grid-template-columns:1fr}
+  .msgArt{display:none}
   .card{padding:var(--x4) var(--x3)}
   .bigdate{right:var(--x2);top:var(--x1);opacity:.36}
   .msg{max-width:none}
@@ -287,14 +313,18 @@ footer .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap
 <section class="sec">
   <div class="wrap">
     <p class="label rise"><span class="en">MESSAGE</span>おたより</p>
-    <div class="form rise">
-      <p class="hint">感想でも、質問でも。<br>返事は配信の中でするかもしれません。</p>
+    <div class="msgRow rise">
+    <div class="form">
+      <p class="hint">感想でも、質問でも。<br>届いたものは、このページの管理者が預かります。<br>てんに渡すかどうかは、てんが決めます。</p>
       <label for="mName">なまえ ／ なくても大丈夫</label>
       <input id="mName" maxlength="40" autocomplete="off">
       <label for="mBody">ないよう</label>
       <textarea id="mBody" maxlength="1000"></textarea>
       <button class="send" id="mSend">おくる</button>
       <p class="sent" id="mSent"></p>
+    </div>
+    <img class="msgArt" src="img/chibi_white.webp" alt=""
+         width="448" height="681" loading="lazy" decoding="async">
     </div>
   </div>
 </section>
@@ -309,7 +339,7 @@ footer .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap
 <footer>
   <div class="wrap">
     <p class="foot mono">TENPON</p>
-    <img class="chibi" src="img/chibi_frill.webp" alt="" width="379" height="760" loading="lazy" decoding="async">
+    <img class="chibi" src="img/chibi_frill.webp" alt="" width="224" height="449" loading="lazy" decoding="async">
   </div>
 </footer>
 
