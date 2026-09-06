@@ -29,33 +29,34 @@
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* ===================================================================
-   ten2 design system
-   書体2 / サイズ5 / 文字色4 / 角丸3段 / 余白は8の倍数
-   可読性の保証条件：面はすべて --floor より明るいこと。
-   文字のコントラストは --base ではなく --floor に対して測る。
-   これで「淡い面をいくら重ねても文字比は下の表を下回らない」が成立する。
-   --faint に情報を載せてはいけない（floor 3.34:1）。
-   キャラ画像は「面」ではない。--floor 基準の保証は絵の上では成立しないので、
-   文字の外接矩形とキャラ画像の外接矩形を重ねない。どうしても重ねるときは
-   文字の下に不透明度100%の面(#FFFFFF)を敷く。--veil は使わない。
-   キャラ側の opacity を下げて可読性を作らない。
-   角丸の規則：半径 ÷ 部品の短辺 ≤ 0.25。999px は使わない。
+   ten2 design system  ―  わたあめ
+   地そのものがグラデーション。面は半透明の白ガラスで、下の色が透ける。
+   塗り分けの境目を作らない。
+
+   可読性の担保：アルファ合成は凸結合なので、合成結果は必ず
+   「使った全色の成分ごとの最小値」以上になる。よって幾何・重なり順・
+   アニメーションの位相が何であっても、地は --floor より暗くならない。
+   文字色は全て --floor に対して解いてある。
+     既定の下限 #D9DDEC（実際に現れる最暗点はこれより明るい）
+   面は白を混ぜるぶんさらに明るくなるので、常に安全側。
+   --faint に情報を載せてはいけない。
+   キャラ画像は面ではない。文字の外接矩形と重ねない。
    =================================================================== */
 :root{
-  /* 面 */
-  --base:#FFEDF4;
-  --surf:#FFDEEC;
-  --band:#FFCEE4; --band2:#FFBEDB;                  /* 最暗面。文字比の基準 */
-  --rule:#F3C3D8;
-  --v-rose:#FFCEE4; --v-sky:#CFE6FB;
-  /* 文字色 ― この4つ以外は使わない（対 --floor） */
-  --ink:#593C4A;    /* 7.00:1 対 --band */
-  --sub:#735965;    /* 4.54:1 */
-  --accent:#B81467; /* 4.56:1 / 白ヌキ 6.30:1 */
-  --faint:#8B7780;  /* 3.01:1 罫線・非活性のみ */
-  /* 装飾専用。文字色ではない。使う要素は必ず aria-hidden にし、
-     同じ情報を読める文字で別に置くこと */
-  --deco:#CB3C83;
+  /* 地に溶かす3色。テーマごとに差し替える */
+  --g1:251,221,236; --g2:217,235,249; --g3:244,224,242;
+  --base:#FDFBFC;
+  --floor:#D9DDEC;                 /* 幾何に依存しない下限。文字比の基準 */
+  /* 面 ― すべて半透明。下のグラデーションを透かす */
+  --surf:rgba(255,255,255,.42);
+  --band:rgba(255,255,255,.58);
+  --rule:rgba(255,255,255,.72);
+  /* 文字色 ― この4つ以外は使わない */
+  --ink:#583D50;    /* 7.05:1 */
+  --sub:#73596B;    /* 4.6:1 */
+  --accent:#A33674; /* 4.65:1 / 白ヌキ 6.29:1 */
+  --faint:#8B7785;  /* 3.05:1  罫線・非活性のみ */
+  --deco:#BD508D;   /* 3.3:1  24px以上または19px/700以上に限る */
   /* サイズ */
   --s1:13px; --s2:15px; --s3:18px; --s4:30px; --sd:clamp(88px,12vw,184px);
   /* 余白 */
@@ -63,21 +64,16 @@
   /* 角丸 */
   --r1:6px; --r2:12px; --r3:28px;
 }
-
-
-/* 季節テーマ：面(base/surf/band)ごと差し替える。文字比は各テーマの --band に対して実測済み
-   ink 7.00〜7.13 / sub 4.52〜4.60 / accent 4.50〜4.63(白ヌキ 5.93〜6.31)
-   faint 3.01〜3.06 / deco 3.30〜3.38（decoは24px以上または19px/700以上に限る） */
-:root[data-theme="birthday"] { --base:#FEEEF0; --surf:#FEE0E3; --band:#FED1D6; --band2:#FDC2C9; --rule:#F6BFC6; --ink:#5C3C41; --sub:#76595D; --accent:#BF0F39; --faint:#8D7779; --deco:#D63B5A; --v-rose:#FED1D6; --v-sky:#D8E6FA }
-:root[data-theme="sakura"]   { --base:#FEEDF6; --surf:#FEDEEF; --band:#FDCEE7; --band2:#FCBFDF; --rule:#F5BFDA; --ink:#573B4B; --sub:#725967; --accent:#B51771; --faint:#8A7781; --deco:#C93F8F; --v-rose:#FDCEE7; --v-sky:#DCE7FA }
-:root[data-theme="summer"]   { --base:#DEF8FB; --surf:#C7F2F7; --band:#AEEBF2; --band2:#95E4EE; --rule:#9FDDE6; --ink:#264D52; --sub:#48686C; --accent:#036E7F; --faint:#6C8487; --deco:#088594; --v-rose:#FBE0EC; --v-sky:#AEEBF2 }
-:root[data-theme="autumn"]   { --base:#FFEFE5; --surf:#FFE2D0; --band:#FED4B9; --band2:#FDC6A2; --rule:#F5C6AA; --ink:#583F2D; --sub:#735C4D; --accent:#905200; --faint:#8B796E; --deco:#B26101; --v-rose:#FED4B9; --v-sky:#E0E9F6 }
-:root[data-theme="halloween"]{ --base:#F4F0FE; --surf:#ECE3FF; --band:#E3D6FE; --band2:#D9C7FD; --rule:#D7C7F2; --ink:#49405A; --sub:#655D75; --accent:#8739BD; --faint:#807A8C; --deco:#9556D5; --v-rose:#F7DCC6; --v-sky:#E3D6FE }
-:root[data-theme="christmas"]{ --base:#E6F8E9; --surf:#D5F1D9; --band:#C2EAC9; --band2:#AFE3B8; --rule:#B2DCBA; --ink:#334C38; --sub:#536857; --accent:#057146; --faint:#738476; --deco:#058B4C; --v-rose:#FBDCDC; --v-sky:#C2EAC9 }
-:root[data-theme="newyear"]  { --base:#F8F3DE; --surf:#F1E9C8; --band:#EBDEB0; --band2:#E4D399; --rule:#DDD0A4; --ink:#4C4528; --sub:#686249; --accent:#6B6203; --faint:#827D6B; --deco:#877604; --v-rose:#F6DCD2; --v-sky:#EBDEB0 }
-:root[data-theme="snow"]     { --base:#E9F4FE; --surf:#D6ECFE; --band:#C2E2FF; --band2:#AED8FF; --rule:#B4D6F4; --ink:#30485C; --sub:#506476; --accent:#0063B7; --faint:#707F8D; --deco:#047BCE; --v-rose:#F2E2EE; --v-sky:#C2E2FF }
-:root[data-theme="rain"]     { --base:#ECF3FF; --surf:#DCE9FF; --band:#CCDFFF; --band2:#BCD4FF; --rule:#BDD3F6; --ink:#37465D; --sub:#556378; --accent:#3654D5; --faint:#747E8E; --deco:#3C6FE7; --v-rose:#EDE2F4; --v-sky:#CCDFFF }
-:root[data-theme="night"]    { --base:#F2F1FE; --surf:#E8E5FE; --band:#DDD9FF; --band2:#D2CDFF; --rule:#CFCAF2; --ink:#46425D; --sub:#615E76; --accent:#7940C8; --faint:#7D7B8D; --deco:#855DDF; --v-rose:#F0DEEE; --v-sky:#DDD9FF }
+:root[data-theme="birthday"]{ --g1:251,217,226; --g2:247,221,240; --g3:252,233,220; --floor:#F7D9DC; --ink:#5B3F4D; --sub:#755A68; --accent:#B03258; --faint:#8D7983; --deco:#C55074 }
+:root[data-theme="sakura"]{ --g1:251,220,233; --g2:246,226,240; --g3:230,239,220; --floor:#E6DCDC; --ink:#593E4E; --sub:#745969; --accent:#A93568; --faint:#8B7783; --deco:#C05181 }
+:root[data-theme="summer"]{ --g1:214,239,246; --g2:220,242,228; --g3:251,243,216; --floor:#D6EFD8; --ink:#3C4F56; --sub:#576A71; --accent:#247080; --faint:#78868C; --deco:#33899B }
+:root[data-theme="autumn"]{ --g1:250,227,210; --g2:246,231,214; --g3:242,220,220; --floor:#F2DCD2; --ink:#53443A; --sub:#6E5F55; --accent:#955028; --faint:#887C74; --deco:#B26538 }
+:root[data-theme="halloween"]{ --g1:250,229,208; --g2:229,220,244; --g3:242,222,236; --floor:#E5DCD0; --ink:#503F5B; --sub:#6B5A75; --accent:#893FA9; --faint:#85788C; --deco:#9E5BBB }
+:root[data-theme="christmas"]{ --g1:220,239,224; --g2:250,223,224; --g3:239,234,220; --floor:#DCDFDC; --ink:#344B42; --sub:#4F665C; --accent:#246D49; --faint:#6E8179; --deco:#33865D }
+:root[data-theme="newyear"]{ --g1:250,238,218; --g2:246,226,220; --g3:239,230,224; --floor:#EFE2DA; --ink:#53483A; --sub:#6E6355; --accent:#835E1F; --faint:#898075; --deco:#9E742D }
+:root[data-theme="snow"]{ --g1:222,235,248; --g2:232,230,246; --g3:242,234,240; --floor:#DEE6F0; --ink:#3F4B5B; --sub:#5B6676; --accent:#2F67A7; --faint:#7A838E; --deco:#447FC1 }
+:root[data-theme="rain"]{ --g1:223,233,248; --g2:226,238,236; --g3:234,230,244; --floor:#DFE6EC; --ink:#424A60; --sub:#5E657A; --accent:#495FB8; --faint:#7C8290; --deco:#6779BD }
+:root[data-theme="night"]{ --g1:226,224,246; --g2:237,224,242; --g3:223,232,246; --floor:#DFE0F2; --ink:#4E4360; --sub:#6A5E7A; --accent:#7D47BB; --faint:#847C90; --deco:#9066C0 }
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -94,24 +90,17 @@ ul{margin:0;padding:0;list-style:none}
 p{margin:0}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--r1)}
 
-/* ===== にじみ ― ページ全体に1枚。セクションで切らないので段差が出ない ===== */
-.aura{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.blob{position:absolute;border-radius:50%;filter:blur(64px);opacity:.34;will-change:transform}
-.b1{width:78vw;height:78vw;left:-22vw;top:-18vw;
-    background:radial-gradient(closest-side,var(--v-rose),transparent 100%);
-    animation:d1 44s ease-in-out infinite alternate}
-.b2{width:64vw;height:64vw;right:-16vw;top:6vh;
-    background:radial-gradient(closest-side,var(--v-sky),transparent 100%);
-    animation:d2 52s ease-in-out infinite alternate}
-.b3{width:56vw;height:56vw;left:8vw;bottom:-14vw;
-    background:radial-gradient(closest-side,var(--v-rose),transparent 100%);
-    animation:d3 60s ease-in-out infinite alternate}
-.b4{width:46vw;height:46vw;right:4vw;bottom:-8vw;
-    background:radial-gradient(closest-side,var(--v-sky),transparent 100%);
-    animation:d1 56s ease-in-out infinite alternate-reverse}
-@keyframes d1{to{transform:translate3d(6vw,4vh,0) scale(1.12)}}
-@keyframes d2{to{transform:translate3d(-5vw,6vh,0) scale(1.08)}}
-@keyframes d3{to{transform:translate3d(4vw,-5vh,0) scale(1.14)}}
+/* ===== 地そのものがグラデーション。境目を作らない ===== */
+.aura{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:var(--base)}
+.blob{position:absolute;border-radius:50%;filter:blur(72px);will-change:transform}
+/* 3色が必ず1画面に同時に入る大きさと配置にする。
+   大きすぎると画面ごとに1色しか見えず、混ざりが起きない */
+.b1{width:78vw;height:78vw;left:-20vw;top:-24vw;background:radial-gradient(closest-side,rgb(var(--g1)) 0%,rgb(var(--g1)) 45%,rgba(var(--g1),0) 100%);opacity:.72;animation:d1 46s ease-in-out infinite alternate}
+.b2{width:74vw;height:74vw;right:-16vw;top:2vh;background:radial-gradient(closest-side,rgb(var(--g2)) 0%,rgb(var(--g2)) 45%,rgba(var(--g2),0) 100%);opacity:.70;animation:d2 54s ease-in-out infinite alternate}
+.b3{width:72vw;height:72vw;left:14vw;bottom:-28vw;background:radial-gradient(closest-side,rgb(var(--g3)) 0%,rgb(var(--g3)) 45%,rgba(var(--g3),0) 100%);opacity:.64;animation:d3 62s ease-in-out infinite alternate}
+@keyframes d1{to{transform:translate3d(5vw,4vh,0) scale(1.10)}}
+@keyframes d2{to{transform:translate3d(-4vw,5vh,0) scale(1.07)}}
+@keyframes d3{to{transform:translate3d(3vw,-4vh,0) scale(1.12)}}
 @keyframes breathe{0%,100%{opacity:1}50%{opacity:.4}}
 @media (prefers-reduced-motion:reduce){.blob{animation:none}}
 
@@ -128,7 +117,7 @@ section{position:relative}
 .hero{min-height:100svh;display:flex;align-items:center;overflow:hidden}
 .figbed{position:absolute;bottom:0;z-index:1;pointer-events:none;
   width:min(46vw,620px);height:74svh;border-radius:50% 50% 0 0/62% 62% 0 0;filter:blur(24px);
-  background:radial-gradient(60% 70% at 50% 62%,var(--band2),var(--band) 62%,transparent 100%);
+  background:radial-gradient(60% 70% at 50% 62%,rgb(var(--g1)) 0%,rgb(var(--g3)) 62%,rgba(var(--g3),0) 100%);
   right:max(var(--x5),calc((100vw - 1080px)/2 + var(--x5) - 60px))}
 .fig{position:absolute;bottom:0;height:88svh;width:auto;z-index:2;filter:drop-shadow(0 10px 26px rgba(89,60,74,.14));pointer-events:none;
   right:max(var(--x5),calc((100vw - 1080px)/2 + var(--x5)))}   /* 右端をコンテンツ枠に揃える */
@@ -138,7 +127,8 @@ section{position:relative}
   color:var(--deco);text-shadow:0 3px 28px rgba(203,60,131,.18)}
 .greet{margin-top:var(--x3);font-size:var(--s3);letter-spacing:.03em;max-width:22em}
 /* 状態は面に載せる。立ち絵を薄くして可読性を作らない */
-.status{margin-top:var(--x5);display:inline-block;background:var(--band);border-radius:var(--r3);padding:var(--x3) var(--x4);backdrop-filter:blur(8px)}
+.status{margin-top:var(--x5);display:inline-block;background:var(--band);border-radius:var(--r3);
+  padding:var(--x3) var(--x4);backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px var(--rule)}
 .stRow{display:flex;align-items:center;gap:var(--x2)}
 .dot{width:10px;height:10px;border-radius:50%;flex:none;background:var(--faint)}
 .status.on .dot{background:var(--accent);box-shadow:0 0 0 8px rgba(184,20,103,.16);animation:breathe 3.6s ease-in-out infinite}
@@ -150,7 +140,7 @@ section{position:relative}
 .stGo{margin-left:26px}
 
 /* today ─ 巨大数字は装飾。読める日付を別に置く */
-.card{position:relative;background:var(--surf);box-shadow:inset 0 0 0 1px var(--rule);border-radius:var(--r3);
+.card{position:relative;background:var(--surf);backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px var(--rule);border-radius:var(--r3);
   padding:var(--x5);overflow:hidden}
 .bigdate{position:absolute;right:var(--x4);top:var(--x2);font-size:var(--sd);
   line-height:1;color:var(--deco);opacity:.5;pointer-events:none;user-select:none}
@@ -173,7 +163,8 @@ section{position:relative}
 
 /* schedule */
 .week{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--x1);margin-bottom:var(--x5)}
-.day{padding:var(--x3) var(--x1);text-align:center;border-radius:var(--r2);background:var(--surf);box-shadow:inset 0 0 0 1px var(--rule)}
+.day{padding:var(--x3) var(--x1);text-align:center;border-radius:var(--r2);background:var(--surf);
+  backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px var(--rule)}
 .day.today{background:var(--band)}
 .dName{font-size:var(--s1);font-weight:500;color:var(--sub);margin-bottom:var(--x2)}
 .day.today .dName{color:var(--accent)}
@@ -181,7 +172,7 @@ section{position:relative}
 .dLabel{font-size:var(--s1);color:var(--sub);margin-top:var(--x1);line-height:1.7}
 .dNone{font-size:var(--s2);color:var(--sub)}
 .upList li{display:grid;grid-template-columns:200px 1fr;gap:0 var(--x4);align-items:baseline;
-  background:var(--surf);box-shadow:inset 0 0 0 1px var(--rule);border-radius:var(--r2);padding:var(--x3) var(--x4);margin-bottom:var(--x1)}
+  background:var(--surf);backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px var(--rule);border-radius:var(--r2);padding:var(--x3) var(--x4);margin-bottom:var(--x1)}
 .upDate{font-size:var(--s2);color:var(--sub);white-space:nowrap}
 .upTitle{font-size:var(--s3);font-weight:500}
 .upTitle a:hover{color:var(--accent)}
@@ -190,7 +181,7 @@ section{position:relative}
 
 /* about */
 .firstGrid{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--x5)}
-.vid{aspect-ratio:16/9;position:relative;background:var(--v-sky);border-radius:var(--r3);overflow:hidden}
+.vid{aspect-ratio:16/9;position:relative;background:var(--surf);border-radius:var(--r3);overflow:hidden}
 .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .firstTx p{font-size:var(--s2);color:var(--sub);max-width:22em}
 
@@ -216,8 +207,8 @@ section{position:relative}
 
 /* links */
 .ul{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--x2)}
-.ul a{display:block;background:var(--surf);box-shadow:inset 0 0 0 1px var(--rule);border-radius:var(--r2);padding:var(--x3) var(--x4);min-height:88px}
-.ul a:hover{background:var(--v-rose)}
+.ul a{display:block;background:var(--surf);backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px var(--rule);border-radius:var(--r2);padding:var(--x3) var(--x4);min-height:88px}
+.ul a:hover{background:var(--band)}
 .ul .en{font-family:'Nunito',sans-serif;font-weight:600;font-size:var(--s1);letter-spacing:.16em;
   color:var(--accent);display:block;margin-bottom:var(--x1)}
 .ul .jp{font-size:var(--s3);font-weight:500}
@@ -261,8 +252,7 @@ footer .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap
 <body>
 
 <div class="aura" aria-hidden="true">
-  <div class="blob b1"></div><div class="blob b2"></div>
-  <div class="blob b3"></div><div class="blob b4"></div>
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
 </div>
 
 <section class="hero">
