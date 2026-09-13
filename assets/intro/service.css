@@ -51,6 +51,9 @@ h1.title { font-size: clamp(1.6rem, 6vw, 2.6rem); margin: 0 0 22px; letter-spaci
 .status { display: inline-block; font-size: 0.5rem; padding: 6px 10px; margin-bottom: 16px; letter-spacing: 0.1em; }
 .status.live { color: var(--ink); background: var(--accent); }
 .status.wip { color: #c9a3ff; border: 2px solid var(--sub); }
+/* 配布準備中は開発中より一段「出る」側。休止中は色を抜き、破線と文字で読ませる */
+.status.soon { color: var(--ink); background: #c9a3ff; }
+.status.paused { color: #9e9890; border: 2px dashed #5a544d; }
 
 .pixel-btn {
     font-family: 'Press Start 2P', monospace; font-size: 0.7rem;

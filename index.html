@@ -199,6 +199,8 @@
         .stat b { display: block; font-size: 0.9rem; color: #ffcc4d; }
         .stat b.wip { color: #c9a3ff; }
         .stat b.small { font-size: 0.6rem; color: #fff; padding-top: 4px; }
+        .stat b.paused { color: #9e9890; }
+        .side-founded { margin: 0; align-self: stretch; text-align: center; font-size: 0.68rem; color: #8f86a0; font-family: 'DotGothic16', sans-serif; }
         .stat span { display: block; font-size: 0.68rem; color: #9a8bbf; margin-top: 5px; }
 
         /* --- 左下：会社導線とCTA。一覧とは別グリッド行なので押し出されない --- */
@@ -232,16 +234,20 @@
         }
         .list-head-en { font-size: 0.68rem; color: #ffcc4d; letter-spacing: 0.08em; }
         .list-head-ja { font-size: 0.72rem; color: #7d7488; }
-        .list-count { margin-left: auto; font-size: 0.72rem; color: #7d7488; }
+        .list-count { margin-left: auto; font-size: 0.72rem; color: #8f86a0; }
         .list-body { flex: 1; min-height: 0; overflow-y: auto; padding: 15px 26px 20px; }
 
         .group { display: flex; align-items: center; gap: 12px; margin: 14px 0 9px; }
         .group:first-child { margin-top: 2px; }
         .group-en { font-size: 0.55rem; color: #ffcc4d; letter-spacing: 0.06em; }
-        .group-ja { font-size: 0.68rem; color: #6b6259; }
+        .group-ja { font-size: 0.68rem; color: #8a847c; }
         .group i { flex: 1; height: 2px; background: rgba(255,204,77,0.22); }
         .group.coming .group-en { color: #c9a3ff; }
         .group.coming i { background: rgba(201,163,255,0.18); }
+        /* 止めているものは「つくっているもの」と混ぜない。混ぜると作っていると約束する形になる。
+           色だけで区別せず、badge の文字（休止中）と破線の枠で読み分けられるようにする。 */
+        .group.paused .group-en { color: #9e9890; }
+        .group.paused i { background: rgba(158,152,144,0.18); }
 
         .svc { margin-bottom: 7px; }
         /* summary の display は block のままにする。inline-flex 等に変えると
@@ -267,6 +273,13 @@
         .badge { font-size: 0.5rem; padding: 6px 9px; white-space: nowrap; }
         .badge.live { color: #000; background: #ffcc4d; }
         .badge.dev { color: #c9a3ff; border: 2px solid #7a2fbf; }
+        .badge.soon { color: #000; background: #c9a3ff; }
+        .badge.paused { color: #9e9890; border: 2px dashed #5a544d; }
+        .svc.paused .svc-name { color: #9e9890; }
+        .svc.paused .svc-lead { color: #8a847c; }
+        .svc.paused[open] > .svc-row { border-color: #8a847c; background: rgba(158,152,144,0.06); }
+        .svc.paused .btn-sky { background: transparent; color: #e6d9c3; border: 1px solid #5a544d; box-shadow: none; }
+        .svc.paused .btn-sky:active { transform: none; box-shadow: none; }
         .svc-more { font-size: 0.68rem; color: #7d7488; white-space: nowrap; }
         .svc-more::after { content: ' \25B6'; display: inline-block; font-size: 0.8em; transition: transform 0.18s; }
         .svc[open] .svc-more::after { transform: rotate(90deg); }
@@ -399,10 +412,11 @@
                     <p class="side-role">Matin Catorce ／ AI社長<br>設計から実装まで、全部こいつが仕上げる</p>
                 </div>
                 <div class="side-stats">
-                    <div class="stat"><b>6</b><span>公開中</span></div>
-                    <div class="stat"><b class="wip">3</b><span>開発中</span></div>
-                    <div class="stat"><b class="small">2026.07</b><span>設立</span></div>
+                    <div class="stat"><b>5</b><span>公開中</span></div>
+                    <div class="stat"><b class="wip">1</b><span>準備中</span></div>
+                    <div class="stat"><b class="paused">3</b><span>休止中</span></div>
                 </div>
+                <p class="side-founded">2026.07 設立</p>
             </aside>
 
             <div class="side-foot">
@@ -417,7 +431,7 @@
             <div class="list-panel">
                 <header class="list-head">
                     <span class="list-head-en">SELECT DATA</span>
-                    <span class="list-head-ja">つかえるサービスと、つくっているもの</span>
+                    <span class="list-head-ja">つかえるサービスと、つくっているもの、休んでいるもの</span>
                     <span class="list-count">全9件</span>
                 </header>
 
@@ -498,29 +512,9 @@
                         </span>
                     </summary>
                     <div class="svc-detail">
-                        <p class="svc-desc">漢字クイズ・IQテスト・怪談など複数のシリーズを、声とキャラクターを統一したまま毎日配信しています。自社で運用している仕組みで、外部への提供はしていません。</p>
+                        <p class="svc-desc">修羅場・難読漢字・IQテスト・歴史・怪談・埋もれた神動画などのシリーズを、台本から投稿まで自動で作り、YouTubeとInstagramに毎日出しています。自社で運用している仕組みで、外部への提供はしていません。</p>
                         <p class="chips"><span>毎日配信</span><span>複数シリーズ</span><span>投稿まで自動</span></p>
                         <p class="svc-actions"><a href="intro/trendi/" class="btn-sky">くわしいページを見る &#9654;</a><a href="https://www.youtube.com/@hexa-relation" class="btn-ghost">サービスを開く</a></p>
-                    </div>
-                </details>
-                <details class="svc">
-                    <summary class="svc-row">
-                        <span class="svc-inner">
-                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#ffcc4d" stroke-width="2" aria-hidden="true"><rect x="2" y="6" width="20" height="12"/><path d="M7 10h6"/><path d="M7 14h10"/></svg></span>
-                            <span class="svc-text">
-                                <span class="svc-name">物語劇場</span>
-                                <span class="svc-lead">世界に伝わる物語を、1本1話でじっくり語るナレーション番組</span>
-                            </span>
-                            <span class="svc-side">
-                                <span class="badge live">運用中</span>
-                                <span class="svc-more">くわしく</span>
-                            </span>
-                        </span>
-                    </summary>
-                    <div class="svc-detail">
-                        <p class="svc-desc">語り手はマタン。急がず、間と抑揚で聞かせるラジオドラマ風の長尺シリーズです。1日2本お届けしています。台本はこの番組だけ手で書いています。</p>
-                        <p class="chips"><span>1日2本</span><span>長尺・横画面</span><span>台本は手書き</span></p>
-                        <p class="svc-actions"><a href="intro/story-channel/" class="btn-sky">くわしいページを見る &#9654;</a><a href="https://www.youtube.com/@hexa-relation" class="btn-ghost">サービスを開く</a></p>
                     </div>
                 </details>
                 <details class="svc quiet">
@@ -551,57 +545,79 @@
                             <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9a8bbf" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
                             <span class="svc-text">
                                 <span class="svc-name">カイロス</span>
-                                <span class="svc-lead">動画を渡すだけで、AIが切って繋いで1本に仕上げる</span>
+                                <span class="svc-lead">話した動画を取り込むと、文字起こしとテロップが自動でつく編集アプリ</span>
                             </span>
                             <span class="svc-side">
-                                <span class="badge dev">開発中</span>
+                                <span class="badge soon">配布準備中</span>
                                 <span class="svc-more">くわしく</span>
                             </span>
                         </span>
                     </summary>
                     <div class="svc-detail">
-                        <p class="svc-desc">発話の「間」を残して切るところに一番手をかけています。設定を細かく詰めなくても成立することを前提に設計しています。まだお使いいただけません。</p>
-                        <p class="chips"><span>開発中</span></p>
+                        <p class="svc-desc">要点スライドも自動でつき、分割・削除やテロップを手で直して、MP4／SRT／FCPXMLで書き出せます。Apple Silicon Mac向けの配布版を準備中です（公開日は未定）。</p>
+                        <p class="chips"><span>自分のMacで完結</span><span>テロップ自動</span><span>手で直せる</span></p>
                         <p class="svc-actions"><a href="intro/kairos/" class="btn-sky">くわしいページを見る &#9654;</a></p>
                     </div>
                 </details>
-                <details class="svc wip">
+
+                    <p class="group paused"><span class="group-en">PAUSED</span><span class="group-ja">休んでいるもの</span><i></i></p>
+                <details class="svc paused">
                     <summary class="svc-row">
                         <span class="svc-inner">
-                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9a8bbf" stroke-width="2" aria-hidden="true"><path d="M9 4h6v3H9z"/><rect x="5" y="7" width="14" height="14"/><path d="M9 12h6"/><path d="M9 16h6"/></svg></span>
+                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9e9890" stroke-width="2" aria-hidden="true"><rect x="2" y="6" width="20" height="12"/><path d="M7 10h6"/><path d="M7 14h10"/></svg></span>
                             <span class="svc-text">
-                                <span class="svc-name">GENBA</span>
-                                <span class="svc-lead">現場の入力は増やさずに、監査で説明できる記録が残る</span>
+                                <span class="svc-name">物語劇場</span>
+                                <span class="svc-lead">世界に伝わる物語を、1話ずつ語ったナレーション番組</span>
                             </span>
                             <span class="svc-side">
-                                <span class="badge dev">開発中</span>
+                                <span class="badge paused">休止中</span>
                                 <span class="svc-more">くわしく</span>
                             </span>
                         </span>
                     </summary>
                     <div class="svc-detail">
-                        <p class="svc-desc">現場の是正作業を進めるだけで、誰が・いつ・何を根拠にやったかが自動で残ります。主な流れは1画面で終わるように組んでいます。まだお使いいただけません。</p>
-                        <p class="chips"><span>1画面で完結</span><span>証跡は自動</span><span>監査に出せる形</span></p>
+                        <p class="svc-desc">2026年8月22日で、新しい回の配信を休んでいます。これまでの回はチャンネルでご覧いただけます。</p>
+                        <p class="chips"><span>休止中</span><span>長尺・横画面</span></p>
+                        <p class="svc-actions"><a href="intro/story-channel/" class="btn-sky">くわしいページを見る &#9654;</a><a href="https://www.youtube.com/@hexa-relation" class="btn-ghost">チャンネルを見る</a></p>
+                    </div>
+                </details>
+                <details class="svc paused">
+                    <summary class="svc-row">
+                        <span class="svc-inner">
+                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9e9890" stroke-width="2" aria-hidden="true"><path d="M9 4h6v3H9z"/><rect x="5" y="7" width="14" height="14"/><path d="M9 12h6"/><path d="M9 16h6"/></svg></span>
+                            <span class="svc-text">
+                                <span class="svc-name">GENBA</span>
+                                <span class="svc-lead">現場の入力は増やさずに、監査で説明できる記録を残すための業務アプリ</span>
+                            </span>
+                            <span class="svc-side">
+                                <span class="badge paused">休止中</span>
+                                <span class="svc-more">くわしく</span>
+                            </span>
+                        </span>
+                    </summary>
+                    <div class="svc-detail">
+                        <p class="svc-desc">開発を休止しています。設計の考え方はくわしいページに残しています。</p>
+                        <p class="chips"><span>休止中</span></p>
                         <p class="svc-actions"><a href="intro/genba/" class="btn-sky">くわしいページを見る &#9654;</a></p>
                     </div>
                 </details>
-                <details class="svc wip">
+                <details class="svc paused">
                     <summary class="svc-row">
                         <span class="svc-inner">
-                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9a8bbf" stroke-width="2" aria-hidden="true"><path d="M6 3h12v18H6z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h3"/></svg></span>
+                            <span class="svc-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#9e9890" stroke-width="2" aria-hidden="true"><path d="M6 3h12v18H6z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h3"/></svg></span>
                             <span class="svc-text">
                                 <span class="svc-name">日報アプリ</span>
-                                <span class="svc-lead">スマホで日報を書いて、そのままPDFにできる</span>
+                                <span class="svc-lead">スマホで日報を書いて、そのままPDFにするための業務アプリ</span>
                             </span>
                             <span class="svc-side">
-                                <span class="badge dev">開発中</span>
+                                <span class="badge paused">休止中</span>
                                 <span class="svc-more">くわしく</span>
                             </span>
                         </span>
                     </summary>
                     <div class="svc-detail">
-                        <p class="svc-desc">現場から戻ってPCを開き直さなくても、その場で書いて出せることを狙っています。走り書きを読める文章に整える機能も試しています。まだお使いいただけません。</p>
-                        <p class="chips"><span>スマホで書く</span><span>そのままPDF</span><span>走り書きを整える</span></p>
+                        <p class="svc-desc">開発を休止しています。設計の考え方はくわしいページに残しています。</p>
+                        <p class="chips"><span>休止中</span></p>
                         <p class="svc-actions"><a href="intro/nippo/" class="btn-sky">くわしいページを見る &#9654;</a></p>
                     </div>
                 </details>

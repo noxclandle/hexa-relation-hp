@@ -4,45 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="https://www.hexa-relation.com/intro/kairos/">
-    <title>KAIROS｜動画を渡すだけで1本に仕上げるAI映像ディレクター（開発中） | Hexa Relation</title>
-    <meta name="description" content="発話の「間」や構造を読んで編集方針を立てる、自律型のAI映像ディレクター。現在開発中です。">
+    <title>KAIROS｜話した動画から、テロップ付きの下書きを作る編集アプリ（配布準備中） | Hexa Relation</title>
+    <meta name="description" content="話した動画を取り込むと、文字起こしとテロップ、要点スライドが自動でつく編集アプリ。手で直してMP4・SRT・FCPXMLで書き出せます。Apple Silicon Mac向けの配布版を準備中です。">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/intro/service.css">
 </head>
 <body>
     <a href="../../" class="back-link">◀ もどる</a>
     <header class="hero">
-        <p class="eyebrow px">AI VIDEO DIRECTOR</p>
-        <p class="status wip px">開発中</p>
+        <p class="eyebrow px">VIDEO EDITOR</p>
+        <p class="status soon px">配布準備中</p>
         <h1 class="title px">KAIROS</h1>
-        <p class="lead">動画を渡すだけで、AIが切って繋いで1本に仕上げる。</p>
-        <p class="sub">操作は「動画を渡す」だけに近づけることを目標にしています。現在つくっている最中で、まだお使いいただけません。</p>
-        <span class="pixel-btn pending">準備中</span>
+        <p class="lead">話した動画から、テロップ付きの下書きを作る。</p>
+        <p class="sub">直して書き出すところまで、自分のMacで完結します。Apple Silicon Mac向けの配布版を準備中です（公開日は未定）。</p>
+        <span class="pixel-btn pending">配布準備中</span>
     </header>
 
+    <!-- 載せるのは実機で動作を確かめた機能だけ（2026-09-13）。
+         自動カット・BGM・効果音・寄り・AI画像生成は実装済みだが未検証のため書かない。
+         確かめたものから足す。AI画像生成を載せるときは、費用がかかることを同じ行に書く。 -->
     <section>
-        <h2 class="section-title">つくっているもの<small class="px">WHAT</small></h2>
+        <h2 class="section-title">できること<small class="px">WHAT</small></h2>
         <div class="feature-grid">
             <div class="item-card">
-                <p class="item-tag px">PLANNER</p>
-                <h3 class="item-name">「間」を残して切る</h3>
-                <p class="item-desc">発話単位で機械的に切ると、話の間が落ちて不自然になります。どこを残すかを決めるところに一番手をかけています。</p>
+                <p class="item-tag px">IMPORT</p>
+                <h3 class="item-name">取り込むと、下書きができる</h3>
+                <p class="item-desc">話している動画を入れると、喋りを文字に起こし、読める長さに割ったテロップを並べます。画面が止まっている所には、話の要点をスライドにして重ねます。</p>
             </div>
             <div class="item-card">
-                <p class="item-tag px">DIRECTOR</p>
-                <h3 class="item-name">編集方針を自分で立てる</h3>
-                <p class="item-desc">素材を解析したうえで、この動画をどう見せるかの方針を組み立ててから編集に入ります。</p>
+                <p class="item-tag px">EDIT</p>
+                <h3 class="item-name">気になる所だけ手で直す</h3>
+                <p class="item-desc">分割・削除・元に戻す、テロップの追加や文字の書き換えができます。直すたびに自動で保存され、閉じても続きから開けます。</p>
             </div>
             <div class="item-card">
-                <p class="item-tag px">ONE INPUT</p>
-                <h3 class="item-name">渡すのは動画1本</h3>
-                <p class="item-desc">設定を細かく詰めなくても成立することを前提に設計しています。オプションは中を覗くためのものに限っています。</p>
+                <p class="item-tag px">EXPORT</p>
+                <h3 class="item-name">そのまま書き出す</h3>
+                <p class="item-desc">完成動画のMP4、字幕のSRT、ほかの編集ソフトへ持っていくためのFCPXMLを書き出します。直して何度でも書き出し直せます。</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">手で直せること<small class="px">EDIT</small></h2>
+        <div class="who-list">
+            <div class="who-item"><span>クリップの分割・削除。元に戻す／やり直し</span></div>
+            <div class="who-item"><span>テロップの追加と、文字の書き換え</span></div>
+            <div class="who-item"><span>コピー・貼り付け・複製</span></div>
+            <div class="who-item"><span>編集するたびに自動保存。編集ファイル（.kairos）を開けば続きから</span></div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">動かす環境<small class="px">SPEC</small></h2>
+        <div class="feature-grid">
+            <div class="item-card">
+                <p class="item-tag px">MAC</p>
+                <h3 class="item-name">Apple Silicon Mac</h3>
+                <p class="item-desc">文字起こしは手元のMacの中で行います。動画をどこかへ送る作りにはしていません。</p>
+            </div>
+            <div class="item-card">
+                <p class="item-tag px">OUTPUT</p>
+                <h3 class="item-name">MP4 ／ SRT ／ FCPXML</h3>
+                <p class="item-desc">そのまま投稿できる動画と、字幕、編集ソフト向けのファイルを一緒に出します。</p>
             </div>
         </div>
     </section>
 
     <div class="cta-block">
-        <p>公開できる状態になったら、このページでお知らせします。</p>
+        <p>配布を始めるときは、このページに書きます。</p>
         <a href="../../" class="pixel-btn">▶ ほかのサービスを見る</a>
     </div>
     <footer>
