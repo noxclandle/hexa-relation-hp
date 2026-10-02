@@ -1,875 +1,809 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="canonical" href="https://www.hexa-relation.com/save/sabanomiso/">
-    <title>SABANOMISO - Portfolio (DBD風)</title>
-    <meta name="description" content="さばのみそのポートフォリオ。Dead by Daylight風の世界観で構築された、生存の設計図。">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.hexa-relation.com/save/sabanomiso/">
-    <meta property="og:title" content="SABANOMISO - Portfolio (DBD風)">
-    <meta property="og:description" content="脱型の瞬間に現れる真実。さばのみその生存の設計図。">
-    <meta property="og:image" content="https://www.hexa-relation.com/save/sabanomiso/gen_opt.jpg">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'blood-red': '#af0000',
-                        'tech-cyan': '#00f2ff',
-                        'gold': '#d4af37',
-                        'dark-void': '#030305',
-                        'concrete': '#2c2c2e',
-                    }
-                }
-            }
-        };
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Noto+Sans+JP:wght@100;300;400;700&family=Special+Elite&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --blood-red: #af0000;
-            --tech-cyan: #00f2ff;
-            --gold: #d4af37;
-            --dark-void: #030305;
-            --concrete: #2c2c2e;
-            --text-main: #e2e2e2;
-            --text-dim: #a0a0a0;
-        }
-
-        * { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="4" fill="none" stroke="%23af0000" stroke-width="1"/></svg>') 10 10, auto; }
-
-        body {
-            margin: 0; padding: 0; background-color: var(--dark-void); color: var(--text-main);
-            font-family: 'Noto Sans JP', sans-serif; overflow-x: hidden; scroll-behavior: smooth;
-        }
-
-        .horror-font { font-family: 'Creepster', cursive; }
-        .mono { font-family: 'Share Tech Mono', monospace; }
-        .typewriter { font-family: 'Special Elite', cursive; }
-
-        /* Background FX */
-        .fog-overlay {
-            position: fixed; inset: 0; z-index: 5; pointer-events: none;
-            background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.9) 100%);
-        }
-        .moving-fog {
-            position: fixed; top: 0; left: 0; width: 200%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
-            opacity: 0.1; z-index: 2; animation: fogMove 60s linear infinite; pointer-events: none;
-        }
-        @keyframes fogMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-/* Intensified Horror FX */
-.entity-vignette {
-    position: fixed; inset: 0; pointer-events: none; z-index: 999;
-    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.95) 100%);
-    animation: pulse-void 6s infinite alternate;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="canonical" href="https://www.hexa-relation.com/save/sabanomiso/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.hexa-relation.com/save/sabanomiso/">
+<meta property="og:title" content="さばのみそ | 型枠大工・一級建築士">
+<meta property="og:description" content="勉強は苦手だった。だから、1日1ページを8年。型枠大工13年・独立8期目・一級建築士。一緒に働きたい、コラボしたいなど、相談なんでも受付中。">
+<meta property="og:image" content="https://www.hexa-relation.com/save/sabanomiso/gen_opt.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<title>さばのみそ | 型枠大工・一級建築士</title>
+<meta name="description" content="型枠大工13年・独立8期目・一級建築士、さばのみそ。型枠大工、隣で一緒にやる人を探しています。">
+<meta name="theme-color" content="#0D0E10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="generator-1000.webp" imagesrcset="generator-600.webp 600w, generator-1000.webp 1000w" imagesizes="(min-width: 900px) 40vw, 78vw">
+<style>
+:root{
+  --bg:#0D0E10; --surface:#16181B; --line:#2A2D31;
+  --text:#E8E4DC; --muted:#A39E95;
+  --red:#A3201A; --red-hover:#B8261F; --red-text:#E65A4F;
+  --lamp:#D9A441; --input-border:#6F6B65;
+  --mincho:"Shippori Mincho B1","Yu Mincho",serif;
+  --sans:"Noto Sans JP",system-ui,sans-serif;
+  --disp:"Barlow Condensed","Noto Sans JP",sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --pad:64px;
 }
-@keyframes pulse-void { from { opacity: 0.3; } to { opacity: 0.5; } }
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:1rem;line-height:1.9;letter-spacing:.04em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.05;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+img{max-width:100%;display:block}
+a{color:inherit}
+p{margin:0}
+h1,h2,h3{margin:0;font-weight:700}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--text);outline-offset:4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.label{font-family:var(--disp);font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);line-height:1.4}
+.label.red{color:var(--red-text)}
+.muted{color:var(--muted)}
+.note{font-size:.875rem;color:var(--muted);line-height:1.75}
+.nb{white-space:nowrap}
 
-body::before {
-    content: ''; position: fixed; inset: 0; z-index: -1;
-    background: 
-        url('https://www.transparenttextures.com/patterns/carbon-fibre.png'),
-        radial-gradient(circle at center, #1a0505 0%, #030305 100%);
-    opacity: 0.4;
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;height:56px;padding:0 28px;border-radius:2px;background:var(--red);color:#fff;font-weight:700;font-size:1rem;letter-spacing:.08em;text-decoration:none;border:0;cursor:pointer;font-family:var(--sans);transition:background .16s ease-out}
+.btn:hover{background:var(--red-hover)}
+.btn .ring{width:20px;height:20px;flex:none}
+.btn-ghost{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border:1px solid var(--muted);border-radius:2px;color:var(--text);text-decoration:none;font-size:.9375rem;letter-spacing:.06em;background:none;cursor:pointer;transition:border-color .16s ease-out,background .16s ease-out}
+.btn-ghost:hover{border-color:var(--text);background:rgba(232,228,220,.04)}
+@keyframes cue{0%,100%{box-shadow:0 0 0 0 rgba(230,90,79,0)}40%{box-shadow:0 0 0 6px rgba(230,90,79,.35)}}
+.btn.cue{animation:cue 1.2s var(--ease) 1}
+
+/* =========================================================
+   LOBBY
+   ========================================================= */
+.lobby{position:relative;min-height:100svh;padding:0 var(--pad);isolation:isolate;overflow:hidden}
+.formwork{position:absolute;inset:0;z-index:-3;
+  background:
+    radial-gradient(circle,rgba(42,45,49,.9) 2.4px,transparent 3.2px) 60px 60px/120px 120px,
+    linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/240px 480px,
+    linear-gradient(0deg,var(--line) 1px,transparent 1px) 0 0/240px 480px;
+  -webkit-mask-image:radial-gradient(ellipse 55% 75% at 62% 50%,#000 5%,transparent 72%);
+          mask-image:radial-gradient(ellipse 55% 75% at 62% 50%,#000 5%,transparent 72%)}
+.lamp-glow{position:absolute;inset:0;z-index:-2;background:radial-gradient(circle at 62% 30%,rgba(217,164,65,.17),transparent 38%);transition:opacity .12s linear}
+.floor{position:absolute;left:0;right:0;bottom:0;height:30svh;z-index:-1;background:linear-gradient(180deg,transparent,rgba(13,14,16,.78))}
+.gen{position:absolute;z-index:-2;left:62%;bottom:6svh;transform:translateX(-50%);height:76svh;aspect-ratio:1000/1139;margin:0}
+.gen img{width:100%;height:100%;object-fit:contain;filter:brightness(.82) saturate(.85);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 24%);mask-image:linear-gradient(180deg,transparent 0%,#000 24%)}
+.gen::after{content:"";position:absolute;left:10%;right:10%;bottom:-1%;height:40px;border-radius:50%;background:rgba(0,0,0,.6);filter:blur(24px);z-index:-1}
+.dim{position:absolute;inset:0;z-index:5;background:rgba(13,14,16,.6);opacity:0;pointer-events:none;transition:opacity .28s var(--ease)}
+body.panel-open .dim{opacity:1}
+
+.brand{font-family:var(--disp);font-weight:600;letter-spacing:.22em;font-size:15px;text-decoration:none;line-height:1}
+.brand b{color:var(--red-text);font-weight:600}
+
+.side{position:relative;z-index:10;width:400px;min-height:100svh;display:flex;flex-direction:column;padding:32px 0 28px}
+.side .brand{margin-bottom:48px}
+.intro h1{font-family:var(--mincho);font-size:40px;line-height:1.3;letter-spacing:.04em;margin:16px 0 16px}
+.intro h1 span{display:block;white-space:nowrap}
+.intro h1 em{font-style:normal;background:linear-gradient(transparent 82%,rgba(163,32,26,.8) 82%,rgba(163,32,26,.8) 92%,transparent 92%)}
+.intro .seek{font-size:.9375rem;font-weight:500;line-height:1.7}
+.intro .stats{margin-top:8px;font-family:var(--disp);font-weight:500;font-size:14px;letter-spacing:.12em;color:var(--muted);font-variant-numeric:tabular-nums}
+.intro .stats i{font-style:normal;color:var(--line);margin:0 8px}
+
+.menu{list-style:none;margin:40px 0 0;padding:0;counter-reset:m}
+.menu a{position:relative;display:flex;align-items:baseline;gap:14px;height:52px;padding-left:20px;text-decoration:none;color:var(--muted);transition:color .16s ease-out}
+.menu a::before{content:"";position:absolute;left:0;top:50%;width:4px;height:0;margin-top:-12px;background:var(--red-text);transition:height .16s ease-out}
+.menu a:hover,.menu a.cue,.menu a[aria-current="true"]{color:var(--text)}
+.menu a:hover::before,.menu a.cue::before,.menu a[aria-current="true"]::before{height:24px}
+.menu a[aria-current="true"] .jp{font-weight:700}
+.menu .no{font-family:var(--disp);font-weight:600;font-size:13px;letter-spacing:.1em;font-variant-numeric:tabular-nums;color:var(--muted);align-self:center}
+.menu .jp{font-family:var(--mincho);font-weight:600;font-size:24px;line-height:52px;letter-spacing:.06em}
+.menu .en{font-family:var(--disp);font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.menu .seen{width:6px;height:6px;border-radius:50%;background:var(--muted);align-self:center;margin-left:-4px;opacity:0}
+.menu a.visited .seen{opacity:.7}
+.side .primary{margin-top:32px}
+.side .primary .btn{width:100%;max-width:340px}
+.side .primary .note{margin-top:8px;font-size:14px;line-height:1.6}
+.side .primary .note span,.bridge .note span{display:inline-block}
+.ext{display:flex;gap:20px;margin-top:auto;padding-top:24px}
+.ext a{display:inline-flex;align-items:center;min-height:44px;font-size:.875rem;color:var(--muted);text-decoration:none;letter-spacing:.06em}
+.ext a:hover{color:var(--text)}
+.ext svg{width:18px;height:18px;margin-right:8px;fill:currentColor}
+.credit{position:absolute;right:var(--pad);bottom:28px;z-index:10;text-align:right;font-size:13px;line-height:1.6;color:var(--muted);max-width:440px}
+.credit a{color:var(--muted)}
+.credit a:hover{color:var(--text)}
+.mob-ext{display:none}
+.m-legal{display:none}
+
+/* 1024-class */
+@media (max-width:1279px){
+  :root{--pad:48px}
+  .intro h1{font-size:32px}
+  .menu a{height:48px}.menu .jp{font-size:21px;line-height:48px}
+  .gen{left:66%;height:66svh}
+  .side{width:360px}
+}
+/* low height */
+@media (min-width:768px) and (max-height:820px){
+  .side{padding:28px 0 24px}.side .brand{margin-bottom:32px}
+  .intro h1{font-size:28px;margin:12px 0 12px}
+  .intro .stats{display:none}
+  .menu{margin-top:24px}.menu a{height:44px}.menu .jp{font-size:19px;line-height:44px}
+  .ext{display:none}
+  .mob-ext{display:flex;position:absolute;top:16px;right:0;z-index:10}
+  .mob-ext a{width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+  .mob-ext a:hover{color:var(--text)}
+  .mob-ext svg{width:18px;height:18px;fill:currentColor}
+  .side .primary{margin-top:24px}
 }
 
-.scratch-overlay {
-    position: fixed; inset: 0; pointer-events: none; z-index: 998;
-    background: url('https://www.transparenttextures.com/patterns/stardust.png');
-    opacity: 0.05; mix-blend-mode: overlay;
+/* phone */
+@media (max-width:767px){
+  :root{--pad:20px}
+  .lobby{display:flex;flex-direction:column;height:100svh;min-height:560px;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+  .side{display:contents}
+  .intro{order:1}.gen{order:2}.side nav{order:3}.side .primary{order:4}
+  .side .brand{position:absolute;top:22px;left:var(--pad);margin:0}
+  .mob-ext{display:flex;position:absolute;top:6px;right:8px;z-index:10}
+  .mob-ext a{width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+  .mob-ext svg{width:18px;height:18px;fill:currentColor}
+  .intro{padding-top:64px;position:relative;z-index:10}
+  .intro h1{font-size:26px;margin:8px 0 10px}
+  .intro .seek{font-size:.875rem}
+  .intro .stats{font-size:12px;margin-top:4px}
+  .gen{position:relative;left:auto;bottom:auto;transform:none;flex:1 1 0;min-height:0;height:auto;width:78vw;align-self:center;aspect-ratio:auto}
+  .gen img{object-position:center bottom}
+  .formwork{-webkit-mask-image:radial-gradient(ellipse 80% 45% at 50% 58%,#000 5%,transparent 72%);mask-image:radial-gradient(ellipse 80% 45% at 50% 58%,#000 5%,transparent 72%)}
+  .lamp-glow{background:radial-gradient(circle at 50% 50%,rgba(217,164,65,.15),transparent 45%)}
+  .menu{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;margin:8px 0 0;position:relative;z-index:10}
+  .menu a{height:48px;padding-left:14px;gap:10px;border-top:1px solid var(--line)}
+  .menu .jp{font-size:17px;line-height:48px}
+  .menu .en{display:none}
+  .menu a::before{margin-top:-9px}
+  .menu a:hover::before,.menu a.cue::before,.menu a[aria-current="true"]::before{height:18px}
+  .side .primary{margin-top:12px;position:relative;z-index:10}
+  .side .primary .btn{max-width:none}
+  .side .primary .note{font-size:12.5px;margin-top:6px}
+  .ext,.credit{display:none}
+  .m-legal{display:block;order:5;position:relative;z-index:10;margin-top:6px;text-align:center;font-size:12px;color:var(--muted);background:none;border:0;padding:6px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+}
+@media (max-width:767px) and (max-height:620px){.intro .stats{display:none}}
+
+/* landscape phone / very low: allow scroll */
+@media (max-height:560px){
+  .lobby{height:auto;min-height:100svh}
+  .gen{height:86svh}
 }
 
-/* Red Scratch Marks (DBD style) */
-.scratches {
-    position: absolute; width: 150px; height: 100px;
-    background: linear-gradient(90deg, transparent, rgba(175,0,0,0.4), transparent);
-    transform: rotate(-45deg) skewX(20deg);
-    filter: blur(8px); pointer-events: none; opacity: 0.3;
+/* =========================================================
+   PANELS (progressive: plain sections without JS)
+   ========================================================= */
+.panel{background:var(--surface);border-top:1px solid var(--line)}
+.p-head{display:flex;align-items:center;gap:14px;padding:16px 56px;border-bottom:1px solid var(--line);background:var(--surface)}
+.p-head .no{font-family:var(--disp);font-weight:600;font-size:13px;letter-spacing:.1em;color:var(--red-text)}
+.p-head h2{font:500 16px/1.4 var(--sans);letter-spacing:.06em;flex:1}
+.close{display:none;align-items:center;gap:8px;min-width:48px;height:48px;padding:0 12px;margin-right:-12px;background:none;border:0;cursor:pointer;color:var(--muted);font-size:.875rem;letter-spacing:.06em}
+.close:hover{color:var(--text)}
+.close svg{width:16px;height:16px;stroke:currentColor;stroke-width:1.6;fill:none}
+.p-body{padding:40px 56px 48px}
+.p-body > * + *{margin-top:40px}
+.p-body .h2{font-family:var(--mincho);font-size:clamp(1.5rem,1.2rem + 1vw,2rem);line-height:1.4;letter-spacing:.04em}
+.h3{font-family:var(--mincho);font-size:1.25rem;line-height:1.5}
+.prose{max-width:34em}
+.prose p+p{margin-top:1.1em}
+.bridge{border-top:1px solid var(--line);padding-top:32px}
+.bridge .lead{font-family:var(--mincho);font-size:1.125rem;line-height:1.6;margin-bottom:18px}
+.bridge .note{margin-top:10px}
+.bridge .back{display:inline-block;margin-top:16px;font-size:.8125rem;color:var(--muted);background:none;border:0;padding:8px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* philosophy */
+.promise{padding-left:22px;border-left:2px solid var(--red-text)}
+.promise .label{margin-bottom:8px}
+.promise p:last-child{font-family:var(--mincho);font-size:1.375rem;line-height:1.6}
+.motto p{font-family:var(--mincho);font-size:1.125rem;line-height:1.8}
+.motto cite{display:block;margin-top:8px;font-style:normal}
+
+/* credentials */
+.cred-quote p.q{font-family:var(--mincho);font-size:1.375rem;line-height:1.6}
+.cred-quote p.note{margin-top:12px;font-size:.9375rem;line-height:1.9}
+.cred{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.cred li{display:flex;flex-direction:column;gap:4px;padding:20px 0;border-bottom:1px solid var(--line)}
+.cred .name{font-family:var(--mincho);font-size:19px;line-height:1.5}
+.cred li.top .name{font-size:26px}
+.cred .what{color:var(--muted);font-size:.9375rem}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.nums div{padding:18px 0 14px}
+.nums div+div{border-left:1px solid var(--line);padding-left:18px}
+.num{font-family:var(--disp);font-weight:600;font-variant-numeric:tabular-nums;font-size:44px;line-height:1}
+.num small{font-family:var(--sans);font-size:.8125rem;font-weight:500;margin-left:4px}
+
+/* timeline */
+.tl{list-style:none;margin:0;padding:0;position:relative}
+.tl::before{content:"";position:absolute;left:5px;top:10px;bottom:10px;width:1px;background:var(--line)}
+.tl li{position:relative;padding:0 0 40px 36px}
+.tl li:last-child{padding-bottom:0}
+.tl li::before{content:"";position:absolute;left:0;top:10px;width:11px;height:11px;border-radius:50%;border:1px solid var(--muted);background:var(--surface)}
+.tl li.now::before{background:var(--red);border-color:var(--red)}
+.tl .yr{font-family:var(--disp);font-weight:600;font-size:36px;line-height:1;font-variant-numeric:tabular-nums}
+.tl .yr small{font-size:12px;letter-spacing:.16em;color:var(--muted);margin-left:10px}
+.tl li.now .yr{color:var(--red-text)}
+.tl h3{margin:10px 0 6px}
+.tl p{color:var(--muted);font-size:.9375rem}
+.tl p strong{color:var(--text);font-weight:500}
+
+/* stream */
+.links{display:flex;flex-wrap:wrap;gap:12px}
+.tags{display:flex;gap:6px 18px;flex-wrap:wrap;color:var(--muted);font-size:.875rem}
+.tags span::before{content:"— ";color:var(--line)}
+
+/* game */
+.game{display:grid;grid-template-columns:200px 1fr;gap:32px;align-items:center}
+.dial{position:relative;width:200px;height:200px}
+.dial svg{width:100%;height:100%;overflow:visible}
+.dial .track{fill:none;stroke:var(--line);stroke-width:3}
+.dial .zone-good{fill:none;stroke:var(--lamp);stroke-width:7;opacity:.55}
+.dial .zone-great{fill:none;stroke:var(--lamp);stroke-width:7}
+.dial .needle{stroke:var(--red-text);stroke-width:3;stroke-linecap:round}
+.dial .hub{fill:var(--red-text)}
+.dial .score{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.dial .score b{font-family:var(--disp);font-weight:600;font-size:48px;line-height:1;font-variant-numeric:tabular-nums}
+.dial.flash svg{filter:drop-shadow(0 0 14px rgba(217,164,65,.7))}
+.dial.miss .track{stroke:var(--red-text)}
+.game-side .note{margin:6px 0 18px}
+.g-status{min-height:1.5em;font-size:.9375rem;margin-top:12px}
+.board{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);font-size:.9375rem}
+.board li{display:flex;gap:16px;padding:10px 0;border-bottom:1px solid var(--line)}
+.board .r{font-family:var(--disp);font-weight:600;color:var(--muted);width:2em;font-variant-numeric:tabular-nums}
+.board .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.board .s{font-family:var(--disp);font-weight:600;font-variant-numeric:tabular-nums}
+.entry{display:none;margin-top:16px;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.entry.show{display:flex}
+.entry .field{margin:0;flex:1;min-width:160px}
+@media (max-width:560px){.game{grid-template-columns:1fr;justify-items:center;text-align:center}.game-side{width:100%}}
+
+/* contact */
+.subs{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.sub{border-top:1px solid var(--line);padding-top:18px;display:flex;flex-direction:column;gap:8px}
+.sub p{color:var(--muted);font-size:.875rem;flex:1}
+.sub button{align-self:flex-start;margin-top:8px}
+@media (max-width:560px){.subs{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+.field label{font-size:.9375rem;font-weight:500}
+.field .opt{color:var(--muted);font-weight:400;font-size:.8125rem;margin-left:8px}
+.field .hint{font-size:.8125rem;color:var(--muted);line-height:1.6}
+.inp{width:100%;min-height:48px;background:var(--bg);color:var(--text);border:1px solid var(--input-border);border-radius:2px;padding:12px 14px;font:inherit;font-size:1rem;letter-spacing:.02em}
+.inp:hover{border-color:var(--muted)}
+.inp:focus{outline:2px solid var(--red-text);outline-offset:3px;border-color:var(--text)}
+select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 15px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:40px}
+textarea.inp{min-height:120px;resize:vertical;line-height:1.7}
+.chips{border:0;padding:0;margin:0 0 22px;display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:8px}
+.chips legend{padding:0;margin-bottom:8px;font-size:.9375rem;font-weight:500}
+.chips label{position:relative;cursor:pointer}
+.chips input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.chips span{display:flex;align-items:center;justify-content:center;min-height:48px;padding:0 16px;border:1px solid var(--input-border);border-radius:2px;font-size:.875rem;color:var(--muted);transition:border-color .16s ease-out,color .16s ease-out,background .16s ease-out}
+.chips label:hover span{border-color:var(--muted);color:var(--text)}
+.chips input:checked + span{border-color:var(--red-text);color:var(--text);background:rgba(230,90,79,.08);font-weight:500}
+.chips input:focus-visible + span{outline:2px solid var(--text);outline-offset:3px}
+@media (max-width:767px){.chips{grid-template-columns:1fr 1fr}}
+.form-status{min-height:1.5em;font-size:.9375rem;margin-top:12px}
+.form-status.err{color:var(--red-text)}
+.p-body > .hexa{margin-top:64px}
+.hexa{border-top:1px solid var(--line);padding-top:28px}
+.hexa .h3{font-size:1.0625rem;margin:6px 0}
+.hexa p{font-size:.875rem;color:var(--muted)}
+.hexa .row{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin-top:16px}
+.hexa .row a.text{font-size:.875rem;color:var(--muted)}
+.legal{font-size:12px;color:var(--muted);line-height:1.8}
+
+/* ---------- JS mode: sections become slide-in panels ---------- */
+.js body{overflow:hidden}
+@media (max-height:560px){.js body{overflow:auto}}
+.js .panel{position:fixed;z-index:50;top:0;right:0;bottom:0;width:clamp(480px,46vw,640px);border-top:0;border-left:1px solid var(--line);
+  overflow-y:auto;overscroll-behavior:contain;visibility:hidden;opacity:0;transform:translateX(40px);
+  transition:opacity .2s ease-in,transform .2s ease-in,visibility 0s linear .2s}
+.js .panel.open{visibility:visible;opacity:1;transform:none;transition:opacity .28s var(--ease),transform .28s var(--ease),visibility 0s}
+.js .p-head{position:sticky;top:0;z-index:2}
+.js .close{display:inline-flex}
+.m-cta{display:none}
+@media (max-width:767px){
+  .js .panel{width:100%;border-left:0;transform:translateY(100%);padding-bottom:88px}
+  .js .panel.open{transform:none;transition:opacity .32s var(--ease),transform .32s var(--ease),visibility 0s}
+  .p-head{padding:12px 20px}
+  .p-body{padding:28px 20px 40px}
+  .js .m-cta{display:block;position:fixed;z-index:60;left:0;right:0;bottom:0;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(22,24,27,0),var(--surface) 30%);visibility:hidden;opacity:0;transition:opacity .2s ease-in,visibility 0s linear .2s}
+  .js body.panel-open:not(.contact-open) .m-cta{visibility:visible;opacity:1;transition:opacity .28s var(--ease)}
+  .m-cta .btn{width:100%}
 }
-
-.horror-text-shadow { text-shadow: 0 0 10px rgba(175, 0, 0, 0.8), 0 0 20px rgba(0,0,0,1); }
-.section-title { font-family: 'Creepster', cursive; letter-spacing: 0.1em; color: #fff; text-shadow: 0 0 20px rgba(175,0,0,0.5); }
-
-
-        /* Glassmorphism */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px;
-            transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-        .glass-panel:hover { border-color: var(--blood-red); box-shadow: 0 0 40px rgba(175,0,0,0.2); transform: translateY(-5px); }
-
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: var(--blood-red); }
-
-        /* DBD Perk UI Redesign */
-        .badge-slot {
-            width: 130px; height: 130px; 
-            background: radial-gradient(circle at center, #6a0dad 0%, #1a0505 100%);
-            transform: rotate(45deg);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border: 4px solid #fff; 
-            box-shadow: 0 0 15px rgba(255,255,255,0.3), inset 0 0 20px rgba(0,0,0,0.8);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin: 25px; cursor: pointer; position: relative; overflow: hidden;
-        }
-        .badge-slot::before {
-            content: ''; position: absolute; inset: 0;
-            background: url('https://www.transparenttextures.com/patterns/dust.png');
-            opacity: 0.2; pointer-events: none;
-        }
-        .badge-slot:hover { 
-            border-color: #ff00ff; 
-            box-shadow: 0 0 30px #ff00ff, inset 0 0 30px rgba(255,0,255,0.4);
-            transform: rotate(45deg) scale(1.15); 
-            z-index: 100;
-        }
-        .badge-content { 
-            transform: rotate(-45deg); 
-            display: flex; flex-direction: column; align-items: center; 
-            filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
-        }
-        .badge-icon { font-size: 2.5rem; filter: brightness(2) contrast(1.2); }
-        .badge-label { 
-            font-family: 'Share Tech Mono', monospace; font-size: 9px; 
-            margin-top: 8px; color: #fff; text-transform: uppercase; 
-            letter-spacing: 1px; opacity: 0.8;
-        }
-
-
-        .input-box {
-            width: 100%; background: rgba(0,0,0,0.8); border: 1px solid #333;
-            padding: 1.2rem; color: #fff; transition: 0.4s; font-family: 'Share Tech Mono', monospace;
-        }
-        .input-box:focus { border-color: var(--blood-red); outline: none; box-shadow: 0 0 20px rgba(175,0,0,0.3); }
-
-        #notification {
-            position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
-            z-index: 50000; font-size: 1rem; padding: 1rem 2rem;
-            background: rgba(0,0,0,0.95); border: 2px solid var(--blood-red);
-            color: #fff; display: none; text-align: center; font-weight: bold;
-        }
-
-        .glitch-text { animation: glitch 4s infinite; }
-        @keyframes glitch { 0% { transform: skew(0); } 1% { transform: skew(3deg); opacity: 0.8; } 2% { transform: skew(0); opacity: 1; } }
-
-        .obsession-bracket { display: inline-block; position: relative; padding: 0 40px; }
-        .obsession-bracket::before, .obsession-bracket::after {
-            content: ''; position: absolute; top: 50%; width: 30px; height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23af0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21l-4-4 4-4"/><path d="M17 3l4 4-4 4"/><path d="M3 17h18"/></svg>');
-            background-size: contain; background-repeat: no-repeat;
-            transform: translateY(-50%); opacity: 0.8; animation: obsession-move 2s infinite alternate;
-        }
-        .obsession-bracket::before { left: 0; }
-        .obsession-bracket::after { right: 0; transform: translateY(-50%) rotate(180deg); }
-        @keyframes obsession-move { from { opacity: 0.4; } to { opacity: 1; } }
-
-        .symbol-bg {
-            position: absolute; font-size: 15rem; opacity: 0.02; font-family: 'Creepster';
-            pointer-events: none; z-index: 0;
-        }
-
-        /* DBD HUD: Survivor Status */
-        #dbd-hud {
-            position: fixed; bottom: 20px; left: 20px; z-index: 2000;
-            display: flex; flex-direction: column; gap: 8px; pointer-events: none;
-        }
-        .survivor-status {
-            display: flex; align-items: center; gap: 10px;
-            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, transparent 100%);
-            padding: 4px 10px; border-left: 2px solid #555;
-            transition: 0.5s; opacity: 0.8;
-        }
-        .survivor-status.injured { border-left-color: var(--blood-red); }
-        .survivor-status.injured .status-icon { filter: sepia(1) saturate(5) hue-rotate(-50deg); }
-        .status-icon {
-            width: 32px; height: 32px; background: #222; border-radius: 2px;
-            display: flex; align-items: center; justify-content: center; font-size: 14px;
-        }
-        .status-name { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: #aaa; text-transform: uppercase; }
-
-        /* Bloodpoint Notification */
-        #bp-container {
-            position: fixed; top: 30px; right: 30px; z-index: 3000;
-            display: flex; flex-direction: column; align-items: flex-end; gap: 10px; pointer-events: none;
-        }
-        .bp-popup {
-            background: rgba(0,0,0,0.85); border-right: 3px solid var(--blood-red);
-            padding: 8px 15px; display: flex; flex-direction: column; align-items: flex-end;
-            animation: bp-slide 3s forwards;
-        }
-        @keyframes bp-slide {
-            0% { transform: translateX(50px); opacity: 0; }
-            10% { transform: translateX(0); opacity: 1; }
-            80% { transform: translateX(0); opacity: 1; }
-            100% { transform: translateX(20px); opacity: 0; }
-        }
-        .bp-score { color: #fff; font-weight: bold; font-family: 'Share Tech Mono', monospace; }
-        .bp-category { color: var(--blood-red); font-size: 9px; text-transform: uppercase; letter-spacing: 2px; }
-
-        /* Skill Check UI */
-        #skill-check-container {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: 5000; display: none; flex-direction: column; align-items: center;
-            pointer-events: auto;
-        }
-        #sc-combo-display-internal {
-            position: absolute; top: -30px; right: -30px;
-            font-family: 'Creepster', cursive; font-size: 3rem; color: var(--gold);
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
-            pointer-events: none; z-index: 60;
-        }
-        .skill-check-circle {
-            width: 220px; height: 220px; position: relative;
-            background: rgba(0,0,0,0.7); border-radius: 50%;
-            border: 3px solid rgba(255,255,255,0.1);
-        }
-        #sc-svg { position: absolute; inset: 0; z-index: 5; }
-        .sc-arc-good { fill: none; stroke: rgba(255,255,255,0.4); stroke-width: 25; }
-        .sc-arc-great { fill: none; stroke: #fff; stroke-width: 25; }
-        .skill-check-needle {
-            position: absolute; top: 50%; left: 50%; width: 5px; height: 100px;
-            background: #fff; transform-origin: bottom center;
-            margin-left: -2.5px; margin-top: -100px; z-index: 10;
-            box-shadow: 0 0 20px #fff;
-        }
-        .sc-center {
-            position: absolute; top: 50%; left: 50%; width: 12px; height: 12px;
-            background: #fff; border-radius: 50%; transform: translate(-50%, -50%); z-index: 11;
-        }
-        #sc-button {
-            margin-top: 40px; background: var(--blood-red); color: #fff;
-            padding: 20px 80px; font-family: 'Share Tech Mono', monospace;
-            font-weight: 900; font-size: 1.8rem; cursor: pointer;
-            border: 4px solid #fff; box-shadow: 0 0 40px var(--blood-red);
-            transition: 0.2s; letter-spacing: 6px;
-            touch-action: none; -webkit-tap-highlight-color: transparent;
-        }
-        #sc-button:active { transform: scale(0.92); filter: brightness(1.4); }
-
-        .gen-label {
-            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-            background: var(--blood-red); color: #fff; font-family: 'Share Tech Mono', monospace;
-            font-size: 10px; padding: 2px 10px; white-space: nowrap; z-index: 30;
-            letter-spacing: 2px; box-shadow: 0 0 10px var(--blood-red);
-        }
-
-        /* Leaderboard & Name Entry */
-        #leaderboard-container {
-            background: rgba(0,0,0,0.9); border: 2px solid var(--blood-red);
-            padding: 20px; font-family: 'Share Tech Mono', monospace;
-            max-width: 400px; margin: 20px auto;
-        }
-        .leader-row { display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding: 5px 0; }
-        
-        #name-entry-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 6000;
-            display: none; flex-direction: column; justify-content: center; align-items: center;
-            padding: 20px;
-        }
-        .name-input-box {
-            width: 100%; max-width: 320px; background: rgba(0,0,0,0.8); border: 2px solid var(--blood-red);
-            padding: 1.5rem; color: #fff; text-align: center;
-            font-family: 'Creepster', cursive; font-size: 3rem; letter-spacing: 5px;
-            margin: 30px 0; outline: none; box-shadow: 0 0 20px rgba(175,0,0,0.2);
-        }
-        .name-input-box:focus { border-color: var(--gold); box-shadow: 0 0 30px rgba(212,175,55,0.4); }
-        .submit-record-btn {
-            background: var(--blood-red); color: #fff; padding: 15px 40px;
-            font-family: 'Share Tech Mono', monospace; font-weight: bold;
-            letter-spacing: 4px; border: 2px solid #fff; transition: 0.3s;
-            cursor: pointer;
-        }
-        .submit-record-btn:active { transform: scale(0.95); }
-        .submit-record-btn:hover { background: #fff; color: #000; }
-
-        /* LIVE Badge */
-        .live-badge {
-            position: fixed; bottom: 30px; right: 30px; z-index: 1000;
-            background: rgba(175, 0, 0, 0.8); border: 1px solid var(--blood-red);
-            padding: 10px 20px; border-radius: 4px; display: flex; align-items: center; gap: 10px;
-            backdrop-filter: blur(10px); cursor: pointer; transition: 0.3s;
-            animation: live-pulse 2s infinite;
-        }
-        .live-badge:hover { transform: scale(1.05); background: var(--blood-red); }
-        .live-dot { width: 8px; height: 8px; background: #fff; border-radius: 50%; }
-        @keyframes live-pulse { 0% { box-shadow: 0 0 0 0 rgba(175, 0, 0, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(175, 0, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(175, 0, 0, 0); } }
-
-        #hex-totem {
-            position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
-            z-index: 100; cursor: pointer; opacity: 0.3; transition: 0.5s;
-        }
-        #hex-totem:hover { opacity: 1; transform: scale(1.2) rotate(10deg); filter: drop-shadow(0 0 10px var(--blood-red)); }
-
-        /* Tab Navigation (トライアル選択メニュー) */
-        #tab-bar {
-            position: sticky; top: 0; z-index: 2500;
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
-            padding: 14px 16px; background: rgba(3, 3, 5, 0.85); backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(175, 0, 0, 0.3);
-        }
-        .tab-btn {
-            font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px;
-            color: rgba(255,255,255,0.5); background: transparent;
-            border: 1px solid rgba(255,255,255,0.15); padding: 8px 16px;
-            cursor: pointer; text-transform: uppercase; transition: 0.25s;
-        }
-        .tab-btn:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
-        .tab-btn.active { color: var(--gold); border-color: var(--gold); box-shadow: 0 0 12px rgba(212,175,55,0.4); }
-        .tab-panel { display: none; opacity: 0; }
-        .tab-panel.active-tab { display: block; animation: tabFadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-        @keyframes tabFadeIn {
-            from { opacity: 0; transform: translateY(14px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .tab-btn { position: relative; }
-        .tab-btn.active::after {
-            content: ''; position: absolute; left: 10%; right: 10%; bottom: -1px; height: 2px;
-            background: var(--gold); box-shadow: 0 0 8px var(--gold);
-        }
-        @media (max-width: 768px) {
-            #tab-bar { gap: 4px; padding: 10px 8px; }
-            .tab-btn { font-size: 9px; padding: 7px 10px; }
-        }
-
-        @media (max-width: 768px) {
-            .horror-font { font-size: 4rem; }
-            .section-title { font-size: 2.5rem !important; }
-            .badge-slot { width: 90px; height: 90px; margin: 10px; }
-            #dbd-hud { bottom: 10px; left: 10px; transform: scale(0.7); transform-origin: bottom left; }
-            #bp-container { top: 10px; right: 10px; transform: scale(0.8); transform-origin: top right; }
-            #sc-combo-display-internal { top: -20px; right: -20px; font-size: 2rem; }
-            #hex-totem { bottom: 10px; right: 10px; width: 40px; height: 40px; }
-            .live-badge { bottom: 60px; right: 10px; padding: 6px 12px; font-size: 10px; }
-            .skill-check-circle { width: 160px; height: 160px; }
-            .skill-check-needle { height: 70px; margin-top: -70px; }
-            #sc-button { padding: 15px 40px; font-size: 1.2rem; }
-        }
-    </style>
+@media (prefers-reduced-motion:reduce){
+  .js .panel,.js .panel.open{transform:none!important;transition:opacity .12s linear,visibility 0s!important}
+  .btn.cue{animation:none}
+  .lamp-glow{transition:none}
+}
+</style>
+<script>document.documentElement.classList.add('js')</script>
 </head>
-<body onload="initApp()">
-    <div class="moving-fog"></div>
-    <div class="fog-overlay"></div>
-    <div class="entity-vignette"></div>
-    <div class="scratch-overlay"></div>
-    <div id="notification"></div>
+<body>
 
-    <!-- DBD HUD: SURVIVOR STATUS -->
-    <div id="dbd-hud">
-        <div class="survivor-status" id="status-sabanomiso">
-            <div class="status-icon">🪓</div>
-            <div class="status-name">SABANOMISO</div>
-        </div>
-        <div class="survivor-status" id="status-dwight">
-            <div class="status-icon">👓</div>
-            <div class="status-name">DWIGHT</div>
-        </div>
-        <div class="survivor-status" id="status-nea">
-            <div class="status-icon">🎨</div>
-            <div class="status-name">NEA</div>
-        </div>
-        <div class="survivor-status" id="status-meg">
-            <div class="status-icon">🏃</div>
-            <div class="status-name">MEG</div>
-        </div>
+<!-- ===================== LOBBY ===================== -->
+<div class="lobby" id="lobby">
+  <div class="formwork" aria-hidden="true"></div>
+  <div class="lamp-glow" id="lamp" aria-hidden="true"></div>
+  <div class="floor" aria-hidden="true"></div>
+  <figure class="gen">
+    <img src="generator-1000.webp" srcset="generator-600.webp 600w, generator-1000.webp 1000w" sizes="(min-width: 900px) 40vw, 78vw" width="1000" height="1139" alt="霧の中に置かれた、錆びた発電機のイラスト" fetchpriority="high">
+  </figure>
+
+  <div class="side">
+    <a class="brand" href="./" aria-label="さばのみそ">SABA<b>NO</b>MISO</a>
+    <div class="mob-ext">
+      <a href="https://www.youtube.com/@さばの味噌" target="_blank" rel="noopener" aria-label="YouTube(新しいタブ)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9L15.5 12z"/></svg></a>
+      <a href="https://x.com/sabanomiso1218" target="_blank" rel="noopener" aria-label="X(新しいタブ)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 2.5h3.4l-7.4 8.4 8.7 11.6h-6.8l-5.3-7-6.1 7H.9l7.9-9L.5 2.5h7l4.8 6.4zm-1.2 18h1.9L6.5 4.4H4.5z"/></svg></a>
     </div>
 
-    <!-- BLOODPOINT NOTIFICATIONS -->
-    <div id="bp-container"></div>
-
-    <!-- SKILL CHECK UI -->
-    <div id="skill-check-container">
-        <div class="skill-check-circle">
-            <div id="sc-combo-display-internal">0</div>
-            <svg id="sc-svg" viewBox="0 0 200 200">
-                <path id="sc-arc-good" class="sc-arc-good" d=""></path>
-                <path id="sc-arc-great" class="sc-arc-great" d=""></path>
-            </svg>
-            <div class="skill-check-needle"></div>
-            <div class="sc-center"></div>
-        </div>
-        <button id="sc-button">STRIKE !!</button>
-        <p class="mono text-white/30 text-[9px] mt-4 tracking-[0.5em] uppercase">Press SPACE or Click Button</p>
+    <div class="intro">
+      <p class="label">Formwork Carpenter <span style="color:var(--red-text)">/</span> 13 Years</p>
+      <h1><span>勉強は苦手だった。</span><span>だから、</span><span><em>1日1ページ</em>を8年。</span></h1>
+      <p class="seek"><span class="nb">型枠大工、</span><span class="nb">隣で一緒にやる人を</span><span class="nb">探しています。</span></p>
+      <p class="stats">13年 型枠大工<i>|</i>独立8期目<i>|</i>一級建築士</p>
     </div>
 
-    <div id="gen-tooltip" class="fixed z-[3000] pointer-events-none opacity-0 transition-opacity duration-500">
-        <div class="glass-panel px-4 py-2 border-blood-red/40 bg-black/80">
-            <p class="mono text-[10px] text-white tracking-widest animate-pulse">🛠️ [ CLICK_GENERATOR_TO_REPAIR ]</p>
-        </div>
+    <nav aria-label="メニュー">
+      <ul class="menu" id="menu">
+        <li><a href="#chronicle" data-open="chronicle"><span class="no">01</span><span class="jp">歩み</span><span class="en" aria-hidden="true">Chronicle</span><span class="seen"></span></a></li>
+        <li><a href="#promise" data-open="promise"><span class="no">02</span><span class="jp">約束</span><span class="en" aria-hidden="true">Promise</span><span class="seen"></span></a></li>
+        <li><a href="#credentials" data-open="credentials"><span class="no">03</span><span class="jp">資格</span><span class="en" aria-hidden="true">Credentials</span><span class="seen"></span></a></li>
+        <li><a href="#stream" data-open="stream"><span class="no">04</span><span class="jp">配信</span><span class="en" aria-hidden="true">Broadcast</span><span class="seen"></span></a></li>
+        <li><a href="#repair" data-open="repair"><span class="no">05</span><span class="jp">発電機を直す</span><span class="en" aria-hidden="true">Repair</span><span class="seen"></span></a></li>
+      </ul>
+    </nav>
+
+    <div class="primary">
+      <a class="btn" id="lobby-cta" href="#contact" data-open="contact" data-type="formwork">
+        <svg class="ring" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/><path d="M10 2 A8 8 0 0 1 16.93 6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+        さばのみそに連絡
+      </a>
+      <p class="note"><span class="nb">一緒に働きたい、一緒にコラボしたいなど</span><span class="nb">相談なんでも受付中！</span></p>
     </div>
 
-    <a href="https://www.youtube.com/@さばの味噌/live" target="_blank" class="live-badge" id="live-badge" style="display: none;">
-        <div class="live-dot"></div>
-        <span class="mono text-[10px] font-bold tracking-widest text-white">🔴 ON AIR</span>
-    </a>
+    <button class="m-legal" type="button" data-open="contact" data-scroll="legal">イラストは AI 生成・権利表記</button>
 
-    <div id="hex-totem" onclick="curseReality()">
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 10L15 80H85L50 10Z" stroke="#af0000" stroke-width="2"/>
-            <circle cx="50" cy="45" r="10" stroke="#af0000" stroke-width="2"/>
-            <path d="M30 60L70 60" stroke="#af0000" stroke-width="2"/>
-            <path d="M40 70L60 70" stroke="#af0000" stroke-width="2"/>
+    <div class="ext">
+      <a href="https://www.youtube.com/@さばの味噌" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9L15.5 12z"/></svg>YouTube ↗</a>
+      <a href="https://x.com/sabanomiso1218" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 2.5h3.4l-7.4 8.4 8.7 11.6h-6.8l-5.3-7-6.1 7H.9l7.9-9L.5 2.5h7l4.8 6.4zm-1.2 18h1.9L6.5 4.4H4.5z"/></svg>X ↗</a>
+    </div>
+  </div>
+
+  <p class="credit">制作: <a href="../../intro/services/">Hexa Relation</a><br>発電機のイラストは AI 生成。Dead by Daylight は Behaviour Interactive Inc. の商標で、このページは同社と関係ありません。</p>
+  <div class="dim" aria-hidden="true"></div>
+</div>
+
+<!-- ===================== PANELS ===================== -->
+<main>
+
+<section class="panel" id="chronicle" aria-labelledby="h-chronicle" tabindex="-1">
+  <div class="p-head"><span class="no">01</span><h2 id="h-chronicle">歩み</h2><button class="close" type="button" data-close><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13"/></svg>閉じる</button></div>
+  <div class="p-body">
+    <p class="h2">霧を抜けるまで。</p>
+    <ol class="tl">
+      <li><div class="yr">2013<small>Origin</small></div><h3 class="h3">上京して、型枠の世界へ。</h3><p>高校を卒業して化粧品会社に入社。退職したあと、ひとりで上京して型枠大工の道に入った。</p></li>
+      <li><div class="yr">23<small>歳 / 独立</small></div><h3 class="h3">独立。</h3><p>「師匠と同じところまで来た」と思い、独立を決めた。</p></li>
+      <li><div class="yr">1–3<small>期 / The Fog</small></div><h3 class="h3">手元に、一円も残らなかった。</h3><p>設立から3期目まで、借金の中を走った。昼の現場だけでは回らず、深夜の工事もすべて受けた。<strong>甘さは、現実の中でしか直らなかった。</strong></p></li>
+      <li class="now"><div class="yr">8<small>期目 / Now</small></div><h3 class="h3">いまは、つくる側に。</h3><p>一つひとつ丁寧な仕事を重ねて、経営を立て直した。いまは、若い職人が同じ霧で迷わない場所をつくっている。</p></li>
+    </ol>
+    <div class="bridge">
+      <p class="lead">この続きを、隣で一緒に。</p>
+      <a class="btn" href="#contact" data-open="contact" data-type="formwork">さばのみそに連絡</a>
+      <p class="note"><span class="nb">一緒に働きたい、一緒にコラボしたいなど</span><span class="nb">相談なんでも受付中！</span></p>
+      <button class="back" type="button" data-close>ロビーに戻る</button>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="promise" aria-labelledby="h-promise" tabindex="-1">
+  <div class="p-head"><span class="no">02</span><h2 id="h-promise">約束</h2><button class="close" type="button" data-close><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13"/></svg>閉じる</button></div>
+  <div class="p-body">
+    <div class="promise">
+      <p class="label">従業員との約束</p>
+      <p>約束はひとつだけ。<br>嘘をつかないこと。</p>
+    </div>
+    <div>
+      <p class="h2" style="margin-bottom:20px">若手が、呼吸できる業界へ。</p>
+      <div class="prose">
+        <p>建設業界の古い常識を壊して、若い人が働きやすく、福利厚生をきちんと整えた場所をつくりたい。</p>
+        <p>平均年齢が低く、しがらみのない、フラットな組織。上下関係よりも、話せる関係を。霧の中でも迷わず戻ってこられる場所を、未来の職人のために建てています。</p>
+      </div>
+    </div>
+    <blockquote class="motto" style="margin-left:0;margin-right:0">
+      <p>自分が建てた枠にコンクリートを流し、脱型した瞬間に、建物の本当の形が現れる。あの瞬間の誇りのために、何ごとも妥協しない。</p>
+      <cite class="note">— さばのみそ</cite>
+    </blockquote>
+    <div class="bridge">
+      <p class="lead">その約束の中で、働いてみませんか。</p>
+      <a class="btn" href="#contact" data-open="contact" data-type="formwork">さばのみそに連絡</a>
+      <p class="note"><span class="nb">一緒に働きたい、一緒にコラボしたいなど</span><span class="nb">相談なんでも受付中！</span></p>
+      <button class="back" type="button" data-close>ロビーに戻る</button>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="credentials" aria-labelledby="h-cred" tabindex="-1">
+  <div class="p-head"><span class="no">03</span><h2 id="h-cred">資格</h2><button class="close" type="button" data-close><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13"/></svg>閉じる</button></div>
+  <div class="p-body">
+    <div class="nums">
+      <div><span class="num">13<small>年</small></span><p class="note">型枠大工</p></div>
+      <div><span class="num">8<small>期目</small></span><p class="note">独立・経営</p></div>
+      <div><span class="num">12<small>年</small></span><p class="note">陸上 400m</p></div>
+    </div>
+    <blockquote class="cred-quote" style="margin-left:0;margin-right:0">
+      <p class="q">「コツコツが、勝つコツ。」</p>
+      <p class="note">陸上を12年続けて、恩師からいちばん多く聞いた言葉。勉強は苦手だから、1日1ページだけ覚えて寝る。それを8年、「やりたくない」と思う隙をつくらずに続けた。</p>
+    </blockquote>
+    <ul class="cred">
+      <li class="top"><span class="name">一級建築士</span><span class="what">型枠をつくる手と、建物全体を見る目の両方で現場に立つ。</span></li>
+      <li><span class="name">型枠大工 13年</span><span class="what">独立8期目。枠を建てるところから、会社を回すところまで。</span></li>
+      <li><span class="name">簿記1級</span><span class="what">現場の数字を、自分で読める経営者として。</span></li>
+      <li><span class="name">陸上 400m 競技歴12年</span><span class="what">練習の「意図」を言葉にして渡せる。</span></li>
+    </ul>
+    <div class="bridge">
+      <p class="lead">最初の1ページは、一緒に開けます。</p>
+      <a class="btn" href="#contact" data-open="contact" data-type="formwork">さばのみそに連絡</a>
+      <p class="note"><span class="nb">一緒に働きたい、一緒にコラボしたいなど</span><span class="nb">相談なんでも受付中！</span></p>
+      <button class="back" type="button" data-close>ロビーに戻る</button>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="stream" aria-labelledby="h-stream" tabindex="-1">
+  <div class="p-head"><span class="no">04</span><h2 id="h-stream">配信</h2><button class="close" type="button" data-close><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13"/></svg>閉じる</button></div>
+  <div class="p-body">
+    <p class="h2">霧の森から、配信中。</p>
+    <div class="prose">
+      <p>Dead by Daylight を中心に、YouTube で配信しています。嫌なことがあった日に、配信を見て少しでも元気になってもらえたら。</p>
+      <p class="muted">配信する側とされる側ではなく、同じ目線で霧の森を楽しむ場所でありたい。</p>
+    </div>
+    <div class="links">
+      <a class="btn-ghost" href="https://www.youtube.com/@さばの味噌" target="_blank" rel="noopener">YouTube ↗</a>
+      <a class="btn-ghost" href="https://x.com/sabanomiso1218" target="_blank" rel="noopener">X(@sabanomiso1218)↗</a>
+    </div>
+    <div class="tags" aria-label="好きなこと"><span>キャンプ</span><span>ドライブ</span><span>Dead by Daylight</span></div>
+    <div class="bridge">
+      <p class="lead">画面の外でも、話せます。</p>
+      <a class="btn" href="#contact" data-open="contact" data-type="collab">さばのみそに連絡</a>
+      <p class="note"><span class="nb">一緒に働きたい、一緒にコラボしたいなど</span><span class="nb">相談なんでも受付中！</span></p>
+      <button class="back" type="button" data-close>ロビーに戻る</button>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="repair" aria-labelledby="h-repair" tabindex="-1">
+  <div class="p-head"><span class="no">05</span><h2 id="h-repair">発電機を直す</h2><button class="close" type="button" data-close><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13"/></svg>閉じる</button></div>
+  <div class="p-body">
+    <div class="game">
+      <div class="dial" id="dial">
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <circle class="track" cx="100" cy="100" r="88"/>
+          <path class="zone-good" id="z-good" d=""/>
+          <path class="zone-great" id="z-great" d=""/>
+          <g id="needle" style="transform-origin:100px 100px"><line class="needle" x1="100" y1="100" x2="100" y2="8"/></g>
+          <circle class="hub" cx="100" cy="100" r="4"/>
         </svg>
+        <div class="score"><b id="g-score">0</b><span class="label">Repair</span></div>
+      </div>
+      <div class="game-side">
+        <p class="note">針が金色の帯に入った瞬間に押す。濃い帯で+2、薄い帯で+1。外したら終わり。キーボードはスペースキー。</p>
+        <button class="btn" type="button" id="g-btn" style="height:48px;padding:0 24px">はじめる</button>
+        <p class="g-status" id="g-msg" role="status" aria-live="polite"></p>
+        <div class="entry" id="g-entry">
+          <div class="field"><label for="g-name">ランキングに名前を残す</label><input class="inp" id="g-name" maxlength="10" autocomplete="off"></div>
+          <button class="btn-ghost" type="button" id="g-save">登録する</button>
+        </div>
+      </div>
     </div>
-
-    <div id="name-entry-overlay" style="background: rgba(0,0,0,0.95); position: fixed; inset: 0; z-index: 9999; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px;">
-        <h2 class="horror-font text-blood-red text-5xl mb-4">NEW RECORD</h2>
-        <p class="mono text-white text-xs mb-8 opacity-70">ENTER YOUR IDENTITY</p>
-        
-        <input type="text" id="name-input-visible" 
-            style="width: 100%; max-width: 300px; background: #111; border: 2px solid #af0000; padding: 15px; color: #fff; font-size: 24px; text-align: center; margin-bottom: 20px; outline: none; -webkit-appearance: none; border-radius: 0;" 
-            maxlength="15" placeholder="NAME" autocomplete="off">
-        
-        <button id="submit-record-btn" 
-            style="background: #af0000; color: #fff; padding: 15px 30px; font-family: 'Share Tech Mono', monospace; border: 2px solid #fff; cursor: pointer; width: 100%; max-width: 300px;">
-            SUBMIT RECORD
-        </button>
-        
-        <p class="mono text-white/30 mt-8 text-[10px] uppercase">Tap the box to type // Max 15 chars</p>
+    <div>
+      <p class="label" style="margin-bottom:10px">上位5人</p>
+      <ol class="board" id="g-board"><li><span class="n muted">読み込み中…</span></li></ol>
     </div>
-
-    <div id="main-content" style="opacity: 1;">
-        
-        <!-- 1. HERO (常時表示ヘッダー) -->
-        <section class="px-6 pt-16 pb-10 md:pt-20 md:pb-12 relative overflow-hidden" id="hero">
-            <div class="scratches top-20 left-10"></div>
-            <div class="scratches bottom-40 right-20" style="transform: rotate(150deg);"></div>
-
-            <div class="symbol-bg top-0 left-0">BLOOD</div>
-            <div class="symbol-bg bottom-0 right-0">ENTITY</div>
-
-            <div class="relative z-10 text-center reveal active">
-                <span class="mono text-tech-cyan text-xs tracking-[1em] block mb-6 opacity-60">SURVIVOR_LEVEL_99</span>
-                <h1 class="horror-font text-6xl md:text-8xl leading-none text-white tracking-tighter mb-6 obsession-bracket horror-text-shadow">
-                    SABANOMISO
-                </h1>
-                <p class="text-lg md:text-xl mono text-blood-red tracking-[0.5em] uppercase font-bold glitch-text mb-4">Formwork Architect</p>
-                <p class="text-sm md:text-base text-gray-300 typewriter italic max-w-2xl mx-auto opacity-70">
-                    「達成できるかギリギリの目標を定め、それを踏破した瞬間に、私は成功を確信する。」
-                </p>
-
-                <div class="mt-8 flex flex-col md:flex-row gap-4 justify-center items-center">
-                    <div class="glass-panel px-8 py-4 border-l-4 border-l-blood-red text-left min-w-[260px]">
-                        <p class="mono text-[10px] text-gray-500 mb-1">REAL_IDENTITY</p>
-                        <p class="text-lg font-bold tracking-widest text-white">Sabanomiso (31)</p>
-                    </div>
-                    <div class="glass-panel px-8 py-4 border-l-4 border-l-tech-cyan text-left min-w-[260px]">
-                        <p class="mono text-[10px] text-gray-500 mb-1">MAIN_PERK</p>
-                        <p class="text-lg font-bold tracking-widest text-white">KOTSU KOTSU</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- トライアル選択メニュー (タブ) -->
-        <nav id="tab-bar">
-            <button class="tab-btn active" data-tab="mantra">MANTRA</button>
-            <button class="tab-btn" data-tab="arsenal">ARSENAL</button>
-            <button class="tab-btn" data-tab="chronicles">CHRONICLES</button>
-            <button class="tab-btn" data-tab="mission">MISSION</button>
-            <button class="tab-btn" data-tab="stream">BROADCAST</button>
-            <button class="tab-btn" data-tab="contact">PACT</button>
-        </nav>
-
-        <!-- 2. THE MANTRA -->
-        <section class="tab-panel active-tab max-w-7xl mx-auto px-6 py-16 md:py-20 relative overflow-hidden" id="mantra">
-            <div class="scratches top-40 right-10" style="transform: rotate(30deg);"></div>
-            <div class="symbol-bg top-1/2 left-1/4">FAITH</div>
-            <div class="max-w-4xl mb-14 reveal">
-                <span class="text-blood-red mono text-xs tracking-widest block mb-6">ARCHIVE_DATA // PHILOSOPHY</span>
-                <h2 class="text-5xl md:text-8xl font-bold mb-12 leading-tight section-title">「コツコツが<br><span class="text-blood-red glitch-text">勝つコツ</span>」</h2>
-                <div class="space-y-10 text-gray-300 leading-relaxed text-xl max-w-2xl">
-                    <p>「陸上競技を12年間続けて得た、最も大切な教訓。それは恩師が常に仰っていた『コツコツが勝つコツ』という言葉。仕事も、配信も、そして人生も。地味な積み重ねだけが、霧の向こう側へ辿り著く唯一の手段だ。」</p>
-                    <p>自分が建てた枠にコンクリートを流し、脱型した瞬間に建物の真実の形が現れる。あの瞬間の誇りのために、私は何事も妥協せず、日々『コツコツ』と歩み続ける。</p>
-                </div>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-16 items-start reveal delay-300">
-                <div class="glass-panel p-4 bg-white/5 relative overflow-hidden group border-blood-red/20">
-                    <div class="gen-label">SYSTEM: REPAIRABLE_UNIT</div>
-                    <p class="mono text-[10px] text-gold text-center mb-2 tracking-widest animate-pulse">発電機修理ゲーム (クリックで開始)</p>
-                    <img src="gen_opt.jpg" class="w-full h-auto opacity-70 mix-blend-screen transition-transform duration-[4s] group-hover:scale-110">
-                    <div class="absolute inset-0 bg-red-900/10 animate-pulse opacity-0 group-hover:opacity-100 pointer-events-none"></div>
-                </div>
-
-                <div class="glass-panel p-10 border-blood-red/40 bg-black/40 shadow-2xl backdrop-blur-xl">
-                    <p class="typewriter text-blood-red text-2xl mb-4 italic">真実の形は、脱型の瞬間に。</p>
-                    <p class="text-xs text-gray-400 leading-loose mb-10">型枠大工歴13年。一級建築士としての視点。すべての工程に妥協はない。</p>
-                    <div id="leaderboard-container" class="mt-4 border-t border-white/5 pt-8">
-                        <p class="horror-font text-gold text-center mb-6 text-2xl tracking-widest horror-text-shadow">TOP REPAIRERS</p>
-                        <div id="leaderboard-list" class="space-y-2">
-                            <div class="leader-row opacity-30"><span class="mono">---</span><span class="mono">000</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. THE ARSENAL -->
-        <section class="tab-panel py-16 md:py-20 bg-gradient-to-b from-transparent via-blood-red/5 to-transparent relative" id="arsenal">
-            <div class="scratches bottom-20 left-1/4" style="transform: rotate(20deg); opacity: 0.1;"></div>
-            <div class="max-w-5xl mx-auto px-6 text-center">
-                <span class="text-tech-cyan mono text-xs tracking-widest block mb-10">ELITE_STATUS_DATA</span>
-                <h3 class="horror-font text-6xl md:text-8xl text-white mb-14 opacity-30 reveal section-title">THE_ARSENAL</h3>
-                <div class="flex flex-wrap justify-center gap-10 md:gap-20 reveal">
-                    <div class="badge-slot group" onclick="showNotify('ULTRARARE: 1ST CLASS ARCHITECT')">
-                        <div class="badge-content">
-                            <span class="badge-icon">🏗️</span>
-                            <p class="badge-label">ARCHITECT_1ST</p>
-                        </div>
-                    </div>
-                    <div class="badge-slot group" onclick="showNotify('ULTRARARE: FORMWORK MASTER')">
-                        <div class="badge-content">
-                            <span class="badge-icon">🧱</span>
-                            <p class="badge-label">FORMWORK_MSTR</p>
-                        </div>
-                    </div>
-                    <div class="badge-slot group" onclick="showNotify('ULTRARARE: BOOKKEEPING LEVEL 1')">
-                        <div class="badge-content">
-                            <span class="badge-icon">📈</span>
-                            <p class="badge-label">BOOKKEEPING_L1</p>
-                        </div>
-                    </div>
-                    <div class="badge-slot group" onclick="showNotify('ELITE: 400M SPECIALIST')">
-                        <div class="badge-content">
-                            <span class="badge-icon">🏃</span>
-                            <p class="badge-label">400M_ELITE</p>
-                        </div>
-                    </div>
-                </div>
-                <p class="mt-20 text-gray-300 typewriter text-sm md:text-base max-w-2xl mx-auto leading-loose px-4">
-                    「勉強は苦手だ」。だからこそ、1日1ページだけを覚えて寝ることを8年繰り返した。<br>
-                    「やりたくない」という意識が芽生える隙を殺した先に、この設計図がある。
-                </p>
-            </div>
-        </section>
-
-        <!-- 4. CHRONICLES -->
-        <section class="tab-panel max-w-6xl mx-auto px-6 py-16 md:py-20 relative" id="chronicles">
-            <span class="text-blood-red mono text-xs tracking-widest block mb-12">CHRONICLES_02 // SURVIVAL</span>
-            <div class="space-y-16">
-                <div class="reveal">
-                    <div class="glass-panel p-8 md:p-16 border-l-8 border-l-blood-red relative overflow-hidden group">
-                        <div class="absolute -top-10 -right-10 horror-font text-[10rem] md:text-[15rem] opacity-[0.02] pointer-events-none group-hover:opacity-[0.05] transition-opacity">2013</div>
-                        <div class="grid md:grid-cols-3 gap-12">
-                            <div class="col-span-1">
-                                <p class="mono text-blood-red text-sm mb-4 tracking-widest uppercase">Phase: Origin</p>
-                                <h4 class="text-3xl md:text-4xl font-bold mb-6 text-white">HS Grad &<br>Darkness</h4>
-                                <p class="text-sm text-gray-400">高校卒業後、化粧品会社に入社。退職後、単身上京し型枠大工の世界へ足を踏み入れた。</p>
-                            </div>
-                            <div class="col-span-2 text-gray-300 text-lg md:text-xl leading-relaxed">
-                                「師匠と同じレベルに達した、これ以上成長できない」。23歳、溢れる自信と共に独立を決意した。しかし待っていたのは、手元に一円も残らない「地獄の借金生活」。設立から3期目まで、私は設立当初の甘さを、現実という名の霧の中で思い知らされた。
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="reveal">
-                    <div class="glass-panel p-8 md:p-16 border-r-8 border-r-tech-cyan text-right group">
-                        <div class="absolute -top-10 -left-10 horror-font text-[10rem] md:text-[15rem] opacity-[0.02] pointer-events-none group-hover:opacity-[0.05] transition-opacity">WORK</div>
-                        <div class="grid md:grid-cols-3 gap-12">
-                            <div class="col-span-2 text-gray-300 text-lg md:text-xl leading-relaxed order-2 md:order-1 text-left md:text-right">
-                                昼だけでは生活できず、深夜の工事もすべて請け負った。不眠不休の日々を「コツコツ」と積み上げ、私はようやく経営の軌道を修正し、ゲートを開く鍵を手に入れた。独立8期目、私はまだ霧を走り続けている。
-                            </div>
-                            <div class="col-span-1 order-1 md:order-2">
-                                <p class="mono text-tech-cyan text-sm mb-4 tracking-widest uppercase">Phase: Ascension</p>
-                                <h4 class="text-3xl md:text-4xl font-bold mb-6 text-white">The Night<br>Shift</h4>
-                                <p class="text-sm text-gray-400">霧の追撃を振り切り、独立8期目を迎えた。足元を救われぬよう、一つ一つ丁寧な仕事を貫く。</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. MISSION -->
-        <section class="tab-panel py-16 md:py-20 bg-white/5 relative overflow-hidden" id="mission">
-            <div class="symbol-bg top-0 left-1/2 opacity-[0.02]">SAFEHOUSE</div>
-            <div class="max-w-4xl mx-auto px-6 text-center reveal">
-                <span class="text-blood-red mono text-xs tracking-widest block mb-12">MISSION_03 // VISION</span>
-                <h3 class="text-4xl md:text-8xl font-bold mb-16 leading-tight section-title text-white">若手が、<br><span class="text-tech-cyan glitch-text">呼吸できる業界へ。</span></h3>
-                <div class="space-y-10 text-gray-300 text-xl md:text-2xl leading-relaxed">
-                    <p>「建設業界の古い常識を壊し、若手が働きやすい環境、福利厚生が充実した場所を創りたい。」</p>
-                    <p>平均年齢が低く、しがらみのないフラットな組織。上下関係よりもコミュニケーションを。私は未来の職人たちのための、霧の中の「セーフハウス」を構築する。従業員に対して私が約束する唯一の方針。それは、**「嘘をつかないこと」**。</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. THE STREAM -->
-        <section class="tab-panel max-w-6xl mx-auto px-6 py-16 md:py-20" id="stream">
-            <div class="grid md:grid-cols-2 gap-20 items-center">
-                <div class="reveal">
-                    <span class="text-blood-red mono text-xs tracking-widest block mb-10">CONNECT_04 // ENTERTAINMENT</span>
-                    <h3 class="horror-font text-5xl md:text-6xl text-white mb-10">KIRINOMORI_BROADCAST</h3>
-                    <p class="text-gray-300 text-lg md:text-xl leading-relaxed mb-8">
-                        「日常生活で嫌なことがあった時、私の配信を見て元気になってほしい。」<br>
-                        老若男女、多様なリスナーとの交流は、私の視野を広げ、人を観察する目を養ってくれる。配信者とリスナーという枠を超え、同じ目線で霧の森を楽しむ「接続点（Node）」でありたい。
-                    </p>
-                    <div class="flex flex-wrap gap-6">
-                        <a href="https://www.youtube.com/@さばの味噌" target="_blank" class="glass-panel px-10 py-5 mono text-xs hover:bg-blood-red transition-all">YT_SIGNAL_LIVE</a>
-                        <a href="https://x.com/sabanomiso1218" target="_blank" class="glass-panel px-10 py-5 mono text-xs hover:bg-tech-cyan transition-all">X_DATA_SYNCED</a>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4 reveal relative">
-                    <div class="glass-panel p-10 text-center"><div class="text-4xl mb-4">🏕️</div><p class="mono text-[10px] text-gray-400 uppercase">CAMPING</p></div>
-                    <div class="glass-panel p-10 text-center"><div class="text-4xl mb-4">🚗</div><p class="mono text-[10px] text-gray-400 uppercase">DRIVING</p></div>
-                    <div class="glass-panel p-10 text-center col-span-2"><div class="text-4xl mb-4">🎮</div><p class="mono text-[10px] text-gray-300 uppercase tracking-widest">DEAD BY DAYLIGHT</p></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 7. CONTACT -->
-        <section class="tab-panel max-w-5xl mx-auto px-6 py-16 md:py-20" id="contact">
-            <div class="glass-panel p-8 md:p-16 relative border-2 border-blood-red/20 shadow-2xl">
-                <div class="absolute -top-10 -right-5 horror-font text-[10rem] md:text-[14rem] opacity-5 pointer-events-none">PACT</div>
-                <h3 class="horror-font text-6xl md:text-[10rem] text-white mb-12 section-title">SIGN THE PACT</h3>
-                <div class="grid md:grid-cols-2 gap-16">
-                    <div class="space-y-16">
-                        <div class="reveal">
-                            <p class="text-blood-red mono text-[10px] mb-2 tracking-[0.5em]">MISSION_01 // COACHING</p>
-                            <p class="font-bold text-2xl mb-4 text-white">🏃 陸上指導 (400m専門)</p>
-                            <p class="text-sm text-gray-300 leading-relaxed">ただメニューをこなすのではなく、練習の「意図」を理解させる。12年の競技生活で培ったマインドと技術を、伸び悩む君へ。</p>
-                        </div>
-                        <div class="reveal">
-                            <p class="text-blood-red mono text-[10px] mb-2 tracking-[0.5em]">MISSION_02 // LEGACY</p>
-                            <p class="font-bold text-2xl mb-4 text-white">🏗️ 型枠大工・経営伝承</p>
-                            <p class="text-sm text-gray-300 leading-relaxed">一級建築士から直接学ぶ、本物の職人魂。夢はあるが一歩踏み出せない君へ。私ができることはすべて協力する。</p>
-                        </div>
-                    </div>
-                    <form id="contact-form" class="space-y-8">
-                        <input type="text" id="form-name" required class="input-box" placeholder="IDENTITY / 名前">
-                        <input type="email" id="form-email" required class="input-box" placeholder="CHANNEL / メールアドレス">
-                        <select id="form-type" class="input-box">
-                            <option value="Construction">型枠大工への応募 / 経営修業</option>
-                            <option value="Coaching">陸上コーチング希望</option>
-                            <option value="Streaming">配信コラボ / その他</option>
-                        </select>
-                        <textarea id="form-message" required class="input-box h-48" placeholder="YOUR WILL / 魂のメッセージ"></textarea>
-                        <button type="submit" id="submit-btn" class="w-full bg-blood-red text-white py-6 font-bold tracking-[2em] hover:bg-white hover:text-black transition-all">TRANSMIT</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <!-- 8. MARKETING -->
-        <section class="max-w-4xl mx-auto px-6 py-20 border-t border-white/5">
-            <div class="glass-panel p-10 md:p-20 text-center border-tech-cyan/20 bg-tech-cyan/5 relative overflow-hidden group">
-                <div class="absolute -top-10 -right-10 horror-font text-[8rem] opacity-[0.03] pointer-events-none">OFFER</div>
-                <h3 class="text-2xl md:text-4xl font-bold mb-8 text-white tracking-widest">
-                    あなたも、世界観を凝縮した<br><span class="text-tech-cyan">「ゲーム風LP」</span>を作りませんか？
-                </h3>
-                <p class="text-gray-400 mb-12 leading-relaxed text-sm md:text-base">
-                    Hexa Relation では、あなたの活動や理念を、最高レベルの没入感で表現します。<br>
-                    単なるWebサイトではない、「体験」を届けるポートフォリオを。
-                </p>
-                
-                <div class="flex flex-wrap justify-center gap-3 mb-14">
-                    <span class="glass-panel px-4 py-2 text-xs text-gray-400">完全オリジナルデザイン</span>
-                    <span class="glass-panel px-4 py-2 text-xs text-gray-400">3〜10個のゲーム風ギミック</span>
-                    <span class="glass-panel px-4 py-2 text-xs text-gray-400">スマホ最適化 & モバイルHUD</span>
-                    <span class="glass-panel px-4 py-2 text-xs text-gray-400">月1回までの修正対応</span>
-                </div>
-
-                <div class="flex flex-wrap gap-6 justify-center items-center">
-                    <a href="../../order/index.html?from=sabanomiso" class="inline-block bg-tech-cyan text-black px-12 py-5 font-bold tracking-[0.5em] hover:bg-white transition-all transform group-hover:scale-105">
-                        REQUEST_TRANSMISSION
-                    </a>
-                    <a href="../../intro/services/" target="_blank" class="mono text-tech-cyan text-xs tracking-widest underline underline-offset-4 hover:text-white transition-all">
-                        詳しい内容・料金の目安を見る →
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <footer class="py-20 border-t border-white/5 text-center">
-            <p class="text-[8px] mono opacity-10 uppercase tracking-widest">&copy; 2026 Hexa Relation // Official_Save_Sabanomiso</p>
-        </footer>
+    <div class="bridge" id="g-bridge" hidden>
+      <p class="lead">直せた。次は現場で。</p>
+      <a class="btn" href="#contact" data-open="contact" data-type="formwork">さばのみそに連絡</a>
+      <p class="note"><span class="nb">一緒に働きたい、一緒にコラボしたいなど</span><span class="nb">相談なんでも受付中！</span></p>
     </div>
+    <button class="back" type="button" data-close style="display:inline-block;font-size:.8125rem;color:var(--muted);background:none;border:0;padding:8px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px">ロビーに戻る</button>
+  </div>
+</section>
 
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<section class="panel" id="contact" aria-labelledby="h-contact" tabindex="-1">
+  <div class="p-head"><span class="no" aria-hidden="true">—</span><h2 id="h-contact">さばのみそに連絡</h2><button class="close" type="button" data-close><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13"/></svg>閉じる</button></div>
+  <div class="p-body">
+    <div>
+      <p class="label red">型枠大工・経営修業</p>
+      <p class="h2" style="margin:12px 0 16px">夢はあるけれど、<br>一歩が出ない人へ。</p>
+      <div class="prose muted"><p>一級建築士の目と、13年の型枠の手で、仕事を隣で見せます。独立したい人には、借金から立て直した経営のことも、包み隠さず話します。できることは、すべて協力します。</p><p>ほかに、陸上400mの指導や、配信コラボの相談も受けています。</p></div>
+    </div>
+    <form id="contact-form" novalidate>
+      <p class="note" style="margin-bottom:20px">4項目、1分ほどで送れます。</p>
+      <fieldset class="field chips" id="f-type">
+        <legend>相談したいこと</legend>
+        <label><input type="radio" name="type" value="型枠大工への応募・経営修業" checked><span>型枠大工・経営修業</span></label>
+        <label><input type="radio" name="type" value="陸上400mコーチング"><span>陸上400mの指導</span></label>
+        <label><input type="radio" name="type" value="配信コラボ"><span>配信コラボ</span></label>
+        <label><input type="radio" name="type" value="その他"><span>その他</span></label>
+      </fieldset>
+      <div class="field"><label for="f-name">呼び名</label><input class="inp" id="f-name" name="name" type="text" autocomplete="nickname" required maxlength="40"><span class="hint">ニックネームで大丈夫です。</span></div>
+      <div class="field"><label for="f-reply">返信先</label><input class="inp" id="f-reply" name="reply" type="text" autocomplete="email" required maxlength="120" placeholder="メールアドレス または X の @ID"></div>
+      <div class="field"><label for="f-msg">ひとこと<span class="opt">任意</span></label><textarea class="inp" id="f-msg" name="message" maxlength="1500"></textarea></div>
+      <p class="note" style="margin-bottom:16px">いただいた内容は、このご相談への返信のためだけに使います。</p>
+      <button class="btn" type="submit" id="f-submit">さばのみそに送る</button>
+      <p class="form-status" id="f-status" role="status" aria-live="polite"></p>
+    </form>
+    <aside class="hexa" aria-label="このページの制作について">
+      <p class="label">制作: Hexa Relation(このページの制作者による案内です)</p>
+      <p class="h3">活動や考えを、一枚のページに。</p>
+      <p>このページは Hexa Relation が制作しました。オリジナルデザイン・スマホ対応。</p>
+      <div class="row"><a class="text" href="../../intro/services/">詳しい内容・料金の目安を見る →</a><a class="text" href="../../order/index.html?from=sabanomiso">制作を相談する</a></div>
+    </aside>
+    <p class="legal">&copy; 2026 さばのみそ / 制作 Hexa Relation<br>発電機のイラストは AI で生成したものです。Dead by Daylight は Behaviour Interactive Inc. の商標です。このページは同社とは関係ありません。</p>
+  </div>
+</section>
+</main>
 
-    <script>
-        const firebaseConfig = { apiKey: "AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI", authDomain: "hexa-relation.firebaseapp.com", projectId: "hexa-relation", storageBucket: "hexa-relation.firebasestorage.app", messagingSenderId: "318065017750", appId: "1:318065017750:web:94acf3c9c43632b3ff93b7", measurementId: "G-15NM9TWFE2" };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const PAGE_ID = 'sabanomiso';
-        let audioCtx;
-        function getAudioCtx() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; }
-        function playSound(freq, type = 'square', duration = 0.6, vol = 0.2) {
-            try { const ctx = getAudioCtx(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.type = type; osc.frequency.setValueAtTime(freq, ctx.currentTime); if (duration > 0.5) osc.frequency.exponentialRampToValueAtTime(freq/2, ctx.currentTime + duration); gain.gain.setValueAtTime(vol, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration); osc.start(); osc.stop(ctx.currentTime + duration); } catch(e) {}
-        }
-        function playBP() { playSound(880, 'sine', 0.3, 0.1); }
-        function playClank() { playSound(120, 'square', 0.6, 0.2); }
-        function playScream() { playSound(800, 'sawtooth', 1.5, 0.1); }
-        function playPing() { playSound(600, 'sine', 0.1, 0.2); }
+<div class="m-cta"><a class="btn" href="#contact" data-open="contact" data-type="formwork">さばのみそに連絡</a></div>
 
-        async function checkYouTubeLive() {
-            const channelHandle = '@さばの味噌';
-            const proxyUrl = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent('https://www.youtube.com/' + channelHandle + '/live')}`;
-            try {
-                const response = await fetch(proxyUrl);
-                if (!response.ok) throw new Error('Proxy response not ok');
-                const text = await response.text();
-                const isLive = text.includes('"isLive":true') || text.includes('yt-live-chat-renderer');
-                if (isLive) {
-                    const badge = document.getElementById('live-badge');
-                    if (badge) badge.style.display = 'flex';
-                }
-            } catch (e) { console.error("Live check failed:", e); }
-        }
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isPhone = () => matchMedia('(max-width: 767px)').matches;
+  const store = { get(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (_) {} } };
 
-        function initApp() {
-            db.collection('analytics').doc(PAGE_ID).set({ hits: firebase.firestore.FieldValue.increment(1), lastVisit: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
-            db.collection('referrals').doc(PAGE_ID).collection('logs').add({ referrer: document.referrer || 'direct', timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-            const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); if (entry.target.tagName === 'SECTION') addBP(500, "BOLDNESS"); } }); }, { threshold: 0.1 });
-            document.querySelectorAll('.reveal, section').forEach(el => observer.observe(el));
-            initKonami(); initSkillCheck(); loadLeaderboard(); addBP(2000, "WELCOME"); checkYouTubeLive();
-            initTabs();
-        }
+  /* ---------- panels ---------- */
+  const panels = [...document.querySelectorAll('.panel')];
+  const ids = panels.map(p => p.id);
+  let current = null, opener = null, pushed = false;
+  const menuLinks = [...document.querySelectorAll('.menu a')];
+  const seen = new Set((store.get('sbm-seen') || '').split(',').filter(Boolean));
+  const markSeen = () => menuLinks.forEach(a => {
+    const on = seen.has(a.dataset.open); a.classList.toggle('visited', on);
+    let s = a.querySelector('.sr'); if (on && !s) { s = document.createElement('span'); s.className = 'sr'; s.textContent = '(既読)'; a.appendChild(s); }
+  });
+  markSeen();
 
-        function initTabs() {
-            const buttons = Array.from(document.querySelectorAll('.tab-btn'));
-            const panels = Array.from(document.querySelectorAll('.tab-panel'));
+  function show(id) {
+    const p = $(id); if (!p) return;
+    if (current && current !== p) current.classList.remove('open'), current.setAttribute('aria-hidden', 'true');
+    current = p;
+    p.removeAttribute('aria-hidden'); p.setAttribute('role', 'dialog');
+    p.scrollTop = 0;
+    requestAnimationFrame(() => p.classList.add('open'));
+    document.body.classList.add('panel-open');
+    document.body.classList.toggle('contact-open', id === 'contact');
+    menuLinks.forEach(a => a.dataset.open === id ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current'));
+    menuLinks.forEach(a => a.classList.remove('cue'));
+    if (id !== 'contact') { seen.add(id); store.set('sbm-seen', [...seen].join(',')); markSeen(); }
+    setTimeout(() => p.focus({ preventScroll: true }), reduce ? 0 : 60);
+    if (id === 'repair') loadBoard();
+  }
+  function hide() {
+    if (!current) return;
+    current.classList.remove('open'); current.setAttribute('aria-hidden', 'true');
+    current = null;
+    document.body.classList.remove('panel-open', 'contact-open');
+    menuLinks.forEach(a => a.removeAttribute('aria-current'));
+    if (opener && document.contains(opener)) opener.focus({ preventScroll: true });
+  }
+  function open(id, trigger) {
+    if (trigger && !trigger.closest('.panel')) opener = trigger;
+    if (current && current.id === id) return;
+    if (!pushed) { history.pushState({ p: id }, '', '#' + id); pushed = true; }
+    else history.replaceState({ p: id }, '', '#' + id);
+    show(id);
+  }
+  function close() {
+    if (pushed) history.back();            // popstate → hide
+    else { history.replaceState(null, '', location.pathname + location.search); hide(); }
+  }
+  panels.forEach(p => { p.setAttribute('aria-hidden', 'true'); p.setAttribute('aria-modal', 'false'); });
 
-            function activateTab(tabId) {
-                panels.forEach(p => p.classList.toggle('active-tab', p.id === tabId));
-                buttons.forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
-                // 表示された瞬間に演出を出す (IntersectionObserverの発火待ちにしない)
-                const shown = document.getElementById(tabId);
-                if (shown) shown.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
-                document.getElementById('tab-bar').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                playSound(700, 'sine', 0.08, 0.05);
-            }
+  const typeMap = { formwork: 0, coach: 1, collab: 2 };
+  const typeEls = [...document.querySelectorAll('input[name=type]')];
+  const setType = i => { if (typeEls[i]) typeEls[i].checked = true; };
+  const getType = () => (typeEls.find(r => r.checked) || typeEls[0]).value;
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-open]');
+    if (t) {
+      e.preventDefault();
+      if (t.dataset.type in typeMap) setType(typeMap[t.dataset.type]);
+      if (t.dataset.open === 'contact' && !t.dataset.scroll) bump('event_contact_click');
+      open(t.dataset.open, t);
+      if (t.dataset.scroll) setTimeout(() => document.querySelector('.' + t.dataset.scroll)?.scrollIntoView({ block: 'center' }), 320);
+      return;
+    }
+    if (e.target.closest('[data-close]')) { e.preventDefault(); close(); }
+  });
+  addEventListener('popstate', () => {
+    const id = location.hash.slice(1);
+    if (ids.includes(id)) show(id); else { pushed = false; hide(); }
+  });
+  addEventListener('keydown', e => {
+    if (e.key === 'Escape' && current) { e.preventDefault(); close(); return; }
+    if (e.key === 'Tab' && current && isPhone()) {          // trap focus in full-screen sheet
+      const f = [...current.querySelectorAll('a[href],button:not([disabled]),input,select,textarea')].filter(el => el.offsetParent);
+      const mc = document.querySelector('.m-cta .btn'); if (mc && mc.offsetParent && current.id !== 'contact') f.push(mc);
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && (document.activeElement === first || document.activeElement === current)) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+  // deep link: open without stacking history, so Back leaves to where they came from
+  const initial = location.hash.slice(1);
+  if (ids.includes(initial)) { history.replaceState({ p: initial }, '', '#' + initial); show(initial); }
 
-            buttons.forEach(btn => btn.addEventListener('click', () => activateTab(btn.dataset.tab)));
-        }
+  /* ---------- first-visit cue + lamp flicker ---------- */
+  if (!store.get('sbm-visited') && !current) {
+    menuLinks[0].classList.add('cue');
+    if (!reduce) setTimeout(() => { if (!current) $('lobby-cta').classList.add('cue'); }, 3000);
+  }
+  store.set('sbm-visited', '1');
+  if (!reduce) {
+    const lamp = $('lamp'), t0 = performance.now();
+    const flick = () => {
+      if (performance.now() - t0 > 15000) { lamp.style.opacity = 1; return; }
+      lamp.style.opacity = .88; setTimeout(() => lamp.style.opacity = 1, 110);
+      setTimeout(() => lamp.style.opacity = .9, 230); setTimeout(() => lamp.style.opacity = 1, 360);
+      setTimeout(flick, 6000 + Math.random() * 3000);
+    };
+    setTimeout(flick, 2500);
+  }
 
-        async function loadLeaderboard() {
-            const list = document.getElementById('leaderboard-list');
-            try { const snapshot = await db.collection('leaderboard').orderBy('score', 'desc').limit(5).get(); list.innerHTML = ''; snapshot.forEach(doc => { const data = doc.data(); list.innerHTML += `<div class="leader-row"><span class="mono">${data.name}</span><span class="mono">${data.score}</span></div>`; }); } catch (err) {}
-        }
+  /* ---------- contact form → /api/notify ---------- */
+  const form = $('contact-form'), st = $('f-status'), sb = $('f-submit');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = form.name.value.trim(), reply = form.reply.value.trim();
+    if (!name || !reply) {
+      st.className = 'form-status err';
+      st.textContent = !name ? '呼び名を入れてください。' : '返信先を入れてください。';
+      (!name ? form.name : form.reply).focus(); return;
+    }
+    sb.disabled = true; sb.textContent = '送信中…'; st.textContent = '';
+    const chosen = getType();
+    const payload = { embeds: [{
+      title: '🔔 SABANOMISO 連絡', color: 0xA3201A,
+      fields: [
+        { name: '呼び名', value: name, inline: true },
+        { name: '返信先', value: reply, inline: true },
+        { name: '相談', value: chosen, inline: true },
+        { name: 'ひとこと', value: form.message.value.trim() || '(なし)' }
+      ],
+      footer: { text: 'Hexa Relation / save/sabanomiso' }, timestamp: new Date().toISOString()
+    }]};
+    try {
+      const r = await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      if (!r.ok) throw new Error(r.status);
+      form.reset();
+      bump('event_form_submit_' + (typeKey[chosen] || 'other'));
+      st.className = 'form-status'; st.textContent = '受け取りました。本人から返信します。';
+    } catch (_) {
+      st.className = 'form-status err'; st.textContent = '送れませんでした。時間をおいてもう一度、または X の DM からどうぞ。';
+    } finally { sb.disabled = false; sb.textContent = 'さばのみそに送る'; }
+  });
 
-        let scActive = false; let scCombo = 0; let scAnimId;
-        function polarToCartesian(centerX, centerY, radius, angleInDegrees) { const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0; return { x: centerX + (radius * Math.cos(angleInRadians)), y: centerY + (radius * Math.sin(angleInRadians)) }; }
-        function describeArc(x, y, radius, startAngle, endAngle) { const start = polarToCartesian(x, y, radius, startAngle); const end = polarToCartesian(x, y, radius, endAngle); const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1"; return ["M", start.x, start.y, "A", radius, radius, 0, largeArcFlag, 1, end.x, end.y].join(" "); }
-        function initSkillCheck() {
-            const gen = document.querySelector('img[src="gen_opt.jpg"]');
-            if (gen) {
-                const tooltip = document.getElementById('gen-tooltip');
-                gen.parentElement.addEventListener('mousemove', (e) => { tooltip.style.left = (e.clientX + 20) + 'px'; tooltip.style.top = (e.clientY + 20) + 'px'; tooltip.style.opacity = '1'; });
-                gen.parentElement.addEventListener('mouseleave', () => tooltip.style.opacity = '0');
-                gen.parentElement.addEventListener('click', () => { if (!scActive && document.getElementById('name-entry-overlay').style.display !== 'flex') { scCombo = 0; updateComboDisplay(); startSkillCheck(); } });
-            }
-        }
-        function updateComboDisplay() { document.getElementById('sc-combo-display-internal').innerText = scCombo; }
-        function startSkillCheck() {
-            if (scAnimId) cancelAnimationFrame(scAnimId); scActive = true;
-            const container = document.getElementById('skill-check-container');
-            const needle = container.querySelector('.skill-check-needle');
-            const arcGood = document.getElementById('sc-arc-good');
-            const arcGreat = document.getElementById('sc-arc-great');
-            const btn = document.getElementById('sc-button');
-            const targetRotation = 60 + Math.random() * 220; const targetWidth = Math.max(10, 60 - (scCombo * 3)); const greatWidth = targetWidth * 0.25;
-            arcGood.setAttribute("d", describeArc(100, 100, 90, targetRotation, targetRotation + targetWidth));
-            arcGreat.setAttribute("d", describeArc(100, 100, 90, targetRotation, targetRotation + greatWidth));
-            container.style.display = 'flex'; needle.style.transform = `rotate(0deg)`;
-            
-            let needleRunning = false; let startTime = 0; let duration = 0;
-            
-            const handleInput = (e) => { 
-                if (!needleRunning) return; 
-                if (e.code === 'Space' || e.type === 'pointerdown') { 
-                    e.preventDefault(); 
-                    const now = performance.now();
-                    const elapsed = now - startTime;
-                    const preciseAngle = Math.min(360, (elapsed / duration) * 360);
-                    finishRound(preciseAngle); 
-                } 
-            };
-            const finishRound = (angle) => { 
-                scActive = false; needleRunning = false; 
-                if (scAnimId) cancelAnimationFrame(scAnimId); 
-                window.removeEventListener('keydown', handleInput); 
-                btn.removeEventListener('pointerdown', handleInput);
-                checkResult(angle, targetRotation, targetWidth, greatWidth); 
-            };
-            playPing();
-            setTimeout(() => {
-                if (!scActive) return; 
-                needleRunning = true; 
-                duration = Math.max(400, 2200 - (scCombo * 100)); 
-                startTime = performance.now();
-                function animate(now) {
-                    if (!needleRunning) return; const progress = (now - startTime) / duration; 
-                    if (progress < 1) { needle.style.transform = `rotate(${progress * 360}deg)`; scAnimId = requestAnimationFrame(animate); } else { needle.style.transform = `rotate(360deg)`; finishRound(360); }
-                }
-                window.addEventListener('keydown', handleInput); 
-                btn.addEventListener('pointerdown', handleInput);
-                scAnimId = requestAnimationFrame(animate);
-            }, 600);
-        }
-        function checkResult(angle, targetRotation, targetWidth, greatWidth) {
-            const diff = angle - targetRotation;
-            if (diff >= 0 && diff <= greatWidth) { scCombo += 2; addBP(2000, "GREAT"); flashCircle('#fff'); updateComboDisplay(); setTimeout(startSkillCheck, 300); }
-            else if (diff > greatWidth && diff <= targetWidth) { scCombo += 1; addBP(500, "GOOD"); flashCircle('rgba(255,255,255,0.5)'); updateComboDisplay(); setTimeout(startSkillCheck, 500); }
-            else { failGame(); }
-        }
-        function flashCircle(color) { const circle = document.querySelector('.skill-check-circle'); circle.style.borderColor = color; circle.style.boxShadow = `0 0 30px ${color}`; setTimeout(() => { circle.style.borderColor = ""; circle.style.boxShadow = ""; }, 300); }
-        function failGame() {
-            scActive = false; const finalScore = scCombo; scCombo = 0; updateComboDisplay(); document.getElementById('skill-check-container').style.display = 'none'; playSound(50, 'square', 0.5, 0.5); document.body.style.animation = "glitch 0.2s 3"; setTimeout(() => document.body.style.animation = "", 600); document.getElementById('status-sabanomiso').classList.add('injured');
-            if (finalScore > 0) setTimeout(() => checkAndOpenNameEntry(finalScore), 1000);
-        }
-        async function checkAndOpenNameEntry(score) {
-            try {
-                const snapshot = await db.collection('leaderboard').orderBy('score', 'desc').limit(5).get();
-                let qualifies = false;
-                if (snapshot.size < 5) {
-                    qualifies = true;
-                } else {
-                    const fifthPlaceScore = snapshot.docs[4].data().score;
-                    if (score > fifthPlaceScore) qualifies = true;
-                }
-                if (qualifies) openNameEntry(score);
-            } catch (err) { console.error(err); }
-        }
-        let entryScore = 0;
-        function openNameEntry(score) { 
-            entryScore = score;
-            const overlay = document.getElementById('name-entry-overlay');
-            const input = document.getElementById('name-input-visible');
-            const btn = document.getElementById('submit-record-btn');
-            overlay.style.display = 'flex'; input.value = ''; input.focus();
-            
-            const submit = async () => {
-                const name = input.value.trim().toUpperCase() || 'ANONYMOUS';
-                btn.disabled = true; btn.innerText = "TRANSMITTING...";
-                try {
-                    await db.collection('leaderboard').add({ name, score: entryScore, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-                    overlay.style.display = 'none'; loadLeaderboard();
-                } catch (err) { console.error(err); } finally { btn.disabled = false; btn.innerText = "SUBMIT TO LEADERBOARD"; }
-                btn.removeEventListener('click', submit);
-            };
-            btn.addEventListener('click', submit);
-            input.onkeydown = (e) => { if (e.key === 'Enter') submit(); };
-        }
-        function updateNameDisplay() {} // Dummy to prevent errors
-        async function submitScore() {} // Dummy to prevent errors
-        function initKonami() { let keys = []; const konami = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown']; window.addEventListener('keydown', (e) => { keys.push(e.key); keys = keys.slice(-4); if (JSON.stringify(keys) === JSON.stringify(konami)) { addBP(3000, "BONUS"); playClank(); } }); }
-        function curseReality() { playScream(); document.querySelector('.entity-vignette').style.background = "radial-gradient(circle, rgba(175,0,0,0.4) 0%, rgba(0,0,0,1) 100%)"; showNotify("HEX: CONSUMED"); document.querySelectorAll('.survivor-status').forEach(s => s.classList.add('injured')); setTimeout(() => document.querySelector('.entity-vignette').style.background = "", 3000); }
-        function addBP(score, category) { const container = document.getElementById('bp-container'); const el = document.createElement('div'); el.className = 'bp-popup'; el.innerHTML = `<span class="bp-score">+${score}</span><span class="bp-category">${category}</span>`; container.appendChild(el); setTimeout(() => el.remove(), 3000); }
-        function showNotify(msg) { const el = document.getElementById('notification'); el.innerText = msg; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 5000); }
-        document.getElementById('contact-form').addEventListener('submit', async (e) => { e.preventDefault(); const btn = document.getElementById('submit-btn'); btn.disabled = true; btn.innerText = "SENDING..."; const payload = { embeds: [{ title: "🔔 SABANOMISO 脱出成功", color: 0xaf0000, fields: [{ name: "Identity", value: document.getElementById('form-name').value, inline: true }, { name: "Channel", value: document.getElementById('form-email').value, inline: true }, { name: "Type", value: document.getElementById('form-type').value, inline: true }, { name: "Message", value: document.getElementById('form-message').value }], footer: { text: "Hexa Relation Transmission System" }, timestamp: new Date().toISOString() }] }; try { await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); showNotify("TRANSMISSION SUCCESSFUL"); document.getElementById('contact-form').reset(); } catch (err) { showNotify("TRANSMISSION FAILED"); } finally { btn.disabled = false; btn.innerText = "TRANSMIT"; } });
-    </script>
+  /* ---------- generator repair (skill check) ---------- */
+  const dial = $('dial'), needle = $('needle'), gBtn = $('g-btn'), gMsg = $('g-msg'), gScore = $('g-score');
+  const zGood = $('z-good'), zGreat = $('z-great'), entry = $('g-entry'), board = $('g-board');
+  const pt = a => { const t = (a - 90) * Math.PI / 180; return [100 + 88 * Math.cos(t), 100 + 88 * Math.sin(t)]; };
+  const arc = (s, e) => { const [x1, y1] = pt(s), [x2, y2] = pt(e); return `M${x1} ${y1} A88 88 0 ${e - s > 180 ? 1 : 0} 1 ${x2} ${y2}`; };
+  let combo = 0, running = false, raf = 0, t0 = 0, dur = 0, target = 0, good = 0, great = 0, lastScore = 0;
+  const speed = reduce ? 0.6 : 1;
+  let ac;
+  const beep = (f, d = .12, v = .08, type = 'sine') => {
+    try { ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+      const o = ac.createOscillator(), g = ac.createGain(); o.type = type; o.frequency.value = f;
+      g.gain.setValueAtTime(v, ac.currentTime); g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime + d);
+      o.connect(g).connect(ac.destination); o.start(); o.stop(ac.currentTime + d);
+    } catch (_) {}
+  };
+  function round() {
+    target = 70 + Math.random() * 210;
+    good = Math.max(10, 60 - combo * 3); great = good * .25;
+    zGood.setAttribute('d', arc(target, target + good));
+    zGreat.setAttribute('d', arc(target, target + great));
+    needle.style.transform = 'rotate(0deg)';
+    beep(600, .1, .06);
+    setTimeout(() => {
+      if (!running) return;
+      dur = Math.max(400, 2200 - combo * 100) / speed; t0 = performance.now();
+      const tick = now => {
+        const p = (now - t0) / dur;
+        if (p >= 1) { needle.style.transform = 'rotate(360deg)'; return judge(360); }
+        needle.style.transform = `rotate(${p * 360}deg)`; raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }, 600);
+  }
+  function hit() { if (!running || !t0) return; cancelAnimationFrame(raf); judge(Math.min(360, (performance.now() - t0) / dur * 360)); }
+  function judge(angle) {
+    t0 = 0;
+    const d = angle - target;
+    if (d >= 0 && d <= good) {
+      combo += d <= great ? 2 : 1; gScore.textContent = combo;
+      beep(d <= great ? 1040 : 820, .14, .07);
+      dial.classList.add('flash'); setTimeout(() => dial.classList.remove('flash'), 260);
+      setTimeout(round, d <= great ? 300 : 500);
+    } else end();
+  }
+  function start() {
+    running = true; combo = 0; gScore.textContent = 0; gMsg.textContent = ''; entry.classList.remove('show');
+    dial.classList.remove('miss'); gBtn.textContent = '押す'; round();
+  }
+  function end() {
+    running = false; lastScore = combo; beep(90, .4, .12, 'square');
+    dial.classList.add('miss'); gBtn.textContent = 'もう一度';
+    gMsg.textContent = combo ? `修理 ${combo}。` : '失敗。発電機が爆発した。';
+    if (combo >= 5) $('g-bridge').hidden = false;
+    if (combo > 0) qualify(combo);
+  }
+  gBtn.addEventListener('pointerdown', e => { if (running) { e.preventDefault(); hit(); } });
+  gBtn.addEventListener('click', () => { if (!running) start(); });
+  addEventListener('keydown', e => {
+    if (e.code !== 'Space' || !running || !current || current.id !== 'repair') return;
+    e.preventDefault(); hit();
+  });
+
+  let db = null, top5 = [];
+  const load = src => new Promise((ok, ng) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = ng; document.head.appendChild(s); });
+  async function fb() {
+    if (db) return db;
+    await load('https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js');
+    await load('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js');
+    firebase.apps.length || firebase.initializeApp({ apiKey: 'AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI', authDomain: 'hexa-relation.firebaseapp.com', projectId: 'hexa-relation' });
+    return (db = firebase.firestore());
+  }
+  /* ---------- analytics (production host only; same doc as the old page) ---------- */
+  const PAGE_ID = 'sabanomiso';
+  const live = /(^|\.)hexa-relation\.com$/.test(location.hostname);
+  async function bump(field) {
+    if (!live) return;
+    try { (await fb()).collection('analytics').doc(PAGE_ID).set({ [field]: firebase.firestore.FieldValue.increment(1) }, { merge: true }); } catch (_) {}
+  }
+  if (live) addEventListener('load', () => setTimeout(async () => {
+    try {
+      const d = await fb(), FV = firebase.firestore.FieldValue;
+      d.collection('analytics').doc(PAGE_ID).set({ hits: FV.increment(1), lastVisit: FV.serverTimestamp() }, { merge: true });
+      d.collection('referrals').doc(PAGE_ID).collection('logs').add({ referrer: document.referrer || 'direct', timestamp: FV.serverTimestamp() });
+    } catch (_) {}
+  }, 1200));
+  const typeKey = { '型枠大工への応募・経営修業': 'kata', '陸上400mコーチング': 'coach', '配信コラボ': 'collab', 'その他': 'other' };
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  let boardLoaded = false;
+  async function loadBoard(force) {
+    if (boardLoaded && !force) return; boardLoaded = true;
+    try {
+      const snap = await (await fb()).collection('leaderboard').orderBy('score', 'desc').limit(5).get();
+      top5 = snap.docs.map(d => d.data());
+      board.innerHTML = top5.length ? top5.map((d, i) =>
+        `<li><span class="r">${i + 1}</span><span class="n">${esc(d.name)}</span><span class="s">${Number(d.score) || 0}</span></li>`).join('')
+        : '<li><span class="n muted">まだ記録がありません。</span></li>';
+    } catch (_) { boardLoaded = false; board.innerHTML = '<li><span class="n muted">ランキングを読み込めませんでした。</span></li>'; }
+  }
+  function qualify(score) {
+    if (!db) return;
+    if (top5.length < 5 || score > (top5[4].score || 0)) {
+      gMsg.textContent = `修理 ${score}。上位5人に入りました。`;
+      entry.classList.add('show'); $('g-name').focus();
+    }
+  }
+  $('g-save').addEventListener('click', async () => {
+    const name = ($('g-name').value.trim() || 'ANONYMOUS').toUpperCase().slice(0, 10);
+    $('g-save').disabled = true;
+    try {
+      await db.collection('leaderboard').add({ name, score: lastScore, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+      entry.classList.remove('show'); gMsg.textContent = '登録しました。'; loadBoard(true);
+    } catch (_) { gMsg.textContent = '登録できませんでした。'; }
+    finally { $('g-save').disabled = false; }
+  });
+  $('g-name').addEventListener('keydown', e => { if (e.key === 'Enter') $('g-save').click(); });
+})();
+</script>
 </body>
 </html>
