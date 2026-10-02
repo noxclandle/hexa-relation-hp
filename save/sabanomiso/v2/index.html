@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>さばのみそ | 型枠大工・一級建築士</title>
+<meta name="description" content="型枠大工13年・独立8期目・一級建築士、さばのみそ。若手が呼吸できる業界へ。型枠大工への応募・経営修業の相談を受け付けています。">
+<meta name="theme-color" content="#0D0E10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="generator-1000.webp" imagesrcset="generator-600.webp 600w, generator-1000.webp 1000w" imagesizes="(min-width: 900px) 42vw, 70vw">
+<style>
+:root{
+  --bg:#0D0E10; --surface:#16181B; --line:#2A2D31;
+  --text:#E8E4DC; --muted:#A39E95;
+  --red:#A3201A; --red-hover:#B8261F; --red-text:#E65A4F;
+  --lamp:#D9A441; --input-border:#6F6B65;
+  --mincho:"Shippori Mincho B1","Yu Mincho",serif;
+  --sans:"Noto Sans JP",system-ui,sans-serif;
+  --disp:"Barlow Condensed","Noto Sans JP",sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --wrap:1120px; --gut:20px;
+}
+@media (min-width:768px){:root{--gut:40px}}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:1.0625rem;line-height:1.9;letter-spacing:.04em;font-feature-settings:"palt" 0;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+/* static film grain (inline, no external texture) */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.05;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+img{max-width:100%;display:block}
+a{color:inherit}
+p{margin:0}
+h1,h2,h3{margin:0;font-weight:700}
+.wrap{max-width:calc(var(--wrap) + var(--gut)*2);margin:0 auto;padding:0 var(--gut)}
+.label{font-family:var(--disp);font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);line-height:1.4}
+.label.red{color:var(--red-text)}
+.h2{font-family:var(--mincho);font-size:clamp(1.75rem,1.3rem + 2vw,2.75rem);line-height:1.35;letter-spacing:.04em}
+.h3{font-family:var(--mincho);font-size:clamp(1.25rem,1.1rem + .6vw,1.5rem);line-height:1.5}
+.prose{max-width:34em;color:var(--text)}
+.prose p+p{margin-top:1.2em}
+.muted{color:var(--muted)}
+.note{font-size:.875rem;color:var(--muted);line-height:1.75}
+:focus-visible{outline:2px solid var(--red-text);outline-offset:3px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--surface);padding:8px 16px;z-index:200}
+.skip:focus{left:8px}
+
+/* ---------- header ---------- */
+.hd{position:fixed;inset:0 0 auto;z-index:50;transition:background .3s var(--ease),border-color .3s var(--ease);border-bottom:1px solid transparent}
+.hd.scrolled{background:rgba(13,14,16,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-color:var(--line)}
+.hd .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{font-family:var(--disp);font-weight:600;letter-spacing:.22em;font-size:15px;text-decoration:none}
+.brand b{color:var(--red-text);font-weight:600}
+.nav{display:flex;align-items:center;gap:28px}
+.nav a{text-decoration:none;font-size:.875rem;color:var(--muted);transition:color .16s ease-out}
+.nav a:hover{color:var(--text)}
+.nav .nav-cta{color:var(--text);border:1px solid var(--input-border);padding:6px 16px;border-radius:2px}
+.nav .nav-cta:hover{border-color:var(--text)}
+@media (max-width:767px){.nav a:not(.nav-cta){display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:88svh;display:flex;align-items:center;padding:108px 0 64px;overflow:hidden;isolation:isolate}
+/* formwork grid: plywood 1:2 panels + P-con holes */
+.formwork{position:absolute;inset:0;z-index:-2;opacity:.9;
+  background:
+    radial-gradient(circle,rgba(42,45,49,.9) 2.4px,transparent 3.2px) 60px 60px/120px 120px,
+    linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/240px 480px,
+    linear-gradient(0deg,var(--line) 1px,transparent 1px) 0 0/240px 480px;
+  -webkit-mask-image:radial-gradient(ellipse 80% 70% at 62% 45%,#000 10%,transparent 75%);
+          mask-image:radial-gradient(ellipse 80% 70% at 62% 45%,#000 10%,transparent 75%)}
+.lamp-glow{position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 72% 42%,rgba(217,164,65,.16),transparent 42%)}
+.hero-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:center;width:100%}
+.hero-copy{grid-column:1 / span 7;position:relative;z-index:2}
+.hero-copy{container-type:inline-size}
+.hero h1{font-family:var(--mincho);font-size:clamp(2rem,10.2cqi,5.25rem);line-height:1.32;letter-spacing:.04em;margin:24px 0 28px}
+.hero h1 .line{display:block;white-space:nowrap}
+.hero h1 em{font-style:normal;color:var(--text);background:linear-gradient(transparent 82%,rgba(163,32,26,.75) 82%,rgba(163,32,26,.75) 92%,transparent 92%)}
+.hero-sub{color:var(--muted);max-width:30em}
+.hero-sub strong{color:var(--text);font-weight:500}
+.cta-row{margin-top:40px}
+.btn{display:inline-flex;align-items:center;gap:14px;height:56px;padding:0 32px;border-radius:2px;background:var(--red);color:#fff;font-weight:700;font-size:1rem;letter-spacing:.08em;text-decoration:none;border:0;cursor:pointer;font-family:var(--sans);transition:background .16s ease-out}
+.btn:hover{background:var(--red-hover)}
+.btn .ring{width:20px;height:20px;flex:none}
+.btn-ghost{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 24px;border:1px solid var(--muted);border-radius:2px;color:var(--text);text-decoration:none;font-size:.9375rem;letter-spacing:.06em;transition:border-color .16s ease-out,background .16s ease-out}
+.btn-ghost:hover{border-color:var(--text);background:rgba(232,228,220,.04)}
+.micro{margin-top:16px;font-size:.875rem;line-height:1.8;color:var(--muted)}
+.micro span{display:block}
+.hero-art{grid-column:8 / span 5;position:relative;justify-self:center;width:100%;max-width:460px}
+.hero-art img{width:100%;height:auto;filter:brightness(.82) saturate(.85);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 26%,#000 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 26%,#000 100%)}
+.hero-art::after{content:"";position:absolute;left:8%;right:8%;bottom:-2%;height:40px;border-radius:50%;background:rgba(0,0,0,.6);filter:blur(24px);z-index:-1}
+.hero-art figcaption{position:absolute;right:0;bottom:-28px}
+@media (max-width:899px){
+  .hero{min-height:auto;padding-top:96px}
+  .hero-copy,.hero-art{grid-column:1 / -1}
+  .hero-art{max-width:none;display:flex;justify-content:center;margin-top:24px}
+  .hero-art img{height:200px;width:auto}
+  .hero-art figcaption{display:none}
+  .lamp-glow{background:radial-gradient(circle at 50% 78%,rgba(217,164,65,.14),transparent 45%)}
+  .formwork{-webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 75%,#000 5%,transparent 75%);mask-image:radial-gradient(ellipse 90% 60% at 50% 75%,#000 5%,transparent 75%)}
+}
+
+/* fog seam between sections (static) */
+.fog{height:160px;margin-top:-160px;position:relative;z-index:1;pointer-events:none;background:linear-gradient(180deg,transparent,var(--bg))}
+
+/* stats strip */
+.stats{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr)}
+.stats li{padding:32px 0 28px;display:flex;flex-direction:column;gap:6px}
+.stats li+li{border-left:1px solid var(--line);padding-left:32px}
+.num{font-family:var(--disp);font-weight:600;font-variant-numeric:tabular-nums;font-size:clamp(2.75rem,2rem + 2.4vw,3.75rem);line-height:1;letter-spacing:.02em}
+.num small{font-family:var(--sans);font-size:.9375rem;font-weight:500;margin-left:6px;letter-spacing:.04em;color:var(--text)}
+.stats .note{letter-spacing:.06em}
+@media (max-width:599px){
+  .stats li{padding:22px 0 18px}
+  .stats li+li{padding-left:14px}
+  .num small{display:block;margin:6px 0 0;font-size:.8125rem}
+  .stats .note{font-size:.75rem}
+}
+
+/* sections */
+.sec{padding:128px 0;position:relative}
+@media (max-width:767px){.sec{padding:80px 0}}
+.sec-head{display:flex;flex-direction:column;gap:16px;margin-bottom:48px}
+
+/* philosophy */
+.philo{overflow:hidden;isolation:isolate}
+.philo .formwork{-webkit-mask-image:radial-gradient(ellipse 60% 70% at 85% 30%,#000 0%,transparent 70%);mask-image:radial-gradient(ellipse 60% 70% at 85% 30%,#000 0%,transparent 70%);opacity:.7}
+.philo-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.philo-grid .sec-head{grid-column:1 / span 6;margin-bottom:0}
+.philo-grid .prose{grid-column:7 / span 6}
+.promise{margin-top:96px;padding-left:28px;border-left:2px solid var(--red-text)}
+.promise .label{margin-bottom:12px}
+.promise p{font-family:var(--mincho);font-size:clamp(1.375rem,1.1rem + 1.2vw,1.75rem);line-height:1.6}
+.motto{margin-top:64px;display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:end}
+.motto blockquote{grid-column:1 / span 7;margin:0}
+.motto blockquote p{font-family:var(--mincho);font-size:clamp(1.25rem,1.1rem + .6vw,1.5rem);line-height:1.7}
+.motto cite{display:block;margin-top:12px;font-style:normal}
+@media (max-width:899px){
+  .philo-grid .sec-head,.philo-grid .prose,.motto blockquote{grid-column:1 / -1}
+  .philo-grid .prose{margin-top:32px}
+  .promise{margin-top:64px;padding-left:20px}
+}
+
+/* credentials */
+.cred-quote{margin:0 0 48px;max-width:34em}
+.cred-quote p{font-family:var(--mincho);font-size:clamp(1.25rem,1.1rem + .6vw,1.5rem);line-height:1.7}
+.cred-quote p.note{margin-top:16px;font-family:var(--sans);font-size:.9375rem;line-height:1.9;color:var(--muted)}
+.cred{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.cred li{display:grid;grid-template-columns:3fr 9fr;gap:24px;align-items:baseline;padding:24px 0;border-bottom:1px solid var(--line)}
+.cred .name{font-family:var(--mincho);font-size:20px;line-height:1.5}
+.cred li.top .name{font-size:32px}
+.cred li.top{padding:32px 0}
+.cred .what{color:var(--muted);font-size:.9375rem}
+.cred .k{order:-1}
+@media (max-width:767px){.cred li{grid-template-columns:1fr;gap:4px}.cred li.top .name{font-size:28px}}
+
+/* chronicle / timeline */
+.tl{list-style:none;margin:0;padding:0;position:relative}
+.tl::before{content:"";position:absolute;left:calc(25% - 18px);top:12px;bottom:12px;width:1px;background:var(--line)}
+.tl li{display:grid;grid-template-columns:3fr 9fr;gap:24px 36px;position:relative;padding-bottom:64px}
+.tl li:last-child{padding-bottom:0}
+.tl li::before{content:"";position:absolute;left:calc(25% - 23px);top:12px;width:10px;height:10px;border-radius:50%;border:1px solid var(--muted);background:var(--bg)}
+.tl li.now::before{background:var(--red);border-color:var(--red)}
+.tl .yr{font-family:var(--disp);font-weight:600;font-size:48px;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:.02em;text-align:right;padding-right:24px}
+.tl .yr small{display:block;font-size:13px;letter-spacing:.16em;color:var(--muted);margin-top:8px}
+.tl li.now .yr{color:var(--red-text)}
+.tl .body h3{margin-bottom:12px}
+.tl .body p{color:var(--muted);max-width:34em}
+.tl .body p strong{color:var(--text);font-weight:500}
+@media (max-width:767px){
+  .tl::before{left:8px}
+  .tl li{grid-template-columns:1fr;gap:10px;padding-left:36px;padding-bottom:48px}
+  .tl li::before{left:3px;top:10px}
+  .tl .yr{text-align:left;padding:0;font-size:36px}
+  .tl .yr small{display:inline;margin-left:10px}
+}
+
+/* recruit (main) */
+.recruit{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.recruit-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:end}
+.recruit-grid .left{grid-column:1 / span 7}
+.recruit-grid .right{grid-column:9 / span 4}
+.recruit .h2{margin:16px 0 24px}
+.recruit .prose{color:var(--muted)}
+@media (max-width:899px){.recruit-grid .left,.recruit-grid .right{grid-column:1 / -1}.recruit-grid .right{margin-top:16px}}
+
+/* sub CTAs */
+.subs{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.sub{border-top:1px solid var(--line);padding-top:24px;display:flex;flex-direction:column;gap:12px}
+.sub p{color:var(--muted);font-size:.9375rem;max-width:30em;flex:1}
+.sub .btn-ghost{align-self:flex-start;margin-top:12px}
+@media (max-width:767px){.subs{grid-template-columns:1fr;gap:48px}}
+
+/* form */
+.form-wrap{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.form-wrap .sec-head{grid-column:1 / span 4}
+.form-wrap form{grid-column:6 / span 7}
+@media (max-width:899px){.form-wrap .sec-head,.form-wrap form{grid-column:1 / -1}}
+.field{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.field label{font-size:.9375rem;font-weight:500}
+.field label .opt{color:var(--muted);font-weight:400;font-size:.8125rem;margin-left:8px}
+.field .hint{font-size:.8125rem;color:var(--muted);line-height:1.6}
+.inp{width:100%;min-height:48px;background:var(--surface);color:var(--text);border:1px solid var(--input-border);border-radius:2px;padding:12px 14px;font:inherit;font-size:1rem;letter-spacing:.02em;transition:border-color .16s ease-out}
+.inp:hover{border-color:var(--muted)}
+.inp:focus{outline:2px solid var(--red-text);outline-offset:3px;border-color:var(--text)}
+select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 15px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:40px}
+textarea.inp{min-height:132px;resize:vertical;line-height:1.7}
+.form-foot{display:flex;flex-direction:column;gap:16px;margin-top:8px}
+.form-status{min-height:1.5em;font-size:.9375rem}
+.form-status.ok{color:var(--text)}
+.form-status.err{color:var(--red-text)}
+
+/* stream + generator game */
+.stream-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:start}
+.stream-grid .left{grid-column:1 / span 5}
+.stream-grid .right{grid-column:6 / span 7}
+@media (max-width:899px){.stream-grid .left,.stream-grid .right{grid-column:1 / -1}.stream-grid .right{margin-top:48px}}
+.links{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.tags{display:flex;gap:8px 20px;flex-wrap:wrap;margin-top:24px;color:var(--muted);font-size:.875rem}
+.tags span::before{content:"— ";color:var(--line)}
+.stream-grid .right{container-type:inline-size}
+.game{background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:32px 24px;display:grid;grid-template-columns:1fr;justify-items:center;gap:28px}
+.game-side{width:100%;max-width:420px}
+.game-side h3,.game-side .note{text-align:center}
+.game-btns{justify-content:center}
+@container (min-width:600px){
+  .game{grid-template-columns:200px 1fr;justify-items:stretch;align-items:center;gap:40px;padding:40px 32px}
+  .game-side h3,.game-side .note{text-align:left}
+  .game-btns{justify-content:flex-start}
+}
+.dial{position:relative;width:200px;height:200px}
+.dial svg{width:100%;height:100%;overflow:visible}
+.dial .track{fill:none;stroke:var(--line);stroke-width:3}
+.dial .zone-good{fill:none;stroke:var(--lamp);stroke-width:7;opacity:.55}
+.dial .zone-great{fill:none;stroke:var(--lamp);stroke-width:7}
+.dial .needle{stroke:var(--red-text);stroke-width:3;stroke-linecap:round}
+.dial .hub{fill:var(--red-text)}
+.dial .score{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.dial .score b{font-family:var(--disp);font-weight:600;font-size:48px;line-height:1;font-variant-numeric:tabular-nums}
+.dial.flash svg{filter:drop-shadow(0 0 14px rgba(217,164,65,.7))}
+.dial.miss .track{stroke:var(--red-text)}
+.game-side h3{margin-bottom:8px}
+.game-side .note{margin-bottom:20px}
+.game-btns{display:flex;gap:12px;flex-wrap:wrap}
+.board{list-style:none;margin:28px 0 0;padding:0;border-top:1px solid var(--line);font-size:.9375rem}
+.board li{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--line)}
+.board li .r{font-family:var(--disp);font-weight:600;color:var(--muted);width:2em;font-variant-numeric:tabular-nums}
+.board li .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.board li .s{font-family:var(--disp);font-weight:600;font-variant-numeric:tabular-nums}
+.entry{display:none;margin-top:20px;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.entry.show{display:flex}
+.entry .field{margin:0;flex:1;min-width:180px}
+
+/* hexa block */
+.hexa{padding:0 0 96px}
+.hexa-box{background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:32px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.hexa-box p{font-size:.9375rem;color:var(--muted)}
+.hexa-box .h3{font-size:1.25rem;margin:8px 0}
+.hexa-box ul{list-style:none;padding:0;margin:12px 0 0;display:flex;gap:20px;flex-wrap:wrap;font-size:.875rem;color:var(--muted)}
+.hexa-box ul li::before{content:"・"}
+.hexa-links{display:flex;flex-direction:column;gap:12px;align-items:flex-end}
+.hexa-links a.text{font-size:.875rem;color:var(--muted)}
+@media (max-width:767px){.hexa-box{grid-template-columns:1fr;padding:24px}.hexa-links{align-items:flex-start}}
+
+footer{border-top:1px solid var(--line);padding:40px 0 56px}
+footer .wrap{display:flex;flex-direction:column;gap:8px}
+footer p{font-size:.8125rem;color:var(--muted);line-height:1.8}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(12px);transition:opacity .48s var(--ease),transform .48s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.no-js .rv{opacity:1;transform:none}
+/* hero: CSS-only entrance so the first view never waits on JS */
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.hero .rv{opacity:1;transform:none;transition:none;animation:rise .48s var(--ease) both}
+.hero .rv:nth-child(2){animation-delay:60ms}.hero .rv:nth-child(3){animation-delay:120ms}.hero .rv:nth-child(4){animation-delay:180ms}
+.hero-art.rv{animation-delay:120ms}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+  .rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body class="no-js">
+<a class="skip" href="#main">本文へ移動</a>
+
+<header class="hd" id="hd">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="さばのみそ トップへ">SABA<b>NO</b>MISO</a>
+    <nav class="nav" aria-label="ページ内">
+      <a href="#philosophy">理念</a>
+      <a href="#credentials">資格</a>
+      <a href="#chronicle">歩み</a>
+      <a href="#stream">配信</a>
+      <a class="nav-cta" href="#contact">相談する</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="formwork" aria-hidden="true"></div>
+  <div class="lamp-glow" aria-hidden="true"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="label rv">Formwork Carpenter <span style="color:var(--red-text)">/</span> 13 Years</p>
+      <h1 class="rv">
+        <span class="line">勉強は苦手だった。</span>
+        <span class="line">だから、</span>
+        <span class="line"><em>1日1ページ</em>を8年。</span>
+      </h1>
+      <p class="hero-sub rv"><strong>型枠大工13年・独立8期目・一級建築士、さばのみそ(31)。</strong><br>次の一歩は、隣で一緒に。</p>
+      <div class="cta-row rv">
+        <a class="btn" href="#contact" data-type="formwork">
+          <svg class="ring" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/><path d="M10 2 A8 8 0 0 1 16.93 6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+          まず話を聞いてみる
+        </a>
+        <p class="micro"><span>応募の前の相談だけでも大丈夫です。</span><span>返信は本人から。従業員との約束はひとつ、嘘をつかないこと。</span></p>
+      </div>
+    </div>
+    <figure class="hero-art rv" style="margin:0">
+      <img src="generator-1000.webp" srcset="generator-600.webp 600w, generator-1000.webp 1000w" sizes="(min-width: 900px) 42vw, 70vw" width="1000" height="1139" alt="錆びた発電機のイラスト" fetchpriority="high">
+    </figure>
+  </div>
+</section>
+<div class="fog" aria-hidden="true"></div>
+
+<div class="stats">
+  <div class="wrap">
+    <ul>
+      <li class="rv"><span class="num">13<small>年</small></span><span class="note">型枠大工</span></li>
+      <li class="rv"><span class="num">8<small>期目</small></span><span class="note">独立・経営</span></li>
+      <li class="rv"><span class="num">12<small>年</small></span><span class="note">陸上 400m</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== PHILOSOPHY ===== -->
+<section class="sec philo" id="philosophy">
+  <div class="formwork" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="philo-grid">
+      <div class="sec-head rv">
+        <p class="label red">Philosophy</p>
+        <h2 class="h2">若手が、<br>呼吸できる業界へ。</h2>
+      </div>
+      <div class="prose rv">
+        <p>建設業界の古い常識を壊して、若い人が働きやすく、福利厚生をきちんと整えた場所をつくりたい。</p>
+        <p>平均年齢が低く、しがらみのない、フラットな組織。上下関係よりも、話せる関係を。霧の中でも迷わず戻ってこられる場所を、未来の職人のために建てています。</p>
+      </div>
+    </div>
+    <div class="promise rv">
+      <p class="label">従業員との約束</p>
+      <p>約束はひとつだけ。嘘をつかないこと。</p>
+    </div>
+    <div class="motto">
+      <blockquote class="rv">
+        <p>自分が建てた枠にコンクリートを流し、脱型した瞬間に、建物の本当の形が現れる。あの瞬間の誇りのために、何ごとも妥協しない。</p>
+        <cite class="note">— さばのみそ</cite>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CREDENTIALS ===== -->
+<section class="sec" id="credentials" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label red">Credentials</p>
+      <h2 class="h2">積み上げたもの。</h2>
+    </div>
+    <blockquote class="cred-quote rv">
+      <p>「コツコツが、勝つコツ。」</p>
+      <p class="note">陸上を12年続けて、恩師からいちばん多く聞いた言葉。勉強は苦手だから、1日1ページだけ覚えて寝る。それを8年、「やりたくない」と思う隙をつくらずに続けた。</p>
+    </blockquote>
+    <ul class="cred">
+      <li class="top rv"><span class="name">一級建築士</span><span class="what">型枠をつくる手と、建物全体を見る目の両方で現場に立つ。</span></li>
+      <li class="rv"><span class="name">型枠大工 13年</span><span class="what">独立8期目。枠を建てるところから、会社を回すところまで。</span></li>
+      <li class="rv"><span class="name">簿記1級</span><span class="what">現場の数字を、自分で読める経営者として。</span></li>
+      <li class="rv"><span class="name">陸上 400m 競技歴12年</span><span class="what">練習の「意図」を言葉にして渡せる。</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== CHRONICLE ===== -->
+<section class="sec" id="chronicle" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label red">Chronicle</p>
+      <h2 class="h2">霧を抜けるまで。</h2>
+    </div>
+    <ol class="tl">
+      <li class="rv">
+        <div class="yr">2013<small>Origin</small></div>
+        <div class="body"><h3 class="h3">上京して、型枠の世界へ。</h3><p>高校を卒業して化粧品会社に入社。退職したあと、ひとりで上京して型枠大工の道に入った。</p></div>
+      </li>
+      <li class="rv">
+        <div class="yr">23<small>歳 / Independence</small></div>
+        <div class="body"><h3 class="h3">独立。</h3><p>「師匠と同じところまで来た」と思い、独立を決めた。</p></div>
+      </li>
+      <li class="rv">
+        <div class="yr">1–3<small>期 / The Fog</small></div>
+        <div class="body"><h3 class="h3">手元に、一円も残らなかった。</h3><p>設立から3期目まで、借金の中を走った。昼の現場だけでは回らず、深夜の工事もすべて受けた。<strong>甘さは、現実の中でしか直らなかった。</strong></p></div>
+      </li>
+      <li class="rv now">
+        <div class="yr">8<small>期目 / Now</small></div>
+        <div class="body"><h3 class="h3">いまは、つくる側に。</h3><p>一つひとつ丁寧な仕事を重ねて、経営を立て直した。いまは、若い職人が同じ霧で迷わない場所をつくっている。</p></div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== RECRUIT (main CTA) ===== -->
+<section class="sec recruit" id="recruit">
+  <div class="wrap recruit-grid">
+    <div class="left rv">
+      <p class="label red">Recruit — 型枠大工・経営修業</p>
+      <h2 class="h2">夢はあるけれど、<br>一歩が出ない人へ。</h2>
+      <div class="prose">
+        <p>一級建築士の目と、13年の型枠の手で、仕事を隣で見せます。独立したい人には、借金から立て直した経営のことも、包み隠さず話します。できることは、すべて協力します。</p>
+      </div>
+    </div>
+    <div class="right rv">
+      <a class="btn" href="#contact" data-type="formwork">
+        <svg class="ring" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/><path d="M10 2 A8 8 0 0 1 16.93 6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+        まず話を聞いてみる
+      </a>
+      <p class="micro"><span>応募の前の相談だけでも大丈夫です。</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== OTHER ===== -->
+<section class="sec" id="other">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label">Other</p>
+      <h2 class="h3">ほかの相談も、受けています。</h2>
+    </div>
+    <div class="subs">
+      <div class="sub rv">
+        <p class="label">Coaching</p>
+        <h3 class="h3">陸上 400m の指導</h3>
+        <p>メニューをこなすだけでなく、練習の「意図」まで分かるように。12年の競技生活で身につけた考え方と技術を渡します。</p>
+        <a class="btn-ghost" href="#contact" data-type="coach">コーチングを相談する</a>
+      </div>
+      <div class="sub rv">
+        <p class="label">Collaboration</p>
+        <h3 class="h3">配信コラボ・その他</h3>
+        <p>配信でのコラボや、そのほかのお話もこちらから。</p>
+        <a class="btn-ghost" href="#contact" data-type="collab">コラボを相談する</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="sec" id="contact" style="padding-top:0">
+  <div class="wrap form-wrap">
+    <div class="sec-head rv">
+      <p class="label red">Contact</p>
+      <h2 class="h2">相談する</h2>
+      <p class="muted" style="font-size:.9375rem">4項目、1分ほどで送れます。</p>
+    </div>
+    <form id="contact-form" class="rv" novalidate>
+      <div class="field">
+        <label for="f-name">呼び名</label>
+        <input class="inp" id="f-name" name="name" type="text" autocomplete="nickname" required maxlength="40">
+        <span class="hint">ニックネームで大丈夫です。</span>
+      </div>
+      <div class="field">
+        <label for="f-reply">返信先</label>
+        <input class="inp" id="f-reply" name="reply" type="text" autocomplete="email" required maxlength="120" placeholder="メールアドレス または X の @ID">
+      </div>
+      <div class="field">
+        <label for="f-type">相談したいこと</label>
+        <select class="inp" id="f-type" name="type">
+          <option value="型枠大工への応募・経営修業">型枠大工への応募・経営修業</option>
+          <option value="陸上400mコーチング">陸上400mコーチング</option>
+          <option value="配信コラボ">配信コラボ</option>
+          <option value="その他">その他</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-msg">ひとこと<span class="opt">任意</span></label>
+        <textarea class="inp" id="f-msg" name="message" maxlength="1500"></textarea>
+      </div>
+      <div class="form-foot">
+        <p class="note">いただいた内容は、このご相談への返信のためだけに使います。</p>
+        <div><button class="btn" type="submit" id="f-submit">さばのみそに送る</button></div>
+        <p class="form-status" id="f-status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ===== STREAM + GAME ===== -->
+<section class="sec" id="stream" style="border-top:1px solid var(--line)">
+  <div class="wrap stream-grid">
+    <div class="left rv">
+      <p class="label red">Broadcast</p>
+      <h2 class="h2" style="margin:16px 0 24px">霧の森から、<br>配信中。</h2>
+      <div class="prose">
+        <p>Dead by Daylight を中心に、YouTube で配信しています。嫌なことがあった日に、配信を見て少しでも元気になってもらえたら。</p>
+        <p class="muted">配信する側とされる側ではなく、同じ目線で霧の森を楽しむ場所でありたい。</p>
+      </div>
+      <div class="links">
+        <a class="btn-ghost" href="https://www.youtube.com/@さばの味噌" target="_blank" rel="noopener">YouTube</a>
+        <a class="btn-ghost" href="https://x.com/sabanomiso1218" target="_blank" rel="noopener">X(@sabanomiso1218)</a>
+      </div>
+      <div class="tags" aria-label="好きなこと"><span>キャンプ</span><span>ドライブ</span><span>Dead by Daylight</span></div>
+    </div>
+    <div class="right rv">
+      <div class="game" id="game">
+        <div class="dial" id="dial">
+          <svg viewBox="0 0 200 200" aria-hidden="true">
+            <circle class="track" cx="100" cy="100" r="88"/>
+            <path class="zone-good" id="z-good" d=""/>
+            <path class="zone-great" id="z-great" d=""/>
+            <g id="needle" style="transform-origin:100px 100px"><line class="needle" x1="100" y1="100" x2="100" y2="8"/></g>
+            <circle class="hub" cx="100" cy="100" r="4"/>
+          </svg>
+          <div class="score"><b id="g-score">0</b><span class="label">Repair</span></div>
+        </div>
+        <div class="game-side">
+          <h3 class="h3">発電機を直す</h3>
+          <p class="note">針が金色の帯に入った瞬間に押す。濃い帯で+2、薄い帯で+1。外したら終わり。<br>キーボードはスペースキー。</p>
+          <div class="game-btns">
+            <button class="btn" type="button" id="g-btn" style="height:48px;padding:0 24px">はじめる</button>
+          </div>
+          <p class="form-status" id="g-msg" role="status" aria-live="polite"></p>
+          <div class="entry" id="g-entry">
+            <div class="field"><label for="g-name">ランキングに名前を残す</label><input class="inp" id="g-name" maxlength="10" autocomplete="off"></div>
+            <button class="btn-ghost" type="button" id="g-save">登録する</button>
+          </div>
+          <ol class="board" id="g-board" aria-label="ランキング上位5人"><li><span class="n muted">読み込み中…</span></li></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===== HEXA (made-by, weak) ===== -->
+<aside class="hexa" aria-label="このページの制作について">
+  <div class="wrap">
+    <div class="hexa-box">
+      <div>
+        <p class="label">制作: Hexa Relation(このページの制作者による案内です)</p>
+        <p class="h3">活動や考えを、一枚のページに。</p>
+        <p>このページは Hexa Relation が制作しました。</p>
+        <ul><li>オリジナルデザイン</li><li>スマホ対応</li></ul>
+      </div>
+      <div class="hexa-links">
+        <a class="btn-ghost" href="../../../intro/services/">詳しい内容・料金の目安を見る →</a>
+        <a class="text" href="../../../order/index.html?from=sabanomiso">制作を相談する</a>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; 2026 さばのみそ / 制作 Hexa Relation</p>
+    <p>発電機のイラストは AI で生成したものです。Dead by Daylight は Behaviour Interactive Inc. の商標です。このページは同社とは関係ありません。</p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  document.body.classList.remove('no-js');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* header bg on scroll */
+  const hd = document.getElementById('hd');
+  const onScroll = () => hd.classList.toggle('scrolled', scrollY > 24);
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  /* reveal: once, 60ms stagger, max 4 per group */
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => {
+      const batch = es.filter(e => e.isIntersecting);
+      batch.forEach((e, i) => {
+        e.target.style.transitionDelay = (Math.min(i, 3) * 60) + 'ms';
+        e.target.classList.add('in'); io.unobserve(e.target);
+      });
+    }, { threshold: .12, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.rv:not(.hero .rv)').forEach(el => io.observe(el));
+  } else document.querySelectorAll('.rv').forEach(el => el.classList.add('in'));
+
+  /* CTA → preselect form type */
+  const typeMap = { formwork: 0, coach: 1, collab: 2 };
+  const sel = document.getElementById('f-type');
+  document.querySelectorAll('[data-type]').forEach(a => a.addEventListener('click', () => {
+    sel.selectedIndex = typeMap[a.dataset.type] ?? 0;
+  }));
+  const qp = new URLSearchParams(location.search).get('type');
+  if (qp in typeMap) sel.selectedIndex = typeMap[qp];
+
+  /* contact form → /api/notify (Discord) */
+  const form = document.getElementById('contact-form');
+  const st = document.getElementById('f-status');
+  const sb = document.getElementById('f-submit');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = form.name.value.trim(), reply = form.reply.value.trim();
+    if (!name || !reply) {
+      st.className = 'form-status err';
+      st.textContent = !name ? '呼び名を入れてください。' : '返信先を入れてください。';
+      (!name ? form.name : form.reply).focus(); return;
+    }
+    sb.disabled = true; sb.textContent = '送信中…'; st.textContent = '';
+    const payload = { embeds: [{
+      title: '🔔 SABANOMISO 相談(v2)', color: 0xA3201A,
+      fields: [
+        { name: '呼び名', value: name, inline: true },
+        { name: '返信先', value: reply, inline: true },
+        { name: '相談', value: sel.value, inline: true },
+        { name: 'ひとこと', value: form.message.value.trim() || '(なし)' }
+      ],
+      footer: { text: 'Hexa Relation / save/sabanomiso/v2' }, timestamp: new Date().toISOString()
+    }]};
+    try {
+      const r = await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      if (!r.ok) throw new Error(r.status);
+      form.reset(); sel.selectedIndex = 0;
+      st.className = 'form-status ok'; st.textContent = '受け取りました。本人から返信します。';
+    } catch (err) {
+      st.className = 'form-status err'; st.textContent = '送れませんでした。時間をおいてもう一度、または X の DM からどうぞ。';
+    } finally { sb.disabled = false; sb.textContent = 'さばのみそに送る'; }
+  });
+
+  /* ---------- generator repair (skill check) ---------- */
+  const $ = id => document.getElementById(id);
+  const dial = $('dial'), needle = $('needle'), gBtn = $('g-btn'), gMsg = $('g-msg'), gScore = $('g-score');
+  const zGood = $('z-good'), zGreat = $('z-great'), entry = $('g-entry'), board = $('g-board');
+  const pt = (a, r = 88) => { const t = (a - 90) * Math.PI / 180; return [100 + r * Math.cos(t), 100 + r * Math.sin(t)]; };
+  const arc = (s, e) => { const [x1, y1] = pt(s), [x2, y2] = pt(e); return `M${x1} ${y1} A88 88 0 ${e - s > 180 ? 1 : 0} 1 ${x2} ${y2}`; };
+  let combo = 0, running = false, raf = 0, t0 = 0, dur = 0, target = 0, good = 0, great = 0, lastScore = 0;
+  const speed = reduce ? 0.6 : 1;
+
+  let ac;
+  const beep = (f, d = .12, v = .08, type = 'sine') => {
+    try { ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+      const o = ac.createOscillator(), g = ac.createGain(); o.type = type; o.frequency.value = f;
+      g.gain.setValueAtTime(v, ac.currentTime); g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime + d);
+      o.connect(g).connect(ac.destination); o.start(); o.stop(ac.currentTime + d);
+    } catch (_) {}
+  };
+
+  function round() {
+    target = 70 + Math.random() * 210;
+    good = Math.max(10, 60 - combo * 3); great = good * .25;
+    zGood.setAttribute('d', arc(target, target + good));
+    zGreat.setAttribute('d', arc(target, target + great));
+    needle.style.transform = 'rotate(0deg)';
+    beep(600, .1, .06);
+    setTimeout(() => {
+      if (!running) return;
+      dur = Math.max(400, 2200 - combo * 100) / speed; t0 = performance.now();
+      const tick = now => {
+        const p = (now - t0) / dur;
+        if (p >= 1) { needle.style.transform = 'rotate(360deg)'; return judge(360); }
+        needle.style.transform = `rotate(${p * 360}deg)`; raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }, 600);
+  }
+  function hit() {
+    if (!running || !t0) return;
+    cancelAnimationFrame(raf);
+    judge(Math.min(360, (performance.now() - t0) / dur * 360));
+  }
+  function judge(angle) {
+    t0 = 0;
+    const d = angle - target;
+    if (d >= 0 && d <= good) {
+      combo += d <= great ? 2 : 1; gScore.textContent = combo;
+      beep(d <= great ? 1040 : 820, .14, .07);
+      dial.classList.add('flash'); setTimeout(() => dial.classList.remove('flash'), 260);
+      setTimeout(round, d <= great ? 300 : 500);
+    } else end();
+  }
+  function start() {
+    if (running) return hit();
+    running = true; combo = 0; gScore.textContent = 0; gMsg.textContent = ''; entry.classList.remove('show');
+    dial.classList.remove('miss'); gBtn.textContent = '押す'; round();
+  }
+  function end() {
+    running = false; lastScore = combo; beep(90, .4, .12, 'square');
+    dial.classList.add('miss'); gBtn.textContent = 'もう一度';
+    gMsg.className = 'form-status';
+    gMsg.textContent = combo ? `修理 ${combo}。` : '失敗。発電機が爆発した。';
+    if (combo > 0) qualify(combo);
+  }
+  gBtn.addEventListener('pointerdown', e => { if (running) { e.preventDefault(); hit(); } });
+  gBtn.addEventListener('click', () => { if (!running) start(); });
+  addEventListener('keydown', e => {
+    if (e.code !== 'Space' || !running) return;
+    e.preventDefault(); hit();
+  });
+
+  /* leaderboard (Firestore, loaded only when the game is near) */
+  let db = null;
+  const load = src => new Promise((ok, ng) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = ng; document.head.appendChild(s); });
+  async function fb() {
+    if (db) return db;
+    await load('https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js');
+    await load('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js');
+    firebase.apps.length || firebase.initializeApp({ apiKey: 'AIzaSyDlovNerE44bGykzWDJkqmoD4fbSHnzveI', authDomain: 'hexa-relation.firebaseapp.com', projectId: 'hexa-relation' });
+    return (db = firebase.firestore());
+  }
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  let top5 = [];
+  async function loadBoard() {
+    try {
+      const snap = await (await fb()).collection('leaderboard').orderBy('score', 'desc').limit(5).get();
+      top5 = snap.docs.map(d => d.data());
+      board.innerHTML = top5.length ? top5.map((d, i) =>
+        `<li><span class="r">${i + 1}</span><span class="n">${esc(d.name)}</span><span class="s">${Number(d.score) || 0}</span></li>`).join('')
+        : '<li><span class="n muted">まだ記録がありません。</span></li>';
+    } catch (_) { board.innerHTML = '<li><span class="n muted">ランキングを読み込めませんでした。</span></li>'; }
+  }
+  async function qualify(score) {
+    if (!db) return;
+    if (top5.length < 5 || score > (top5[4].score || 0)) {
+      gMsg.textContent = `修理 ${score}。上位5人に入りました。`;
+      entry.classList.add('show'); $('g-name').focus();
+    }
+  }
+  $('g-save').addEventListener('click', async () => {
+    const name = ($('g-name').value.trim() || 'ANONYMOUS').toUpperCase().slice(0, 10);
+    $('g-save').disabled = true;
+    try {
+      await db.collection('leaderboard').add({ name, score: lastScore, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+      entry.classList.remove('show'); gMsg.textContent = '登録しました。'; loadBoard();
+    } catch (_) { gMsg.textContent = '登録できませんでした。'; }
+    finally { $('g-save').disabled = false; }
+  });
+  $('g-name').addEventListener('keydown', e => { if (e.key === 'Enter') $('g-save').click(); });
+  if ('IntersectionObserver' in window) {
+    const gio = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { gio.disconnect(); loadBoard(); } }, { rootMargin: '400px' });
+    gio.observe($('game'));
+  } else loadBoard();
+})();
+</script>
+</body>
+</html>
