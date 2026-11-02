@@ -9,6 +9,14 @@
 
 ## 📝 Change History
 
+### 2026-11-02: デザイナー用エージェント「デザイナルくん」を追加
+- **Task:** 日本と海外のデザイン知識を備えた、デザイナー用のサブエージェントを作成。
+- **Changes:**
+  - `.claude/agents/designaru-kun.md`：エージェントの定義（ヒアリングから提案、制作、セルフレビューまでの手順、ハルシネーション防止ルール、Higgsfieldでの画像・動画生成の手順）を追加。
+  - `.claude/designaru-kun/knowledge/`：10分野×150項目＝1500項目の知識ベースを追加。
+  - `.claude/designaru-kun/README.md`：使い方と、できること・できないことの説明を追加。
+- **Notes:** サイトの表示には影響しない（`.claude/` 配下のみの追加）。
+
 ### 2026-06-04: [sabanomiso] Mobile Name Entry & Control Fix
 - **Task:** Fix mobile name entry and unresponsive "STRIKE!!" button.
 - **Changes:**
